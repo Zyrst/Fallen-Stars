@@ -36,7 +36,8 @@
 ehthumbs.db
 Thumbs.db
 
-#Visual Studio files
+# Visual Studio files #
+#######################
 *.[Oo]bj
 *.user
 *.aps
@@ -64,3 +65,8 @@ ipch/
 [Dd]ebug*/
 [Rr]elease*/
 Ankh.NoLoad
+
+# Libraries #
+#############
+Libraries/
+SFML-2.1/
