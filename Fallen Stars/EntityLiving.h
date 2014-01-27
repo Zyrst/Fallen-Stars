@@ -7,9 +7,8 @@ EntityLiving består utav levande objekt, både vänliga och fientliga(bestämd av e
 class EntityLiving : public Entity
 {
 public:
-	EntityLiving(category,sf::Sprite);
+	EntityLiving(sf::Sprite);
 	~EntityLiving();
-	enum category{FRIEND, ENEMY, NEUTRAL};
 	bool isAlive();
 	void render(sf::RenderWindow window);
 	void update(float deltaTime);

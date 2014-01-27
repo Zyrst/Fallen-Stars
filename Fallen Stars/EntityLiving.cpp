@@ -1,6 +1,7 @@
 #include "EntityLiving.h"
 
-EntityLiving::EntityLiving(category, sf::Sprite)
+EntityLiving::EntityLiving(sf::Sprite):
+	mAlive(true)
 {
 }
 EntityLiving::~EntityLiving()
