@@ -30,6 +30,9 @@
     <ClCompile Include="EntityLiving.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ControlMapping.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -42,6 +45,13 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="EntityLiving.h">
+    <ClInclude Include="State.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Controls.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ControlMapping.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
