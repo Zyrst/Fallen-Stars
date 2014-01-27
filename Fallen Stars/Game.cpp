@@ -12,7 +12,7 @@ Game::~Game(void)
 
 void Game::gameloop()
 {
-    sf::RenderWindow window(sf::VideoMode(800, 600), "My window");
+	sf::RenderWindow window(sf::VideoMode(800, 600), "My window");
 
     while (window.isOpen())
     {
