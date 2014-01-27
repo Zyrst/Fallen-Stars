@@ -23,7 +23,7 @@ void Game::gameloop()
                 window.close();
         }
 
-        window.clear(sf::Color::Black);
+		window.clear(sf::Color::Black);
 
         // draw everything here...
         // window.draw(...);
@@ -31,4 +31,5 @@ void Game::gameloop()
         // end the current frame
         window.display();
     }
+
 }
