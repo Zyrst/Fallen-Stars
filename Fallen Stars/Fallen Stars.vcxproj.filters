@@ -45,6 +45,8 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="EntityLiving.h">
+	<Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="State.h">
       <Filter>Header Files</Filter>
     </ClInclude>
