@@ -99,7 +99,6 @@
   <ItemGroup>
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityLiving.h" />
-    <ClInclude Include="Game.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="ControlMapping.h" />
     <ClInclude Include="Controls.h" />
