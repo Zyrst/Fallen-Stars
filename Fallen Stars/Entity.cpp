@@ -1,6 +1,6 @@
 #include "Entity.h"
 
-Entity::Entity():
+Entity::Entity(sf::Sprite, sf::IntRect):
 	mAlive(true)
 {}
 
