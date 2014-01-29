@@ -11,7 +11,7 @@ public:
 	Game();
 	~Game();
 
-	void gameloop();
+	void run();
 	void setState(State* state);
 
 private:

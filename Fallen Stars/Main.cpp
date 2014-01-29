@@ -3,5 +3,5 @@
 void main()
 {
 	Game game;
-	game.gameloop();
+	game.run();
 }

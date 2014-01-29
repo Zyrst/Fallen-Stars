@@ -26,8 +26,10 @@ Game::~Game()
 	delete window;
 }
 
-void Game::gameloop()
+void Game::run()
 {
+	assert(currentState != NULL);
+
 	sf::Clock clock;
     while (window->isOpen())
     {
@@ -42,10 +44,13 @@ void Game::gameloop()
 		float deltaTime = clock.getElapsedTime().asSeconds();
 		clock.restart();
 
+		assert(currentState != NULL);
 		currentState->update(deltaTime);
 
 		// Rendera den nya framen
 		window->clear(sf::Color::Black);
+
+		assert(currentState != NULL);
         currentState->render(*window);
 
 		window->display();

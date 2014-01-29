@@ -9,19 +9,19 @@ Controls::Action ControlMapping::getAction(sf::Event::KeyEvent key)
 	switch(key.code)
 	{
 		case sf::Keyboard::Key::A:
-			return Controls::MOVE_LEFT;
+			return Controls::Action::MOVE_LEFT;
 		case sf::Keyboard::Key::D:
-			return Controls::MOVE_RIGHT;
+			return Controls::Action::MOVE_RIGHT;
 		case sf::Keyboard::Key::Space:
-			return Controls::JUMP;
+			return Controls::Action::JUMP;
 		case sf::Keyboard::Key::E:
-			return Controls::INTERACT;
+			return Controls::Action::INTERACT;
 		case sf::Keyboard::Key::Escape:
-			return Controls::MENU;
+			return Controls::Action::MENU;
 		case sf::Keyboard::Key::H:
-			return Controls::SIRIUS;
+			return Controls::Action::SIRIUS;
 		default:
-			return Controls::UNUSED;
+			return Controls::Action::UNUSED;
 	}
 }
 
