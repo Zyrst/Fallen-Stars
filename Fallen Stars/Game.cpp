@@ -77,10 +77,23 @@ void Game::handleEvent(sf::Event event)
 	}
 
 	Controls::Action action = Controls::Action::UNUSED;
+	Controls::KeyState keyState = Controls::KeyState::UNKNOWN;
 	
-	if (event.type == sf::Event::KeyPressed) action = ControlMapping::getAction( event.key );
-	else if (event.type == sf::Event::JoystickButtonPressed) action = ControlMapping::getAction( event.joystickButton );
-	else if (event.type == sf::Event::JoystickMoved) action = ControlMapping::getAction( event.joystickMove );
+	if (event.type == sf::Event::KeyPressed)
+	{
+		action = ControlMapping::getAction( event.key );
+		keyState = Controls::KeyState::PRESSED;
+	}
+	else if (event.type == sf::Event::KeyReleased)
+	{
+		action = ControlMapping::getAction( event.key );
+		keyState = Controls::KeyState::RELEASED;
+	}
+	
+	// TODO Implement joystick
+	// else if (event.type == sf::Event::JoystickButtonPressed) action = ControlMapping::getAction( event.joystickButton );
+	// else if (event.type == sf::Event::JoystickMoved) action = ControlMapping::getAction( event.joystickMove );
+	
 
-	if( action != Controls::Action::UNUSED ) currentState->handleAction(action);
+	if( action != Controls::Action::UNUSED ) currentState->handleAction(action, keyState);
 }

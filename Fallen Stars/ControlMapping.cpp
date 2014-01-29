@@ -8,10 +8,14 @@ Controls::Action ControlMapping::getAction(sf::Event::KeyEvent key)
 {
 	switch(key.code)
 	{
+		case sf::Keyboard::Key::W:
+			return Controls::Action::UP;
+		case sf::Keyboard::Key::S:
+			return Controls::Action::DOWN;
 		case sf::Keyboard::Key::A:
-			return Controls::Action::MOVE_LEFT;
+			return Controls::Action::LEFT;
 		case sf::Keyboard::Key::D:
-			return Controls::Action::MOVE_RIGHT;
+			return Controls::Action::RIGHT;
 		case sf::Keyboard::Key::Space:
 			return Controls::Action::JUMP;
 		case sf::Keyboard::Key::E:
