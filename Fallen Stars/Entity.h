@@ -24,4 +24,4 @@ protected:
 	sf::IntRect boundingBox;
 	sf::Vector2f position;
 	bool mAlive;
-}
+};
