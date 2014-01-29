@@ -15,7 +15,7 @@ public:
 	void setState(State* state);
 
 private:
-	sf::RenderWindow window;
+	sf::RenderWindow *window;
 	State* currentState;
 
 	void handleEvent(sf::Event);

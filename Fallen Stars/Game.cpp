@@ -8,14 +8,14 @@
 #include "State.h"
 #include "ControlMapping.h"
 
+int Width = 1280;
+int Height = 720;
 
-
-Game::Game():
-	window()
+Game::Game()
 {
 	// TODO Hämta faktisk skärmupplösning + fixa fullskärm
-	sf::VideoMode resolution = sf::VideoMode(1280, 720);
-	window = sf::RenderWindow(resolution, "Fallen Stars");
+	sf::VideoMode resolution(Width, Height);
+	window = new sf::RenderWindow(resolution, "Fallen Stars");
 	
 	// TODO Skapa en första state
 }
@@ -23,16 +23,17 @@ Game::Game():
 
 Game::~Game()
 {
+	delete window;
 }
 
 void Game::gameloop()
 {
 	sf::Clock clock;
-    while (window.isOpen())
+    while (window->isOpen())
     {
 		// Kolla alla kontroller och reagera på input
         sf::Event event;
-        while (window.pollEvent(event)) 
+        while (window->pollEvent(event)) 
 		{
 			handleEvent(event);
 		}
@@ -44,10 +45,10 @@ void Game::gameloop()
 		currentState->update(deltaTime);
 
 		// Rendera den nya framen
-		window.clear(sf::Color::Black);
-        currentState->render(window);
+		window->clear(sf::Color::Black);
+        currentState->render(*window);
 
-		window.display();
+		window->display();
     }
 }
 
@@ -66,7 +67,7 @@ void Game::handleEvent(sf::Event event)
 
 	if (event.type == sf::Event::Closed)
 	{
-		window.close();
+		window->close();
 		return;
 	}
 
