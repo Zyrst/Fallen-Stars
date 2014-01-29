@@ -70,3 +70,8 @@ Ankh.NoLoad
 #############
 Libraries/
 SFML-2.1/
+TmxParser/
+
+# Assets #
+##########
+Maps/
