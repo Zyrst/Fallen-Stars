@@ -19,6 +19,18 @@
     <Filter Include="Source Files\Entity">
       <UniqueIdentifier>{3324be5d-9daa-44d8-814e-b6a6c437fe13}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\menu">
+      <UniqueIdentifier>{11c69677-35b9-4aaf-8c5d-f2248bd4def9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\state">
+      <UniqueIdentifier>{2eb24763-2450-4037-9726-4ef22019e62c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\menu">
+      <UniqueIdentifier>{c53a5c78-b725-4752-8b4b-5f95b4e6ed97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\state">
+      <UniqueIdentifier>{943b7e7c-9250-465a-99db-57090460561c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -30,34 +42,37 @@
     <ClCompile Include="ControlMapping.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MenuItem.cpp">
+      <Filter>Source Files\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuScreen.cpp">
+      <Filter>Source Files\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityLiving.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Entity.cpp">
       <Filter>Source Files\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="EntityLiving.cpp">
-      <Filter>Source Files\Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="Object.cpp">
-      <Filter>Source Files\Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="Menu.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="MassiveState.cpp">
+      <Filter>Source Files\state</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Game.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="State.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Controls.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ControlMapping.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Object.h">
-      <Filter>Header Files\Entity</Filter>
+    <ClInclude Include="State.h">
+      <Filter>Header Files\state</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuScreen.h">
+      <Filter>Header Files\menu</Filter>
     </ClInclude>
     <ClInclude Include="EntityLiving.h">
       <Filter>Header Files\Entity</Filter>
@@ -65,8 +80,17 @@
     <ClInclude Include="Entity.h">
       <Filter>Header Files\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="Menu.h">
+    <ClInclude Include="Game.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuItem.h">
+      <Filter>Header Files\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="MassiveState.h">
+      <Filter>Header Files\state</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
