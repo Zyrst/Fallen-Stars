@@ -28,9 +28,11 @@ Controls::Action ControlMapping::getAction(sf::Event::KeyEvent key)
 Controls::Action ControlMapping::getAction(sf::Event::JoystickButtonEvent joystickButton)
 {
 	// TODO Implement joystick button mapping
+	return Controls::Action::UNUSED;
 }
 
 Controls::Action ControlMapping::getAction(sf::Event::JoystickMoveEvent joystickMove)
 {
 	// TODO Implement joystick movement mapping
+	return Controls::Action::UNUSED;
 }
