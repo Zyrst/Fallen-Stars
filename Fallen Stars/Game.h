@@ -3,21 +3,21 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Event.hpp>
 
-class State;
+#include "State.h"
 
 class Game
 {
-public:
-	Game();
-	~Game();
+	public:
+		Game();
+		~Game();
 
-	void run();
-	void setState(State* state);
+		void run();
+		void setState(State* state);
 
-private:
-	sf::RenderWindow *window;
-	State* currentState;
+	private:
+		sf::RenderWindow *window;
+		State* currentState;
 
-	void handleEvent(sf::Event);
+		void handleEvent(sf::Event);
 };
 
