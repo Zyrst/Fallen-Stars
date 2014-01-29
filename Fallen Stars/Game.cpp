@@ -7,23 +7,29 @@
 
 #include "State.h"
 #include "ControlMapping.h"
+#include "MassiveState.h"
 
 int Width = 1280;
 int Height = 720;
 
+/* Temporarily stores the next state while waiting for the current state to end */
+static State* nextState;
+
 Game::Game()
 {
-	// TODO Hämta faktisk skärmupplösning + fixa fullskärm
+	// TODO Get actual resolution + fix fullscreen
 	sf::VideoMode resolution(Width, Height);
 	window = new sf::RenderWindow(resolution, "Fallen Stars");
 	
-	// TODO Skapa en första state
+	// TODO Create a first state
+	currentState = new MassiveState();
 }
 
 
 Game::~Game()
 {
 	delete window;
+	delete currentState;
 }
 
 void Game::run()
@@ -54,16 +60,25 @@ void Game::run()
         currentState->render(*window);
 
 		window->display();
+
+		// If we're going to swap state, do that at the end of the frame
+		if(nextState != NULL) swapState();
     }
 }
 
 void Game::setState(State* state)
 {
 	assert(state != NULL);
+	nextState = state;
+}
+
+void Game::swapState()
+{
+	assert(nextState != NULL);
 	assert(currentState != NULL);
 
 	delete currentState;
-	currentState = state;
+	currentState = nextState;
 }
 
 void Game::handleEvent(sf::Event event)
