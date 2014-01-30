@@ -7,7 +7,6 @@
 
 #include "State.h"
 #include "ControlMapping.h"
-#include "MassiveState.h"
 
 int Width = 1280;
 int Height = 720;
@@ -22,7 +21,6 @@ Game::Game()
 	window = new sf::RenderWindow(resolution, "Fallen Stars");
 	
 	// TODO Create a first state
-	currentState = new MassiveState();
 }
 
 

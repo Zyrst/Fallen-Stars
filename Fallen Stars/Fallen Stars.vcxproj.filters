@@ -51,9 +51,6 @@
     <ClCompile Include="Entity.cpp">
       <Filter>Source Files\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="MassiveState.cpp">
-      <Filter>Source Files\state</Filter>
-    </ClCompile>
     <ClCompile Include="Object.cpp">
       <Filter>Source Files\Entity</Filter>
     </ClCompile>
@@ -88,9 +85,6 @@
     </ClInclude>
     <ClInclude Include="MenuItem.h">
       <Filter>Header Files\menu</Filter>
-    </ClInclude>
-    <ClInclude Include="MassiveState.h">
-      <Filter>Header Files\state</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

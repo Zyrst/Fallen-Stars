@@ -94,7 +94,6 @@
     <ClCompile Include="EntityLiving.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="MassiveState.cpp" />
     <ClCompile Include="MenuScreen.cpp" />
     <ClCompile Include="MenuItem.cpp" />
     <ClCompile Include="Object.cpp" />
@@ -102,7 +101,6 @@
   <ItemGroup>
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityLiving.h" />
-    <ClInclude Include="MassiveState.h" />
     <ClInclude Include="MenuScreen.h" />
     <ClInclude Include="MenuItem.h" />
     <ClInclude Include="ControlMapping.h" />
