@@ -7,12 +7,12 @@
 class EntityLiving : public Entity
 {
 	public:
-		void render(sf::RenderTarget& renderSurface) override;
-		void update(float deltaTime) override;
-		sf::Vector2f getPosition() override;
-		void setPosition(float x, float y);
-		void setVelocity(float x, float y);
-		bool isAlive();
+		virtual void render(sf::RenderTarget& renderSurface) override;
+		virtual void update(float deltaTime) override;
+		virtual sf::Vector2f getPosition() override;
+		virtual void setPosition(float x, float y);
+		virtual void setVelocity(float x, float y);
+		virtual bool isAlive();
 	private:
 		sf::Vector2f velocity;
 
