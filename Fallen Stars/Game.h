@@ -19,6 +19,7 @@ class Game
 		State* currentState;
 
 		void handleEvent(sf::Event);
+		void handleHeldKeys();
 		void swapState();
 };
 

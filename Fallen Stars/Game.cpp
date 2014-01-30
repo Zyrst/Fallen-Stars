@@ -37,21 +37,22 @@ void Game::run()
 	sf::Clock clock;
     while (window->isOpen())
     {
-		// Kolla alla kontroller och reagera på input
-        sf::Event event;
+		// Check all controls and react to input
+		sf::Event event;
         while (window->pollEvent(event)) 
 		{
 			handleEvent(event);
 		}
+		handleHeldKeys();
 
-		// Kör all updateringskod
+		// Do all the updates
 		float deltaTime = clock.getElapsedTime().asSeconds();
 		clock.restart();
 
 		assert(currentState != NULL);
 		currentState->update(deltaTime);
 
-		// Rendera den nya framen
+		// Render the frame
 		window->clear(sf::Color::Black);
 
 		assert(currentState != NULL);
@@ -62,6 +63,7 @@ void Game::run()
 		// If we're going to swap state, do that at the end of the frame
 		if(nextState != NULL) swapState();
     }
+
 }
 
 void Game::setState(State* state)
@@ -90,7 +92,7 @@ void Game::handleEvent(sf::Event event)
 	}
 
 	Controls::Action action = Controls::Action::UNUSED;
-	Controls::KeyState keyState = Controls::KeyState::UNKNOWN;
+	Controls::KeyState keyState;
 	
 	if (event.type == sf::Event::KeyPressed)
 	{
@@ -109,4 +111,16 @@ void Game::handleEvent(sf::Event event)
 	
 
 	if( action != Controls::Action::UNUSED ) currentState->handleAction(action, keyState);
+}
+
+void Game::handleHeldKeys()
+{
+	if( sf::Keyboard::isKeyPressed( ControlMapping::getKey( Controls::Action::UP ) ) ) currentState->handleAction( Controls::Action::UP, Controls::KeyState::HELD );
+	if( sf::Keyboard::isKeyPressed( ControlMapping::getKey( Controls::Action::DOWN ) ) ) currentState->handleAction( Controls::Action::DOWN, Controls::KeyState::HELD );
+	if( sf::Keyboard::isKeyPressed( ControlMapping::getKey( Controls::Action::LEFT ) ) ) currentState->handleAction( Controls::Action::LEFT, Controls::KeyState::HELD );
+	if( sf::Keyboard::isKeyPressed( ControlMapping::getKey( Controls::Action::RIGHT ) ) ) currentState->handleAction( Controls::Action::RIGHT, Controls::KeyState::HELD );
+	if( sf::Keyboard::isKeyPressed( ControlMapping::getKey( Controls::Action::JUMP ) ) ) currentState->handleAction( Controls::Action::JUMP, Controls::KeyState::HELD );
+	if( sf::Keyboard::isKeyPressed( ControlMapping::getKey( Controls::Action::INTERACT ) ) ) currentState->handleAction( Controls::Action::INTERACT, Controls::KeyState::HELD );
+	if( sf::Keyboard::isKeyPressed( ControlMapping::getKey( Controls::Action::MENU ) )) currentState->handleAction( Controls::Action::MENU, Controls::KeyState::HELD );
+	if( sf::Keyboard::isKeyPressed( ControlMapping::getKey( Controls::Action::SIRIUS ) ) ) currentState->handleAction( Controls::Action::SIRIUS, Controls::KeyState::HELD );
 }

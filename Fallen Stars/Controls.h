@@ -7,5 +7,5 @@
 namespace Controls
 {
 	enum Action {UP, DOWN, LEFT, RIGHT, JUMP, MENU, SIRIUS, INTERACT, UNUSED};
-	enum KeyState {PRESSED, RELEASED, UNKNOWN};
+	enum KeyState {PRESSED, RELEASED, HELD};
 }

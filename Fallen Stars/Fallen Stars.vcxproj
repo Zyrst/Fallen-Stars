@@ -89,13 +89,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Button.cpp" />
     <ClCompile Include="ControlMapping.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityLiving.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MenuScreen.cpp" />
-    <ClCompile Include="MenuItem.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
@@ -103,7 +103,7 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityLiving.h" />
     <ClInclude Include="MenuScreen.h" />
-    <ClInclude Include="MenuItem.h" />
+    <ClInclude Include="Button.h" />
     <ClInclude Include="ControlMapping.h" />
     <ClInclude Include="Controls.h" />
     <ClInclude Include="Game.h" />

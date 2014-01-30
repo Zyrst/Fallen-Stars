@@ -4,9 +4,12 @@
 
 #include "Controls.h"
 
-namespace ControlMapping 
+class ControlMapping 
 {
-	Controls::Action getAction(sf::Event::KeyEvent);
-	Controls::Action getAction(sf::Event::JoystickButtonEvent);
-	Controls::Action getAction(sf::Event::JoystickMoveEvent);
+public:
+	static Controls::Action getAction(sf::Event::KeyEvent);
+	static Controls::Action getAction(sf::Event::JoystickButtonEvent);
+	static Controls::Action getAction(sf::Event::JoystickMoveEvent);
+
+	static sf::Keyboard::Key getKey(Controls::Action);
 };

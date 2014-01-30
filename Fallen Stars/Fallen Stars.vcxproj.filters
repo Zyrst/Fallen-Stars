@@ -42,9 +42,6 @@
     <ClCompile Include="ControlMapping.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MenuItem.cpp">
-      <Filter>Source Files\menu</Filter>
-    </ClCompile>
     <ClCompile Include="MenuScreen.cpp">
       <Filter>Source Files\menu</Filter>
     </ClCompile>
@@ -59,6 +56,8 @@
     </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Source Files\Entity</Filter>
+    <ClCompile Include="Button.cpp">
+      <Filter>Source Files\menu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -86,7 +85,7 @@
     <ClInclude Include="Object.h">
       <Filter>Header Files\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="MenuItem.h">
+    <ClInclude Include="Button.h">
       <Filter>Header Files\menu</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">

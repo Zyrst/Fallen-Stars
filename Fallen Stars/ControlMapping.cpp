@@ -4,6 +4,7 @@
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/Joystick.hpp>
 
+
 Controls::Action ControlMapping::getAction(sf::Event::KeyEvent key)
 {
 	switch(key.code)
@@ -39,4 +40,29 @@ Controls::Action ControlMapping::getAction(sf::Event::JoystickMoveEvent joystick
 {
 	// TODO Implement joystick movement mapping
 	return Controls::Action::UNUSED;
+}
+
+sf::Keyboard::Key ControlMapping::getKey(Controls::Action action)
+{
+	switch(action)
+	{
+		case Controls::Action::UP:
+			return sf::Keyboard::Key::W;
+		case Controls::Action::DOWN:
+			return sf::Keyboard::Key::S;
+		case Controls::Action::LEFT:
+			return sf::Keyboard::Key::A;
+		case Controls::Action::RIGHT:
+			return sf::Keyboard::Key::D;
+		case Controls::Action::JUMP:
+			return sf::Keyboard::Key::Space;
+		case Controls::Action::INTERACT:
+			return sf::Keyboard::Key::E;
+		case Controls::Action::MENU:
+			return sf::Keyboard::Key::Escape;
+		case Controls::Action::SIRIUS:
+			return sf::Keyboard::Key::H;
+		default:
+			sf::Keyboard::Key::Unknown;
+	}
 }
