@@ -5,7 +5,7 @@ void Object::update(float deltaTime)
 {
 	
 }
-void Object::render(sf::RenderWindow window)
+void Object::render(sf::RenderTarget* renderSurface)
 {
 
 }

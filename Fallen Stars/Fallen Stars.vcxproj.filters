@@ -48,17 +48,17 @@
     <ClCompile Include="MenuScreen.cpp">
       <Filter>Source Files\menu</Filter>
     </ClCompile>
-    <ClCompile Include="EntityLiving.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Object.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Entity.cpp">
       <Filter>Source Files\Entity</Filter>
     </ClCompile>
     <ClCompile Include="MassiveState.cpp">
       <Filter>Source Files\state</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityLiving.cpp">
+      <Filter>Source Files\Entity</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
