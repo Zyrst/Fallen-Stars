@@ -3,7 +3,7 @@ void EntityLiving::update(float deltaTime)
 {
 	position += velocity * deltaTime;
 }
-void EntityLiving::render(sf::RenderTarget* renderTarget)
+void EntityLiving::render(sf::RenderTarget& renderTarget)
 {
 
 }

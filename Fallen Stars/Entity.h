@@ -11,12 +11,12 @@ class Entity
 	public:
 		//TODO Update skall få funktioner
 		//TODO collisionWith måste ta emot boundingBoxes
-		virtual void render(sf::RenderTarget* renderSurface)=0;
+		virtual void render(sf::RenderTarget& renderSurface)=0;
 		virtual void update(float deltaTime)=0;
 		virtual sf::Vector2f getPosition()=0;
 		virtual void setPosition(float x,float y)=0;
 		virtual bool isAlive();
-		void collidesWith(Entity* other);
+		void collidesWith(Entity* other1, Entity* other2);
 
 	protected:
 		Entity(sf::Sprite sprite, sf::IntRect boundingBox, sf::Vector2f position);

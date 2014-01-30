@@ -7,7 +7,7 @@
 class EntityLiving : public Entity
 {
 	public:
-		void render(sf::RenderTarget* renderSurface) override;
+		void render(sf::RenderTarget& renderSurface) override;
 		void update(float deltaTime) override;
 		sf::Vector2f getPosition() override;
 		void setPosition(float x, float y);

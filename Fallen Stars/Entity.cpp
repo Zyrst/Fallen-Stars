@@ -8,3 +8,8 @@ bool Entity::isAlive()
 {
 	return mAlive;
 }
+void Entity::collidesWith(Entity* other1, Entity* other2)
+{
+
+
+}
