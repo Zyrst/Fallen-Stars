@@ -89,6 +89,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AnimatedSprite.cpp" />
+    <ClCompile Include="Animation.cpp" />
     <ClCompile Include="BoxWorld.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="ControlMapping.cpp" />
@@ -109,8 +111,11 @@
     <ClCompile Include="MenuScreen.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="SpriteSheet.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AnimatedSprite.h" />
+    <ClInclude Include="Animation.h" />
     <ClInclude Include="BoxWorld.h" />
     <ClInclude Include="debugdraw.h" />
     <ClInclude Include="Entity.h" />
@@ -134,6 +139,7 @@
     <ClInclude Include="Controls.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="SpriteSheet.h" />
     <ClInclude Include="State.h" />
   </ItemGroup>
   <ItemGroup>

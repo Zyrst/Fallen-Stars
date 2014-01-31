@@ -10,7 +10,7 @@
 class State
 {
 	public:
-		virtual void update(float deltaTime) = 0;
+		virtual void update(sf::Time deltaTime) = 0;
 		virtual void render(sf::RenderWindow& window) = 0;
 		virtual void handleAction(Controls::Action action, Controls::KeyState) = 0;
 };

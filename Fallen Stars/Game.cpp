@@ -46,7 +46,7 @@ void Game::run()
 		handleHeldKeys();
 
 		// Do all the updates
-		float deltaTime = clock.getElapsedTime().asSeconds();
+		sf::Time deltaTime = clock.getElapsedTime();
 		clock.restart();
 
 		assert(currentState != NULL);
