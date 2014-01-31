@@ -87,9 +87,6 @@
     <ClCompile Include="LevelManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MenuItem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Libraries\SFML TmxLoader\src\MapLoaderPrivate.cpp">
       <Filter>Source Files\Tmx</Filter>
     </ClCompile>
@@ -110,6 +107,12 @@
     </ClCompile>
     <ClCompile Include="Libraries\SFML TmxLoader\src\MapLayer.cpp">
       <Filter>Source Files\Tmx</Filter>
+    </ClCompile>
+    <ClCompile Include="BoxWorld.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="debugdraw.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -139,7 +142,7 @@
     </ClInclude>
     <ClInclude Include="Button.h">
       <Filter>Header Files\menu</Filter>
-       </ClInclude>
+    </ClInclude>
     <ClInclude Include="ControlMapping.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -148,9 +151,6 @@
     </ClInclude>
     <ClInclude Include="LevelManager.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MenuItem.h">
-      <Filter>Header Files\menu</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\SFML TmxLoader\include\tmx\MapLoader.h">
       <Filter>Header Files\Tmx</Filter>
@@ -181,6 +181,12 @@
     </ClInclude>
     <ClInclude Include="Libraries\SFML TmxLoader\lib\zlib\include\zlib.h">
       <Filter>Header Files\Zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="BoxWorld.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="debugdraw.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
