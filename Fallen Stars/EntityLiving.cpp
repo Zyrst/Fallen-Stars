@@ -24,5 +24,4 @@ void EntityLiving::setVelocity(float x, float y)
 {
 	velocity.x = x;
 	velocity.y = y;
-
 }

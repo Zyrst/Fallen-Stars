@@ -10,7 +10,7 @@ class Entity
 {
 	public:
 		//TODO Update skall få funktioner
-		//TODO collisionWith måste ta emot boundingBoxes
+		//TODO collisionWith måste ta emot boundingBoxes(bodys?)
 		virtual void render(sf::RenderTarget& renderSurface)=0;
 		virtual void update(float deltaTime)=0;
 		virtual sf::Vector2f getPosition()=0;
@@ -19,9 +19,10 @@ class Entity
 		void collidesWith(Entity* other1, Entity* other2);
 
 	protected:
-		Entity(sf::Sprite sprite, sf::IntRect boundingBox, sf::Vector2f position);
+		Entity(sf::Sprite sprite,/*TODO Ändra till bodys*/ sf::IntRect boundingBox, sf::Vector2f position);
 		sf::Sprite sprite;
 		sf::IntRect boundingBox;
 		sf::Vector2f position;
 		bool mAlive;
+		enum mFacing{LEFT, RIGHT};
 };

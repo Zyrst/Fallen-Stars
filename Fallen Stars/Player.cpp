@@ -38,3 +38,7 @@ void Player::jump()
 	else{ velocity.y -=mJumpStrength;}
 	*/
 }
+void Player::setFacing()
+{
+	
+}

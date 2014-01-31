@@ -12,9 +12,10 @@ public:
 	void setVelocity(float x, float y);
 	void jump();
 	bool isAlive();
-
+	void setFacing();
 private:
 	sf::Vector2f velocity;
 	float mJumpStrength;
 	float mMaxJump;
+	mFacing mFace;
 };

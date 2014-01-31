@@ -15,5 +15,4 @@ class EntityLiving : public Entity
 		virtual bool isAlive();
 	private:
 		sf::Vector2f velocity;
-
 };
