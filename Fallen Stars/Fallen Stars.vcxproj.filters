@@ -80,6 +80,7 @@
     </ClCompile>
     <ClCompile Include="Button.cpp">
       <Filter>Source Files\menu</Filter>
+    </ClCompile>
     <ClCompile Include="ControlMapping.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
