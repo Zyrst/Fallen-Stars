@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "Libraries\SFML TmxLoader\include\tmx\MapLoader.h"
+#include "tmx\MapLoader.h"
 
 /*A class for managing Levels
 *Contains the tmx parser

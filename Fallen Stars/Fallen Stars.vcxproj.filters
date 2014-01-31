@@ -31,23 +31,35 @@
     <Filter Include="Source Files\state">
       <UniqueIdentifier>{943b7e7c-9250-465a-99db-57090460561c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Tmx">
+    <Filter Include="Source Files\Managers">
+      <UniqueIdentifier>{18e48a2a-bab9-407a-b261-5ab1c2a88ad0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Libraries">
+      <UniqueIdentifier>{56fd5fd0-0806-4652-ba20-05192eba2f4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Libraries\Tmx">
       <UniqueIdentifier>{26143a5b-0f98-4ad1-af9f-d22cd119c049}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Tmx">
-      <UniqueIdentifier>{ee1164e6-fe4d-41fe-9a96-d8854e81303f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Pugi">
-      <UniqueIdentifier>{78b51e09-91dc-4000-9d9b-9a601d7dac8a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Zlib">
+    <Filter Include="Source Files\Libraries\Zlib">
       <UniqueIdentifier>{5f48419d-7265-47bf-849e-3086cb01223e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Zlib">
+    <Filter Include="Source Files\Libraries\Pugi">
+      <UniqueIdentifier>{78b51e09-91dc-4000-9d9b-9a601d7dac8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Libraries">
+      <UniqueIdentifier>{9dc6196e-c995-4ca7-9e72-be0cd727335c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Libraries\Pugi">
+      <UniqueIdentifier>{0d2560cb-41f7-4084-9752-e3f65e09dc58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Libraries\Tmx">
+      <UniqueIdentifier>{ee1164e6-fe4d-41fe-9a96-d8854e81303f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Libraries\Zlib">
       <UniqueIdentifier>{c72349d7-1c3e-4d06-8abd-81444c4181fb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Pugi">
-      <UniqueIdentifier>{0d2560cb-41f7-4084-9752-e3f65e09dc58}</UniqueIdentifier>
+    <Filter Include="Header Files\Managers">
+      <UniqueIdentifier>{9445e3d7-0676-4483-9d17-a2d54887419d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -55,12 +67,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Entity.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Object.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MenuScreen.cpp">
@@ -84,55 +90,40 @@
     <ClCompile Include="ControlMapping.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="LevelManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Libraries\SFML TmxLoader\src\MapLoaderPrivate.cpp">
-      <Filter>Source Files\Tmx</Filter>
+      <Filter>Source Files\Libraries\Tmx</Filter>
     </ClCompile>
     <ClCompile Include="Libraries\SFML TmxLoader\src\MapLoaderPublic.cpp">
-      <Filter>Source Files\Tmx</Filter>
+      <Filter>Source Files\Libraries\Tmx</Filter>
     </ClCompile>
     <ClCompile Include="Libraries\SFML TmxLoader\src\DebugShape.cpp">
-      <Filter>Source Files\Tmx</Filter>
+      <Filter>Source Files\Libraries\Tmx</Filter>
     </ClCompile>
     <ClCompile Include="Libraries\SFML TmxLoader\src\MapObject.cpp">
-      <Filter>Source Files\Tmx</Filter>
+      <Filter>Source Files\Libraries\Tmx</Filter>
     </ClCompile>
     <ClCompile Include="Libraries\SFML TmxLoader\src\QuadTreeNode.cpp">
-      <Filter>Source Files\Tmx</Filter>
+      <Filter>Source Files\Libraries\Tmx</Filter>
     </ClCompile>
     <ClCompile Include="Libraries\SFML TmxLoader\src\pugixml\pugixml.cpp">
-      <Filter>Source Files\Pugi</Filter>
+      <Filter>Source Files\Libraries\Pugi</Filter>
     </ClCompile>
     <ClCompile Include="Libraries\SFML TmxLoader\src\MapLayer.cpp">
-      <Filter>Source Files\Tmx</Filter>
+      <Filter>Source Files\Libraries\Tmx</Filter>
     </ClCompile>
-    <ClCompile Include="BoxWorld.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="LevelManager.cpp">
+      <Filter>Source Files\Managers</Filter>
     </ClCompile>
-    <ClCompile Include="debugdraw.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Source Files\Entity</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Entity.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Object.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MenuScreen.h">
       <Filter>Header Files\menu</Filter>
-    </ClInclude>
-    <ClInclude Include="EntityLiving.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="State.h">
-      <Filter>Header Files\Entity</Filter>
     </ClInclude>
     <ClInclude Include="Game.h">
       <Filter>Header Files</Filter>
@@ -149,49 +140,55 @@
     <ClInclude Include="Player.h">
       <Filter>Header Files\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="LevelManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Libraries\SFML TmxLoader\include\tmx\MapLoader.h">
-      <Filter>Header Files\Tmx</Filter>
+      <Filter>Header Files\Libraries\Tmx</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\SFML TmxLoader\include\tmx\MapLayer.h">
-      <Filter>Header Files\Tmx</Filter>
+      <Filter>Header Files\Libraries\Tmx</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\SFML TmxLoader\include\tmx\MapObject.h">
-      <Filter>Header Files\Tmx</Filter>
+      <Filter>Header Files\Libraries\Tmx</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\SFML TmxLoader\include\tmx\QuadTreeNode.h">
-      <Filter>Header Files\Tmx</Filter>
+      <Filter>Header Files\Libraries\Tmx</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\SFML TmxLoader\include\pugixml\pugiconfig.hpp">
-      <Filter>Header Files\Pugi</Filter>
+      <Filter>Header Files\Libraries\Pugi</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\SFML TmxLoader\include\pugixml\pugixml.hpp">
-      <Filter>Header Files\Pugi</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\SFML TmxLoader\include\DebugShape.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\SFML TmxLoader\include\Helpers.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Libraries\Pugi</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\SFML TmxLoader\lib\zlib\include\zconf.h">
-      <Filter>Header Files\Zlib</Filter>
+      <Filter>Header Files\Libraries\Zlib</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\SFML TmxLoader\lib\zlib\include\zlib.h">
-      <Filter>Header Files\Zlib</Filter>
+      <Filter>Header Files\Libraries\Zlib</Filter>
     </ClInclude>
-    <ClInclude Include="BoxWorld.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="LevelManager.h">
+      <Filter>Header Files\Managers</Filter>
     </ClInclude>
-    <ClInclude Include="debugdraw.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="State.h">
+      <Filter>Header Files\state</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityLiving.h">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\SFML TmxLoader\include\DebugShape.h">
+      <Filter>Header Files\Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\SFML TmxLoader\include\Helpers.h">
+      <Filter>Header Files\Libraries</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Libraries\SFML TmxLoader\lib\zlib\lib\zlib.def">
-      <Filter>Source Files\Zlib</Filter>
+      <Filter>Source Files\Libraries\Zlib</Filter>
     </None>
   </ItemGroup>
 </Project>
