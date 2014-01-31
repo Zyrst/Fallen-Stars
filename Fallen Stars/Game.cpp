@@ -19,7 +19,7 @@ Game::Game()
 	// TODO Get actual resolution + fix fullscreen
 	sf::VideoMode resolution(Width, Height);
 	window = new sf::RenderWindow(resolution, "Fallen Stars");
-	
+	currentState = NULL;
 	// TODO Create a first state
 }
 

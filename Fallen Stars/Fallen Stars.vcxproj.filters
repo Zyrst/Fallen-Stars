@@ -117,6 +117,15 @@
     <ClCompile Include="Entity.cpp">
       <Filter>Source Files\Entity</Filter>
     </ClCompile>
+    <ClCompile Include="BoxWorld.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="debugdraw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\SFML TmxLoader\src\tmx2box2d.cpp">
+      <Filter>Source Files\Libraries\Tmx</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -184,6 +193,15 @@
     </ClInclude>
     <ClInclude Include="Libraries\SFML TmxLoader\include\Helpers.h">
       <Filter>Header Files\Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="BoxWorld.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="debugdraw.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\SFML TmxLoader\include\tmx\tmx2box2d.h">
+      <Filter>Header Files\Libraries\Tmx</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

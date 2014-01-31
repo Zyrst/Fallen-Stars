@@ -104,6 +104,7 @@
     <ClCompile Include="Libraries\SFML TmxLoader\src\MapObject.cpp" />
     <ClCompile Include="Libraries\SFML TmxLoader\src\pugixml\pugixml.cpp" />
     <ClCompile Include="Libraries\SFML TmxLoader\src\QuadTreeNode.cpp" />
+    <ClCompile Include="Libraries\SFML TmxLoader\src\tmx2box2d.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MenuScreen.cpp" />
     <ClCompile Include="Object.cpp" />
@@ -114,6 +115,7 @@
     <ClInclude Include="debugdraw.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityLiving.h" />
+    <ClInclude Include="Libraries\SFML TmxLoader\include\tmx\tmx2box2d.h" />
     <ClInclude Include="MenuScreen.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="LevelManager.h" />
