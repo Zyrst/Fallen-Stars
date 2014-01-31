@@ -70,7 +70,7 @@ Ankh.NoLoad
 #############
 Libraries/
 SFML-2.1/
-TmxParser/
+SFML-TmxLoader/
 
 # Assets #
 ##########

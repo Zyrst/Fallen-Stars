@@ -41,8 +41,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(ProjectDir)/Libraries/SFML-2.1/include;$(ProjectDir)/Libraries/Tmx Parser;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)/Libraries/SFML-2.1/lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)/Libraries/SFML-2.1/include;$(ProjectDir)/Libraries/SFML TmxLoader/include;$(ProjectDir)/Libraries/SFML TmxLoader/src;$(ProjectDir)\Libraries\SFML TmxLoader\lib\zlib\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)/Libraries/SFML-2.1/lib;$(ProjectDir)\Libraries\SFML TmxLoader\lib\zlib\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -63,7 +63,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>sfml-audio-d.lib;sfml-graphics-d.lib;sfml-main-d.lib;sfml-network-d.lib;sfml-system-d.lib;sfml-window-d.lib</AdditionalDependencies>
+      <AdditionalDependencies>sfml-audio-d.lib;sfml-graphics-d.lib;sfml-main-d.lib;sfml-network-d.lib;sfml-system-d.lib;sfml-window-d.lib;zdll.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -95,6 +95,13 @@
     <ClCompile Include="EntityLiving.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="LevelManager.cpp" />
+    <ClCompile Include="Libraries\SFML TmxLoader\src\DebugShape.cpp" />
+    <ClCompile Include="Libraries\SFML TmxLoader\src\MapLayer.cpp" />
+    <ClCompile Include="Libraries\SFML TmxLoader\src\MapLoaderPrivate.cpp" />
+    <ClCompile Include="Libraries\SFML TmxLoader\src\MapLoaderPublic.cpp" />
+    <ClCompile Include="Libraries\SFML TmxLoader\src\MapObject.cpp" />
+    <ClCompile Include="Libraries\SFML TmxLoader\src\pugixml\pugixml.cpp" />
+    <ClCompile Include="Libraries\SFML TmxLoader\src\QuadTreeNode.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MenuScreen.cpp" />
     <ClCompile Include="Object.cpp" />
@@ -106,6 +113,17 @@
     <ClInclude Include="MenuScreen.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="LevelManager.h" />
+    <ClInclude Include="Libraries\SFML TmxLoader\include\DebugShape.h" />
+    <ClInclude Include="Libraries\SFML TmxLoader\include\Helpers.h" />
+    <ClInclude Include="Libraries\SFML TmxLoader\include\pugixml\pugiconfig.hpp" />
+    <ClInclude Include="Libraries\SFML TmxLoader\include\pugixml\pugixml.hpp" />
+    <ClInclude Include="Libraries\SFML TmxLoader\include\tmx\MapLayer.h" />
+    <ClInclude Include="Libraries\SFML TmxLoader\include\tmx\MapLoader.h" />
+    <ClInclude Include="Libraries\SFML TmxLoader\include\tmx\MapObject.h" />
+    <ClInclude Include="Libraries\SFML TmxLoader\include\tmx\QuadTreeNode.h" />
+    <ClInclude Include="Libraries\SFML TmxLoader\lib\zlib\include\zconf.h" />
+    <ClInclude Include="Libraries\SFML TmxLoader\lib\zlib\include\zlib.h" />
+    <ClInclude Include="MassiveState.h" />
     <ClInclude Include="MenuScreen.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="ControlMapping.h" />
@@ -114,6 +132,9 @@
     <ClInclude Include="Object.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="State.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Libraries\SFML TmxLoader\lib\zlib\lib\zlib.def" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

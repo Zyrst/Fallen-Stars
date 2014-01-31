@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "Libraries\TmxParser\Tmx.h"
+#include "Libraries\SFML TmxLoader\include\tmx\MapLoader.h"
 
 /*A class for managing Levels
 *Contains the tmx parser
@@ -11,8 +11,12 @@ public:
 	LevelManager(std::string levelname);
 	~LevelManager();
 	void Load();
-protected:
-	Tmx::Map* map;
+	void Render(sf::RenderTarget& rendertarget);
+private:
+
+	std::string mLevel;
+
 	int mWidth;
 	int mHeight;
+
 };

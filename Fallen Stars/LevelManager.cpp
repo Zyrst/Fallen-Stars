@@ -1,5 +1,4 @@
 #include "LevelManager.h"
-#include "Libraries\TmxParser\Tmx.h"
 #include <iostream>
 
 
@@ -37,7 +36,6 @@ void LevelManager::Load()
 		mWidth	= layer->GetWidth();
 		mHeight = layer->GetHeight();
 
-		
 		
 		std::string layername = layer->GetName();
 
