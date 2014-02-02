@@ -125,6 +125,7 @@
     </ClCompile>
     <ClCompile Include="Libraries\SFML TmxLoader\src\tmx2box2d.cpp">
       <Filter>Source Files\Libraries\Tmx</Filter>
+    </ClCompile>
     <ClCompile Include="Animation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -210,6 +211,7 @@
     </ClInclude>
     <ClInclude Include="Libraries\SFML TmxLoader\include\tmx\tmx2box2d.h">
       <Filter>Header Files\Libraries\Tmx</Filter>
+    </ClInclude>
     <ClInclude Include="SpriteSheet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
