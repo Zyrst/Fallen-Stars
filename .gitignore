@@ -74,4 +74,5 @@ SFML-TmxLoader/
 
 # Assets #
 ##########
-Maps/
+Map/
+Assets/
