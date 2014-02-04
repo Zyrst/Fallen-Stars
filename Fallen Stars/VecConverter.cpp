@@ -1,5 +1,19 @@
 #include "VecConverter.h"
 
+static VecConverter cv(32.0f);
+
+namespace Convert
+{
+	b2Vec2 sfmlToB2(const sf::Vector2f& vector)
+	{
+		return cv.sfmlToB2(vector);
+	}
+
+	sf::Vector2f b2ToSfml(const b2Vec2& vector)
+	{
+		return cv.b2ToSfml(vector);
+	}
+}
 
 VecConverter::VecConverter(const float ratio)
 : ratio(ratio)
