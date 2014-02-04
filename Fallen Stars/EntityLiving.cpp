@@ -29,7 +29,7 @@ void EntityLiving::setPositionX(float x)
 {
 	position.x = x;
 }
-void EntityLiving::setPositionX(float y)
+void EntityLiving::setPositionY(float y)
 {
 	position.y = y;
 }

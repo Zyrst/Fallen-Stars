@@ -3,7 +3,7 @@
 Entity::Entity(sf::Sprite, sf::IntRect, sf::Vector2f):
 	mAlive(true)
 {}
-Entity::~Entity();
+Entity::~Entity() {}
 bool Entity::isAlive()
 {
 	return mAlive;
