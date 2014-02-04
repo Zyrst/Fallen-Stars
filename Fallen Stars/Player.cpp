@@ -1,8 +1,8 @@
 #include "Player.h"
 
-void Player::update(float deltaTime)
+void Player::update(sf::Time deltaTime)
 {
-	position += velocity * deltaTime;
+	//position += velocity * deltaTime;
 }
 void Player::render(sf::RenderTarget& renderTarget)
 {
@@ -41,4 +41,8 @@ void Player::jump()
 void Player::setFacing()
 {
 	
+}
+void Player::handleAction(Controls::Action action, Controls::KeyState)
+{
+
 }

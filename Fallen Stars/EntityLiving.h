@@ -11,8 +11,11 @@ class EntityLiving : public Entity
 		virtual void update(float deltaTime) override;
 		virtual sf::Vector2f getPosition() override;
 		virtual void setPosition(float x, float y);
+		virtual void setPositionX(float x);
+		virtual void setPositiony(float y);
 		virtual void setVelocity(float x, float y);
 		virtual bool isAlive();
+
 	private:
 		sf::Vector2f velocity;
 };

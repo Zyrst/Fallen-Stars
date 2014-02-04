@@ -1,7 +1,7 @@
 #include "Object.h"
 
 
-void Object::update(float deltaTime)
+void Object::update(sf::Time deltaTime)
 {
 	
 }

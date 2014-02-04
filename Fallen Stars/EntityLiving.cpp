@@ -1,7 +1,7 @@
 #include "EntityLiving.h"
-void EntityLiving::update(float deltaTime)
+void EntityLiving::update(sf::Time deltaTime)
 {
-	position += velocity * deltaTime;
+	//position += velocity * deltaTime;
 }
 void EntityLiving::render(sf::RenderTarget& renderTarget)
 {
@@ -24,4 +24,12 @@ void EntityLiving::setVelocity(float x, float y)
 {
 	velocity.x = x;
 	velocity.y = y;
+}
+void EntityLiving::setPositionX(float x)
+{
+	position.x = x;
+}
+void EntityLiving::setPositionX(float y)
+{
+	position.y = y;
 }
