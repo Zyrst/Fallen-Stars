@@ -2,10 +2,9 @@
 #include <iostream>
 #include <SFML\Window.hpp>
 
-tmx::MapLoader mapLoader("Assets/Map");
-
 LevelManager::LevelManager(std::string levelname):
-	mLevel(levelname)
+	mLevel(levelname),
+	mapLoader("Assets/Map")
 {
 	LevelManager::Load();
 }
@@ -27,4 +26,9 @@ void LevelManager::Render(sf::RenderTarget& rendertarget)
 			mapLoader.Draw(rendertarget,tmx::MapLayer::Object);
 
 	//rendertarget.draw(mapLoader);
+}
+
+tmx::MapLoader& LevelManager::getMapLoader()
+{
+	return this->mapLoader;
 }

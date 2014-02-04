@@ -12,9 +12,12 @@ public:
 	~LevelManager();
 	void Load();
 	void Render(sf::RenderTarget& rendertarget);
+
+	tmx::MapLoader& getMapLoader();
 private:
 
 	std::string mLevel;
+	tmx::MapLoader mapLoader;
 
 	int mWidth;
 	int mHeight;
