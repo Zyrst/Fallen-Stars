@@ -89,6 +89,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AnimatedBackgroundImage.cpp" />
     <ClCompile Include="AnimatedSprite.cpp" />
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="BoxWorld.cpp" />
@@ -119,6 +120,7 @@
     <ClCompile Include="WaitState.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AnimatedBackgroundImage.h" />
     <ClInclude Include="AnimatedSprite.h" />
     <ClInclude Include="Animation.h" />
     <ClInclude Include="BoxWorld.h" />

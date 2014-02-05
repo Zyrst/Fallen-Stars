@@ -150,6 +150,9 @@
     <ClCompile Include="WaitState.cpp">
       <Filter>Source Files\state</Filter>
     </ClCompile>
+    <ClCompile Include="AnimatedBackgroundImage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -250,6 +253,9 @@
     </ClInclude>
     <ClInclude Include="WaitState.h">
       <Filter>Header Files\state</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimatedBackgroundImage.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
