@@ -110,6 +110,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MenuScreen.cpp" />
     <ClCompile Include="Object.cpp" />
+    <ClCompile Include="PlatformState.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SpriteSheet.cpp" />
     <ClCompile Include="VecConverter.cpp" />
@@ -139,6 +140,7 @@
     <ClInclude Include="ControlMapping.h" />
     <ClInclude Include="Controls.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="PlatformState.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="SpriteSheet.h" />
     <ClInclude Include="State.h" />

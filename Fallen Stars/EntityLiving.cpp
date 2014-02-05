@@ -11,25 +11,16 @@ bool EntityLiving::isAlive()
 {
 	return mAlive;
 }
-sf::Vector2f EntityLiving::getPosition()
-{
-	return position;
-}
-void EntityLiving::setPosition(float x,float y)
-{
-	position.x = x;
-	position.y = y;
-}
 void EntityLiving::setVelocity(float x, float y)
 {
 	velocity.x = x;
 	velocity.y = y;
 }
-void EntityLiving::setPositionX(float x)
+void EntityLiving::setVelocityX(float x)
 {
-	position.x = x;
+	velocity.x = x;
 }
-void EntityLiving::setPositionY(float y)
+void EntityLiving::setVelocityY(float y)
 {
-	position.y = y;
+	velocity.y = y;
 }

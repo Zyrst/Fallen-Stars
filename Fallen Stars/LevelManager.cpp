@@ -1,7 +1,7 @@
 #include "LevelManager.h"
 #include <iostream>
 #include <SFML\Window.hpp>
-
+#include "Controls.h"
 LevelManager::LevelManager(std::string levelname):
 	mLevel(levelname),
 	mapLoader("Assets/Map")

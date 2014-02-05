@@ -138,6 +138,9 @@
     <ClCompile Include="VecConverter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PlatformState.cpp">
+      <Filter>Source Files\state</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -226,6 +229,9 @@
     </ClInclude>
     <ClInclude Include="VecConverter.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PlatformState.h">
+      <Filter>Header Files\state</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

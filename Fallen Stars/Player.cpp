@@ -1,25 +1,22 @@
 #include "Player.h"
-
+#include <Box2D\Box2D.h>
 void Player::update(sf::Time deltaTime)
 {
-	//position += velocity * deltaTime;
 }
 void Player::render(sf::RenderTarget& renderTarget)
 {
-
 }
 bool Player::isAlive()
 {
 	return mAlive;
 }
-sf::Vector2f Player::getPosition()
+void Player::setVelocityX(float x)
 {
-	return position;
+	velocity.x = x;
 }
-void Player::setPosition(float x,float y)
+void Player::setVelocityY(float y)
 {
-	position.x = x;
-	position.y = y;
+	velocity.y = y;
 }
 void Player::setVelocity(float x, float y)
 {
@@ -28,21 +25,8 @@ void Player::setVelocity(float x, float y)
 }
 void Player::jump()
 {
-	/*
-	if(velocity.y = 0){
-	velocity.y += mJumpStrength;
-	if(velocity.y <= mMaxJump){
-		velocity.y -= mJumpStrength;
-	}
-	}
-	else{ velocity.y -=mJumpStrength;}
-	*/
 }
-void Player::setFacing()
+void Player::setFacing(mFacing face)
 {
-	
-}
-void Player::handleAction(Controls::Action action, Controls::KeyState)
-{
-
+	mFace = face;
 }
