@@ -7,20 +7,30 @@
 
 #include "State.h"
 #include "ControlMapping.h"
+#include "LoadingState.h"
+#include "LogoState.h"
 
-int Width = 1280;
-int Height = 720;
+int Width = 1920;
+int Height = 1080;
 
 /* Temporarily stores the next state while waiting for the current state to end */
 static State* nextState;
+
+Game* Game::theGame = NULL;
 
 Game::Game()
 {
 	// TODO Get actual resolution + fix fullscreen
 	sf::VideoMode resolution(Width, Height);
+	
 	window = new sf::RenderWindow(resolution, "Fallen Stars");
-	currentState = NULL;
+	
+	// TODO Set viewport to 1080 to fix rendering scale for other monitor sizes
+
 	// TODO Create a first state
+	currentState = new LogoState();
+
+	Game::theGame = this;
 }
 
 
@@ -66,9 +76,19 @@ void Game::run()
 
 }
 
+void Game::loadNewState(State* state)
+{
+	assert(state != NULL);
+	assert(nextState == NULL);
+	LoadingState* loadingState = new LoadingState(state);
+	loadingState->load(); // This only takes time once. Every call after that will simply retrieves a reference
+	nextState = loadingState;
+}
+
 void Game::setState(State* state)
 {
 	assert(state != NULL);
+	assert(nextState == NULL);
 	nextState = state;
 }
 
@@ -76,9 +96,16 @@ void Game::swapState()
 {
 	assert(nextState != NULL);
 	assert(currentState != NULL);
+	assert(currentState != nextState);
 
 	delete currentState;
 	currentState = nextState;
+	nextState = NULL;
+}
+
+Game* Game::instance()
+{
+	return theGame;
 }
 
 void Game::handleEvent(sf::Event event)

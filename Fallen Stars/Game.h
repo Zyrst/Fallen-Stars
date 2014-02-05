@@ -12,7 +12,9 @@ class Game
 		~Game();
 
 		void run();
-		void setState(State* state);
+		void loadNewState(State* state); // Forwards to setState(), but first wraps the state in a LoadingState
+
+		static Game* instance();
 
 	private:
 		sf::RenderWindow *window;
@@ -20,6 +22,11 @@ class Game
 
 		void handleEvent(sf::Event);
 		void handleHeldKeys();
-		void swapState();
+		void setState(State* state); // Sets a state to be replaced at the end of the current frame
+		void swapState(); // Performs the swap of the upcoming and current states (at the end of the frame)
+
+		static Game* theGame;
+
+		friend class LoadingState;
 };
 

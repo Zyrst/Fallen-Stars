@@ -107,6 +107,8 @@
     <ClCompile Include="Libraries\SFML TmxLoader\src\pugixml\pugixml.cpp" />
     <ClCompile Include="Libraries\SFML TmxLoader\src\QuadTreeNode.cpp" />
     <ClCompile Include="Libraries\SFML TmxLoader\src\tmx2box2d.cpp" />
+    <ClCompile Include="LoadingState.cpp" />
+    <ClCompile Include="LogoState.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MenuScreen.cpp" />
     <ClCompile Include="Object.cpp" />
@@ -114,6 +116,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SpriteSheet.cpp" />
     <ClCompile Include="VecConverter.cpp" />
+    <ClCompile Include="WaitState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimatedSprite.h" />
@@ -123,6 +126,8 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityLiving.h" />
     <ClInclude Include="Libraries\SFML TmxLoader\include\tmx\tmx2box2d.h" />
+    <ClInclude Include="LoadingState.h" />
+    <ClInclude Include="LogoState.h" />
     <ClInclude Include="MenuScreen.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="LevelManager.h" />
@@ -145,6 +150,7 @@
     <ClInclude Include="SpriteSheet.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="VecConverter.h" />
+    <ClInclude Include="WaitState.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Libraries\SFML TmxLoader\lib\zlib\lib\zlib.def" />
