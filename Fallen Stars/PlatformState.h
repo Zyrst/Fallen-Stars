@@ -17,7 +17,7 @@ public:
 
 
 private:
-	std::vector <class Entity&> mEntityVector;
+	std::vector <Entity*> mEntityVector;
 
 };
 

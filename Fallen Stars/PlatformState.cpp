@@ -14,14 +14,14 @@ void PlatformState::update(sf::Time deltaTime)
 {
 	for(int i = 0; i< mEntityVector.size();i++)
 	{
-		mEntityVector[i].update(deltaTime);
+		mEntityVector[i]->update(deltaTime);
 	}
 }
 void PlatformState::render(sf::RenderWindow& window)
 {
 	for(int i = 0; i< mEntityVector.size();i++)
 	{
-		mEntityVector[i].render(window);
+		mEntityVector[i]->render(window);
 	}
 }
 
@@ -29,7 +29,7 @@ void PlatformState::handleAction(Controls::Action action, Controls::KeyState key
 {
 	for(int i = 0; i< mEntityVector.size();i++)
 	{
-		mEntityVector[i].handleAction(action, keystate);
+		mEntityVector[i]->handleAction(action, keystate);
 	}
 }
 
@@ -37,9 +37,8 @@ void PlatformState::clear()
 {
 	for(int i = 0; i< mEntityVector.size();i++)
 	{
-		if(mEntityVector[i].isAlive())
+		if(mEntityVector[i]->isAlive() == false)
 		{
-			mEntityVector[i].clear();
 			mEntityVector.pop_back();
 		}
 	}

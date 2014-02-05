@@ -5,7 +5,7 @@
 
 Entity::Entity(sf::Sprite&, BoxWorld* world, sf::Vector2f& size, sf::Vector2f& pos):
 	mAlive(true),
-	body(world->createEntityBody(pos, size)),
+	body(world->createEntityBody(pos, size))
 {}
 Entity::~Entity() {}
 bool Entity::isAlive()

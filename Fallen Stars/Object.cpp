@@ -14,10 +14,11 @@ bool Object::isAlive(){
 }
 sf::Vector2f Object::getPosition()
 {
-	return position;
+	/* Add real positions here */
+	return sf::Vector2f(0.f,0.f);
 }
 void Object::setPosition(float x,float y)
 {
-	position.x = x;
-	position.y = y;
+	/*position.x = x;
+	position.y = y;*/
 }
