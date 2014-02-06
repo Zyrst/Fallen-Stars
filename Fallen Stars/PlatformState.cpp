@@ -19,6 +19,7 @@ void PlatformState::update(sf::Time deltaTime)
 }
 void PlatformState::render(sf::RenderWindow& window)
 {
+	
 	for(int i = 0; i< mEntityVector.size();i++)
 	{
 		mEntityVector[i]->render(window);
@@ -35,11 +36,20 @@ void PlatformState::handleAction(Controls::Action action, Controls::KeyState key
 
 void PlatformState::clear()
 {
-	for(int i = 0; i< mEntityVector.size();i++)
+	mEntityVector.clear();
+}
+
+void PlatformState::killDeadEntities()
+{
+	for (auto i = mEntityVector.begin(); i < mEntityVector.end();)
 	{
-		if(mEntityVector[i]->isAlive() == false)
+		if(!mEntityVector[i]->isAlive())
 		{
-			mEntityVector.pop_back();
+			i = mEntityVector.erase(i);
 		}
+		else 
+			i++;
+
 	}
+
 }
