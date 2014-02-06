@@ -115,6 +115,7 @@
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="PlatformState.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="ResourceCollection.cpp" />
     <ClCompile Include="SpriteSheet.cpp" />
     <ClCompile Include="VecConverter.cpp" />
     <ClCompile Include="WaitState.cpp" />
@@ -149,6 +150,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="PlatformState.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="ResourceCollection.h" />
     <ClInclude Include="SpriteSheet.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="VecConverter.h" />

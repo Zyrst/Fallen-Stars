@@ -153,6 +153,9 @@
     <ClCompile Include="AnimatedBackgroundImage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ResourceCollection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -255,6 +258,9 @@
       <Filter>Header Files\state</Filter>
     </ClInclude>
     <ClInclude Include="AnimatedBackgroundImage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceCollection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
