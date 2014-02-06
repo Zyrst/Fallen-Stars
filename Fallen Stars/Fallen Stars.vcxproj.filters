@@ -61,6 +61,12 @@
     <Filter Include="Header Files\Managers">
       <UniqueIdentifier>{9445e3d7-0676-4483-9d17-a2d54887419d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Box2D">
+      <UniqueIdentifier>{87e76bac-42f0-43ca-84c5-b4ea2a4db6fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Box2D">
+      <UniqueIdentifier>{2892aeee-dd2c-46b9-8a4f-bf1bf06b00cd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -117,12 +123,6 @@
     <ClCompile Include="Entity.cpp">
       <Filter>Source Files\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="BoxWorld.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="debugdraw.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Libraries\SFML TmxLoader\src\tmx2box2d.cpp">
       <Filter>Source Files\Libraries\Tmx</Filter>
     </ClCompile>
@@ -133,9 +133,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AnimatedSprite.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="VecConverter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PlatformState.cpp">
@@ -155,6 +152,21 @@
     </ClCompile>
     <ClCompile Include="ResourceCollection.cpp">
       <Filter>Source Files</Filter>
+	</ClCompile>
+    <ClCompile Include="BoxWorld.cpp">
+      <Filter>Source Files\Box2D</Filter>
+    </ClCompile>
+    <ClCompile Include="VecConverter.cpp">
+      <Filter>Source Files\Box2D</Filter>
+    </ClCompile>
+    <ClCompile Include="debugdraw.cpp">
+      <Filter>Source Files\Box2D</Filter>
+    </ClCompile>
+    <ClCompile Include="CallBack.cpp">
+      <Filter>Source Files\Box2D</Filter>
+    </ClCompile>
+    <ClCompile Include="JumpingTest.cpp">
+      <Filter>Source Files\state</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -224,12 +236,6 @@
     <ClInclude Include="Libraries\SFML TmxLoader\include\Helpers.h">
       <Filter>Header Files\Libraries</Filter>
     </ClInclude>
-    <ClInclude Include="BoxWorld.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="debugdraw.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Libraries\SFML TmxLoader\include\tmx\tmx2box2d.h">
       <Filter>Header Files\Libraries\Tmx</Filter>
     </ClInclude>
@@ -240,9 +246,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Animation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="VecConverter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PlatformState.h">
@@ -262,6 +265,21 @@
     </ClInclude>
     <ClInclude Include="ResourceCollection.h">
       <Filter>Header Files</Filter>
+	</ClInclude>
+    <ClInclude Include="BoxWorld.h">
+      <Filter>Header Files\Box2D</Filter>
+    </ClInclude>
+    <ClInclude Include="debugdraw.h">
+      <Filter>Header Files\Box2D</Filter>
+    </ClInclude>
+    <ClInclude Include="VecConverter.h">
+      <Filter>Header Files\Box2D</Filter>
+    </ClInclude>
+    <ClInclude Include="CallBack.h">
+      <Filter>Header Files\Box2D</Filter>
+    </ClInclude>
+    <ClInclude Include="JumpingTest.h">
+      <Filter>Header Files\state</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,11 @@
 #include "EntityLiving.h"
+
+EntityLiving::EntityLiving(sf::Sprite& sprite, BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position)
+: Entity(sprite, world, size, position)
+{
+
+}
+
 void EntityLiving::update(sf::Time deltaTime)
 {
 	//position += velocity * deltaTime;

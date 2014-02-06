@@ -21,9 +21,10 @@ void LevelManager::Load()
 void LevelManager::Render(sf::RenderTarget& rendertarget)
 {
 	
-			//mapLoader.Draw(rendertarget,tmx::MapLayer::Background);
-			//mapLoader.Draw(rendertarget,tmx::MapLayer::Foreground);
-			mapLoader.Draw(rendertarget,tmx::MapLayer::Object);
+			/*mapLoader.Draw(rendertarget,tmx::MapLayer::Background);*/
+			//mapLoader.Draw(rendertaret,tmx::MapLayer::Foreground);
+			mapLoader.Draw(rendertarget, tmx::MapLayer::All);
+			//mapLoader.Draw(rendertarget,tmx::MapLayer::Object);
 
 	//rendertarget.draw(mapLoader);
 }

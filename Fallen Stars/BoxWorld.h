@@ -3,10 +3,10 @@
 #include <SFML\System.hpp>
 #include <SFML\Graphics.hpp>
 #include <vector>
-#include "VecConverter.h"
 
 class b2World;
 class b2Body;
+class b2ContactListener;
 
 class DebugDraw;
 
@@ -24,9 +24,6 @@ public:
 	//Returns the b2World instance.
 	b2World* getWorld();
 
-	//Returns the vector converter this BoxWorld is using.
-	VecConverter* getVecConverter();
-
 	//Generates a body for movable objects (entities)
 	b2Body* createEntityBody(const sf::Vector2f& position, const sf::Vector2f& size);
 
@@ -41,7 +38,7 @@ public:
 
 private:
 	b2World* world;
-	VecConverter convert;
 	DebugDraw* debugDraw;
+	b2ContactListener* contactListener;
 };
 

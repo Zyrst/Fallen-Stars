@@ -1,7 +1,9 @@
 #include "BoxWorld.h"
 #include "debugdraw.h"
 #include <Box2D\Box2D.h>
-#include "Libraries\SFML TmxLoader\include\tmx\MapObject.h"
+#include <tmx\MapObject.h>
+#include "CallBack.h"
+#include "VecConverter.h"
 
 namespace
 {
@@ -13,30 +15,70 @@ namespace
 		points[2] = pos + size;
 		points[3] = b2Vec2(pos.x, pos.y + size.y);
 	}
+
+	class Clister : public b2ContactListener
+	{
+		virtual void BeginContact(b2Contact* contact) override
+		{
+			b2Fixture* fixA = contact->GetFixtureA();
+			b2Fixture* fixB = contact->GetFixtureB();
+
+			void* udA = contact->GetFixtureA()->GetUserData();
+			void* udB = contact->GetFixtureB()->GetUserData();
+
+			if (udA != nullptr)
+			{
+				((CallBack*) udA)->beginContact(fixB);
+			}
+
+			if (udB != nullptr)
+			{
+				((CallBack*) udB)->beginContact(fixA);
+			}
+
+		}
+
+		virtual void EndContact(b2Contact* contact) override
+		{
+			b2Fixture* fixA = contact->GetFixtureA();
+			b2Fixture* fixB = contact->GetFixtureB();
+
+			void* udA = contact->GetFixtureA()->GetUserData();
+			void* udB = contact->GetFixtureB()->GetUserData();
+
+			if (udA != nullptr)
+			{
+				((CallBack*) udA)->endContact(fixB);
+			}
+
+			if (udB != nullptr)
+			{
+				((CallBack*) udB)->endContact(fixA);
+			}
+		}
+	};
 }
 
 BoxWorld::BoxWorld(const b2Vec2& gravity)
 : world(new b2World(gravity))
-, convert(32.0f)
 , debugDraw(nullptr)
+, contactListener(new Clister())
 {
 	world->SetAllowSleeping(true);
+	world->SetContactListener(contactListener);
 }
 
 
 BoxWorld::~BoxWorld()
 { 
 	delete world;
+	delete debugDraw;
+	delete contactListener;
 }
 
 b2World* BoxWorld::getWorld()
 {
 	return world;
-}
-
-VecConverter* BoxWorld::getVecConverter()
-{
-	return &convert;
 }
 
 void BoxWorld::step(float deltaTime)
@@ -59,8 +101,8 @@ void BoxWorld::drawDebug(sf::RenderWindow& wnd)
 b2Body* BoxWorld::createEntityBody(const sf::Vector2f& position, const sf::Vector2f& size)
 {
 	//Define and convert the position and size vectors.
-	b2Vec2 bpos = convert.sfmlToB2(position);
-	b2Vec2 bsize = convert.sfmlToB2(size);
+	b2Vec2 bpos = Convert::sfmlToB2(position);
+	b2Vec2 bsize = Convert::sfmlToB2(size);
 
 	//Create and set the position of the body.
 	b2BodyDef bodyDef;
@@ -94,12 +136,12 @@ b2Body* BoxWorld::createStaticBody(const std::vector<tmx::MapObject>& objects)
 	//Start generating collision rectangles.
 	for (auto& o : objects)
 	{
-		b2Vec2 pos = convert.sfmlToB2(o.GetPosition());
+		b2Vec2 pos = Convert::sfmlToB2(o.GetPosition());
 		auto& polyPoints = o.PolyPoints();
 		
 		for (int i = 0; i < 4; i++)
 		{
-			points[i] = convert.sfmlToB2(polyPoints[i]) + pos;
+			points[i] = Convert::sfmlToB2(polyPoints[i]) + pos;
 		}
 
 		b2PolygonShape shape;
