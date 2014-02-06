@@ -55,7 +55,7 @@ void Player::setupSensors(sf::Vector2f& pos, sf::Vector2f& size)
 	bpos.y += bsize.y;
 
 	b2PolygonShape sh;
-	sh.SetAsBox(0.1, 0.1, bpos, 0);
+	sh.SetAsBox(0.1f, 0.1f, bpos, 0);
 
 	b2FixtureDef def;
 	def.isSensor = true;
