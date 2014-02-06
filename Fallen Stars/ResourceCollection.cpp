@@ -28,7 +28,7 @@ void SoundCollection::preloadSound(std::string filename)
 	}
 }
 
-sf::Sound& SoundCollection::getSound(std::string filename)
+sf::Sound SoundCollection::getSound(std::string filename)
 {
 	if( mSoundBuffers.find(filename) == mSoundBuffers.end() )
 	{
