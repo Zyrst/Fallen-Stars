@@ -43,7 +43,7 @@ void PlatformState::killDeadEntities()
 {
 	for (auto i = mEntityVector.begin(); i < mEntityVector.end();)
 	{
-		if(!mEntityVector[i]->isAlive())
+		if(!(*i)->isAlive())
 		{
 			i = mEntityVector.erase(i);
 		}

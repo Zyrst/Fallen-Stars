@@ -14,6 +14,7 @@ public:
 	void render(sf::RenderWindow& window);
 	void handleAction(Controls::Action action, Controls::KeyState keystate);
 	void clear();
+	void killDeadEntities();
 
 
 private:
