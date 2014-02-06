@@ -4,11 +4,11 @@
 #include <SFML/Graphics/Rect.hpp>
 #include <vector>
 
-/* Note: This is a helper class and doesn't actually contain a spritesheet. :P
+/* Note: This is a helper class for generating frames and doesn't actually contain a texture.
  *
- * Can be used to split a sprite sheet into separate frame rectangles. It simplifies 
- * generating frames by treating the spritesheet as a grid and refering to the frames
- * by their index. It also makes it possible to generate a whole set of frames at once. */
+ * Can be used to split a sprite sheet into separate frame rectangles. It simplifies generating 
+ * frames by treating the spritesheet as a grid and refering to the frames by their index. It 
+ * also makes it possible to generate a whole set of frames at once. */
 
 class SpriteSheet
 {

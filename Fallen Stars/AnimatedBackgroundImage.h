@@ -4,6 +4,9 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/System/Time.hpp>
 
+/* A simple object representing static animated background images. These images are placed when
+ * the level is loaded and don't move. They only passively loop their animation. */
+
 class AnimatedBackgroundImage
 {
 public:

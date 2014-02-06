@@ -5,8 +5,10 @@
 #include <SFML/Audio/Sound.hpp>
 #include <SFML/Audio/SoundBuffer.hpp>
 
-class ResourceCollection : public TextureCollection, SoundCollection
-{};
+/* Resource collections represent a loader that keeps resources inside of states.
+ * States are expected to preload resources so that loading can be done while the
+ * loading screen is displayed and while it is possible to skip the preloading, 
+ * there will be warnings. */
 
 namespace // Anonymous namespace, unavailable outside of this file
 {
@@ -30,3 +32,6 @@ namespace // Anonymous namespace, unavailable outside of this file
 		std::map<std::string, sf::SoundBuffer> mSoundBuffers;
 	};
 }
+
+class ResourceCollection : public TextureCollection, SoundCollection
+{};
