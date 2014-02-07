@@ -17,7 +17,7 @@ namespace
 	private:
 		std::map<std::string, sf::Texture> mTextures;
 	};
-
+	/*
 	class SoundCollection
 	{
 	public:
@@ -26,7 +26,7 @@ namespace
 
 	private:
 		std::map<std::string, sf::SoundBuffer> mSoundBuffers;
-	};
+	};*/
 }
 
 /* Resource collections represent a loader that keeps resources inside of states.
@@ -34,5 +34,5 @@ namespace
  * loading screen is displayed and while it is possible to skip the preloading, 
  * there will be warnings. */
 
-class ResourceCollection : public TextureCollection, SoundCollection
+class ResourceCollection : public TextureCollection//, SoundCollection
 {};

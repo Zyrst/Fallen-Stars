@@ -19,7 +19,7 @@ sf::Texture& TextureCollection::getTexture(std::string filename)
 	}
 	return mTextures[filename];
 }
-
+/*
 void SoundCollection::preloadSound(std::string filename)
 {
 	if( mSoundBuffers.find(filename) == mSoundBuffers.end() )
@@ -36,4 +36,4 @@ sf::Sound SoundCollection::getSound(std::string filename)
 		mSoundBuffers[filename].loadFromFile(filename);
 	}
 	return sf::Sound(mSoundBuffers[filename]);
-}
+}*/

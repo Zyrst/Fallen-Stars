@@ -3,6 +3,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System/Clock.hpp>
 #include <SFML/Window/Event.hpp>
+#include <SFML/Graphics/View.hpp>
+#include <SFML/Graphics/Rect.hpp>
 #include <cassert>
 
 #include "State.h"
@@ -10,8 +12,8 @@
 #include "LoadingState.h"
 #include "LogoState.h"
 
-int Width = 1920;
-int Height = 1080;
+int baseWidth = 1920;
+int baseHeight = 1080;
 
 /* Temporarily stores the next state while waiting for the current state to end */
 static State* nextState;
@@ -21,9 +23,13 @@ Game* Game::theGame = NULL;
 Game::Game()
 {
 	// TODO Get actual resolution + fix fullscreen
-	sf::VideoMode resolution(Width, Height);
-	
-	window = new sf::RenderWindow(resolution, "Fallen Stars");
+	//sf::VideoMode fullscreen = sf::VideoMode::getFullscreenModes().front();
+	sf::VideoMode size(1280, 720);
+
+	window = new sf::RenderWindow(size, "Fallen Stars", sf::Style::Default);
+	resize(size);
+
+	window->setMouseCursorVisible(false);
 	
 	// TODO Set viewport to 1080 to fix rendering scale for other monitor sizes
 
@@ -73,7 +79,19 @@ void Game::run()
 		// If we're going to swap state, do that at the end of the frame
 		if(nextState != NULL) swapState();
     }
+}
 
+void Game::resize(sf::VideoMode videoMode)
+{
+	float arCustom = (float) videoMode.width / (float) videoMode.height;
+	float arBase = (float) baseWidth / (float) baseHeight;
+	
+	float widthMultiplier = arCustom / arBase;
+	float cropMargin = (1.0f - widthMultiplier) / 2.0f;
+
+	sf::View view(sf::FloatRect(baseWidth * cropMargin, 0.0f, baseWidth * widthMultiplier, baseHeight));
+
+	window->setView(view);
 }
 
 void Game::loadNewState(State* state)
