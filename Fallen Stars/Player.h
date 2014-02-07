@@ -1,6 +1,7 @@
 #pragma once
 #include "EntityLiving.h"
 #include "CallBack.h"
+#include "Animation.h"
 
 class GroundCallBack : public CallBack
 {
@@ -19,7 +20,7 @@ private:
 class Player : public EntityLiving
 {
 public:
-	Player(sf::Sprite& sprite, BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position);
+	Player(sf::Texture& texture, BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position);
 	~Player();
 	void render(sf::RenderTarget& renderSurface) override;
 	void update(sf::Time deltaTime) override;
@@ -37,4 +38,5 @@ private:
 	mFacing mFace;
 	GroundCallBack* groundCallBack;
 	bool onGround, leftButton, rightButton;
+	Animation* mAnimation;
 };

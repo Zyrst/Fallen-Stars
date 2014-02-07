@@ -6,6 +6,8 @@
 #include "VecConverter.h"
 #include "BoxWorld.h"
 #include "ControlMapping.h"
+#include "SpriteSheet.h"
+#include <iostream>
 
 GroundCallBack::GroundCallBack(b2Fixture* owner)
 	: CallBack(owner)
@@ -32,19 +34,29 @@ bool GroundCallBack::isOnGround()
 	return (groundTouches > 0);
 }
 
-Player::Player(sf::Sprite& sprite, BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position)
-: EntityLiving(sprite, world, size, position)
+Player::Player(sf::Texture& texture, BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position)
+: EntityLiving(world, size, position)
 , onGround(false)
 , groundCallBack(nullptr)
 , leftButton(false)
 , rightButton(false)
 {
+	sf::Vector2i spritesheetSize = static_cast<sf::Vector2i>(texture.getSize());
+	sf::Vector2i frameSize(41, 60);
+
+	SpriteSheet spritesheet(frameSize, spritesheetSize);
+	std::vector<sf::IntRect> frames = spritesheet.getAllFrames();
+	std::cout << spritesheet.getFrameCount()<<std::endl;
+	mAnimation = new Animation(frames, texture);
+	anime.setAnimation(*mAnimation);
+	std::cout << mAnimation->getSize();
 	setupSensors(position, size);
 }
 
 Player::~Player()
 {
 	delete groundCallBack;
+	delete mAnimation;
 }
 
 void Player::setupSensors(sf::Vector2f& pos, sf::Vector2f& size)
@@ -83,15 +95,17 @@ void Player::update(sf::Time deltaTime)
 	{
 		body->SetLinearVelocity(b2Vec2(0, vel.y));
 	}
+
+	anime.update(deltaTime);
 }
 void Player::render(sf::RenderTarget& renderTarget)
 {
-	this->sprite.setPosition(Convert::b2ToSfml(body->GetPosition()));
-	renderTarget.draw(this->sprite);
+	anime.setPosition(Convert::b2ToSfml(body->GetPosition()));
+	renderTarget.draw(anime);
 	
 	//sprite.setRotation(180);
 
-	sf::FloatRect rect = sprite.getGlobalBounds();
+	sf::FloatRect rect = anime.getGlobalBounds();
 
 	sf::RectangleShape sh = sf::RectangleShape(sf::Vector2f(rect.width, rect.height));
 	sh.setPosition(rect.left, rect.top);
@@ -139,9 +153,19 @@ void Player::handleAction(Controls::Action action, Controls::KeyState state)
 	switch (action)
 	{
 	case Controls::Action::LEFT:
+		if(Controls::KeyState::PRESSED)
+		{
+			/*anime.setAnimation(*mAnimation);
+			anime.play(*mAnimation);*/
+		}
 		leftButton = keyDown;
 		break;
 	case Controls::Action::RIGHT:
+		if(Controls::KeyState::PRESSED)
+		{
+		/*	anime.setAnimation(*mAnimation);
+			anime.play(*mAnimation);*/
+		}
 		rightButton = keyDown;
 		break;
 	case Controls::Action::JUMP:

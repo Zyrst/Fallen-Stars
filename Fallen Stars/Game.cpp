@@ -6,11 +6,18 @@
 #include <SFML/Graphics/View.hpp>
 #include <SFML/Graphics/Rect.hpp>
 #include <cassert>
+#include <iostream>
 
 #include "State.h"
 #include "ControlMapping.h"
 #include "LoadingState.h"
 #include "LogoState.h"
+#include "JumpingTest.h"
+
+int Width = 1280;
+int Height = 720;
+
+std::vector<sf::VideoMode> modes = sf::VideoMode::getFullscreenModes();
 
 int baseWidth = 1920;
 int baseHeight = 1080;
@@ -23,6 +30,7 @@ Game* Game::theGame = NULL;
 Game::Game()
 {
 	// TODO Get actual resolution + fix fullscreen
+
 	//sf::VideoMode fullscreen = sf::VideoMode::getFullscreenModes().front();
 	sf::VideoMode size(1280, 720);
 
@@ -32,11 +40,11 @@ Game::Game()
 	resize((int)screenSize.x, (int)screenSize.y);
 
 	window->setMouseCursorVisible(false);
-	
+
 	// TODO Set viewport to 1080 to fix rendering scale for other monitor sizes
 
 	// TODO Create a first state
-	currentState = new LogoState();
+	currentState = new JumpingTest();
 
 	Game::theGame = this;
 }
@@ -51,6 +59,7 @@ Game::~Game()
 void Game::run()
 {
 	assert(currentState != NULL);
+ 
 
 	sf::Clock clock;
     while (window->isOpen())
@@ -75,6 +84,7 @@ void Game::run()
 
 		assert(currentState != NULL);
         currentState->render(*window);
+
 
 		window->display();
 

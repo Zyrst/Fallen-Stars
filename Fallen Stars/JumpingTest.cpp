@@ -46,11 +46,9 @@ JumpingTest::JumpingTest()
 	genCollision();
 
 	tx = new sf::Texture();
-	tx->loadFromFile("Assets/Map/Stella pixel.png");
+	tx->loadFromFile("Assets/Map/Test Anime.png");
 
-	sp = new sf::Sprite(*tx);
-
-	player = new Player(*sp, world, size, pos);
+	player = new Player(*tx, world, size, pos);
 	sf::Vector2u mapSize =  level->getMapLoader().GetMapSize();
 	camera = new Camera(player, mapSize);
 }
@@ -71,9 +69,10 @@ void JumpingTest::update(sf::Time deltaTime)
 void JumpingTest::render(sf::RenderWindow& window)
 {
 	camera->update(window);
-	level->Render(window);
+	level->getMapLoader().Draw(window, tmx::MapLayer::Background);
 	world->drawDebug(window);
 	player->render(window);
+	level->getMapLoader().Draw(window, tmx::MapLayer::Foreground);
 }
 
 void JumpingTest::handleAction(Controls::Action action, Controls::KeyState state)

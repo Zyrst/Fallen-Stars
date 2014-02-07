@@ -4,7 +4,7 @@
 #include "Player.h"
 LevelManager::LevelManager(std::string levelname):
 	mLevel(levelname),
-	mapLoader("Assets/Map")
+	mapLoader("Assets/Map/")
 {
 	LevelManager::Load();
 }
@@ -20,10 +20,9 @@ void LevelManager::Load()
 
 void LevelManager::Render(sf::RenderTarget& rendertarget)
 {
-	//Player* player;
+	
 				
 	mapLoader.Draw(rendertarget,tmx::MapLayer::Background);
-//	player->render(rendertarget);
 	mapLoader.Draw(rendertarget,tmx::MapLayer::Foreground);
 	//mapLoader.Draw(rendertarget, tmx::MapLayer::All);
 	//mapLoader.Draw(rendertarget,tmx::MapLayer::Object);

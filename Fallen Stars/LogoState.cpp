@@ -11,7 +11,7 @@ LogoState::LogoState():
 	mSprite(),
 	mTime()
 {
-	assert(mTexture.loadFromFile("../Debug/Logo.png"));
+	assert(mTexture.loadFromFile("Menu/Logo.png"));
 	mSprite.setTexture(mTexture);
 }
 
