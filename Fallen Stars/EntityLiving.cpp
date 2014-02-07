@@ -1,7 +1,7 @@
 #include "EntityLiving.h"
 
-EntityLiving::EntityLiving(sf::Sprite& sprite, BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position)
-: Entity(sprite, world, size, position)
+EntityLiving::EntityLiving(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position)
+: Entity(world, size, position)
 {
 
 }

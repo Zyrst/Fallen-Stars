@@ -15,7 +15,7 @@ public:
 	virtual bool isAlive();
 
 protected:
-	EntityLiving(sf::Sprite& sprite, BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position);
+	EntityLiving(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position);
 private:
 	sf::Vector2f velocity;
 };

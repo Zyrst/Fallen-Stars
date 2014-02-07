@@ -8,9 +8,7 @@ class Camera
 public:
 	Camera(Player* player,sf::Vector2u bounds);
 	~Camera();
-
 	void update(sf::RenderTarget& target);
-	void getPosition();
 private:
 	Player* mPlayer;
 	sf::Vector2u mBounds;

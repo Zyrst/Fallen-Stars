@@ -17,7 +17,7 @@ void Camera::update(sf::RenderTarget& target)
 {
 	sf::View view = target.getView(); 
 	sf::Vector2f new_view_center = mPlayer->getPosition();
-	new_view_center.x += 100;
+	new_view_center.x += 500;
 	sf::Vector2f half_view_size = view.getSize() * 0.5f;
 	if(new_view_center.x - half_view_size.x < 0)
 	{
@@ -39,8 +39,4 @@ void Camera::update(sf::RenderTarget& target)
 
 	view.setCenter(new_view_center);
 	target.setView(view);
-}
-
-void Camera::getPosition()
-{
 }

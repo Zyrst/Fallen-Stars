@@ -5,6 +5,7 @@
 #include <SFML/System/Vector2.hpp>
 #include <SFML/System/Clock.hpp>
 #include "Controls.h"
+#include "AnimatedSprite.h"
 
 class b2Body;
 class BoxWorld;
@@ -26,8 +27,8 @@ class Entity
 		void collidesWith(Entity* other1, Entity* other2);
 
 	protected:
-		Entity(sf::Sprite& sprite, BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position);
-		sf::Sprite sprite;
+		Entity(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position);
+		AnimatedSprite anime;
 		bool mAlive;
 		enum mFacing{LEFT, RIGHT};
 		b2Body* body;
