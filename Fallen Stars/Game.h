@@ -12,7 +12,7 @@ class Game
 		~Game();
 
 		void run();
-		void resize(sf::VideoMode);
+		void resize(int width, int height);
 		void loadNewState(State* state); // Forwards to setState(), but first wraps the state in a LoadingState
 
 		static Game* instance();

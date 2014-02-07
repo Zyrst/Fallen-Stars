@@ -27,7 +27,9 @@ Game::Game()
 	sf::VideoMode size(1280, 720);
 
 	window = new sf::RenderWindow(size, "Fallen Stars", sf::Style::Default);
-	resize(size);
+	
+	sf::Vector2u screenSize = window->getSize();
+	resize((int)screenSize.x, (int)screenSize.y);
 
 	window->setMouseCursorVisible(false);
 	
@@ -81,9 +83,9 @@ void Game::run()
     }
 }
 
-void Game::resize(sf::VideoMode videoMode)
+void Game::resize(int width, int height)
 {
-	float arCustom = (float) videoMode.width / (float) videoMode.height;
+	float arCustom = (float) width / (float) height;
 	float arBase = (float) baseWidth / (float) baseHeight;
 	
 	float widthMultiplier = arCustom / arBase;
@@ -133,6 +135,12 @@ void Game::handleEvent(sf::Event event)
 	if (event.type == sf::Event::Closed)
 	{
 		window->close();
+		return;
+	}
+
+	if (event.type == sf::Event::Resized)
+	{
+		resize(event.size.width, event.size.height);
 		return;
 	}
 
