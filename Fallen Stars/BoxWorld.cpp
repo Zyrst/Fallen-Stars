@@ -8,12 +8,12 @@
 namespace
 {
 	//Assuming points is an array with 4 elements
-	void genPoints(b2Vec2* points, const b2Vec2& pos, const b2Vec2& size)
+	void genPoints(b2Vec2* points, const b2Vec2& size)
 	{
-		points[0] = pos;
-		points[1] = b2Vec2(pos.x + size.x, pos.y);
-		points[2] = pos + size;
-		points[3] = b2Vec2(pos.x, pos.y + size.y);
+		points[0] = b2Vec2(0, 0);
+		points[1] = b2Vec2(size.x, 0);
+		points[2] = size;
+		points[3] = b2Vec2(0,  size.y);
 	}
 
 	class Clister : public b2ContactListener
@@ -117,7 +117,7 @@ b2Body* BoxWorld::createEntityBody(const sf::Vector2f& position, const sf::Vecto
 	b2Vec2 points[4];
 
 	//Generate the points of the shape.
-	genPoints(points, bpos, bsize);
+	genPoints(points, bsize);
 	shape.Set(points, 4);
 
 	body->CreateFixture(&shape, 1.0f);

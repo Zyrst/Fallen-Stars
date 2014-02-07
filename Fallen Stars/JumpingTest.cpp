@@ -5,6 +5,7 @@
 #include "VecConverter.h"
 #include "CallBack.h"
 #include "Player.h"
+#include "ResourceCollection.h"
 
 namespace
 {
@@ -12,6 +13,10 @@ namespace
 	LevelManager* level;
 	BoxWorld* world;
 	Player* player;
+
+	ResourceCollection rc;
+	sf::Texture* tx;
+	sf::Sprite* sp;
 
 	void genCollision()
 	{
@@ -31,16 +36,18 @@ namespace
 JumpingTest::JumpingTest()
 { 
 	world = new BoxWorld(b2Vec2(0, 30));
-	level = new LevelManager("test");
+	level = new LevelManager("proto");
 
-	auto pos = sf::Vector2f(64, 32);
-	auto size = sf::Vector2f(20, 32);
+	auto pos = sf::Vector2f(98, 32);
+	auto size = sf::Vector2f(100, 32);
 	genCollision();
-	player = new Player(sf::Sprite(), world, size, pos);
 
-	//setupGroundSensor(player, pos, size);
+	tx = new sf::Texture();
+	tx->loadFromFile("Assets/Map/Stella pixel.png");
 
-	//player->SetFixedRotation(false);
+	sp = new sf::Sprite(*tx);
+
+	player = new Player(*sp, world, size, pos);
 }
 
 JumpingTest::~JumpingTest()
@@ -60,30 +67,10 @@ void JumpingTest::render(sf::RenderWindow& window)
 {
 	level->Render(window);
 	world->drawDebug(window);
+	player->render(window);
 }
 
 void JumpingTest::handleAction(Controls::Action action, Controls::KeyState state)
 {
-	/*bool hej = (state == Controls::KeyState::HELD);
-
-	switch (action)
-	{
-	case Controls::Action::DOWN:
-		down = hej;
-		break;
-	case Controls::Action::UP:
-		up = hej;
-		break;
-	case Controls::Action::LEFT:
-		left = hej;
-		break;
-	case Controls::Action::RIGHT:
-		right = hej;
-		break;
-	case Controls::Action::JUMP:
-		jump = hej;
-		break;
-	}*/
-
 	player->handleAction(action, state);
 }
