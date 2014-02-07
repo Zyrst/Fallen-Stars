@@ -95,6 +95,7 @@
     <ClCompile Include="BoxWorld.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="CallBack.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ControlMapping.cpp" />
     <ClCompile Include="debugdraw.cpp" />
     <ClCompile Include="Entity.cpp" />
@@ -128,6 +129,7 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="BoxWorld.h" />
     <ClInclude Include="CallBack.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="debugdraw.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityLiving.h" />

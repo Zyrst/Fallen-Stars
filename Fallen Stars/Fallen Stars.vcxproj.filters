@@ -152,7 +152,7 @@
     </ClCompile>
     <ClCompile Include="ResourceCollection.cpp">
       <Filter>Source Files</Filter>
-	</ClCompile>
+    </ClCompile>
     <ClCompile Include="BoxWorld.cpp">
       <Filter>Source Files\Box2D</Filter>
     </ClCompile>
@@ -167,6 +167,9 @@
     </ClCompile>
     <ClCompile Include="JumpingTest.cpp">
       <Filter>Source Files\state</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -265,7 +268,7 @@
     </ClInclude>
     <ClInclude Include="ResourceCollection.h">
       <Filter>Header Files</Filter>
-	</ClInclude>
+    </ClInclude>
     <ClInclude Include="BoxWorld.h">
       <Filter>Header Files\Box2D</Filter>
     </ClInclude>
@@ -280,6 +283,9 @@
     </ClInclude>
     <ClInclude Include="JumpingTest.h">
       <Filter>Header Files\state</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

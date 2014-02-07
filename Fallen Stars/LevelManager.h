@@ -16,6 +16,4 @@ private:
 
 	std::string mLevel;
 	tmx::MapLoader mapLoader;
-	int mWidth;
-	int mHeight;
 };

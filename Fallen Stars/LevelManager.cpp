@@ -1,7 +1,7 @@
 #include "LevelManager.h"
 #include <iostream>
 #include <SFML\Window.hpp>
-#include "Controls.h"
+#include "Player.h"
 LevelManager::LevelManager(std::string levelname):
 	mLevel(levelname),
 	mapLoader("Assets/Map")
@@ -20,11 +20,13 @@ void LevelManager::Load()
 
 void LevelManager::Render(sf::RenderTarget& rendertarget)
 {
-	
-			/*mapLoader.Draw(rendertarget,tmx::MapLayer::Background);*/
-			//mapLoader.Draw(rendertaret,tmx::MapLayer::Foreground);
-			mapLoader.Draw(rendertarget, tmx::MapLayer::All);
-			//mapLoader.Draw(rendertarget,tmx::MapLayer::Object);
+	//Player* player;
+				
+	mapLoader.Draw(rendertarget,tmx::MapLayer::Background);
+//	player->render(rendertarget);
+	mapLoader.Draw(rendertarget,tmx::MapLayer::Foreground);
+	//mapLoader.Draw(rendertarget, tmx::MapLayer::All);
+	//mapLoader.Draw(rendertarget,tmx::MapLayer::Object);
 
 	//rendertarget.draw(mapLoader);
 }
