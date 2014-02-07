@@ -15,7 +15,7 @@ int SpriteSheet::getFrameCount()
 
 sf::IntRect SpriteSheet::getFrame(int index)
 {
-	assert(0 < index && index < getFrameCount());
+	assert(0 <= index && index < getFrameCount());
 	int xIndex = index % mTiles.x;
 	int yIndex = index / mTiles.x;
 	return sf::IntRect(xIndex * mSpriteSize.x, yIndex * mSpriteSize.y, mSpriteSize.x, mSpriteSize.y);
@@ -23,7 +23,7 @@ sf::IntRect SpriteSheet::getFrame(int index)
 
 sf::IntRect SpriteSheet::getMirroredFrame(int index)
 {
-	assert(0 < index && index < getFrameCount());
+	assert(0 <= index && index < getFrameCount());
 	int xIndex = index % mTiles.x;
 	int yIndex = index / mTiles.x;
 	return sf::IntRect(xIndex * mSpriteSize.x +mSpriteSize.x, yIndex * mSpriteSize.y, -mSpriteSize.x, mSpriteSize.y);
@@ -34,7 +34,7 @@ std::vector<sf::IntRect> SpriteSheet::getFrames(int startIndex, int frameCount, 
 	std::vector<sf::IntRect> frames(frameCount);
 	for(int i=0; i<frameCount; i++)
 	{
-		frames.push_back(getFrame(startIndex + i, mirrored));
+		frames[i] = getFrame(startIndex + i, mirrored);
 	}
 	return frames;
 }
