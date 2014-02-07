@@ -42,21 +42,28 @@ Player::Player(sf::Texture& texture, BoxWorld* world, sf::Vector2f& size, sf::Ve
 , rightButton(false)
 {
 	sf::Vector2i spritesheetSize = static_cast<sf::Vector2i>(texture.getSize());
-	sf::Vector2i frameSize(41, 60);
+	sf::Vector2i frameSize(256, 256);
 
 	SpriteSheet spritesheet(frameSize, spritesheetSize);
 	std::vector<sf::IntRect> frames = spritesheet.getAllFrames();
+	std::vector<sf::IntRect> framesMirrored = spritesheet.getAllFrames(true);
+
 	std::cout << spritesheet.getFrameCount()<<std::endl;
-	mAnimation = new Animation(frames, texture);
-	anime.setAnimation(*mAnimation);
-	std::cout << mAnimation->getSize();
+
+	mAnimationWalkRight = new Animation(frames, texture);
+	mAnimationWalkLeft = new Animation(framesMirrored, texture);
+	anime.setAnimation(*mAnimationWalkRight);
+	
+	std::cout << mAnimationWalkRight->getSize();
+	
 	setupSensors(position, size);
 }
 
 Player::~Player()
 {
 	delete groundCallBack;
-	delete mAnimation;
+	delete mAnimationWalkRight;
+	delete mAnimationWalkLeft;
 }
 
 void Player::setupSensors(sf::Vector2f& pos, sf::Vector2f& size)

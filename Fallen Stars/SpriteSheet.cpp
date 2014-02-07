@@ -26,7 +26,7 @@ sf::IntRect SpriteSheet::getMirroredFrame(int index)
 	assert(0 <= index && index < getFrameCount());
 	int xIndex = index % mTiles.x;
 	int yIndex = index / mTiles.x;
-	return sf::IntRect(xIndex * mSpriteSize.x +mSpriteSize.x, yIndex * mSpriteSize.y, -mSpriteSize.x, mSpriteSize.y);
+	return sf::IntRect(xIndex * mSpriteSize.x + mSpriteSize.x, yIndex * mSpriteSize.y, -mSpriteSize.x, mSpriteSize.y);
 }
 
 std::vector<sf::IntRect> SpriteSheet::getFrames(int startIndex, int frameCount, bool mirrored)

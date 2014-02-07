@@ -46,7 +46,7 @@ JumpingTest::JumpingTest()
 	genCollision();
 
 	tx = new sf::Texture();
-	tx->loadFromFile("Assets/Map/Test Anime.png");
+	tx->loadFromFile("Assets/Map/Shade.png");
 
 	player = new Player(*tx, world, size, pos);
 	sf::Vector2u mapSize =  level->getMapLoader().GetMapSize();

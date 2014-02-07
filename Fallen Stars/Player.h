@@ -38,5 +38,6 @@ private:
 	mFacing mFace;
 	GroundCallBack* groundCallBack;
 	bool onGround, leftButton, rightButton;
-	Animation* mAnimation;
+	Animation* mAnimationWalkRight;
+	Animation* mAnimationWalkLeft;
 };
