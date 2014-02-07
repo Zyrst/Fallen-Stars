@@ -6,6 +6,7 @@
 #include "CallBack.h"
 #include "Player.h"
 #include "ResourceCollection.h"
+#include "Camera.h"
 
 namespace
 {
@@ -13,6 +14,7 @@ namespace
 	LevelManager* level;
 	BoxWorld* world;
 	Player* player;
+	Camera* camera;
 
 	ResourceCollection rc;
 	sf::Texture* tx;
@@ -24,7 +26,7 @@ namespace
 
 		for (auto& l : layers)
 		{
-			if (l.name.compare("collision") == 0)
+			if (l.name.compare("Collision") == 0)
 			{
 				world->createStaticBody(l.objects);
 				break;
@@ -36,7 +38,8 @@ namespace
 JumpingTest::JumpingTest()
 { 
 	world = new BoxWorld(b2Vec2(0, 30));
-	level = new LevelManager("proto");
+	level = new LevelManager("Test");
+	
 
 	auto pos = sf::Vector2f(98, 32);
 	auto size = sf::Vector2f(100, 32);
@@ -48,6 +51,8 @@ JumpingTest::JumpingTest()
 	sp = new sf::Sprite(*tx);
 
 	player = new Player(*sp, world, size, pos);
+	sf::Vector2u mapSize =  level->getMapLoader().GetMapSize();
+	camera = new Camera(player, mapSize);
 }
 
 JumpingTest::~JumpingTest()
@@ -65,6 +70,7 @@ void JumpingTest::update(sf::Time deltaTime)
 }
 void JumpingTest::render(sf::RenderWindow& window)
 {
+	camera->update(window);
 	level->Render(window);
 	world->drawDebug(window);
 	player->render(window);
