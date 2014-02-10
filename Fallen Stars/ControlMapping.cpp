@@ -23,6 +23,8 @@ Controls::Action ControlMapping::getAction(sf::Event::KeyEvent key)
 			return Controls::Action::INTERACT;
 		case sf::Keyboard::Key::Escape:
 			return Controls::Action::MENU;
+		case sf::Keyboard::Key::Return:
+			return Controls::Action::CONFIRM;
 		case sf::Keyboard::Key::H:
 			return Controls::Action::SIRIUS;
 		default:
@@ -60,6 +62,8 @@ sf::Keyboard::Key ControlMapping::getKey(Controls::Action action)
 			return sf::Keyboard::Key::E;
 		case Controls::Action::MENU:
 			return sf::Keyboard::Key::Escape;
+		case Controls::Action::CONFIRM:
+			return sf::Keyboard::Key::Return;
 		case Controls::Action::SIRIUS:
 			return sf::Keyboard::Key::H;
 		default:

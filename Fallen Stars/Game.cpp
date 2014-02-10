@@ -44,7 +44,8 @@ Game::Game()
 	// TODO Set viewport to 1080 to fix rendering scale for other monitor sizes
 
 	// TODO Create a first state
-	currentState = new JumpingTest();
+	currentState = new LogoState();
+	currentState->load();
 
 	Game::theGame = this;
 }
@@ -59,7 +60,6 @@ Game::~Game()
 void Game::run()
 {
 	assert(currentState != NULL);
- 
 
 	sf::Clock clock;
     while (window->isOpen())

@@ -7,12 +7,10 @@
 #include "WaitState.h"
 
 LogoState::LogoState():
-	mTexture(),
 	mSprite(),
 	mTime()
 {
-	assert(mTexture.loadFromFile("Menu/Logo.png"));
-	mSprite.setTexture(mTexture);
+	mSprite.setTexture(mResourceCollection.getTexture("../Debug/Logo.png"));
 }
 
 
@@ -22,7 +20,10 @@ LogoState::~LogoState(void)
 
 
 
-void LogoState::load(){}
+void LogoState::load()
+{
+	mResourceCollection.preloadTexture("../Debug/Logo.png");
+}
 
 void LogoState::update(sf::Time deltaTime)
 {
@@ -46,7 +47,7 @@ void LogoState::render(sf::RenderWindow& window)
 	window.draw(mSprite);
 }
 
-void LogoState::handleAction(Controls::Action, Controls::KeyState)
+void LogoState::handleAction(Controls::Action action, Controls::KeyState)
 {
-
+	Game::instance()->loadNewState(new WaitState());
 }

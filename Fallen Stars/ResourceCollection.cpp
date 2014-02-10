@@ -6,7 +6,10 @@ void TextureCollection::preloadTexture(std::string filename)
 {
 	if( mTextures.find(filename) == mTextures.end())
 	{
-		mTextures[filename].loadFromFile(filename);
+		if(!mTextures[filename].loadFromFile(filename))
+		{
+			std::cout << "Texture " << filename << " failed to load!" << std::endl;
+		}
 	}
 }
 
@@ -15,7 +18,10 @@ sf::Texture& TextureCollection::getTexture(std::string filename)
 	if( mTextures.find(filename) == mTextures.end())
 	{
 		std::cout << "Texture " << filename << " was not preloaded!" << std::endl;
-		mTextures[filename].loadFromFile(filename);
+		if(!mTextures[filename].loadFromFile(filename))
+		{
+			std::cout << "Texture " << filename << " failed to load!" << std::endl;
+		}
 	}
 	return mTextures[filename];
 }
@@ -33,7 +39,10 @@ sf::Sound SoundCollection::getSound(std::string filename)
 	if( mSoundBuffers.find(filename) == mSoundBuffers.end() )
 	{
 		std::cout << "Sound " << filename << " was not preloaded!" << std::endl;
-		mSoundBuffers[filename].loadFromFile(filename);
+		if!(mSoundBuffers[filename].loadFromFile(filename))
+		{
+
+		}
 	}
 	return sf::Sound(mSoundBuffers[filename]);
 }*/

@@ -17,7 +17,6 @@ public:
 	void handleAction(Controls::Action, Controls::KeyState) override;
 
 private:
-	sf::Texture mTexture;
 	sf::Sprite mSprite;
 	sf::Time mTime;
 };
