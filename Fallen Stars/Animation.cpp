@@ -31,7 +31,7 @@ Animation::Animation(sf::IntRect rect, const sf::Texture& texture) :
 	m_frames(1),
 	m_texture(&texture)
 {
-	m_frames.push_back(rect);
+	m_frames[0] = rect;
 }
 
 Animation::Animation(std::vector<sf::IntRect> frames, const sf::Texture& texture) : 

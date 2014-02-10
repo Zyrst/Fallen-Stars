@@ -4,7 +4,7 @@
 
 void TextureCollection::preloadTexture(std::string filename)
 {
-	if( mTextures.find(filename) == mTextures.end() )
+	if( mTextures.find(filename) == mTextures.end())
 	{
 		mTextures[filename].loadFromFile(filename);
 	}
@@ -12,7 +12,7 @@ void TextureCollection::preloadTexture(std::string filename)
 
 sf::Texture& TextureCollection::getTexture(std::string filename)
 {
-	if( mTextures.find(filename) == mTextures.end() )
+	if( mTextures.find(filename) == mTextures.end())
 	{
 		std::cout << "Texture " << filename << " was not preloaded!" << std::endl;
 		mTextures[filename].loadFromFile(filename);

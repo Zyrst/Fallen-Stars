@@ -30,6 +30,6 @@ class Entity
 		Entity(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position);
 		AnimatedSprite anime;
 		bool mAlive;
-		enum mFacing{LEFT, RIGHT};
+		enum Facing{LEFT, RIGHT};
 		b2Body* body;
 };

@@ -7,6 +7,7 @@
 #include "BoxWorld.h"
 #include "ControlMapping.h"
 #include "SpriteSheet.h"
+#include "ResourceCollection.h"
 #include <iostream>
 
 GroundCallBack::GroundCallBack(b2Fixture* owner)
@@ -34,27 +35,38 @@ bool GroundCallBack::isOnGround()
 	return (groundTouches > 0);
 }
 
-Player::Player(sf::Texture& texture, BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position)
+Player::Player(/*sf::Texture& texture,*/ BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position,ResourceCollection& resource)
 : EntityLiving(world, size, position)
 , onGround(false)
 , groundCallBack(nullptr)
 , leftButton(false)
 , rightButton(false)
+/*, mTexture(texture)*/
+, mResource(resource)
 {
-	sf::Vector2i spritesheetSize = static_cast<sf::Vector2i>(texture.getSize());
+	auto &run_left = mResource.getTexture("Assets/Map/Stella Left.png");
+	auto &run_right = mResource.getTexture("Assets/Map/Shade_walking.png");
+	//sf::Vector2i spritesheetSize = static_cast<sf::Vector2i>(texture.getSize());
+	sf::Vector2i spritesheetSize1 = static_cast<sf::Vector2i>(run_left.getSize());
+	sf::Vector2i spritesheetSize2 = static_cast<sf::Vector2i>(run_right.getSize());
 	sf::Vector2i frameSize(256, 256);
 
-	SpriteSheet spritesheet(frameSize, spritesheetSize);
-	std::vector<sf::IntRect> frames = spritesheet.getAllFrames();
-	std::vector<sf::IntRect> framesMirrored = spritesheet.getAllFrames(true);
+	SpriteSheet spritesheet1(frameSize, spritesheetSize1);
+	SpriteSheet spritesheet2(frameSize, spritesheetSize2);
+	std::vector<sf::IntRect> frames = spritesheet1.getAllFrames();
+	std::vector<sf::IntRect> framez = spritesheet2.getAllFrames();
+	/*TODO 
+	* Make getFrame stuff right, this is incorrect atm*/
+	mStellaIdleLeft = new Animation(sf::IntRect(0,0,256,256), mResource.getTexture("Assets/Map/Stella_idle.png"));
+	mAnimationWalkLeft = new Animation(frames, mResource.getTexture("Assets/Map/Stella Left.png"));
+	mAnimationWalkRight = new Animation (framez,mResource.getTexture("Assets/Map/Shade_walking.png"));
 
-	std::cout << spritesheet.getFrameCount()<<std::endl;
+	std::cout << spritesheet1.getFrameCount()<<std::endl;
 
-	mAnimationWalkRight = new Animation(frames, texture);
-	mAnimationWalkLeft = new Animation(framesMirrored, texture);
-	anime.setAnimation(*mAnimationWalkRight);
 	
-	std::cout << mAnimationWalkRight->getSize();
+	anime.setAnimation(*mStellaIdleLeft);
+	
+	std::cout << mStellaIdleLeft->getSize();
 	
 	setupSensors(position, size);
 }
@@ -64,6 +76,8 @@ Player::~Player()
 	delete groundCallBack;
 	delete mAnimationWalkRight;
 	delete mAnimationWalkLeft;
+	delete mStellaIdleLeft;
+	//delete mStellaIdleRight;
 }
 
 void Player::setupSensors(sf::Vector2f& pos, sf::Vector2f& size)
@@ -89,8 +103,11 @@ void Player::setupSensors(sf::Vector2f& pos, sf::Vector2f& size)
 void Player::update(sf::Time deltaTime)
 {
 	const b2Vec2& vel = body->GetLinearVelocity();
-
-	if (leftButton)
+	if (leftButton && rightButton)
+	{
+		body->SetLinearVelocity(b2Vec2(0,vel.y));
+	}
+	else if (leftButton)
 	{
 		body->SetLinearVelocity(b2Vec2(-10, vel.y));
 	}
@@ -107,6 +124,40 @@ void Player::update(sf::Time deltaTime)
 }
 void Player::render(sf::RenderTarget& renderTarget)
 {
+	Animation* currentAnimation = NULL;
+	if (leftButton)
+	{
+		currentAnimation = mAnimationWalkLeft;
+	}
+	if (rightButton)
+	{
+		currentAnimation = mAnimationWalkRight;
+	}
+
+	else if(leftButton && rightButton || !leftButton && !rightButton)
+	{
+		if (mFace == LEFT)
+		{
+			currentAnimation = mStellaIdleLeft;
+		}
+		if (mFace == RIGHT)
+		{
+			//currentAnimation = mStellaIdleRight;
+		}
+	}
+	if(!onGround)
+	{
+		if (mFace == LEFT)
+		{
+			/*currentAnimation = Hopp åt vänster */
+		}
+		else
+		{
+			/*currentAnimation = Hopp åt höger*/
+		}
+	}
+	
+	if(currentAnimation != NULL) anime.play(*currentAnimation);
 	anime.setPosition(Convert::b2ToSfml(body->GetPosition()));
 	renderTarget.draw(anime);
 	
@@ -148,7 +199,7 @@ void Player::jump()
 		body->SetLinearVelocity(b2Vec2(vel.x, -10));
 	}
 }
-void Player::setFacing(mFacing face)
+void Player::setFacing(Facing face)
 {
 	mFace = face;
 }
@@ -160,20 +211,12 @@ void Player::handleAction(Controls::Action action, Controls::KeyState state)
 	switch (action)
 	{
 	case Controls::Action::LEFT:
-		if(Controls::KeyState::PRESSED)
-		{
-			/*anime.setAnimation(*mAnimation);
-			anime.play(*mAnimation);*/
-		}
 		leftButton = keyDown;
+		setFacing(Entity::LEFT);
 		break;
 	case Controls::Action::RIGHT:
-		if(Controls::KeyState::PRESSED)
-		{
-		/*	anime.setAnimation(*mAnimation);
-			anime.play(*mAnimation);*/
-		}
 		rightButton = keyDown;
+		setFacing(Entity::RIGHT);
 		break;
 	case Controls::Action::JUMP:
 		if (keyDown)

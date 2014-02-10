@@ -5,8 +5,7 @@
 #include <SFML/Audio/Sound.hpp>
 #include <SFML/Audio/SoundBuffer.hpp>
 
-namespace
-{
+
 	// Anonymous namespace, unavailable outside of this file
 	class TextureCollection
 	{
@@ -27,7 +26,7 @@ namespace
 	private:
 		std::map<std::string, sf::SoundBuffer> mSoundBuffers;
 	};*/
-}
+
 
 /* Resource collections represent a loader that keeps resources inside of states.
  * States are expected to preload resources so that loading can be done while the

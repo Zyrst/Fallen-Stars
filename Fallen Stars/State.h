@@ -19,6 +19,6 @@ class State
 		virtual void render(sf::RenderWindow& window) = 0;
 		virtual void handleAction(Controls::Action action, Controls::KeyState) = 0;
 
-	private:
+	protected:
 		ResourceCollection mResourceCollection;
 };
