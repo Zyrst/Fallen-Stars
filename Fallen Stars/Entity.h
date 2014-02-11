@@ -30,7 +30,7 @@ class Entity
 		void setFacing(Facing facing);
 
 	protected:
-		Entity(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, Facing facing = RIGHT);
+		Entity(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, Facing facing = LEFT);
 		AnimatedSprite anime;
 		bool mAlive;
 		b2Body* body;

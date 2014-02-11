@@ -10,7 +10,6 @@ Entity::Entity(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& pos, Facing fa
 	bodyBounds(pos, size),
 	currentFacing(facing)
 {
-
 }
 Entity::~Entity() {}
 bool Entity::isAlive()
