@@ -129,7 +129,7 @@ b2World* BoxWorld::getWorld()
 
 void BoxWorld::step(float deltaTime)
 {
-	world->Step(deltaTime, 6, 6);
+	world->Step(deltaTime, 50, 60);
 }
 
 void BoxWorld::drawDebug(sf::RenderWindow& wnd)

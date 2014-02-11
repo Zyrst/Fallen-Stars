@@ -12,6 +12,10 @@
 
 static const float SPEED = 3;
 
+/*
+* TODO:Fix falling through while grabbing (maybe three grab boxes?)
+*/
+
 CollisionCounterCallBack::CollisionCounterCallBack(b2Fixture* owner)
 	: CallBack(owner)
 	, collisions(0)
@@ -81,7 +85,6 @@ void GrabCallBack::setCandidate(b2Fixture* fix, const sf::FloatRect& bounds)
 
 Player::Player(/*sf::Texture& texture,*/ BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position,ResourceCollection& resource)
 : EntityLiving(world, size, position)
-, onGround(false)
 , groundCallBack(nullptr)
 , leftButton(false)
 , rightButton(false)
@@ -119,6 +122,7 @@ Player::Player(/*sf::Texture& texture,*/ BoxWorld* world, sf::Vector2f& size, sf
 	const sf::FloatRect& psize = anime.getLocalBounds();
 	anime.setOrigin((psize.width-size.x) / 2.0f, psize.height-size.y);
 	setupSensors(position, size);
+	body->SetLinearDamping(1.0f);
 }
 
 Player::~Player()
@@ -172,14 +176,14 @@ void Player::setupSensors(sf::Vector2f& pos, sf::Vector2f& size)
 	const float grabYPos = 0.05f;
 	const float grabW = 0.05f;
 	const float grabH = 0.09f;
-	bpos = b2Vec2(0, grabYPos);
+	bpos = b2Vec2(-grabW, grabYPos);
 
 	sh.SetAsBox(grabW, grabH, bpos, 0);
 
 	fix = body->CreateFixture(&def);
 	leftGrabCallBack = new GrabCallBack(fix);
 
-	bpos.x += bsize.x;
+	bpos.x += bsize.x+grabW*2;
 
 	sh.SetAsBox(grabW, grabH, bpos, 0);
 
@@ -187,13 +191,13 @@ void Player::setupSensors(sf::Vector2f& pos, sf::Vector2f& size)
 	rightGrabCallBack = new GrabCallBack(fix);
 
 	//Left and right side anti-grab detectors.
-	bpos = b2Vec2(0, grabYPos - grabH-0.05f);
+	bpos = b2Vec2(-grabW, grabYPos - grabH-0.05f);
 	sh.SetAsBox(grabW, 0.05f, bpos, 0);
 
 	fix = body->CreateFixture(&def);
 	leftAntiGrabCallBack = new CollisionCounterCallBack(fix);
 
-	bpos.x += bsize.x;
+	bpos.x += bsize.x + grabW*2;
 	sh.SetAsBox(grabW, 0.05f, bpos, 0);
 
 	fix = body->CreateFixture(&def);
@@ -212,12 +216,15 @@ void Player::update(sf::Time deltaTime)
 			{
 				body->SetLinearVelocity(b2Vec2(-SPEED, vel.y));
 			}
+
+			setFacing(Entity::LEFT);
 		}
 		else if (rightButton)
 		{
 			if (!rightSideCollision->isColliding())
 			{
 				body->SetLinearVelocity(b2Vec2(SPEED, vel.y));
+				setFacing(Entity::RIGHT);
 			}
 		}
 		else
@@ -226,21 +233,19 @@ void Player::update(sf::Time deltaTime)
 		}
 
 		//Check for grabbing if we are not flying upwards.
-		if (vel.y >= 0)
+		if (!groundCallBack->isColliding() && vel.y >= 0)
 		{
-			if (leftGrabCallBack->isColliding() && !leftAntiGrabCallBack->isColliding())
+			if (leftGrabCallBack->isColliding() && !leftAntiGrabCallBack->isColliding() && mFace == Facing::LEFT)
 			{
 				this->setState(PLAYER_STATE::GRABBING);
 				const sf::FloatRect& bounds = leftGrabCallBack->getGrabbedFixtureBounds();
 				body->SetTransform(Convert::sfmlToB2(sf::Vector2f(bounds.left + bounds.width, bounds.top)), 0);
-				setFacing(Facing::LEFT);
 			}
-			else if (rightGrabCallBack->isColliding() && !rightAntiGrabCallBack->isColliding())
+			else if (rightGrabCallBack->isColliding() && !rightAntiGrabCallBack->isColliding() && mFace == Facing::RIGHT)
 			{
 				this->setState(PLAYER_STATE::GRABBING);
 				const sf::FloatRect& bounds = rightGrabCallBack->getGrabbedFixtureBounds();
 				body->SetTransform(Convert::sfmlToB2(sf::Vector2f(bounds.left-bodyBounds.width, bounds.top)), 0);
-				setFacing(Facing::RIGHT);
 			}
 		}
 		
@@ -258,6 +263,7 @@ void Player::update(sf::Time deltaTime)
 				sf::Vector2f pos = Convert::b2ToSfml(body->GetPosition());
 				pos.x -= pushDistance;
 				body->SetTransform(Convert::sfmlToB2(pos), 0.0f);
+				setFacing(Entity::LEFT);
 			}
 			//Else just push the player a bit right.
 			else
@@ -265,6 +271,7 @@ void Player::update(sf::Time deltaTime)
 				sf::Vector2f pos = Convert::b2ToSfml(body->GetPosition());
 				pos.x += pushDistance;
 				body->SetTransform(Convert::sfmlToB2(pos), 0.0f);
+				setFacing(Entity::RIGHT);
 			}
 
 			setState(PLAYER_STATE::NORMAL);
@@ -298,7 +305,7 @@ void Player::render(sf::RenderTarget& renderTarget)
 			//currentAnimation = mStellaIdleRight;
 		}
 	}
-	if(!onGround)
+	if(!groundCallBack->isColliding())
 	{
 		if (mFace == LEFT)
 		{
@@ -383,13 +390,13 @@ void Player::jump()
 		{
 			const b2Vec2& vel = body->GetLinearVelocity();
 			//body->ApplyLinearImpulse(b2Vec2(0, -7), b2Vec2(0, 0), true);
-			body->SetLinearVelocity(b2Vec2(vel.x, -5));
+			body->SetLinearVelocity(b2Vec2(vel.x, -6));
 		}
 	}
 	else if (state == PLAYER_STATE::GRABBING)
 	{
 		setState(PLAYER_STATE::NORMAL);
-		body->SetLinearVelocity(b2Vec2(0, -6));
+		body->SetLinearVelocity(b2Vec2(0, -8));
 	}
 	
 }
@@ -406,11 +413,9 @@ void Player::handleAction(Controls::Action action, Controls::KeyState state)
 	{
 	case Controls::Action::LEFT:
 		leftButton = keyDown;
-		setFacing(Entity::LEFT);
 		break;
 	case Controls::Action::RIGHT:
 		rightButton = keyDown;
-		setFacing(Entity::RIGHT);
 		break;
 	case Controls::Action::DOWN:
 		downButton = keyDown;

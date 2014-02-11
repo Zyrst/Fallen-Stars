@@ -60,7 +60,7 @@ private:
 	PLAYER_STATE state;
 	CollisionCounterCallBack *groundCallBack, *rightSideCollision, *leftSideCollision, *leftAntiGrabCallBack, *rightAntiGrabCallBack;
 	GrabCallBack *leftGrabCallBack, *rightGrabCallBack;
-	bool onGround, leftButton, rightButton, downButton;
+	bool leftButton, rightButton, downButton;
 	Animation* mAnimationWalkRight;
 	Animation* mAnimationWalkLeft;
 	Animation* mStellaIdleLeft;
