@@ -46,8 +46,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(ProjectDir)\Libraries\SFML-2.1\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)\Libraries\SFML-2.1\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)\Libraries\SFML-2.1\include;$(ProjectDir)/Libraries/SFML TmxLoader/include;$(ProjectDir)/Libraries/SFML TmxLoader/src;$(ProjectDir)\Libraries\SFML TmxLoader\lib\zlib\include;$(ProjectDir)/Libraries/Box2D;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)\Libraries\SFML-2.1\lib;$(ProjectDir)\Libraries\SFML TmxLoader\lib\zlib\lib</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -77,15 +77,15 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>SFML_STATIC</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>P:\Programmering\Libraries\SFML-2.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>sfml-audio-d.lib;sfml-graphics-d.lib;sfml-main-d.lib;sfml-network-d.lib;sfml-system-d.lib;sfml-window-d.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>P:\Programmering\Libraries\SFML-2.1\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-audio.lib;sfml-graphics.lib;sfml-main.lib;sfml-network.lib;sfml-system.lib;sfml-window.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)/Libraries/Box2D/Build/vs2012/bin/Release;D:\Projekt\Fallen Stars\Libraries\Box2D\Build\vs2012\bin\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

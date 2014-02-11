@@ -1,25 +1,40 @@
 #include "Object.h"
+#include "SpriteSheet.h"
 
+Object::Object(BoxWorld* world, sf::Vector2f& position, ResourceCollection& resource, TYPE type) :
+	Entity(world,sf::Vector2f(20,20),position),
+	mResource(resource),
+	mType(type)
+{
+	if(mType == TYPE::STAR)
+	{
+		/*auto &star = mResource.getTexture("Namn på fil.png");
 
+		sf::Vector2i starSize = static_cast<sf::Vector2i>(star.getSize());
+		sf::Vector2i frameSize(256,256); /* Altered to right size */
+/*
+		SpriteSheet spriteSheet(frameSize, starSize);
+		std::vector<sf::IntRect> frames = spriteSheet.getAllFrames();
+
+		mStar = new Animation(frames, star);
+		*/
+	}
+
+	if (mType == TYPE::STARDUST)
+	{
+		/*Same as above*/
+	}
+}
+	
 void Object::update(sf::Time deltaTime)
 {
 	
 }
-void Object::render(sf::RenderTarget& renderSurface)
-{
 
-}
-bool Object::isAlive(){
-	return mAlive;
-}
-sf::Vector2f Object::getPosition()
+bool Object::getType()
 {
-	/* Add real positions here */
-	//return sprite.getPosition();
-	return sf::Vector2f(0.f,0.f);
+	return mType;
 }
-void Object::setPosition(float x,float y)
-{
-	/*position.x = x;
-	position.y = y;*/
-}
+
+/* Collision stuff, returns points to starcount and stardust
+* on collision*/

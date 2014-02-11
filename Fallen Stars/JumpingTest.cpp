@@ -38,20 +38,20 @@ namespace
 JumpingTest::JumpingTest()
 {
 	world = new BoxWorld(b2Vec2(0, 10));
-	level = new LevelManager("Test");
+	level = new LevelManager("Proto");
 	
 	mResourceCollection.preloadTexture("Assets/Map/Stella_idle.png");
 	mResourceCollection.preloadTexture("Assets/Map/Stella Left.png");
 	mResourceCollection.preloadTexture("Assets/Map/Shade_walking.png");
-
-	tx = new sf::Texture();
-	auto m = mResourceCollection.getTexture("Assets/Map/Stella_idle.png");
+	mResourceCollection.preloadTexture("Assets/Map/Shade_idle.png");
+	mResourceCollection.preloadTexture("Assets/Map/Stella_jumpLeft.png");
+	mResourceCollection.preloadTexture("Assets/Map/Shade_jumpRight.png");
+	mResourceCollection.preloadTexture("Assets/Map/Shade_grabRight.png");
+	mResourceCollection.preloadTexture("Assets/Map/Stella_grabLeft.png");
 
 	auto size = sf::Vector2f(70, 220);
 	genCollision();
 
-	tx = new sf::Texture();
-	tx->loadFromFile("Assets/Map/Stella Pixel.png");
 
 	auto& layers = level->getMapLoader().GetLayers();
 	for(auto i : layers)
@@ -67,7 +67,6 @@ JumpingTest::JumpingTest()
 		}
 	}
 
-	//player = new Player(*tx, world, size, pos);
 	sf::Vector2u mapSize =  level->getMapLoader().GetMapSize();
 	camera = new Camera(player, mapSize);
 }
@@ -89,7 +88,6 @@ void JumpingTest::render(sf::RenderWindow& window)
 {
 	camera->update(window);
 	level->getMapLoader().Draw(window, tmx::MapLayer::Background);
-	
 	player->render(window);
 	level->getMapLoader().Draw(window, tmx::MapLayer::Foreground);
 	world->drawDebug(window);

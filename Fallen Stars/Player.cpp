@@ -83,44 +83,44 @@ void GrabCallBack::setCandidate(b2Fixture* fix, const sf::FloatRect& bounds)
 	candidateBounds = sf::FloatRect(bounds);
 }
 
-Player::Player(/*sf::Texture& texture,*/ BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position,ResourceCollection& resource)
+Player::Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position,ResourceCollection& resource)
 : EntityLiving(world, size, position)
 , groundCallBack(nullptr)
 , leftButton(false)
 , rightButton(false)
 , downButton(false)
-/*, mTexture(texture)*/
 , mResource(resource)
 {
-	auto &run_left = mResource.getTexture("Assets/Map/Stella Left.png");
-	auto &run_right = mResource.getTexture("Assets/Map/Shade_walking.png");
-	//sf::Vector2i spritesheetSize = static_cast<sf::Vector2i>(texture.getSize());
-	sf::Vector2i spritesheetSize1 = static_cast<sf::Vector2i>(run_left.getSize());
-	sf::Vector2i spritesheetSize2 = static_cast<sf::Vector2i>(run_right.getSize());
+	auto &walking = mResource.getTexture("Assets/Map/Stella Left.png");
+	
 	setState(PLAYER_STATE::NORMAL);
 
+	sf::Vector2i walkingSize = static_cast<sf::Vector2i>(walking.getSize());
 	sf::Vector2i frameSize(256, 256);
 
-	SpriteSheet spritesheet1(frameSize, spritesheetSize1);
-	SpriteSheet spritesheet2(frameSize, spritesheetSize2);
+	SpriteSheet spritesheet1(frameSize, walkingSize);
 	std::vector<sf::IntRect> frames = spritesheet1.getAllFrames();
-	std::vector<sf::IntRect> framez = spritesheet2.getAllFrames();
 	/*TODO 
-	* Make getFrame stuff right, this is incorrect atm*/
-	mStellaIdleLeft = new Animation(sf::IntRect(0,0,256,256), mResource.getTexture("Assets/Map/Stella_idle.png"));
-	mAnimationWalkLeft = new Animation(frames, mResource.getTexture("Assets/Map/Stella Left.png"));
-	mAnimationWalkRight = new Animation (framez,mResource.getTexture("Assets/Map/Shade_walking.png"));
-
+	* It works but with many animations it will get cluttered with unnecessaryy code*/
+	mWalking = new Animation(frames,walking);
 	std::cout << spritesheet1.getFrameCount()<<std::endl;
-
-	anime.setAnimation(*mStellaIdleLeft);
 	
-	std::cout << mStellaIdleLeft->getSize();
 
-	std::cout << mAnimationWalkRight->getSize()<<std::endl;
+	std::cout << mWalking->getSize()<<std::endl;
 
+
+
+	/* When we have the right animations use those */
+	mIdle = new Animation(sf::IntRect(0,0,256,256), mResource.getTexture("Assets/Map/Stella_idle.png"));
+	mJump = new Animation(sf::IntRect(0,0,256,256), mResource.getTexture("Assets/Map/Stella_jumpLeft.png"));
+	mGrab = new Animation(sf::IntRect(0,0,256,256), mResource.getTexture("Assets/Map/Stella_grabLeft.png"));
+
+	std::cout << mIdle->getSize()<<std::endl;
+
+	anime.setAnimation(*mIdle);
 	const sf::FloatRect& psize = anime.getLocalBounds();
 	anime.setOrigin((psize.width-size.x) / 2.0f, psize.height-size.y);
+
 	setupSensors(position, size);
 	body->SetLinearDamping(1.0f);
 }
@@ -128,10 +128,10 @@ Player::Player(/*sf::Texture& texture,*/ BoxWorld* world, sf::Vector2f& size, sf
 Player::~Player()
 {
 	delete groundCallBack;
-	delete mAnimationWalkRight;
-	delete mAnimationWalkLeft;
-	delete mStellaIdleLeft;
-	//delete mStellaIdleRight;
+	delete mIdle;
+	delete mWalking;
+	delete mJump;
+	delete mGrab;
 }
 
 void Player::setupSensors(sf::Vector2f& pos, sf::Vector2f& size)
@@ -235,13 +235,13 @@ void Player::update(sf::Time deltaTime)
 		//Check for grabbing if we are not flying upwards.
 		if (!groundCallBack->isColliding() && vel.y >= 0)
 		{
-			if (leftGrabCallBack->isColliding() && !leftAntiGrabCallBack->isColliding() && mFace == Facing::LEFT)
+			if (leftGrabCallBack->isColliding() && !leftAntiGrabCallBack->isColliding() && getFacing() == Facing::LEFT)
 			{
 				this->setState(PLAYER_STATE::GRABBING);
 				const sf::FloatRect& bounds = leftGrabCallBack->getGrabbedFixtureBounds();
 				body->SetTransform(Convert::sfmlToB2(sf::Vector2f(bounds.left + bounds.width, bounds.top)), 0);
 			}
-			else if (rightGrabCallBack->isColliding() && !rightAntiGrabCallBack->isColliding() && mFace == Facing::RIGHT)
+			else if (rightGrabCallBack->isColliding() && !rightAntiGrabCallBack->isColliding() && getFacing() == Facing::RIGHT)
 			{
 				this->setState(PLAYER_STATE::GRABBING);
 				const sf::FloatRect& bounds = rightGrabCallBack->getGrabbedFixtureBounds();
@@ -254,11 +254,11 @@ void Player::update(sf::Time deltaTime)
 	{
 		//Check if we should just drop down
 		//Jumping while grabbing is handled in Player::jump() and not here.
-		if (downButton || (rightButton && mFace == Facing::LEFT) || (leftButton && mFace == Facing::RIGHT))
+		if (downButton || (rightButton && getFacing() == Facing::LEFT) || (leftButton && getFacing() == Facing::RIGHT))
 		{
 			const float pushDistance = 12.0f;
 			//If we are facing right, push the player a bit left
-			if (mFace == Facing::RIGHT)
+			if (getFacing() == Facing::RIGHT)
 			{
 				sf::Vector2f pos = Convert::b2ToSfml(body->GetPosition());
 				pos.x -= pushDistance;
@@ -278,49 +278,13 @@ void Player::update(sf::Time deltaTime)
 		}
 	}
 	
-
+	updateAnimation();
 	anime.update(deltaTime);
 }
 
 void Player::render(sf::RenderTarget& renderTarget)
 {
-	Animation* currentAnimation = NULL;
-	if (leftButton)
-	{
-		currentAnimation = mAnimationWalkLeft;
-	}
-	if (rightButton)
-	{
-		currentAnimation = mAnimationWalkRight;
-	}
-
-	else if(leftButton && rightButton || !leftButton && !rightButton)
-	{
-		if (mFace == LEFT)
-		{
-			currentAnimation = mStellaIdleLeft;
-		}
-		if (mFace == RIGHT)
-		{
-			//currentAnimation = mStellaIdleRight;
-		}
-	}
-	if(!groundCallBack->isColliding())
-	{
-		if (mFace == LEFT)
-		{
-			/*currentAnimation = Hopp åt vänster */
-		}
-		else
-		{
-			/*currentAnimation = Hopp åt höger*/
-		}
-	}
-	
-	if(currentAnimation != NULL) anime.play(*currentAnimation);
-	anime.setPosition(Convert::b2ToSfml(body->GetPosition()));
-	renderTarget.draw(anime);
-	
+	Entity::render(renderTarget);
 	//sprite.setRotation(180);
 
 	sf::FloatRect rect = anime.getGlobalBounds();
@@ -365,23 +329,7 @@ void Player::render(sf::RenderTarget& renderTarget)
 		renderTarget.draw(sh);
 	}
 }
-bool Player::isAlive()
-{
-	return mAlive;
-}
-void Player::setVelocityX(float x)
-{
-	velocity.x = x;
-}
-void Player::setVelocityY(float y)
-{
-	velocity.y = y;
-}
-void Player::setVelocity(float x, float y)
-{
-	velocity.x = x;
-	velocity.y = y;
-}
+
 void Player::jump()
 {
 	if (state == PLAYER_STATE::NORMAL)
@@ -392,6 +340,7 @@ void Player::jump()
 			//body->ApplyLinearImpulse(b2Vec2(0, -7), b2Vec2(0, 0), true);
 			body->SetLinearVelocity(b2Vec2(vel.x, -6));
 		}
+
 	}
 	else if (state == PLAYER_STATE::GRABBING)
 	{
@@ -399,10 +348,6 @@ void Player::jump()
 		body->SetLinearVelocity(b2Vec2(0, -8));
 	}
 	
-}
-void Player::setFacing(Facing face)
-{
-	mFace = face;
 }
 
 void Player::handleAction(Controls::Action action, Controls::KeyState state)
@@ -444,4 +389,29 @@ void Player::setState(Player::PLAYER_STATE state)
 		break;
 	}
 	this->state = state;
+}
+
+void Player::updateAnimation()
+{
+	Animation* currentAnimation = NULL;
+	if (leftButton || rightButton)
+	{
+		currentAnimation = mWalking;
+	}
+
+	if(leftButton && rightButton || !leftButton && !rightButton)
+	{
+		currentAnimation = mIdle;
+	}
+	if(!groundCallBack->isColliding())
+	{
+		currentAnimation = mJump;
+	}
+	if(state == PLAYER_STATE::GRABBING)
+	{
+		currentAnimation = mGrab;
+	}
+	
+	if(currentAnimation != NULL) anime.play(*currentAnimation);
+	anime.setPosition(Convert::b2ToSfml(body->GetPosition()));
 }

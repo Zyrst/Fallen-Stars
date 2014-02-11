@@ -7,8 +7,8 @@
 class EntityLiving : public Entity
 {
 public:
-	virtual void render(sf::RenderTarget& renderSurface) override;
-	virtual void update(sf::Time deltaTime) override;
+	virtual void render(sf::RenderTarget& renderSurface)=0;
+	virtual void update(sf::Time deltaTime)=0;
 	virtual void setVelocity(float x, float y);
 	virtual void setVelocityX(float x);
 	virtual void setVelocityY(float y);

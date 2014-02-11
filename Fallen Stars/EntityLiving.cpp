@@ -6,14 +6,6 @@ EntityLiving::EntityLiving(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& po
 
 }
 
-void EntityLiving::update(sf::Time deltaTime)
-{
-	//position += velocity * deltaTime;
-}
-void EntityLiving::render(sf::RenderTarget& renderTarget)
-{
-
-}
 bool EntityLiving::isAlive()
 {
 	return mAlive;

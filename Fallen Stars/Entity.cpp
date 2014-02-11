@@ -17,11 +17,7 @@ bool Entity::isAlive()
 {
 	return mAlive;
 }
-void Entity::collidesWith(Entity* other1, Entity* other2)
-{
-	//body->
 
-}
 sf::Vector2f Entity::getPosition()
 {
 	return Convert::b2ToSfml(body->GetPosition());
@@ -40,7 +36,12 @@ void Entity::setFacing(Facing facing)
 {
 	if(facing != currentFacing) 
 	{
-		anime.scale(1, -1);
+		anime.scale(-1, 1);
 	}
 	currentFacing = facing;
+}
+
+void Entity::render(sf::RenderTarget& target)
+{
+	target.draw(anime);
 }

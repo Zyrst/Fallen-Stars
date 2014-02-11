@@ -38,33 +38,27 @@ private:
 class Player : public EntityLiving
 {
 public:
-	Player(/*sf::Texture& texture,*/ BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, ResourceCollection& resource);
 	enum PLAYER_STATE { NORMAL, GRABBING };
+	Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, ResourceCollection& resource);
 	~Player();
 	void render(sf::RenderTarget& renderSurface) override;
 	void update(sf::Time deltaTime) override;
-	void setVelocityX(float x);
-	void setVelocityY(float y);
-	void setVelocity(float x, float y);
 	void jump();
-	bool isAlive();
-	void setFacing(Facing face);
 	virtual void handleAction(Controls::Action action, Controls::KeyState);
+	void updateAnimation();
 
 	void setState(PLAYER_STATE state);
 private:
 	void setupSensors(sf::Vector2f& pos, sf::Vector2f& size);
 
 	sf::Vector2f velocity;
-	Facing mFace;
 	PLAYER_STATE state;
 	CollisionCounterCallBack *groundCallBack, *rightSideCollision, *leftSideCollision, *leftAntiGrabCallBack, *rightAntiGrabCallBack;
 	GrabCallBack *leftGrabCallBack, *rightGrabCallBack;
 	bool leftButton, rightButton, downButton;
-	Animation* mAnimationWalkRight;
-	Animation* mAnimationWalkLeft;
-	Animation* mStellaIdleLeft;
-	Animation* mStellaIdleRight;
-	//sf::Texture& mTexture;
+	Animation* mWalking;
+	Animation* mIdle;
+	Animation* mJump;
+	Animation* mGrab;
 	ResourceCollection& mResource;
 };

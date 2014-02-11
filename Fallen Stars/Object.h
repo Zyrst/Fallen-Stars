@@ -2,13 +2,19 @@
 
 #include "Entity.h"
 #include <SFML/Graphics/Sprite.hpp>
+#include "ResourceCollection.h"
 
 class Object: public Entity
 {
 	public:
-		void render(sf::RenderTarget& renderSurface) override;
+		enum TYPE {STAR, STARDUST};
+		Object(BoxWorld* world,sf::Vector2f& position, ResourceCollection& resource,TYPE type);
 		void update(sf::Time deltaTime) override;
-		sf::Vector2f getPosition() override;
-		void setPosition(float x, float y) override;
-		bool isAlive();
+		bool getType();
+
+private:
+	TYPE mType;
+	ResourceCollection& mResource;
+	Animation* mStar;
+		
 };
