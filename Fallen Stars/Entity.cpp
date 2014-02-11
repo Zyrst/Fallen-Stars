@@ -29,3 +29,17 @@ void Entity::setPosition(float x, float y)
 {
 	body->SetTransform(Convert::sfmlToB2(sf::Vector2f(x,y)),0);
 }
+
+Entity::Facing Entity::getFacing()
+{
+	return currentFacing;
+}
+
+void Entity::setFacing(Facing facing)
+{
+	if(facing != currentFacing) 
+	{
+		anime.scale(1, -1);
+	}
+	currentFacing = facing;
+}

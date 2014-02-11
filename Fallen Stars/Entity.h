@@ -15,6 +15,8 @@ class BoxWorld;
 class Entity
 {
 	public:
+		enum Facing{LEFT, RIGHT};
+
 		//TODO Update skall få funktioner
 		//TODO collisionWith måste ta emot boundingBoxes(bodys?)
 		virtual ~Entity();
@@ -25,12 +27,16 @@ class Entity
 		virtual void setPosition(float x,float y);
 		virtual bool isAlive();
 		void collidesWith(Entity* other1, Entity* other2);
+		Facing getFacing();
+		void setFacing(Facing facing);
 
 	protected:
 		Entity(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position);
 		AnimatedSprite anime;
 		bool mAlive;
-		enum Facing{LEFT, RIGHT};
 		b2Body* body;
 		sf::FloatRect bodyBounds;
+
+	private:
+		Facing currentFacing;
 };
