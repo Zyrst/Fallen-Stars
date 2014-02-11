@@ -3,11 +3,12 @@
 #include "Libraries/Box2D/Box2D/Box2D.h"
 #include "VecConverter.h"
 
-Entity::Entity(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& pos):
+Entity::Entity(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& pos, Facing facing):
 	mAlive(true),
 	body(world->createEntityBody(pos, size)),
 	anime(sf::seconds(0.1)),
-	bodyBounds(pos, size)
+	bodyBounds(pos, size),
+	currentFacing(facing)
 {
 
 }
