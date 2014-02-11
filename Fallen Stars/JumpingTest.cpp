@@ -36,20 +36,22 @@ namespace
 }
 
 JumpingTest::JumpingTest()
-{ 
-	world = new BoxWorld(b2Vec2(0, 30));
+{
+	world = new BoxWorld(b2Vec2(0, 10));
 	level = new LevelManager("Test");
 	
 	mResourceCollection.preloadTexture("Assets/Map/Stella_idle.png");
 	mResourceCollection.preloadTexture("Assets/Map/Stella Left.png");
 	mResourceCollection.preloadTexture("Assets/Map/Shade_walking.png");
 
-	//auto pos = sf::Vector2f(98, 32);
-	auto size = sf::Vector2f(100, 32);
+	tx = new sf::Texture();
+	auto m = mResourceCollection.getTexture("Assets/Map/Stella_idle.png");
+
+	auto size = sf::Vector2f(70, 220);
 	genCollision();
 
 	tx = new sf::Texture();
-	auto m = mResourceCollection.getTexture("Assets/Map/Stella_idle.png");
+	tx->loadFromFile("Assets/Map/Stella Pixel.png");
 
 	auto& layers = level->getMapLoader().GetLayers();
 	for(auto i : layers)
@@ -77,7 +79,7 @@ JumpingTest::~JumpingTest()
 	delete player;
 }
 
-void JumpingTest::update(sf::Time deltaTime)
+void JumpingTest::update(sf::Time& deltaTime)
 {
 	player->update(deltaTime);
 
@@ -87,9 +89,10 @@ void JumpingTest::render(sf::RenderWindow& window)
 {
 	camera->update(window);
 	level->getMapLoader().Draw(window, tmx::MapLayer::Background);
-	world->drawDebug(window);
+	
 	player->render(window);
 	level->getMapLoader().Draw(window, tmx::MapLayer::Foreground);
+	world->drawDebug(window);
 }
 
 void JumpingTest::handleAction(Controls::Action action, Controls::KeyState state)

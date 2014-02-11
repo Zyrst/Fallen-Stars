@@ -28,7 +28,7 @@ void loadStateResources(LoadingState* loadingState)
 	loadingState->setProgress(LoadingState::DONE_LOADING);
 }
 
-void LoadingState::update(sf::Time deltaTime)
+void LoadingState::update(sf::Time& deltaTime)
 {
 	// Start off the loading
 	if(mProgress == LoadingState::NOT_LOADED)

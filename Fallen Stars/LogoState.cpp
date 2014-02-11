@@ -25,7 +25,7 @@ void LogoState::load()
 	mResourceCollection.preloadTexture("../Debug/Logo.png");
 }
 
-void LogoState::update(sf::Time deltaTime)
+void LogoState::update(sf::Time& deltaTime)
 {
 	mTime += deltaTime;
 

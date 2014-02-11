@@ -32,4 +32,5 @@ class Entity
 		bool mAlive;
 		enum Facing{LEFT, RIGHT};
 		b2Body* body;
+		sf::FloatRect bodyBounds;
 };

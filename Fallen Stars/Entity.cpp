@@ -6,8 +6,10 @@
 Entity::Entity(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& pos):
 	mAlive(true),
 	body(world->createEntityBody(pos, size)),
-	anime(sf::seconds(0.1))
-{ 
+	anime(sf::seconds(0.1)),
+	bodyBounds(pos, size)
+{
+
 }
 Entity::~Entity() {}
 bool Entity::isAlive()
