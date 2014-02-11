@@ -24,7 +24,7 @@ LogoState::~LogoState(void)
 
 void LogoState::load(){}
 
-void LogoState::update(sf::Time deltaTime)
+void LogoState::update(sf::Time& deltaTime)
 {
 	mTime += deltaTime;
 

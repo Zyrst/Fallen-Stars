@@ -10,7 +10,7 @@ public:
 	LoadingState(State* nextState);
 	
 	void load() override;
-	void update(sf::Time deltaTime) override;
+	void update(sf::Time& deltaTime) override;
 	void render(sf::RenderWindow& window) override;
 	void handleAction(Controls::Action, Controls::KeyState) override;
 

@@ -37,16 +37,15 @@ namespace
 
 JumpingTest::JumpingTest()
 { 
-	world = new BoxWorld(b2Vec2(0, 30));
-	level = new LevelManager("Test");
-	
+	world = new BoxWorld(b2Vec2(0, 10));
+	level = new LevelManager("hejsan");
 
-	auto pos = sf::Vector2f(98, 32);
-	auto size = sf::Vector2f(100, 32);
+	auto pos = sf::Vector2f(98, 380);
+	auto size = sf::Vector2f(70, 220);
 	genCollision();
 
 	tx = new sf::Texture();
-	tx->loadFromFile("Assets/Map/Shade.png");
+	tx->loadFromFile("Assets/Map/Stella Pixel.png");
 
 	player = new Player(*tx, world, size, pos);
 	sf::Vector2u mapSize =  level->getMapLoader().GetMapSize();
@@ -60,7 +59,7 @@ JumpingTest::~JumpingTest()
 	delete player;
 }
 
-void JumpingTest::update(sf::Time deltaTime)
+void JumpingTest::update(sf::Time& deltaTime)
 {
 	player->update(deltaTime);
 
@@ -70,9 +69,10 @@ void JumpingTest::render(sf::RenderWindow& window)
 {
 	camera->update(window);
 	level->getMapLoader().Draw(window, tmx::MapLayer::Background);
-	world->drawDebug(window);
+	
 	player->render(window);
 	level->getMapLoader().Draw(window, tmx::MapLayer::Foreground);
+	world->drawDebug(window);
 }
 
 void JumpingTest::handleAction(Controls::Action action, Controls::KeyState state)

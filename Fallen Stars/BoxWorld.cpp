@@ -5,6 +5,52 @@
 #include "CallBack.h"
 #include "VecConverter.h"
 
+namespace BoxBounds
+{
+	sf::FloatRect boundsOfFixture(const b2Fixture* fix)
+	{
+		using namespace std;
+
+		//xy1 = min, xy2 = max
+		float x1 = 0.0f, y1 = 0.0f, x2 = 0.0f, y2 = 0.0f;
+
+		const b2Shape* shape = fix->GetShape();
+
+		//Make sure this fixture is a polygon
+		if (shape->GetType() == b2Shape::e_polygon)
+		{
+			const b2PolygonShape* sh = (b2PolygonShape*) shape;
+			
+			for (int i = 0; i < sh->GetVertexCount(); i++)
+			{
+				const b2Vec2& vert = sh->GetVertex(i);
+
+				//If this is the first vertex, initialize all coordinates.
+				if (i == 0)
+				{
+					x1 = x2 = vert.x;
+					y1 = y2 = vert.y;
+				}
+				else
+				{
+					//Update xy1 and xy2 accordingly to the minimum and maximum coordinates of the fixture.
+					x1 = min(vert.x, x1);
+					x2 = max(vert.x, x2);
+					y1 = min(vert.y, y1);
+					y2 = max(vert.y, y2);
+				}
+			}
+		}
+
+		//Since we are returning an sf::FloatRect, we should convert the coordinates to
+		//sfml coordinate space.
+		sf::Vector2f pos = Convert::b2ToSfml(b2Vec2(x1, y1));
+		sf::Vector2f size = Convert::b2ToSfml(b2Vec2(x2 - x1, y2 - y1));
+
+		return sf::FloatRect(pos, size);
+	}
+}
+
 namespace
 {
 	//Assuming points is an array with 4 elements

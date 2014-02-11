@@ -41,6 +41,7 @@ public:
 
 private:
 	sf::RenderWindow *window;
+	float ratio;
 };
 
 #endif // DEBUGDRAW_H

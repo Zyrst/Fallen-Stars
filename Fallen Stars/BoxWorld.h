@@ -7,12 +7,18 @@
 class b2World;
 class b2Body;
 class b2ContactListener;
+class b2Fixture;
 
 class DebugDraw;
 
 namespace tmx
 {
 	class MapObject;
+}
+
+namespace BoxBounds
+{
+	sf::FloatRect boundsOfFixture(const b2Fixture* fix);
 }
 
 class BoxWorld

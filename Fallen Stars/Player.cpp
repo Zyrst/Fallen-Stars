@@ -9,38 +9,85 @@
 #include "SpriteSheet.h"
 #include <iostream>
 
-GroundCallBack::GroundCallBack(b2Fixture* owner)
+static const float SPEED = 3;
+
+CollisionCounterCallBack::CollisionCounterCallBack(b2Fixture* owner)
 	: CallBack(owner)
-	, groundTouches(0)
-{ }
+	, collisions(0)
+{
+	owner->SetUserData(this);
+}
 
-void GroundCallBack::beginContact(b2Fixture* otherFixture)
+void CollisionCounterCallBack::beginContact(b2Fixture* otherFixture)
 {
 	if (otherFixture->GetBody()->GetType() == b2_staticBody)
 	{
-		groundTouches++;
+		collisions++;
 	}
 }
-void GroundCallBack::endContact(b2Fixture* otherFixture)
+void CollisionCounterCallBack::endContact(b2Fixture* otherFixture)
 {
 	if (otherFixture->GetBody()->GetType() == b2_staticBody)
 	{
-		groundTouches--;
+		collisions--;
 	}
 }
 
-bool GroundCallBack::isOnGround()
+bool CollisionCounterCallBack::isColliding() const
 {
-	return (groundTouches > 0);
+	return (collisions > 0);
+}
+
+GrabCallBack::GrabCallBack(b2Fixture* owner)
+	: CallBack(owner)
+	, grabCandidate(nullptr)
+{
+	owner->SetUserData(this);
+}
+
+void GrabCallBack::beginContact(b2Fixture* otherFixture)
+{
+	sf::FloatRect bounds = BoxBounds::boundsOfFixture(otherFixture);
+	if (otherFixture->GetBody()->GetType() == b2_staticBody && (grabCandidate == nullptr || bounds.top < candidateBounds.top))
+	{
+		setCandidate(otherFixture, bounds);
+	}
+}
+
+void GrabCallBack::endContact(b2Fixture* otherFixture)
+{
+	if (otherFixture->GetBody()->GetType() == b2_staticBody && grabCandidate != nullptr && otherFixture == grabCandidate)
+	{
+		grabCandidate = nullptr;
+	}
+}
+
+bool GrabCallBack::isColliding() const
+{
+	return (grabCandidate != nullptr);
+}
+
+const sf::FloatRect& GrabCallBack::getGrabbedFixtureBounds() const
+{
+	return candidateBounds;
+}
+
+void GrabCallBack::setCandidate(b2Fixture* fix, const sf::FloatRect& bounds)
+{
+	grabCandidate = fix;
+	candidateBounds = sf::FloatRect(bounds);
 }
 
 Player::Player(sf::Texture& texture, BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position)
-: EntityLiving(world, size, position)
-, onGround(false)
-, groundCallBack(nullptr)
-, leftButton(false)
-, rightButton(false)
+	: EntityLiving(world, size, position)
+	, onGround(false)
+	, groundCallBack(nullptr)
+	, leftButton(false)
+	, rightButton(false)
+	, downButton(false)
 {
+	setState(PLAYER_STATE::NORMAL);
+
 	sf::Vector2i spritesheetSize = static_cast<sf::Vector2i>(texture.getSize());
 	sf::Vector2i frameSize(256, 256);
 
@@ -54,8 +101,11 @@ Player::Player(sf::Texture& texture, BoxWorld* world, sf::Vector2f& size, sf::Ve
 	mAnimationWalkLeft = new Animation(framesMirrored, texture);
 	anime.setAnimation(*mAnimationWalkRight);
 	
-	std::cout << mAnimationWalkRight->getSize();
-	
+	std::cout << mAnimationWalkRight->getSize()<<std::endl;
+
+	const sf::FloatRect& psize = anime.getLocalBounds();
+	anime.setOrigin((psize.width-size.x) / 2.0f, psize.height-size.y);
+
 	setupSensors(position, size);
 }
 
@@ -68,43 +118,149 @@ Player::~Player()
 
 void Player::setupSensors(sf::Vector2f& pos, sf::Vector2f& size)
 {
+
 	b2Vec2 bpos = b2Vec2(0, 0);
 	b2Vec2 bsize = Convert::sfmlToB2(size);
 
-	bpos.x += bsize.x / 2;
+	//Half width and size.
+	const float hw = bsize.x / 2.0f, hh = bsize.y / 2.0f;
+
+	//Setup ground sensor.
+	bpos.x += hw;
 	bpos.y += bsize.y;
 
 	b2PolygonShape sh;
-	sh.SetAsBox(0.1f, 0.1f, bpos, 0);
+	sh.SetAsBox(0.2f, 0.01f, bpos, 0);
 
 	b2FixtureDef def;
 	def.isSensor = true;
 	def.shape = &sh;
 
 	b2Fixture* fix = body->CreateFixture(&def);
-	groundCallBack = new GroundCallBack(fix);
-	fix->SetUserData(groundCallBack);
+	groundCallBack = new CollisionCounterCallBack(fix);
+
+	//Left and right side collision sensors (to not get stuck in next to walls anymore)
+	bpos = b2Vec2(0, 0);
+	bpos.y += hh;
+
+	sh.SetAsBox(0.01f, hh*0.99f, bpos, 0);
+
+	fix = body->CreateFixture(&def);
+	leftSideCollision = new CollisionCounterCallBack(fix);
+
+	bpos.x += bsize.x;
+	sh.SetAsBox(0.01f, hh*0.99f, bpos, 0);
+
+	fix = body->CreateFixture(&def);
+	rightSideCollision = new CollisionCounterCallBack(fix);
+
+	//Left and right side grab detectors.
+	const float grabYPos = 0.05f;
+	const float grabW = 0.05f;
+	const float grabH = 0.09f;
+	bpos = b2Vec2(0, grabYPos);
+
+	sh.SetAsBox(grabW, grabH, bpos, 0);
+
+	fix = body->CreateFixture(&def);
+	leftGrabCallBack = new GrabCallBack(fix);
+
+	bpos.x += bsize.x;
+
+	sh.SetAsBox(grabW, grabH, bpos, 0);
+
+	fix = body->CreateFixture(&def);
+	rightGrabCallBack = new GrabCallBack(fix);
+
+	//Left and right side anti-grab detectors.
+	bpos = b2Vec2(0, grabYPos - grabH-0.05f);
+	sh.SetAsBox(grabW, 0.05f, bpos, 0);
+
+	fix = body->CreateFixture(&def);
+	leftAntiGrabCallBack = new CollisionCounterCallBack(fix);
+
+	bpos.x += bsize.x;
+	sh.SetAsBox(grabW, 0.05f, bpos, 0);
+
+	fix = body->CreateFixture(&def);
+	rightAntiGrabCallBack = new CollisionCounterCallBack(fix);
 }
 
 void Player::update(sf::Time deltaTime)
 {
 	const b2Vec2& vel = body->GetLinearVelocity();
 
-	if (leftButton)
+	if (state == PLAYER_STATE::NORMAL)
 	{
-		body->SetLinearVelocity(b2Vec2(-10, vel.y));
+		if (leftButton)
+		{
+			if (!leftSideCollision->isColliding())
+			{
+				body->SetLinearVelocity(b2Vec2(-SPEED, vel.y));
+			}
+		}
+		else if (rightButton)
+		{
+			if (!rightSideCollision->isColliding())
+			{
+				body->SetLinearVelocity(b2Vec2(SPEED, vel.y));
+			}
+		}
+		else
+		{
+			body->SetLinearVelocity(b2Vec2(0, vel.y));
+		}
+
+		//Check for grabbing if we are not flying upwards.
+		if (vel.y >= 0)
+		{
+			if (leftGrabCallBack->isColliding() && !leftAntiGrabCallBack->isColliding())
+			{
+				this->setState(PLAYER_STATE::GRABBING);
+				const sf::FloatRect& bounds = leftGrabCallBack->getGrabbedFixtureBounds();
+				body->SetTransform(Convert::sfmlToB2(sf::Vector2f(bounds.left + bounds.width, bounds.top)), 0);
+				setFacing(mFacing::LEFT);
+			}
+			else if (rightGrabCallBack->isColliding() && !rightAntiGrabCallBack->isColliding())
+			{
+				this->setState(PLAYER_STATE::GRABBING);
+				const sf::FloatRect& bounds = rightGrabCallBack->getGrabbedFixtureBounds();
+				body->SetTransform(Convert::sfmlToB2(sf::Vector2f(bounds.left-bodyBounds.width, bounds.top)), 0);
+				setFacing(mFacing::RIGHT);
+			}
+		}
+		
 	}
-	else if (rightButton)
+	else if (state == PLAYER_STATE::GRABBING)
 	{
-		body->SetLinearVelocity(b2Vec2(10, vel.y));
+		//Check if we should just drop down
+		//Jumping while grabbing is handled in Player::jump() and not here.
+		if (downButton || (rightButton && mFace == mFacing::LEFT) || (leftButton && mFace == mFacing::RIGHT))
+		{
+			const float pushDistance = 12.0f;
+			//If we are facing right, push the player a bit left
+			if (mFace == mFacing::RIGHT)
+			{
+				sf::Vector2f pos = Convert::b2ToSfml(body->GetPosition());
+				pos.x -= pushDistance;
+				body->SetTransform(Convert::sfmlToB2(pos), 0.0f);
+			}
+			//Else just push the player a bit right.
+			else
+			{
+				sf::Vector2f pos = Convert::b2ToSfml(body->GetPosition());
+				pos.x += pushDistance;
+				body->SetTransform(Convert::sfmlToB2(pos), 0.0f);
+			}
+
+			setState(PLAYER_STATE::NORMAL);
+		}
 	}
-	else
-	{
-		body->SetLinearVelocity(b2Vec2(0, vel.y));
-	}
+	
 
 	anime.update(deltaTime);
 }
+
 void Player::render(sf::RenderTarget& renderTarget)
 {
 	anime.setPosition(Convert::b2ToSfml(body->GetPosition()));
@@ -121,6 +277,38 @@ void Player::render(sf::RenderTarget& renderTarget)
 	sh.setOutlineThickness(1.0f);
 
 	renderTarget.draw(sh);
+
+	//Ugly debug code incoming to check for grabbed fixtures.
+	if (leftGrabCallBack->isColliding())
+	{
+		const sf::FloatRect& bounds = leftGrabCallBack->getGrabbedFixtureBounds();
+		sh.setSize(sf::Vector2f(bounds.width, bounds.height));
+		sh.setPosition(bounds.left, bounds.top);
+		sh.setFillColor(sf::Color(0, 0, 200, 200));
+
+		renderTarget.draw(sh);
+
+		sh.setFillColor(sf::Color(255, 0, 0, 255));
+		sh.setSize(sf::Vector2f(10, 10));
+		sh.setPosition(bounds.left + bounds.width - sh.getSize().x, bounds.top);
+
+		renderTarget.draw(sh);
+	}
+
+	if (rightGrabCallBack->isColliding())
+	{
+		const sf::FloatRect& bounds = rightGrabCallBack->getGrabbedFixtureBounds();
+		sh.setSize(sf::Vector2f(bounds.width, bounds.height));
+		sh.setPosition(bounds.left, bounds.top);
+		sh.setFillColor(sf::Color(0, 0, 200, 200));
+
+		renderTarget.draw(sh);
+
+		sh.setFillColor(sf::Color(255, 0, 0, 255));
+		sh.setSize(sf::Vector2f(10, 10));
+
+		renderTarget.draw(sh);
+	}
 }
 bool Player::isAlive()
 {
@@ -141,12 +329,21 @@ void Player::setVelocity(float x, float y)
 }
 void Player::jump()
 {
-	if (groundCallBack->isOnGround() && body->GetLinearVelocity().y >= 0)
+	if (state == PLAYER_STATE::NORMAL)
 	{
-		const b2Vec2& vel = body->GetLinearVelocity();
-		//body->ApplyLinearImpulse(b2Vec2(0, -7), b2Vec2(0, 0), true);
-		body->SetLinearVelocity(b2Vec2(vel.x, -10));
+		if (groundCallBack->isColliding() && body->GetLinearVelocity().y >= 0)
+		{
+			const b2Vec2& vel = body->GetLinearVelocity();
+			//body->ApplyLinearImpulse(b2Vec2(0, -7), b2Vec2(0, 0), true);
+			body->SetLinearVelocity(b2Vec2(vel.x, -5));
+		}
 	}
+	else if (state == PLAYER_STATE::GRABBING)
+	{
+		setState(PLAYER_STATE::NORMAL);
+		body->SetLinearVelocity(b2Vec2(0, -6));
+	}
+	
 }
 void Player::setFacing(mFacing face)
 {
@@ -175,6 +372,9 @@ void Player::handleAction(Controls::Action action, Controls::KeyState state)
 		}
 		rightButton = keyDown;
 		break;
+	case Controls::Action::DOWN:
+		downButton = keyDown;
+		break;
 	case Controls::Action::JUMP:
 		if (keyDown)
 		{
@@ -182,4 +382,21 @@ void Player::handleAction(Controls::Action action, Controls::KeyState state)
 		}	
 		break;
 	}
+}
+
+void Player::setState(Player::PLAYER_STATE state)
+{
+	switch (state)
+	{
+	case PLAYER_STATE::NORMAL:
+		body->SetGravityScale(1.0f);
+		body->SetAwake(true);
+		break;
+	case PLAYER_STATE::GRABBING:
+		body->SetGravityScale(0.0f);
+		body->SetLinearVelocity(b2Vec2(0, 0));
+		body->SetAwake(false);
+		break;
+	}
+	this->state = state;
 }
