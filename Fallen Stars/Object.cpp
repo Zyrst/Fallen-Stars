@@ -31,7 +31,7 @@ void Object::update(sf::Time deltaTime)
 	
 }
 
-bool Object::getType()
+Object::TYPE Object::getType()
 {
 	return mType;
 }

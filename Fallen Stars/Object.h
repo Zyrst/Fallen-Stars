@@ -10,7 +10,7 @@ class Object: public Entity
 		enum TYPE {STAR, STARDUST};
 		Object(BoxWorld* world,sf::Vector2f& position, ResourceCollection& resource,TYPE type);
 		void update(sf::Time deltaTime) override;
-		bool getType();
+		TYPE getType();
 
 private:
 	TYPE mType;

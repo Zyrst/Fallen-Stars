@@ -56,10 +56,11 @@ namespace
 	//Assuming points is an array with 4 elements
 	void genPoints(b2Vec2* points, const b2Vec2& size)
 	{
-		points[0] = b2Vec2(0, 0);
-		points[1] = b2Vec2(size.x, 0);
-		points[2] = size;
-		points[3] = b2Vec2(0,  size.y);
+		const float hw = size.x / 2.0f;
+		points[0] = b2Vec2(-hw, 0);
+		points[1] = b2Vec2(size.x-hw, 0);
+		points[2] = b2Vec2(size.x-hw, size.y);
+		points[3] = b2Vec2(-hw,  size.y);
 	}
 
 	class Clister : public b2ContactListener

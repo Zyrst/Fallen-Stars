@@ -119,7 +119,7 @@ Player::Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position,Resou
 
 	anime.setAnimation(*mIdle);
 	const sf::FloatRect& psize = anime.getLocalBounds();
-	anime.setOrigin((psize.width-size.x) / 2.0f, psize.height-size.y);
+	anime.setOrigin((psize.width) / 2.0f, psize.height-size.y);
 
 	setupSensors(position, size);
 	body->SetLinearDamping(1.0f);
@@ -136,12 +136,12 @@ Player::~Player()
 
 void Player::setupSensors(sf::Vector2f& pos, sf::Vector2f& size)
 {
-
-	b2Vec2 bpos = b2Vec2(0, 0);
 	b2Vec2 bsize = Convert::sfmlToB2(size);
 
 	//Half width and size.
 	const float hw = bsize.x / 2.0f, hh = bsize.y / 2.0f;
+
+	b2Vec2 bpos = b2Vec2(-hw, 0);
 
 	//Setup ground sensor.
 	bpos.x += hw;
@@ -158,7 +158,7 @@ void Player::setupSensors(sf::Vector2f& pos, sf::Vector2f& size)
 	groundCallBack = new CollisionCounterCallBack(fix);
 
 	//Left and right side collision sensors (to not get stuck in next to walls anymore)
-	bpos = b2Vec2(0, 0);
+	bpos = b2Vec2(-hw, 0);
 	bpos.y += hh;
 
 	sh.SetAsBox(0.01f, hh*0.99f, bpos, 0);
@@ -176,7 +176,7 @@ void Player::setupSensors(sf::Vector2f& pos, sf::Vector2f& size)
 	const float grabYPos = 0.05f;
 	const float grabW = 0.05f;
 	const float grabH = 0.09f;
-	bpos = b2Vec2(-grabW, grabYPos);
+	bpos = b2Vec2(-hw-grabW, grabYPos);
 
 	sh.SetAsBox(grabW, grabH, bpos, 0);
 
@@ -191,7 +191,7 @@ void Player::setupSensors(sf::Vector2f& pos, sf::Vector2f& size)
 	rightGrabCallBack = new GrabCallBack(fix);
 
 	//Left and right side anti-grab detectors.
-	bpos = b2Vec2(-grabW, grabYPos - grabH-0.05f);
+	bpos = b2Vec2(-hw-grabW, grabYPos - grabH-0.05f);
 	sh.SetAsBox(grabW, 0.05f, bpos, 0);
 
 	fix = body->CreateFixture(&def);
@@ -239,13 +239,13 @@ void Player::update(sf::Time deltaTime)
 			{
 				this->setState(PLAYER_STATE::GRABBING);
 				const sf::FloatRect& bounds = leftGrabCallBack->getGrabbedFixtureBounds();
-				body->SetTransform(Convert::sfmlToB2(sf::Vector2f(bounds.left + bounds.width, bounds.top)), 0);
+				body->SetTransform(Convert::sfmlToB2(sf::Vector2f(bounds.left + bounds.width + (bodyBounds.width / 2.0f), bounds.top)), 0);
 			}
 			else if (rightGrabCallBack->isColliding() && !rightAntiGrabCallBack->isColliding() && getFacing() == Facing::RIGHT)
 			{
 				this->setState(PLAYER_STATE::GRABBING);
 				const sf::FloatRect& bounds = rightGrabCallBack->getGrabbedFixtureBounds();
-				body->SetTransform(Convert::sfmlToB2(sf::Vector2f(bounds.left-bodyBounds.width, bounds.top)), 0);
+				body->SetTransform(Convert::sfmlToB2(sf::Vector2f(bounds.left-(bodyBounds.width/2.0f), bounds.top)), 0);
 			}
 		}
 		
