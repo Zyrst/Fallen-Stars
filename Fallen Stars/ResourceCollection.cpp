@@ -2,10 +2,23 @@
 
 #include <iostream>
 
-void TextureCollection::preloadTexture(std::string filename)
+ResourceCollection::ResourceCollection():
+	renderThread(std::this_thread::get_id())	
+{}
+
+/* Texture loader */
+
+void ResourceCollection::loadTexture(std::string filename)
 {
 	if( mTextures.find(filename) == mTextures.end())
 	{
+		std::cout << "Loading texture " << filename << std::endl;
+
+		if(std::this_thread::get_id() == renderThread)
+		{
+			std::cout << "Texture " << filename << " was not preloaded!" << std::endl;
+		}
+
 		if(!mTextures[filename].loadFromFile(filename))
 		{
 			std::cout << "Texture " << filename << " failed to load!" << std::endl;
@@ -13,36 +26,35 @@ void TextureCollection::preloadTexture(std::string filename)
 	}
 }
 
-sf::Texture& TextureCollection::getTexture(std::string filename)
+sf::Texture& ResourceCollection::getTexture(std::string filename)
 {
-	if( mTextures.find(filename) == mTextures.end())
-	{
-		std::cout << "Texture " << filename << " was not preloaded!" << std::endl;
-		if(!mTextures[filename].loadFromFile(filename))
-		{
-			std::cout << "Texture " << filename << " failed to load!" << std::endl;
-		}
-	}
+	loadTexture(filename);
 	return mTextures[filename];
 }
-/*
-void SoundCollection::preloadSound(std::string filename)
+
+
+/* Sound loader */
+
+void ResourceCollection::loadSound(std::string filename)
 {
+	std::cout << "Loading sound " << filename << std::endl;
+
 	if( mSoundBuffers.find(filename) == mSoundBuffers.end() )
 	{
-		mSoundBuffers[filename].loadFromFile(filename);
+		if(std::this_thread::get_id() == renderThread)
+		{
+			std::cout << "Sound " << filename << " was not preloaded!" << std::endl;
+		}
+
+		if(!mSoundBuffers[filename].loadFromFile(filename))
+		{
+			std::cout << "Sound " << filename << " failed to load!" << std::endl;
+		}
 	}
 }
 
-sf::Sound SoundCollection::getSound(std::string filename)
+sf::Sound ResourceCollection::getSound(std::string filename)
 {
-	if( mSoundBuffers.find(filename) == mSoundBuffers.end() )
-	{
-		std::cout << "Sound " << filename << " was not preloaded!" << std::endl;
-		if!(mSoundBuffers[filename].loadFromFile(filename))
-		{
-
-		}
-	}
+	loadSound(filename);
 	return sf::Sound(mSoundBuffers[filename]);
-}*/
+}
