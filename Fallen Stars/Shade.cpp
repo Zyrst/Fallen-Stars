@@ -12,6 +12,7 @@
 ChaseSensor::ChaseSensor(b2Fixture* owner)
 	: CallBack(owner)
 	, chasing(0)
+	, mActive(false)
 { }
 void ChaseSensor::beginContact(b2Fixture* otherFixture)
 {
@@ -33,7 +34,7 @@ bool ChaseSensor::isChasing()
 }
 bool ChaseSensor::isActive()
 {
-return mActive;
+	return mActive;
 }
 void ChaseSensor::setActive(bool active)
 {
@@ -43,6 +44,7 @@ void ChaseSensor::setActive(bool active)
 LedgeSensor::LedgeSensor(b2Fixture* otherFixture)
 	: CallBack(owner)
 	, grounded(0)
+	, mActive(false)
 {}
 void LedgeSensor::beginContact(b2Fixture* otherFixture)
 {
@@ -64,9 +66,10 @@ bool LedgeSensor::isGrounded() const
 
 }
 /*----------------------------*/
-Shade::Shade(sf::Texture& texture, BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position)
+Shade::Shade(ResourceCollection& resource, BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position)
 : EntityLiving(world,size,position),
-  mFace(LEFT)
+  mFace(LEFT),
+  mResource(resource)
 
 {
 	setupSensors(position,size);
@@ -93,31 +96,31 @@ void Shade::update(sf::Time deltaTime)
 	{
 		if(chaseSensorLeft->isChasing())
 		{
-			body->SetLinearVelocity(b2Vec2(-10*1.5, vel.y));
+			//body->SetLinearVelocity(b2Vec2(-10*1.5, vel.y));
 		}
 		else
 		{
-		body->SetLinearVelocity(b2Vec2(-10, vel.y));
+			//body->SetLinearVelocity(b2Vec2(-10, vel.y));
 		}
 	}
 	else if(mFace = RIGHT)
 	{
 		if(chaseSensorRight->isChasing())
 		{
-			body->SetLinearVelocity(b2Vec2(10*1.5, vel.y));
+			//body->SetLinearVelocity(b2Vec2(10*1.5, vel.y));
 		}
 		else
 		{
-		body->SetLinearVelocity(b2Vec2(10, vel.y));
+			//body->SetLinearVelocity(b2Vec2(10, vel.y));
 		}
 	}
-
+	/*
 	if(!ledgeSensorLeft->isGrounded()){
 		setFacing(RIGHT);
 	}
 	else if(!ledgeSensorRight->isGrounded()){
 		setFacing(LEFT);
-	}
+	}*/
 }
 void Shade::setVelocityX(float x)
 {
@@ -132,7 +135,7 @@ void Shade::setFacing(Facing Face)
 		chaseSensorRight->setActive(false);
 	}
 	else if(Face = RIGHT)
-	{
+	{ 
 		chaseSensorLeft->setActive(false);
 		chaseSensorRight->setActive(true);
 	}
@@ -214,5 +217,10 @@ void Shade::setupSensors(sf::Vector2f position, sf::Vector2f size)
 	groundFixRight->SetFilterData(filterGroundRight);
 	fixLeft->SetFilterData(filterChaseLeft);
 	fixRight->SetFilterData(filterChaseRight);
+
+}
+
+void Shade::handleAction(Controls::Action action, Controls::KeyState)
+{
 
 }

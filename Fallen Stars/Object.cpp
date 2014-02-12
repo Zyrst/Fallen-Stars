@@ -5,9 +5,6 @@
 #include "VecConverter.h"
 #include <iostream>
 
-int STARS = 0;
-int STARDUSTZ = 0;
-
 StarCallBack::StarCallBack(b2Fixture* owner)
 	: CallBack(owner)
 	, player(nullptr)
@@ -100,7 +97,6 @@ void Object::update(sf::Time deltaTime)
 	if (isAlive() && starCallBack->isColliding() && getType() == STARDUST)
 	{
 		std::cout << "Collect stardust wow :D" << std::endl;
-		//STARDUSTS += 1;
 		mAlive = false;
 	}
 	if (isAlive() && starCallBack->isColliding() && getType() == STAR)

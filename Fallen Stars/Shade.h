@@ -31,12 +31,13 @@ private:
 class Shade: public EntityLiving
 {
 public:
-	Shade(sf::Texture& texture, BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position);
+	Shade(ResourceCollection& resource, BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position);
 	~Shade();
 	void render(sf::RenderTarget& renderSurface)override;
 	void update(sf::Time deltaTime)override;
 	void setVelocityX(float x);
 	void setFacing(Facing Face);
+	void handleAction(Controls::Action action, Controls::KeyState);
 private:
 	Player* player;
 	sf::Vector2f velocity;
@@ -47,5 +48,6 @@ private:
 	LedgeSensor* ledgeSensorLeft;
 	LedgeSensor* ledgeSensorRight;
 	EntityCategory entityCategory;
+	ResourceCollection& mResource;
 };
 

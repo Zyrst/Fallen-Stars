@@ -8,6 +8,7 @@
 #include "ResourceCollection.h"
 #include "Camera.h"
 #include "Object.h"
+#include "Shade.h"
 
 namespace
 {
@@ -16,7 +17,6 @@ namespace
 	BoxWorld* world;
 	Player* player;
 	Camera* camera;
-	Object* object;
 
 	ResourceCollection rc;
 	sf::Texture* tx;
@@ -67,7 +67,6 @@ JumpingTest::JumpingTest()
 			{
 				auto pos = k.GetPosition();
 				mEntityVector.push_back(new Object(world,pos,mResourceCollection, Object::TYPE::STAR));
-				//mEntityVector.push_back(object);
 			}
 		}
 		if (i.name.compare("StarDust") == 0)
@@ -77,12 +76,18 @@ JumpingTest::JumpingTest()
 			{
 				auto pos = k.GetPosition();
 				mEntityVector.push_back(new Object(world,pos,mResourceCollection, Object::TYPE::STARDUST));
-				//mEntityVector.push_back(object);
+			}
+		}  
+		if (i.name.compare("Enemy") == 0)
+		{
+			auto j = i.objects;
+			for (auto k : j)
+			{
+				auto pos = k.GetPosition();
+				mEntityVector.push_back(new Shade(mResourceCollection,world,size,pos));
 			}
 		}
 	}
-
-
 	sf::Vector2u mapSize =  level->getMapLoader().GetMapSize();
 	camera = new Camera(player, mapSize);
 }
@@ -92,30 +97,23 @@ JumpingTest::~JumpingTest()
 	delete world;
 	delete level;
 	delete player;
-	delete object;
 }
 
 void JumpingTest::update(const sf::Time& deltaTime)
 {
-	//player->update(deltaTime);
-	
 	for (Entity* e :mEntityVector)
 	{
 		e->update(deltaTime);
-	//object->update(deltaTime);
 	}
 	world->step(deltaTime.asSeconds());
 }
 void JumpingTest::render(sf::RenderWindow& window)
 {
-	EntityVector entities(mEntityVector);
 	camera->update(window);
 	level->getMapLoader().Draw(window, tmx::MapLayer::Background);
-	//player->render(window);
 	for (Entity* e :mEntityVector)
 	{
 		e->render(window);
-	//object->render(window);
 	}
 	level->getMapLoader().Draw(window, tmx::MapLayer::Foreground);
 	world->drawDebug(window);
