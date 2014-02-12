@@ -237,8 +237,10 @@ void Player::update(sf::Time deltaTime)
 			if (!rightSideCollision->isColliding())
 			{
 				body->SetLinearVelocity(b2Vec2(SPEED, vel.y));
-				setFacing(Entity::RIGHT);
+				
 			}
+			
+			setFacing(Entity::RIGHT);
 		}
 		else
 		{
@@ -300,7 +302,7 @@ void Player::render(sf::RenderTarget& renderTarget)
 	anime.setRotation(body->GetAngle() * 180 / 3.14159265);
 	Entity::render(renderTarget);
 
-	sf::FloatRect rect = anime.getGlobalBounds();
+	/*sf::FloatRect rect = anime.getGlobalBounds();
 
 	sf::RectangleShape sh = sf::RectangleShape(sf::Vector2f(rect.width, rect.height));
 	sh.setPosition(rect.left, rect.top);
@@ -340,7 +342,7 @@ void Player::render(sf::RenderTarget& renderTarget)
 		sh.setSize(sf::Vector2f(10, 10));
 
 		renderTarget.draw(sh);
-	}
+	}*/
 }
 
 void Player::jump()

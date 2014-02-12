@@ -18,7 +18,7 @@ namespace
 	Player* player;
 	Camera* camera;
 
-	ResourceCollection rc;
+	//ResourceCollection rc;
 	sf::Texture* tx;
 	sf::Sprite* sp;
 
@@ -40,8 +40,7 @@ namespace
 JumpingTest::JumpingTest()
 {
 	world = new BoxWorld(b2Vec2(0, 10));
-
-	level = new LevelManager("Proto");
+	level = new LevelManager("proto");
 
 	auto size = sf::Vector2f(70, 220);
 	genCollision();

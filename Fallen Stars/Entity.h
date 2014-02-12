@@ -27,7 +27,7 @@ class Entity
 		//TODO Update skall få funktioner
 		//TODO collisionWith måste ta emot boundingBoxes(bodys?)
 		virtual ~Entity();
-		void render(sf::RenderTarget& renderSurface);
+		virtual void render(sf::RenderTarget& renderSurface);
 		virtual void update(sf::Time deltaTime)=0;
 		virtual void handleAction(Controls::Action action, Controls::KeyState) = 0;
 		sf::Vector2f getPosition();
