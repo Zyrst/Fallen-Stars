@@ -1,6 +1,8 @@
 #include "Object.h"
 #include "SpriteSheet.h"
 #include <Box2D\Box2D.h>
+#include "BoxWorld.h"
+#include "VecConverter.h"
 #include <iostream>
 
 StarCallBack::StarCallBack(b2Fixture* owner)
@@ -54,10 +56,10 @@ Object::Object(BoxWorld* world, sf::Vector2f& position, ResourceCollection& reso
 	if(mType == TYPE::STAR)
 	{
 		/*Star animation*/
-		auto &star = mResource.getTexture("Assets/Map/Window_06.png");
+		auto &star = mResource.getTexture("Assets/Map/door_01.png");
 
 		sf::Vector2i starSize = static_cast<sf::Vector2i>(star.getSize());
-		sf::Vector2i frameSize(198,198); /* Alter to right size */
+		sf::Vector2i frameSize(294,411); /* Alter to right size */
 
 		SpriteSheet starSheet(frameSize, starSize);
 		std::vector<sf::IntRect> starFrames = starSheet.getAllFrames();
@@ -66,26 +68,37 @@ Object::Object(BoxWorld* world, sf::Vector2f& position, ResourceCollection& reso
 		anime.setAnimation(*mStar);
 		
 		updateSpriteOrigin();
+
+		//mStar = new Animation(starFrames, star);
+		//anime.play(*mStar);
 	}
 
 	if (mType == TYPE::STARDUST)
 	{
 		/*StarDust animation*/
-		/*auto &starDust = mResource.getTexture("Namn på fil.png");
+		auto &starDust = mResource.getTexture("Assets/Map/SmallBox.png");
 
 		sf::Vector2i starDustSize = static_cast<sf::Vector2i>(starDust.getSize());
+		sf::Vector2i frameSize(120,120); /* Alter to right size */
 		SpriteSheet starDustSheet(frameSize, starDustSize);
 		std::vector<sf::IntRect> starDustFrames = starDustSheet.getAllFrames();
 
 		mStarDust = new Animation(starDustFrames, starDust);
-		*/
+		anime.play(*mStarDust);
 	}
+}
+
+Object::~Object()
+{
+	delete mStar;
+	delete mStarDust;
 }
 	
 void Object::update(sf::Time deltaTime)
 {
+	anime.setPosition(Convert::b2ToSfml(body->GetPosition()));
 	anime.update(deltaTime);
-	if (isAlive() && starCallBack->isColliding())
+	if (isAlive() && starCallBack->isColliding() && getType() == STARDUST)
 	{
 		std::cout << "Collect stars wow :D" << std::endl;
 		mAlive = false;

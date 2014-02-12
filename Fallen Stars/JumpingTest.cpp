@@ -75,9 +75,17 @@ JumpingTest::JumpingTest()
 				object = new Object(world,pos,mResourceCollection, Object::TYPE::STAR);
 			}
 		}
+		if (i.name.compare("StarDust") == 0)
+		{
+			auto j = i.objects;
+			for (auto k : j)
+			{
+				auto pos = k.GetPosition();
+				object = new Object(world,pos,mResourceCollection, Object::TYPE::STARDUST);
+			}
+		}
 	}
 
-	object = new Object(world, sf::Vector2f(500, 100), mResourceCollection, Object::TYPE::STAR);
 
 	sf::Vector2u mapSize =  level->getMapLoader().GetMapSize();
 	camera = new Camera(player, mapSize);
@@ -88,13 +96,13 @@ JumpingTest::~JumpingTest()
 	delete world;
 	delete level;
 	delete player;
+	delete object;
 }
 
 void JumpingTest::update(const sf::Time& deltaTime)
 {
 	player->update(deltaTime);
 	object->update(deltaTime);
-
 	world->step(deltaTime.asSeconds());
 }
 void JumpingTest::render(sf::RenderWindow& window)
