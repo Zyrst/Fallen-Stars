@@ -27,6 +27,8 @@
 
 #include "Animation.h"
 
+#include <iostream>
+
 Animation::Animation(sf::IntRect rect, const sf::Texture& texture) : 
 	m_frames(1),
 	m_texture(&texture)
@@ -37,7 +39,12 @@ Animation::Animation(sf::IntRect rect, const sf::Texture& texture) :
 Animation::Animation(std::vector<sf::IntRect> frames, const sf::Texture& texture) : 
 	m_frames(frames),
 	m_texture(&texture)
-{}
+{
+	if(m_frames.empty())
+	{
+		std::cout << "Animation has no frames!";
+	}
+}
 
 const sf::Texture* Animation::getSpriteSheet() const
 {
@@ -51,5 +58,9 @@ int Animation::getSize() const
 
 const sf::IntRect& Animation::getFrame(int n) const
 {
+	if(m_frames.empty())
+	{
+		return sf::IntRect();
+	}
     return m_frames[n];
 }
