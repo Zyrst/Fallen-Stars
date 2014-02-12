@@ -16,7 +16,13 @@ class Entity
 {
 	public:
 		enum Facing{LEFT, RIGHT};
-
+		enum EntityCategory{
+			 ALL =			0x0000,
+			 PLAYER =		0x0001,
+			 ENEMY =		0x0002,
+			 ENEMY_CHASE =	0x0004,
+			 ENEMY_GROUND =	0x0008
+		};
 		//TODO Update skall få funktioner
 		//TODO collisionWith måste ta emot boundingBoxes(bodys?)
 		virtual ~Entity();
@@ -35,7 +41,7 @@ class Entity
 		bool mAlive;
 		b2Body* body;
 		sf::FloatRect bodyBounds;
-
+		EntityCategory entityCategory; 
 	private:
 		Facing currentFacing;
 };

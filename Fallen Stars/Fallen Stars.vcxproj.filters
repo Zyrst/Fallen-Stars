@@ -171,6 +171,9 @@
     <ClCompile Include="Menu.cpp">
       <Filter>Source Files\menu</Filter>
     </ClCompile>
+    <ClCompile Include="Shade.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -286,6 +289,9 @@
     </ClInclude>
     <ClInclude Include="Menu.h">
       <Filter>Header Files\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="Shade.h">
+      <Filter>Header Files\Entity</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

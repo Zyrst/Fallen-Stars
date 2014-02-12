@@ -123,6 +123,11 @@ Player::Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position,Resou
 
 	setupSensors(position, size);
 	body->SetLinearDamping(1.0f);
+	/* Set filter for collisions */
+	b2Filter filter = (body->GetFixtureList())->GetFilterData();
+	filter.categoryBits = PLAYER;
+	filter.groupIndex = ALL, ENEMY_CHASE;
+	body->GetFixtureList()->SetFilterData(filter);
 }
 
 Player::~Player()
