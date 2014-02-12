@@ -18,7 +18,7 @@ namespace
 	Camera* camera;
 	Object* object;
 
-	//ResourceCollection rc;
+	ResourceCollection rc;
 	sf::Texture* tx;
 	sf::Sprite* sp;
 
@@ -41,15 +41,7 @@ JumpingTest::JumpingTest()
 {
 	world = new BoxWorld(b2Vec2(0, 10));
 
-	level = new LevelManager("Test");
-	
-	mResourceCollection.loadTexture("Assets/Map/Stella_idle.png");
-	mResourceCollection.loadTexture("Assets/Map/Stella Left.png");
-	mResourceCollection.loadTexture("Assets/Map/Stella_jumpLeft.png");
-	mResourceCollection.loadTexture("Assets/Map/Stella_grabLeft.png");
-	mResourceCollection.loadTexture("Assets/Map/trashcanfull.png");
-	mResourceCollection.loadTexture("Assets/Map/Window_06.png");
-	mResourceCollection.loadTexture("Assets/Map/SmallBox.png");
+	level = new LevelManager("Proto");
 
 	auto size = sf::Vector2f(70, 220);
 	genCollision();
