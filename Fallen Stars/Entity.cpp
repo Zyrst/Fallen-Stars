@@ -10,6 +10,7 @@ Entity::Entity(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& pos, Facing fa
 	bodyBounds(pos, size),
 	currentFacing(facing)
 {
+	body->SetUserData(this);
 }
 Entity::~Entity() {}
 bool Entity::isAlive()
@@ -42,5 +43,17 @@ void Entity::setFacing(Facing facing)
 
 void Entity::render(sf::RenderTarget& target)
 {
-	target.draw(anime);
+	if (isAlive())
+	{
+		anime.setPosition(Convert::b2ToSfml(body->GetPosition()));
+		target.draw(anime);
+	}
+	
+}
+
+void Entity::updateSpriteOrigin()
+{
+	const sf::FloatRect& psize = anime.getLocalBounds();
+	sf::FloatRect fixSize = BoxBounds::boundsOfFixture(body->GetFixtureList());
+	anime.setOrigin((psize.width) / 2.0f, psize.height - fixSize.height);
 }

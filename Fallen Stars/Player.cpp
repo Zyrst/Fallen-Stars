@@ -19,9 +19,7 @@ static const float SPEED = 3;
 CollisionCounterCallBack::CollisionCounterCallBack(b2Fixture* owner)
 	: CallBack(owner)
 	, collisions(0)
-{
-	owner->SetUserData(this);
-}
+{ }
 
 void CollisionCounterCallBack::beginContact(b2Fixture* otherFixture)
 {
@@ -46,9 +44,7 @@ bool CollisionCounterCallBack::isColliding() const
 GrabCallBack::GrabCallBack(b2Fixture* owner)
 	: CallBack(owner)
 	, grabCandidate(nullptr)
-{
-	owner->SetUserData(this);
-}
+{ }
 
 void GrabCallBack::beginContact(b2Fixture* otherFixture)
 {
@@ -118,8 +114,8 @@ Player::Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position,Resou
 	std::cout << mIdle->getSize()<<std::endl;
 
 	anime.setAnimation(*mIdle);
-	const sf::FloatRect& psize = anime.getLocalBounds();
-	anime.setOrigin((psize.width) / 2.0f, psize.height-size.y);
+	
+	updateSpriteOrigin();
 
 	setupSensors(position, size);
 	body->SetLinearDamping(1.0f);
@@ -180,7 +176,7 @@ void Player::setupSensors(sf::Vector2f& pos, sf::Vector2f& size)
 	//Left and right side grab detectors.
 	const float grabYPos = 0.05f;
 	const float grabW = 0.05f;
-	const float grabH = 0.09f;
+	const float grabH = 0.12f;
 	bpos = b2Vec2(-hw-grabW, grabYPos);
 
 	sh.SetAsBox(grabW, grabH, bpos, 0);
@@ -289,8 +285,8 @@ void Player::update(sf::Time deltaTime)
 
 void Player::render(sf::RenderTarget& renderTarget)
 {
+	anime.setRotation(body->GetAngle() * 180 / 3.14159265);
 	Entity::render(renderTarget);
-	//sprite.setRotation(180);
 
 	sf::FloatRect rect = anime.getGlobalBounds();
 

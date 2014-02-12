@@ -37,6 +37,7 @@ class Entity
 
 	protected:
 		Entity(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, Facing facing = LEFT);
+		void updateSpriteOrigin();
 		AnimatedSprite anime;
 		bool mAlive;
 		b2Body* body;

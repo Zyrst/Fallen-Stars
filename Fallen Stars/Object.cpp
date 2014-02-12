@@ -1,24 +1,71 @@
 #include "Object.h"
 #include "SpriteSheet.h"
+#include <Box2D\Box2D.h>
+#include <iostream>
+
+StarCallBack::StarCallBack(b2Fixture* owner)
+	: CallBack(owner)
+	, player(nullptr)
+{
+
+}
+
+void StarCallBack::beginContact(b2Fixture* otherFixture)
+{
+	Entity* v = (Entity*) otherFixture->GetBody()->GetUserData();
+	Player* p = dynamic_cast<Player*>(v);
+
+	if (p != nullptr)
+	{
+		player = p;
+	}
+}
+void StarCallBack::endContact(b2Fixture* otherFixture)
+{
+	Entity* v = (Entity*) otherFixture->GetBody()->GetUserData();
+	Player* p = dynamic_cast<Player*>(v);
+	
+	if (p != nullptr && p == player)
+	{
+		player = nullptr;
+	}
+}
+
+bool StarCallBack::isColliding() const
+{
+	return (player != nullptr);
+}
+
+Player* StarCallBack::getPlayer()
+{
+	return player;
+}
 
 Object::Object(BoxWorld* world, sf::Vector2f& position, ResourceCollection& resource, TYPE type) :
-	Entity(world,sf::Vector2f(20,20),position),
+	Entity(world,sf::Vector2f(100, 100),position),
 	mResource(resource),
-	mType(type)
+	mType(type),
+	starCallBack(new StarCallBack(body->GetFixtureList()))
 {
+
+	body->GetFixtureList()->SetSensor(true);
+	body->SetGravityScale(0.0f);
+
 	if(mType == TYPE::STAR)
 	{
 		/*Star animation*/
-		auto &star = mResource.getTexture("Assets/Map/trashcanfull.png");
+		auto &star = mResource.getTexture("Assets/Map/Window_06.png");
 
 		sf::Vector2i starSize = static_cast<sf::Vector2i>(star.getSize());
-		sf::Vector2i frameSize(256,256); /* Alter to right size */
+		sf::Vector2i frameSize(198,198); /* Alter to right size */
 
 		SpriteSheet starSheet(frameSize, starSize);
 		std::vector<sf::IntRect> starFrames = starSheet.getAllFrames();
 
-		mStar = new Animation(starFrames, star);
+		mStar = new Animation(sf::IntRect(0, 0, frameSize.x, frameSize.y), star);
+		anime.setAnimation(*mStar);
 		
+		updateSpriteOrigin();
 	}
 
 	if (mType == TYPE::STARDUST)
@@ -38,6 +85,11 @@ Object::Object(BoxWorld* world, sf::Vector2f& position, ResourceCollection& reso
 void Object::update(sf::Time deltaTime)
 {
 	anime.update(deltaTime);
+	if (isAlive() && starCallBack->isColliding())
+	{
+		std::cout << "Collect stars wow :D" << std::endl;
+		mAlive = false;
+	}
 }
 
 Object::TYPE Object::getType()

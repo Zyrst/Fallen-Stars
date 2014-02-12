@@ -3,6 +3,23 @@
 #include "Entity.h"
 #include <SFML/Graphics/Sprite.hpp>
 #include "ResourceCollection.h"
+#include "CallBack.h"
+#include "EntityLiving.h"
+#include "Player.h"
+
+class StarCallBack : public CallBack {
+public:
+	StarCallBack(b2Fixture* owner);
+
+	virtual void beginContact(b2Fixture* otherFixture) override;
+	virtual void endContact(b2Fixture* otherFixture) override;
+
+	bool isColliding() const;
+	Player* getPlayer();
+
+private:
+	 Player* player;
+};
 
 class Object: public Entity
 {
@@ -19,5 +36,5 @@ private:
 	ResourceCollection& mResource;
 	Animation* mStar;
 	Animation* mStarDust;
-		
+	StarCallBack* starCallBack;
 };
