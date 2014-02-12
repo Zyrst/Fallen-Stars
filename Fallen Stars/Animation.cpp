@@ -60,7 +60,8 @@ const sf::IntRect& Animation::getFrame(int n) const
 {
 	if(m_frames.empty())
 	{
-		return sf::IntRect();
+		static sf::IntRect missingFrame;
+		return missingFrame;
 	}
     return m_frames[n];
 }
