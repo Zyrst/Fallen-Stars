@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "ResourceCollection.h"
 #include "Camera.h"
+#include "Object.h"
 
 namespace
 {
@@ -15,6 +16,7 @@ namespace
 	BoxWorld* world;
 	Player* player;
 	Camera* camera;
+	Object* object;
 
 	//ResourceCollection rc;
 	sf::Texture* tx;
@@ -38,16 +40,13 @@ namespace
 JumpingTest::JumpingTest()
 {
 	world = new BoxWorld(b2Vec2(0, 10));
-	level = new LevelManager("Proto");
+	level = new LevelManager("Test");
 	
 	mResourceCollection.preloadTexture("Assets/Map/Stella_idle.png");
 	mResourceCollection.preloadTexture("Assets/Map/Stella Left.png");
-	mResourceCollection.preloadTexture("Assets/Map/Shade_walking.png");
-	mResourceCollection.preloadTexture("Assets/Map/Shade_idle.png");
 	mResourceCollection.preloadTexture("Assets/Map/Stella_jumpLeft.png");
-	mResourceCollection.preloadTexture("Assets/Map/Shade_jumpRight.png");
-	mResourceCollection.preloadTexture("Assets/Map/Shade_grabRight.png");
 	mResourceCollection.preloadTexture("Assets/Map/Stella_grabLeft.png");
+	mResourceCollection.preloadTexture("Assets/Map/trashcanfull.png");
 
 	auto size = sf::Vector2f(70, 220);
 	genCollision();
@@ -65,7 +64,18 @@ JumpingTest::JumpingTest()
 				player = new Player(world, size, pos,mResourceCollection);
 			}
 		}
+		if (i.name.compare("Star") == 0)
+		{
+			auto j = i.objects;
+			for (auto k : j)
+			{
+				auto pos = k.GetPosition();
+				object = new Object(world,pos,mResourceCollection, Object::TYPE::STAR);
+			}
+		}
 	}
+
+
 
 	sf::Vector2u mapSize =  level->getMapLoader().GetMapSize();
 	camera = new Camera(player, mapSize);

@@ -11,10 +11,13 @@ class Object: public Entity
 		Object(BoxWorld* world,sf::Vector2f& position, ResourceCollection& resource,TYPE type);
 		void update(sf::Time deltaTime) override;
 		TYPE getType();
+		void handleAction(Controls::Action action, Controls::KeyState);
+		void render(sf::RenderTarget& target);
 
 private:
 	TYPE mType;
 	ResourceCollection& mResource;
 	Animation* mStar;
+	Animation* mStarDust;
 		
 };

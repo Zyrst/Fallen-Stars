@@ -8,33 +8,53 @@ Object::Object(BoxWorld* world, sf::Vector2f& position, ResourceCollection& reso
 {
 	if(mType == TYPE::STAR)
 	{
-		/*auto &star = mResource.getTexture("Namn på fil.png");
+		/*Star animation*/
+		auto &star = mResource.getTexture("Assets/Map/trashcanfull.png");
 
 		sf::Vector2i starSize = static_cast<sf::Vector2i>(star.getSize());
-		sf::Vector2i frameSize(256,256); /* Altered to right size */
-/*
-		SpriteSheet spriteSheet(frameSize, starSize);
-		std::vector<sf::IntRect> frames = spriteSheet.getAllFrames();
+		sf::Vector2i frameSize(256,256); /* Alter to right size */
 
-		mStar = new Animation(frames, star);
-		*/
+		SpriteSheet starSheet(frameSize, starSize);
+		std::vector<sf::IntRect> starFrames = starSheet.getAllFrames();
+
+		mStar = new Animation(starFrames, star);
+		
 	}
 
 	if (mType == TYPE::STARDUST)
 	{
-		/*Same as above*/
+		/*StarDust animation*/
+		/*auto &starDust = mResource.getTexture("Namn på fil.png");
+
+		sf::Vector2i starDustSize = static_cast<sf::Vector2i>(starDust.getSize());
+		SpriteSheet starDustSheet(frameSize, starDustSize);
+		std::vector<sf::IntRect> starDustFrames = starDustSheet.getAllFrames();
+
+		mStarDust = new Animation(starDustFrames, starDust);
+		*/
 	}
 }
 	
 void Object::update(sf::Time deltaTime)
 {
-	
+	anime.update(deltaTime);
 }
 
 Object::TYPE Object::getType()
 {
 	return mType;
 }
+
+void Object::handleAction(Controls::Action action, Controls::KeyState)
+{
+	
+}
+
+void Object::render(sf::RenderTarget& target)
+{
+	Entity::render(target);
+}
+
 
 /* Collision stuff, returns points to starcount and stardust
 * on collision*/
