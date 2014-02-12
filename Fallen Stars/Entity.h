@@ -17,12 +17,13 @@ class Entity
 	public:
 		enum Facing{LEFT, RIGHT};
 		enum EntityCategory{
-			 ALL =			0x0000,
-			 PLAYER =		0x0001,
-			 ENEMY =		0x0002,
-			 ENEMY_CHASE =	0x0004,
-			 ENEMY_GROUND =	0x0008
+			 ALL =			0,
+			 PLAYER =		1 << 0,
+			 ENEMY =		1 << 1,
+			 ENEMY_CHASE =	1 << 2,
+			 ENEMY_GROUND =	1 << 3
 		};
+
 		//TODO Update skall få funktioner
 		//TODO collisionWith måste ta emot boundingBoxes(bodys?)
 		virtual ~Entity();
