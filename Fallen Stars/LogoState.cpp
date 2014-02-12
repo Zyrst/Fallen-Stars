@@ -10,7 +10,7 @@ LogoState::LogoState():
 	mSprite(),
 	mTime()
 {
-	mSprite.setTexture(mResourceCollection.getTexture("../Debug/Logo.png"));
+	
 }
 
 
@@ -22,10 +22,10 @@ LogoState::~LogoState(void)
 
 void LogoState::load()
 {
-	mResourceCollection.preloadTexture("../Debug/Logo.png");
+	mSprite.setTexture(mResourceCollection.getTexture("../Debug/Logo.png"));
 }
 
-void LogoState::update(sf::Time& deltaTime)
+void LogoState::update(const sf::Time& deltaTime)
 {
 	mTime += deltaTime;
 

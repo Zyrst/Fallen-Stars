@@ -10,9 +10,9 @@ class PlatformState: public State
 public:
 	PlatformState();
 	~PlatformState();
-	void update(sf::Time deltaTime);
-	void render(sf::RenderWindow& window);
-	void handleAction(Controls::Action action, Controls::KeyState keystate);
+	void update(const sf::Time& deltaTime) override;
+	void render(sf::RenderWindow& window) override;
+	void handleAction(Controls::Action action, Controls::KeyState keystate) override;
 	void clear();
 	void killDeadEntities();
 

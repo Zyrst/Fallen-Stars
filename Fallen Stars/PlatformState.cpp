@@ -10,7 +10,7 @@ PlatformState::~PlatformState()
 {
 }
 
-void PlatformState::update(sf::Time deltaTime)
+void PlatformState::update(const sf::Time& deltaTime)
 {
 	for(unsigned int i = 0; i< mEntityVector.size();i++)
 	{

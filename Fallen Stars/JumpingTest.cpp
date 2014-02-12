@@ -43,12 +43,12 @@ JumpingTest::JumpingTest()
 
 	level = new LevelManager("Test");
 	
-	mResourceCollection.preloadTexture("Assets/Map/Stella_idle.png");
-	mResourceCollection.preloadTexture("Assets/Map/Stella Left.png");
-	mResourceCollection.preloadTexture("Assets/Map/Stella_jumpLeft.png");
-	mResourceCollection.preloadTexture("Assets/Map/Stella_grabLeft.png");
-	mResourceCollection.preloadTexture("Assets/Map/trashcanfull.png");
-	mResourceCollection.preloadTexture("Assets/Map/Window_06.png");
+//	mResourceCollection.preloadTexture("Assets/Map/Stella_idle.png");
+//	mResourceCollection.preloadTexture("Assets/Map/Stella Left.png");
+//	mResourceCollection.preloadTexture("Assets/Map/Stella_jumpLeft.png");
+//	mResourceCollection.preloadTexture("Assets/Map/Stella_grabLeft.png");
+//	mResourceCollection.preloadTexture("Assets/Map/trashcanfull.png");
+//	mResourceCollection.preloadTexture("Assets/Map/Window_06.png");
 
 	auto size = sf::Vector2f(70, 220);
 	genCollision();
@@ -90,7 +90,7 @@ JumpingTest::~JumpingTest()
 	delete player;
 }
 
-void JumpingTest::update(sf::Time& deltaTime)
+void JumpingTest::update(const sf::Time& deltaTime)
 {
 	player->update(deltaTime);
 	object->update(deltaTime);

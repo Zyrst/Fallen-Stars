@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Keyboard.hpp>
+
 #include "Controls.h"
 #include "ResourceCollection.h"
 
@@ -14,8 +15,9 @@
 class State
 {
 	public:
-		virtual void load() {}; // Load local resources and load or link in global resources.
-		virtual void update(sf::Time& deltaTime) = 0;
+		virtual ~State() {}
+		virtual void load() {}; // Load resources and set up the state
+		virtual void update(const sf::Time& deltaTime) = 0;
 		virtual void render(sf::RenderWindow& window) = 0;
 		virtual void handleAction(Controls::Action action, Controls::KeyState) = 0;
 
