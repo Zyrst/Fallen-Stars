@@ -5,6 +5,9 @@
 #include "VecConverter.h"
 #include <iostream>
 
+int STARS = 0;
+int STARDUSTZ = 0;
+
 StarCallBack::StarCallBack(b2Fixture* owner)
 	: CallBack(owner)
 	, player(nullptr)
@@ -56,21 +59,16 @@ Object::Object(BoxWorld* world, sf::Vector2f& position, ResourceCollection& reso
 	if(mType == TYPE::STAR)
 	{
 		/*Star animation*/
-		auto &star = mResource.getTexture("Assets/Map/door_01.png");
-
+		auto &star = mResource.getTexture("Assets/Map/SmallBox.png");
 		sf::Vector2i starSize = static_cast<sf::Vector2i>(star.getSize());
-		sf::Vector2i frameSize(294,411); /* Alter to right size */
+		sf::Vector2i frameSize(120,120); /* Alter to right size */
 
 		SpriteSheet starSheet(frameSize, starSize);
 		std::vector<sf::IntRect> starFrames = starSheet.getAllFrames();
 
-		mStar = new Animation(sf::IntRect(0, 0, frameSize.x, frameSize.y), star);
+		mStar = new Animation(starFrames, star);
 		anime.setAnimation(*mStar);
-		
 		updateSpriteOrigin();
-
-		//mStar = new Animation(starFrames, star);
-		//anime.play(*mStar);
 	}
 
 	if (mType == TYPE::STARDUST)
@@ -84,7 +82,8 @@ Object::Object(BoxWorld* world, sf::Vector2f& position, ResourceCollection& reso
 		std::vector<sf::IntRect> starDustFrames = starDustSheet.getAllFrames();
 
 		mStarDust = new Animation(starDustFrames, starDust);
-		anime.play(*mStarDust);
+		anime.setAnimation(*mStarDust);
+		updateSpriteOrigin();
 	}
 }
 
@@ -100,7 +99,13 @@ void Object::update(sf::Time deltaTime)
 	anime.update(deltaTime);
 	if (isAlive() && starCallBack->isColliding() && getType() == STARDUST)
 	{
-		std::cout << "Collect stars wow :D" << std::endl;
+		std::cout << "Collect stardust wow :D" << std::endl;
+		//STARDUSTS += 1;
+		mAlive = false;
+	}
+	if (isAlive() && starCallBack->isColliding() && getType() == STAR)
+	{
+		std::cout<< "Do you even get stars" << std::endl;
 		mAlive = false;
 	}
 }
@@ -119,7 +124,3 @@ void Object::render(sf::RenderTarget& target)
 {
 	Entity::render(target);
 }
-
-
-/* Collision stuff, returns points to starcount and stardust
-* on collision*/

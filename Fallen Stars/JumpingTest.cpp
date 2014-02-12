@@ -43,12 +43,13 @@ JumpingTest::JumpingTest()
 
 	level = new LevelManager("Test");
 	
-//	mResourceCollection.preloadTexture("Assets/Map/Stella_idle.png");
-//	mResourceCollection.preloadTexture("Assets/Map/Stella Left.png");
-//	mResourceCollection.preloadTexture("Assets/Map/Stella_jumpLeft.png");
-//	mResourceCollection.preloadTexture("Assets/Map/Stella_grabLeft.png");
-//	mResourceCollection.preloadTexture("Assets/Map/trashcanfull.png");
-//	mResourceCollection.preloadTexture("Assets/Map/Window_06.png");
+	mResourceCollection.loadTexture("Assets/Map/Stella_idle.png");
+	mResourceCollection.loadTexture("Assets/Map/Stella Left.png");
+	mResourceCollection.loadTexture("Assets/Map/Stella_jumpLeft.png");
+	mResourceCollection.loadTexture("Assets/Map/Stella_grabLeft.png");
+	mResourceCollection.loadTexture("Assets/Map/trashcanfull.png");
+	mResourceCollection.loadTexture("Assets/Map/Window_06.png");
+	mResourceCollection.loadTexture("Assets/Map/SmallBox.png");
 
 	auto size = sf::Vector2f(70, 220);
 	genCollision();
@@ -64,6 +65,7 @@ JumpingTest::JumpingTest()
 			{
 				auto pos = k.GetPosition();
 				player = new Player(world, size, pos,mResourceCollection);
+				mEntityVector.push_back(player);
 			}
 		}
 		if (i.name.compare("Star") == 0)
@@ -72,7 +74,8 @@ JumpingTest::JumpingTest()
 			for (auto k : j)
 			{
 				auto pos = k.GetPosition();
-				object = new Object(world,pos,mResourceCollection, Object::TYPE::STAR);
+				mEntityVector.push_back(new Object(world,pos,mResourceCollection, Object::TYPE::STAR));
+				//mEntityVector.push_back(object);
 			}
 		}
 		if (i.name.compare("StarDust") == 0)
@@ -81,7 +84,8 @@ JumpingTest::JumpingTest()
 			for (auto k : j)
 			{
 				auto pos = k.GetPosition();
-				object = new Object(world,pos,mResourceCollection, Object::TYPE::STARDUST);
+				mEntityVector.push_back(new Object(world,pos,mResourceCollection, Object::TYPE::STARDUST));
+				//mEntityVector.push_back(object);
 			}
 		}
 	}
@@ -101,16 +105,26 @@ JumpingTest::~JumpingTest()
 
 void JumpingTest::update(const sf::Time& deltaTime)
 {
-	player->update(deltaTime);
-	object->update(deltaTime);
+	//player->update(deltaTime);
+	
+	for (Entity* e :mEntityVector)
+	{
+		e->update(deltaTime);
+	//object->update(deltaTime);
+	}
 	world->step(deltaTime.asSeconds());
 }
 void JumpingTest::render(sf::RenderWindow& window)
 {
+	EntityVector entities(mEntityVector);
 	camera->update(window);
 	level->getMapLoader().Draw(window, tmx::MapLayer::Background);
-	player->render(window);
-	object->render(window);
+	//player->render(window);
+	for (Entity* e :mEntityVector)
+	{
+		e->render(window);
+	//object->render(window);
+	}
 	level->getMapLoader().Draw(window, tmx::MapLayer::Foreground);
 	world->drawDebug(window);
 }
