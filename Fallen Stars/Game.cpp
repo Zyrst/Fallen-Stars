@@ -47,6 +47,16 @@ Game::Game()
 	currentState = new JumpingTest();
 	currentState->load();
 
+	sf::Image icon;
+	if (!icon.loadFromFile("../Debug/Icon.png"))
+	{
+		std::cout << "Failed to load icon" << std::endl;
+	}
+	else
+	{
+		window->setIcon(32, 32, icon.getPixelsPtr());
+	}
+
 	Game::theGame = this;
 }
 
@@ -101,7 +111,7 @@ void Game::resize(int width, int height)
 	float widthMultiplier = arCustom / arBase;
 	float cropMargin = (1.0f - widthMultiplier) / 2.0f;
 
-	sf::View view(sf::FloatRect(baseWidth * cropMargin, 0.0f, baseWidth * widthMultiplier, baseHeight));
+	sf::View view(sf::FloatRect(baseWidth * cropMargin, 0.0f, baseWidth * widthMultiplier, (float)baseHeight));
 
 	window->setView(view);
 }
