@@ -17,15 +17,12 @@ class SpriteSheet
 
 		int getFrameCount();
 		sf::IntRect getFrame(int index);
-		sf::IntRect getMirroredFrame(int index);
-		std::vector<sf::IntRect> getFrames(int startIndex, int frameCount, bool mirrored = false);
-		std::vector<sf::IntRect> getAllFrames(bool mirrored = false);
+		std::vector<sf::IntRect> getFrames(int startIndex, int frameCount);
+		std::vector<sf::IntRect> getAllFrames();
 
 	private:
 		/* Size of one animation frame from the spritesheet */
 		sf::Vector2i mSpriteSize;
 		/* Number of tiles in both axes */
 		sf::Vector2i mTiles;
-
-		sf::IntRect getFrame(int index, bool mirrored);
 };
