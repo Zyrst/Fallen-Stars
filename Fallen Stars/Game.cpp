@@ -138,6 +138,8 @@ void Game::swapState()
 	assert(currentState != NULL);
 	assert(currentState != nextState);
 
+	std::cout << "Swapping state" << std::endl;
+
 	delete currentState;
 	currentState = nextState;
 	nextState = NULL;

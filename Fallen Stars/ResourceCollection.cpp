@@ -16,7 +16,7 @@ void ResourceCollection::loadTexture(std::string filename)
 
 		if(std::this_thread::get_id() == renderThread)
 		{
-			std::cout << "Texture " << filename << " was not preloaded!" << std::endl;
+			std::cout << "Texture " << filename << " was loaded in the game loop! This will freeze the thread while loading!" << std::endl;
 		}
 
 		if(!mTextures[filename].loadFromFile(filename))
@@ -43,7 +43,7 @@ void ResourceCollection::loadSound(std::string filename)
 	{
 		if(std::this_thread::get_id() == renderThread)
 		{
-			std::cout << "Sound " << filename << " was not preloaded!" << std::endl;
+			std::cout << "Sound " << filename << " was loaded in the game loop! This will freeze the thread while loading!" << std::endl;
 		}
 
 		if(!mSoundBuffers[filename].loadFromFile(filename))

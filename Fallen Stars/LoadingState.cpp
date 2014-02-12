@@ -40,13 +40,14 @@ void LoadingState::update(const sf::Time& deltaTime)
 	// Check if the loading is complete. If so, swap the state.
 	if(mProgress == LoadingState::DONE_LOADING)
 	{
-		std::cout << "Thread about to join" << std::endl;
+		std::cout << "Loading is complete. Loading thread will now join with the gameloop thread." << std::endl;
 		mLoadingThread->join();
-		std::cout << "Join successful" << std::endl;
-		delete mLoadingThread;
-		std::cout << "About to set a new state" << std::endl;
+		std::cout << "Join successful!" << std::endl;
+		
+		delete mLoadingThread; 
+		mLoadingThread = NULL;
+		
 		Game::instance()->setState(mState);
-		std::cout << "Setting new state successful";
 	}
 
 	// Update effects of the loading screen?
