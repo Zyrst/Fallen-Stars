@@ -56,7 +56,7 @@ Object::Object(BoxWorld* world, sf::Vector2f& position, ResourceCollection& reso
 	if(mType == TYPE::STAR)
 	{
 		/*Star animation*/
-		auto &star = mResource.getTexture("Assets/Map/SmallBox.png");
+		auto &star = resource.getTexture("Assets/Map/SmallBox.png");
 		sf::Vector2i starSize = static_cast<sf::Vector2i>(star.getSize());
 		sf::Vector2i frameSize(120,120); /* Alter to right size */
 

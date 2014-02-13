@@ -40,29 +40,39 @@ namespace
 JumpingTest::JumpingTest()
 {
 	world = new BoxWorld(b2Vec2(0, 10));
-	level = new LevelManager("proto");
+	level = new LevelManager("Test");
 
 	auto size = sf::Vector2f(70, 220);
-	genCollision();
+	//genCollision();
+	
+	level->genCollision(world);
+	/*This works */
+	auto playerPos = level->getPlayerLayer();
+	player = new Player(world, size, playerPos,mResourceCollection);
+	mEntityVector.push_back(player);
 
+	level->getStarLayer(mResourceCollection,world,mEntityVector);
+	level->getStarDustLayer(mResourceCollection,world,mEntityVector);
+	//level->getEnemyLayer(mResourceCollection,world,mEntityVector,size);
 
+	/*This does not*/
+/*
+	auto enemyPos = level->getEnemyLayer();
+	mEntityVector.push_back(new Shade(mResourceCollection,world,size,enemyPos));
+	
+	auto starPos = level->getStarLayer();
+	mEntityVector.push_back(new Object(world,starPos,mResourceCollection, Object::TYPE::STAR));
+	
+	auto starDustPos = level->getStarDustLayer();
+	mEntityVector.push_back(new Object(world,starDustPos,mResourceCollection, Object::TYPE::STARDUST));
+	*/
+	
+	/*
 	auto& layers = level->getMapLoader().GetLayers();
 	for(auto i : layers)
-	{
-		if (i.name.compare("Player") == 0)
 		{
-			auto j = i.objects;
-			for ( auto k : j)
-			{
-				auto pos = k.GetPosition();
-				player = new Player(world, size, pos,mResourceCollection);
-				mEntityVector.push_back(player);
-			}
-		}
 		if (i.name.compare("Star") == 0)
-		{
-			auto j = i.objects;
-			for (auto k : j)
+			for (auto& k : i.objects)
 			{
 				auto pos = k.GetPosition();
 				mEntityVector.push_back(new Object(world,pos,mResourceCollection, Object::TYPE::STAR));
@@ -86,7 +96,7 @@ JumpingTest::JumpingTest()
 				mEntityVector.push_back(new Shade(mResourceCollection,world,size,pos));
 			}
 		}
-	}
+	} */
 	sf::Vector2u mapSize =  level->getMapLoader().GetMapSize();
 	camera = new Camera(player, mapSize);
 }
