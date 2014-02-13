@@ -5,7 +5,20 @@ Menu::Menu():
 	selectedButton(0)
 {}
 
-void Menu::addButton(Button button)
+void Menu::render(sf::RenderTarget& renderSurface)
+{
+	renderButtons(renderSurface);
+}
+
+void Menu::renderButtons(sf::RenderTarget& renderSurface)
+{
+	for(Button& button : buttonList)
+	{
+		button.render(renderSurface);
+	}
+}
+
+void Menu::addButton(const Button&  button)
 {
 	buttonList.push_back(button);
 }
@@ -50,7 +63,7 @@ void Menu::mousePressed(int x, int y, int state)
 
 	for(Button& button : buttonList)
 	{
-		if(button.getBoundingBox().contains(sf::Vector2f(x,y)))
+		if(button.getBoundingBox().contains(sf::Vector2f((float)x, (float)y)))
 		{
 			buttonPressed(button.getID());
 		}

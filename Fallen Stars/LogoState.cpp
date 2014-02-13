@@ -4,7 +4,7 @@
 #include <cmath>
 
 #include "Game.h"
-#include "WaitState.h"
+#include "MainMenuState.h"
 
 LogoState::LogoState():
 	mSprite(),
@@ -38,7 +38,7 @@ void LogoState::update(const sf::Time& deltaTime)
 	
 	if(mTime.asSeconds() >= animationTime)
 	{
-		Game::instance()->loadNewState(new WaitState());
+		Game::instance()->loadNewState(new MainMenuState());
 	}
 }
 
@@ -49,5 +49,5 @@ void LogoState::render(sf::RenderWindow& window)
 
 void LogoState::handleAction(Controls::Action action, Controls::KeyState)
 {
-	Game::instance()->loadNewState(new WaitState());
+	Game::instance()->loadNewState(new MainMenuState());
 }

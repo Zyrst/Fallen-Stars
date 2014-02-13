@@ -299,7 +299,7 @@ void Player::update(sf::Time deltaTime)
 
 void Player::render(sf::RenderTarget& renderTarget)
 {
-	anime.setRotation(body->GetAngle() * 180 / 3.14159265);
+	anime.setRotation(body->GetAngle() * 180 / 3.14159265f);
 	Entity::render(renderTarget);
 
 	/*sf::FloatRect rect = anime.getGlobalBounds();

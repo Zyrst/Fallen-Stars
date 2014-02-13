@@ -1,9 +1,9 @@
 #pragma once
 
-#include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Event.hpp>
 
-#include "State.h"
+namespace sf{class RenderWindow;}
+class State;
 
 class Game
 {

@@ -14,13 +14,9 @@
 #include "LogoState.h"
 #include "JumpingTest.h"
 
-int Width = 1280;
-int Height = 720;
+#include "BaseResolution.h"
 
 std::vector<sf::VideoMode> modes = sf::VideoMode::getFullscreenModes();
-
-int baseWidth = 1920;
-int baseHeight = 1080;
 
 /* Temporarily stores the next state while waiting for the current state to end */
 static State* nextState;
@@ -38,13 +34,13 @@ Game::Game()
 	
 	sf::Vector2u screenSize = window->getSize();
 	resize((int)screenSize.x, (int)screenSize.y);
-
+	
 	window->setMouseCursorVisible(false);
 
 	// TODO Set viewport to 1080 to fix rendering scale for other monitor sizes
 
 	// TODO Create a first state
-	currentState = new JumpingTest();
+	currentState = new LogoState();//new JumpingTest();
 	currentState->load();
 
 	sf::Image icon;

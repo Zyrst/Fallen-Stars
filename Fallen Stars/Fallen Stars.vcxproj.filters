@@ -67,6 +67,9 @@
     <Filter Include="Source Files\Box2D">
       <UniqueIdentifier>{2892aeee-dd2c-46b9-8a4f-bf1bf06b00cd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\shaders">
+      <UniqueIdentifier>{334801f9-eb16-4350-83ca-d34264645594}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -173,6 +176,12 @@
     </ClCompile>
     <ClCompile Include="Shade.cpp">
       <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenu.cpp">
+      <Filter>Source Files\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenuState.cpp">
+      <Filter>Source Files\state</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -293,10 +302,22 @@
     <ClInclude Include="Shade.h">
       <Filter>Header Files\Entity</Filter>
     </ClInclude>
+    <ClInclude Include="MainMenu.h">
+      <Filter>Header Files\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenuState.h">
+      <Filter>Header Files\state</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseResolution.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Libraries\SFML TmxLoader\lib\zlib\lib\zlib.def">
       <Filter>Source Files\Libraries\Zlib</Filter>
+    </None>
+    <None Include="Highlight.frag">
+      <Filter>Resource Files\shaders</Filter>
     </None>
   </ItemGroup>
 </Project>
