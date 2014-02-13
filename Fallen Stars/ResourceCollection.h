@@ -4,6 +4,8 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Audio/Sound.hpp>
 #include <SFML/Audio/SoundBuffer.hpp>
+#include <SFML/Graphics/Font.hpp>
+#include <SFML/Graphics/Shader.hpp>
 #include <thread>
 
 /* Resource collections represent a loader that keeps resources inside of states.
@@ -14,6 +16,7 @@ class ResourceCollection
 {
 	public:
 		ResourceCollection();
+		~ResourceCollection();
 
 		// Textures
 		void loadTexture(std::string filename);
@@ -23,6 +26,14 @@ class ResourceCollection
 		void loadSound(std::string filename);
 		sf::Sound getSound(std::string filename);
 
+		// Fonts
+		void loadFont(std::string filename);
+		sf::Font& getFont(std::string filename);
+
+		// Shaders
+		void loadShader(std::string filename, sf::Shader::Type);
+		sf::Shader& getShader(std::string filename, sf::Shader::Type);
+
 	private:
 		/* Keep the id of the render thread, so a warning can be shown if resource
 		 * loading is locking up the rendering */
@@ -30,4 +41,6 @@ class ResourceCollection
 		
 		std::map<std::string, sf::Texture> mTextures;
 		std::map<std::string, sf::SoundBuffer> mSoundBuffers;
+		std::map<std::string, sf::Font> mFonts;
+		std::map<std::string, sf::Shader*> mShaders;
 };
