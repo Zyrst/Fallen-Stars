@@ -22,7 +22,7 @@ void ResourceCollection::loadTexture(std::string filename)
 	{
 		if(mTextures[filename].loadFromFile(filename))
 		{
-			std::cout << "Texture " << filename << " loaded successfully!" << std::endl;
+			std::cout << "Texture " << filename << " loaded successfully" << std::endl;
 		}
 
 		if(std::this_thread::get_id() == renderThread)
@@ -47,7 +47,7 @@ void ResourceCollection::loadSound(std::string filename)
 	{
 		if(mSoundBuffers[filename].loadFromFile(filename))
 		{
-			std::cout << "Sound " << filename << " loaded successfully!" << std::endl;
+			std::cout << "Sound " << filename << " loaded successfully" << std::endl;
 		}
 
 		if(std::this_thread::get_id() == renderThread)
@@ -72,7 +72,7 @@ void ResourceCollection::loadFont(std::string filename)
 	{
 		if(mFonts[filename].loadFromFile(filename))
 		{
-			std::cout << "Font " << filename << " loaded successfully!" << std::endl;
+			std::cout << "Font " << filename << " loaded successfully" << std::endl;
 		}
 
 		if(std::this_thread::get_id() == renderThread)
@@ -98,7 +98,7 @@ void ResourceCollection::loadShader(std::string filename, sf::Shader::Type type)
 
 		if(mShaders[filename]->loadFromFile(filename, type))
 		{
-			std::cout << "Shader " << filename << " loaded successfully!" << std::endl;
+			std::cout << "Shader " << filename << " loaded successfully" << std::endl;
 		}
 
 		if(std::this_thread::get_id() == renderThread)

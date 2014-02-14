@@ -19,8 +19,9 @@ void Menu::renderButtons(sf::RenderTarget& renderSurface)
 }
 
 void Menu::addButton(const Button&  button)
-{
-	buttonList.push_back(button);
+{	
+	buttonList.push_back(button);	
+	if(buttonList.size() == 1) buttonList[0].setHighlighted(true);
 }
 
 void Menu::cycleForward()

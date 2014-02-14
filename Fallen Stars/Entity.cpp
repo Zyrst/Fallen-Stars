@@ -6,7 +6,7 @@
 Entity::Entity(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& pos, Facing facing):
 	mAlive(true),
 	body(world->createEntityBody(pos, size)),
-	anime(sf::seconds(0.1)),
+	anime(),
 	bodyBounds(pos, size),
 	currentFacing(facing)
 {

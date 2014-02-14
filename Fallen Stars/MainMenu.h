@@ -12,7 +12,7 @@ public:
 	void buttonPressed(int id);
 
 private:
-	enum Buttons {START};
+	enum Buttons {START, SETTINGS};
 	sf::Sprite mBackground;
 };
 

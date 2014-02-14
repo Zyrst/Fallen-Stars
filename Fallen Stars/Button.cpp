@@ -1,9 +1,12 @@
 #include "Button.h"
 
-Button::Button(int id, sf::Vector2f position, sf::Texture& texture, sf::Text text, sf::IntRect textureRect):
+#include "ResourceCollection.h"
+
+Button::Button(int id, sf::Vector2f position, sf::Texture& texture, ResourceCollection& resources, sf::Text text, sf::IntRect textureRect):
 	mText(text),
 	mPosition(position),
 	mSprite(texture),
+	mHighlightShader(resources.getShader("../Debug/Highlight.frag", sf::Shader::Type::Fragment)),
 	mHighlighted(false),
 	mID(id)
 {
@@ -22,13 +25,15 @@ Button::~Button()
 
 void Button::render(sf::RenderTarget& renderSurface)
 {
-	renderSurface.draw(mSprite);
+	mHighlightShader.setParameter("highlightStrength", mHighlighted ? 1.2f : 1.0f);
+	mHighlightShader.setParameter("texture", sf::Shader::CurrentTexture);
+	renderSurface.draw(mSprite, &mHighlightShader);
 	renderSurface.draw(mText);
 }
 
 void Button::setHighlighted(bool state)
 {
-	mHighlighted = true;
+	mHighlighted = state;
 }
 
 int Button::getID()

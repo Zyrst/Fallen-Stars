@@ -3,11 +3,11 @@
 #include "SpriteSheet.h"
 
 AnimatedBackgroundImage::AnimatedBackgroundImage(sf::Vector2f position, sf::Vector2i spriteSize, const sf::Texture& texture, sf::Time frameTime):
-	mAnimatedSprite(frameTime),
+	mAnimatedSprite(),
 	mAnimation(NULL)
 {
 	SpriteSheet spritesheet(spriteSize, static_cast<sf::Vector2i>(texture.getSize()));
-	mAnimation = new Animation(spritesheet.getAllFrames(), texture);
+	mAnimation = new Animation(spritesheet.getAllFrames(), texture, frameTime);
 	mAnimatedSprite.setPosition(position);
 	mAnimatedSprite.setAnimation(*mAnimation);
 }
