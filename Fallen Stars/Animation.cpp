@@ -36,9 +36,10 @@ Animation::Animation(sf::IntRect rect, const sf::Texture& texture) :
 	m_frames[0] = rect;
 }
 
-Animation::Animation(std::vector<sf::IntRect> frames, const sf::Texture& texture) : 
+Animation::Animation(std::vector<sf::IntRect> frames, const sf::Texture& texture, sf::Time frameTime) : 
 	m_frames(frames),
-	m_texture(&texture)
+	m_texture(&texture),
+	m_frameTime(frameTime)
 {
 	if(m_frames.empty())
 	{
@@ -64,4 +65,9 @@ const sf::IntRect& Animation::getFrame(int n) const
 		return missingFrame;
 	}
     return m_frames[n];
+}
+
+sf::Time Animation::getFrameTime() const
+{
+	return m_frameTime;
 }

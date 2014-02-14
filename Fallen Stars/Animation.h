@@ -31,20 +31,23 @@
 #include <vector>
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/Texture.hpp>
+#include <SFML/System/Time.hpp>
 
 class Animation
 {
 public:
     Animation(sf::IntRect rect, const sf::Texture& texture);
-	Animation(std::vector<sf::IntRect> frames, const sf::Texture& texture);
+	Animation(std::vector<sf::IntRect> frames, const sf::Texture& texture, sf::Time frameTime = sf::seconds(0.1f));
 	
     const sf::Texture* getSpriteSheet() const;
     int getSize() const;
     const sf::IntRect& getFrame(int n) const;
+	sf::Time getFrameTime() const;
 
 private:
     std::vector<sf::IntRect> m_frames;
     const sf::Texture* m_texture;
+	sf::Time m_frameTime;
 };
 
 #endif // ANIMATION_INCLUDE

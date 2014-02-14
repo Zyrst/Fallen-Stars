@@ -27,8 +27,8 @@
 
 #include "AnimatedSprite.h"
 
-AnimatedSprite::AnimatedSprite(sf::Time frameTime, bool paused, bool looped) :
-    m_animation(NULL), m_frameTime(frameTime), m_currentFrame(0), m_isPaused(paused), m_isLooped(looped), m_texture(NULL)
+AnimatedSprite::AnimatedSprite(bool paused, bool looped) :
+    m_animation(NULL), m_frameTime(sf::seconds(0.1f)), m_currentFrame(0), m_isPaused(paused), m_isLooped(looped), m_texture(NULL)
 {
 
 }
@@ -39,6 +39,7 @@ void AnimatedSprite::setAnimation(const Animation& animation)
     m_texture = m_animation->getSpriteSheet();
     m_currentFrame = 0;
     setFrame(m_currentFrame);
+	setFrameTime(animation.getFrameTime());
 }
 
 void AnimatedSprite::setFrameTime(sf::Time time)
