@@ -5,6 +5,7 @@
 #include "VecConverter.h"
 #include <iostream>
 
+
 StarCallBack::StarCallBack(b2Fixture* owner)
 	: CallBack(owner)
 	, player(nullptr)

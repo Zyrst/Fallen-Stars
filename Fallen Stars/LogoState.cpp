@@ -5,6 +5,7 @@
 
 #include "Game.h"
 #include "MainMenuState.h"
+#include "PlatformState.h"
 
 LogoState::LogoState():
 	mSprite(),
@@ -38,7 +39,7 @@ void LogoState::update(const sf::Time& deltaTime)
 	
 	if(mTime.asSeconds() >= animationTime)
 	{
-		Game::instance()->loadNewState(new MainMenuState());
+		Game::instance()->loadNewState(new PlatformState());
 	}
 }
 
@@ -49,5 +50,5 @@ void LogoState::render(sf::RenderWindow& window)
 
 void LogoState::handleAction(Controls::Action action, Controls::KeyState)
 {
-	Game::instance()->loadNewState(new MainMenuState());
+	Game::instance()->loadNewState(new PlatformState());
 }

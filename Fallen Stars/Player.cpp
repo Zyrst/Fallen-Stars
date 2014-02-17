@@ -122,9 +122,6 @@ Player::Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position,Resou
 	std::vector<sf::IntRect> grabFrames = grabSheet.getAllFrames();
 	mGrab = new Animation(grabFrames,grab);
 
-
-	std::cout << mIdle->getSize()<<std::endl;
-
 	anime.setAnimation(*mIdle);
 	
 	updateSpriteOrigin();

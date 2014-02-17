@@ -4,6 +4,8 @@
 #include "Player.h"
 #include <vector>
 #include "State.h"
+#include "Camera.h"
+#include "LevelManager.h"
 
 class PlatformState: public State
 {
@@ -15,10 +17,16 @@ public:
 	void handleAction(Controls::Action action, Controls::KeyState keystate) override;
 	void clear();
 	void killDeadEntities();
-
+	void load();
 
 private:
 	std::vector <Entity*> mEntityVector;
-
+	Player* mPlayer;
+	BoxWorld* mWorld;
+	Camera* mCamera;
+	LevelManager* mLevel;
 };
 
+/* TODO
+ * Hantering av Star och Stardust
+*/

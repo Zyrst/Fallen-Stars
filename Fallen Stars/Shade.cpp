@@ -63,19 +63,36 @@ void LedgeSensor::endContact(b2Fixture* otherFixture)
 bool LedgeSensor::isGrounded() const
 {
 	return mActive;
-
 }
 /*----------------------------*/
 Shade::Shade(ResourceCollection& resource, BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position)
 : EntityLiving(world,size,position),
   mFace(LEFT),
   mResource(resource)
-
 {
 	setupSensors(position,size);
+
+	auto &idle = mResource.getTexture("Assets/Map/Shade_idle.png");
+	sf::Vector2i idleSize = static_cast<sf::Vector2i>(idle.getSize());
+	sf::Vector2i frameSize(256,256);
+	SpriteSheet idleSheet(frameSize,idleSize);
+	std::vector<sf::IntRect> idleFrames = idleSheet.getAllFrames();
+	mIdle = new Animation(idleFrames, idle);
+
+	auto &walking = mResource.getTexture("Assets/Map/Shade_walking.png");
+	sf::Vector2i walkSize = static_cast<sf::Vector2i>(walking.getSize());
+	SpriteSheet walkSheet(frameSize,walkSize);
+	std::vector<sf::IntRect> walkFrames = walkSheet.getAllFrames();
+	mWalking = new Animation(walkFrames, walking);
+
+	anime.setAnimation(*mIdle);
+
+	updateSpriteOrigin();
 }
 Shade::~Shade()
 {
+	delete mIdle;
+	delete mWalking;
 }
 void Shade::render(sf::RenderTarget& renderTarget)
 {
@@ -86,6 +103,7 @@ void Shade::render(sf::RenderTarget& renderTarget)
 	sh.setFillColor(sf::Color::Transparent);
 	sh.setOutlineColor(sf::Color::Blue);
 	sh.setOutlineThickness(1.0f);
+	Entity::render(renderTarget);
 }
 void Shade::update(sf::Time deltaTime)
 {
@@ -121,6 +139,8 @@ void Shade::update(sf::Time deltaTime)
 	else if(!ledgeSensorRight->isGrounded()){
 		setFacing(LEFT);
 	}*/
+
+	anime.update(deltaTime);
 }
 void Shade::setVelocityX(float x)
 {
@@ -224,3 +244,22 @@ void Shade::handleAction(Controls::Action action, Controls::KeyState)
 {
 
 }
+
+void Shade::updateAnimation()
+{
+	Animation* currentAnimation = NULL;
+	if(chaseSensorLeft->isActive() || chaseSensorRight->isActive())
+	{
+		currentAnimation = mWalking;
+	}
+
+	if(!chaseSensorLeft->isActive() && !chaseSensorRight->isActive())
+	{
+		currentAnimation = mIdle;
+	}
+
+	if (currentAnimation != NULL) anime.play(*currentAnimation);
+	anime.setPosition(Convert::b2ToSfml(body->GetPosition()));
+}
+
+/* Animationer , gå , springa, attackera , dö */

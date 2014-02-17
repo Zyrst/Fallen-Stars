@@ -21,20 +21,6 @@ namespace
 	//ResourceCollection rc;
 	sf::Texture* tx;
 	sf::Sprite* sp;
-
-	void genCollision()
-	{
-		auto& layers = level->getMapLoader().GetLayers();
-
-		for (auto& l : layers)
-		{
-			if (l.name.compare("Collision") == 0)
-			{
-				world->createStaticBody(l.objects);
-				break;
-			}
-		}
-	}
 }
 
 JumpingTest::JumpingTest()

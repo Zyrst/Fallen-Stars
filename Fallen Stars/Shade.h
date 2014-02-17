@@ -38,6 +38,7 @@ public:
 	void setVelocityX(float x);
 	void setFacing(Facing Face);
 	void handleAction(Controls::Action action, Controls::KeyState);
+	void updateAnimation();
 private:
 	Player* player;
 	sf::Vector2f velocity;
@@ -49,5 +50,7 @@ private:
 	LedgeSensor* ledgeSensorRight;
 	EntityCategory entityCategory;
 	ResourceCollection& mResource;
+	Animation* mIdle;
+	Animation* mWalking;
 };
 
