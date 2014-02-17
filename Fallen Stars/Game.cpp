@@ -44,7 +44,7 @@ Game::Game()
 	currentState->load();
 
 	sf::Image icon;
-	if (!icon.loadFromFile("../Debug/Icon.png"))
+	if (!icon.loadFromFile("Assets/Menu/Icon.png"))
 	{
 		std::cout << "Failed to load icon" << std::endl;
 	}

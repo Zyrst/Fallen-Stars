@@ -6,7 +6,7 @@ Button::Button(int id, sf::Vector2f position, sf::Texture& texture, ResourceColl
 	mText(text),
 	mPosition(position),
 	mSprite(texture),
-	mHighlightShader(resources.getShader("../Debug/Highlight.frag", sf::Shader::Type::Fragment)),
+	mHighlightShader(resources.getShader("Assets/Shader/Highlight.frag", sf::Shader::Type::Fragment)),
 	mHighlighted(false),
 	mID(id)
 {

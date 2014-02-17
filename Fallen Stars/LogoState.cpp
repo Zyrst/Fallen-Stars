@@ -23,7 +23,7 @@ LogoState::~LogoState(void)
 
 void LogoState::load()
 {
-	mSprite.setTexture(mResourceCollection.getTexture("../Debug/Logo.png"));
+	mSprite.setTexture(mResourceCollection.getTexture("Assets/Menu/Logo.png"));
 }
 
 void LogoState::update(const sf::Time& deltaTime)
