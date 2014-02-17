@@ -33,8 +33,8 @@ void LoadingState::update(const sf::Time& deltaTime)
 	// Start off the loading
 	if(mProgress == LoadingState::NOT_LOADED)
 	{
-		mLoadingThread = new std::thread(loadStateResources, this);
 		setProgress(LoadingState::LOADING);
+		mLoadingThread = new std::thread(loadStateResources, this);
 	}
 	
 	// Check if the loading is complete. If so, swap the state.
