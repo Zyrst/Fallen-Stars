@@ -1,15 +1,9 @@
 #include "MainMenuState.h"
 
 
-MainMenuState::~MainMenuState()
-{
-	delete menu;
-}
-
-
 void MainMenuState::load()
 {
-	menu = new MainMenu(mResourceCollection);
+	addOverlay(new MainMenu(MAIN_MENU, mResourceCollection));
 }
 
 void MainMenuState::update(const sf::Time& deltaTime)
@@ -18,10 +12,10 @@ void MainMenuState::update(const sf::Time& deltaTime)
 
 void MainMenuState::render(sf::RenderWindow& window)
 {
-	menu->render(window);
+	renderOverlays(window);
 }
 
 void MainMenuState::handleAction(Controls::Action action, Controls::KeyState keystate)
 {
-	menu->handleAction(action, keystate);
+	handleOverlayAction(action, keystate);
 }

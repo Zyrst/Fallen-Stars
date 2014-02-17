@@ -19,18 +19,6 @@
     <Filter Include="Source Files\Entity">
       <UniqueIdentifier>{3324be5d-9daa-44d8-814e-b6a6c437fe13}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\menu">
-      <UniqueIdentifier>{11c69677-35b9-4aaf-8c5d-f2248bd4def9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\state">
-      <UniqueIdentifier>{2eb24763-2450-4037-9726-4ef22019e62c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\menu">
-      <UniqueIdentifier>{c53a5c78-b725-4752-8b4b-5f95b4e6ed97}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\state">
-      <UniqueIdentifier>{943b7e7c-9250-465a-99db-57090460561c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Managers">
       <UniqueIdentifier>{18e48a2a-bab9-407a-b261-5ab1c2a88ad0}</UniqueIdentifier>
     </Filter>
@@ -70,6 +58,18 @@
     <Filter Include="Resource Files\shaders">
       <UniqueIdentifier>{334801f9-eb16-4350-83ca-d34264645594}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Overlay">
+      <UniqueIdentifier>{c53a5c78-b725-4752-8b4b-5f95b4e6ed97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Overlay">
+      <UniqueIdentifier>{11c69677-35b9-4aaf-8c5d-f2248bd4def9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\State">
+      <UniqueIdentifier>{2eb24763-2450-4037-9726-4ef22019e62c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\State">
+      <UniqueIdentifier>{943b7e7c-9250-465a-99db-57090460561c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -91,7 +91,7 @@
       <Filter>Source Files\Entity</Filter>
     </ClCompile>
     <ClCompile Include="Button.cpp">
-      <Filter>Source Files\menu</Filter>
+      <Filter>Source Files\Overlay</Filter>
     </ClCompile>
     <ClCompile Include="ControlMapping.cpp">
       <Filter>Source Files</Filter>
@@ -136,16 +136,16 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PlatformState.cpp">
-      <Filter>Source Files\state</Filter>
+      <Filter>Source Files\State</Filter>
     </ClCompile>
     <ClCompile Include="LoadingState.cpp">
-      <Filter>Source Files\state</Filter>
+      <Filter>Source Files\State</Filter>
     </ClCompile>
     <ClCompile Include="LogoState.cpp">
-      <Filter>Source Files\state</Filter>
+      <Filter>Source Files\State</Filter>
     </ClCompile>
     <ClCompile Include="WaitState.cpp">
-      <Filter>Source Files\state</Filter>
+      <Filter>Source Files\State</Filter>
     </ClCompile>
     <ClCompile Include="AnimatedBackgroundImage.cpp">
       <Filter>Source Files</Filter>
@@ -166,22 +166,31 @@
       <Filter>Source Files\Box2D</Filter>
     </ClCompile>
     <ClCompile Include="JumpingTest.cpp">
-      <Filter>Source Files\state</Filter>
+      <Filter>Source Files\State</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Menu.cpp">
-      <Filter>Source Files\menu</Filter>
+      <Filter>Source Files\Overlay</Filter>
     </ClCompile>
     <ClCompile Include="Shade.cpp">
       <Filter>Source Files\Entity</Filter>
     </ClCompile>
     <ClCompile Include="MainMenu.cpp">
-      <Filter>Source Files\menu</Filter>
+      <Filter>Source Files\Overlay</Filter>
     </ClCompile>
     <ClCompile Include="MainMenuState.cpp">
-      <Filter>Source Files\state</Filter>
+      <Filter>Source Files\State</Filter>
+    </ClCompile>
+    <ClCompile Include="State.cpp">
+      <Filter>Source Files\State</Filter>
+    </ClCompile>
+    <ClCompile Include="Overlay.cpp">
+      <Filter>Source Files\Overlay</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogueOverlay.cpp">
+      <Filter>Source Files\Overlay</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -195,7 +204,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Button.h">
-      <Filter>Header Files\menu</Filter>
+      <Filter>Header Files\Overlay</Filter>
     </ClInclude>
     <ClInclude Include="ControlMapping.h">
       <Filter>Header Files</Filter>
@@ -231,7 +240,7 @@
       <Filter>Header Files\Managers</Filter>
     </ClInclude>
     <ClInclude Include="State.h">
-      <Filter>Header Files\state</Filter>
+      <Filter>Header Files\State</Filter>
     </ClInclude>
     <ClInclude Include="EntityLiving.h">
       <Filter>Header Files\Entity</Filter>
@@ -261,16 +270,16 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PlatformState.h">
-      <Filter>Header Files\state</Filter>
+      <Filter>Header Files\State</Filter>
     </ClInclude>
     <ClInclude Include="LoadingState.h">
-      <Filter>Header Files\state</Filter>
+      <Filter>Header Files\State</Filter>
     </ClInclude>
     <ClInclude Include="LogoState.h">
-      <Filter>Header Files\state</Filter>
+      <Filter>Header Files\State</Filter>
     </ClInclude>
     <ClInclude Include="WaitState.h">
-      <Filter>Header Files\state</Filter>
+      <Filter>Header Files\State</Filter>
     </ClInclude>
     <ClInclude Include="AnimatedBackgroundImage.h">
       <Filter>Header Files</Filter>
@@ -291,25 +300,31 @@
       <Filter>Header Files\Box2D</Filter>
     </ClInclude>
     <ClInclude Include="JumpingTest.h">
-      <Filter>Header Files\state</Filter>
+      <Filter>Header Files\State</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Menu.h">
-      <Filter>Header Files\menu</Filter>
+      <Filter>Header Files\Overlay</Filter>
     </ClInclude>
     <ClInclude Include="Shade.h">
       <Filter>Header Files\Entity</Filter>
     </ClInclude>
     <ClInclude Include="MainMenu.h">
-      <Filter>Header Files\menu</Filter>
+      <Filter>Header Files\Overlay</Filter>
     </ClInclude>
     <ClInclude Include="MainMenuState.h">
-      <Filter>Header Files\state</Filter>
+      <Filter>Header Files\State</Filter>
     </ClInclude>
     <ClInclude Include="BaseResolution.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Overlay.h">
+      <Filter>Header Files\Overlay</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogueOverlay.h">
+      <Filter>Header Files\Overlay</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -98,6 +98,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ControlMapping.cpp" />
     <ClCompile Include="debugdraw.cpp" />
+    <ClCompile Include="DialogueOverlay.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityLiving.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -118,10 +119,12 @@
     <ClCompile Include="MainMenuState.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Object.cpp" />
+    <ClCompile Include="Overlay.cpp" />
     <ClCompile Include="PlatformState.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="ResourceCollection.cpp" />
     <ClCompile Include="Shade.cpp" />
+    <ClCompile Include="State.cpp" />
     <ClCompile Include="SpriteSheet.cpp" />
     <ClCompile Include="VecConverter.cpp" />
     <ClCompile Include="WaitState.cpp" />
@@ -135,6 +138,7 @@
     <ClInclude Include="CallBack.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="debugdraw.h" />
+    <ClInclude Include="DialogueOverlay.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityLiving.h" />
     <ClInclude Include="JumpingTest.h" />
@@ -160,6 +164,7 @@
     <ClInclude Include="ControlMapping.h" />
     <ClInclude Include="Controls.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Overlay.h" />
     <ClInclude Include="PlatformState.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="ResourceCollection.h" />

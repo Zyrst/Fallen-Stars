@@ -1,21 +1,18 @@
 #pragma once
 
-#include <SFML/System/Time.hpp>
-#include <SFML/Graphics/RenderTarget.hpp>
 #include <vector>
-
-#include "Controls.h"
 #include "Button.h"
+#include "Overlay.h"
 
-class Menu
+class Menu : public Overlay
 {
 	public:
-		Menu();
+		Menu(int mID);
 		virtual ~Menu() {};
-		virtual void update(const sf::Time& deltaTime) {};
-		virtual void render(sf::RenderTarget& renderSurface);
-		virtual void handleAction(Controls::Action action, Controls::KeyState keystate);
-		virtual void mousePressed(int x, int y, int state); // In case we implement mouse input
+
+		virtual void render(sf::RenderTarget& renderSurface) override;
+		virtual void handleAction(Controls::Action action, Controls::KeyState keystate) override;
+		virtual void mousePressed(int x, int y, int state) override;  // In case we implement mouse input
 
 	protected:
 		void addButton(const Button& button);

@@ -6,9 +6,9 @@
 class MainMenu : public Menu
 {
 public:
-	MainMenu(ResourceCollection& resources);
+	MainMenu(int id, ResourceCollection& resources);
 	~MainMenu();
-	virtual void render(sf::RenderTarget& renderSurface);
+	void render(sf::RenderTarget& renderSurface) override;
 	void buttonPressed(int id);
 
 private:

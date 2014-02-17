@@ -7,15 +7,16 @@
 
 #include <iostream> // TODO Remove!
 
-MainMenu::MainMenu(ResourceCollection& resources)
+MainMenu::MainMenu(int id, ResourceCollection& resources):
+	Menu(id)
 {
-	mBackground.setTexture(resources.getTexture("../Debug/Main Menu.png"));
+	mBackground.setTexture(resources.getTexture("Assets/Menu/Main Menu.png"));
 
 	sf::Vector2f width = sf::Vector2f((float)baseWidth, 0.0f);
 	sf::Vector2f height = sf::Vector2f(0.0f, (float)baseHeight);
 
-	sf::Texture& buttonTexture = resources.getTexture("../Debug/Button.png");
-	sf::Font& font = resources.getFont("../Debug/24Janvier.otf");
+	sf::Texture& buttonTexture = resources.getTexture("Assets/Menu/Button.png");
+	sf::Font& font = resources.getFont("Assets/Menu/24Janvier.otf");
 	sf::Text start("Start", font, 30U);
 	sf::Text settings("Settings", font, 30U);
 	addButton(Button(START, width / 2.0f + height / 3.0f, buttonTexture, resources, start));

@@ -1,6 +1,7 @@
 #include "Menu.h"
 
-Menu::Menu():
+Menu::Menu(int id):
+	Overlay(id),
 	buttonList(),
 	selectedButton(0)
 {}
