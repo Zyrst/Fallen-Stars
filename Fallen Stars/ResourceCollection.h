@@ -32,7 +32,9 @@ class ResourceCollection
 
 		// Shaders
 		void loadShader(std::string filename, sf::Shader::Type);
+		void loadShader(std::string vertFilename, std::string fragFilename);
 		sf::Shader& getShader(std::string filename, sf::Shader::Type);
+		sf::Shader& getShader(std::string vertFilename, std::string fragFilename);
 
 	private:
 		/* Keep the id of the render thread, so a warning can be shown if resource

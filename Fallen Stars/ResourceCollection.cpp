@@ -12,6 +12,7 @@ ResourceCollection::~ResourceCollection()
 	{
 		delete it->second;
 	}
+	mShaders.clear();
 }
 
 /* Texture loader */
@@ -108,8 +109,32 @@ void ResourceCollection::loadShader(std::string filename, sf::Shader::Type type)
 	}
 }
 
+void ResourceCollection::loadShader(std::string vertFilename, std::string fragFilename)
+{
+	if( mShaders.find(vertFilename + fragFilename) == mShaders.end() )
+	{
+		mShaders[vertFilename + fragFilename] = new sf::Shader();
+
+		if(mShaders[vertFilename + fragFilename]->loadFromFile(vertFilename, fragFilename))
+		{
+			std::cout << "Shader " << vertFilename << " + " << fragFilename << " loaded successfully" << std::endl;
+		}
+
+		if(std::this_thread::get_id() == renderThread)
+		{
+			std::cout << "The shader was loaded in the game loop! This freezes the thread while loading!" << std::endl;
+		}
+	}
+}
+
 sf::Shader& ResourceCollection::getShader(std::string filename, sf::Shader::Type type)
 {
 	loadShader(filename, type);
 	return *mShaders[filename];
+}
+
+sf::Shader& ResourceCollection::getShader(std::string vertFilename, std::string fragFilename)
+{
+	loadShader(vertFilename, fragFilename);
+	return *mShaders[vertFilename + fragFilename];
 }
