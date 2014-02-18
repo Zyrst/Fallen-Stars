@@ -72,20 +72,26 @@ Shade::Shade(ResourceCollection& resource, BoxWorld* world, sf::Vector2f& size, 
 {
 	setupSensors(position,size);
 
-	auto &idle = mResource.getTexture("Assets/Map/Shade_idle.png");
+	auto &idle = mResource.getTexture("Assets/Characters/Shade_idle.png");
 	sf::Vector2i idleSize = static_cast<sf::Vector2i>(idle.getSize());
 	sf::Vector2i frameSize(256,256);
 	SpriteSheet idleSheet(frameSize,idleSize);
 	std::vector<sf::IntRect> idleFrames = idleSheet.getAllFrames();
 	mIdle = new Animation(idleFrames, idle);
 
-	auto &walking = mResource.getTexture("Assets/Map/Shade_walking.png");
+	auto &walking = mResource.getTexture("Assets/Characters/Shade_walking.png");
 	sf::Vector2i walkSize = static_cast<sf::Vector2i>(walking.getSize());
 	SpriteSheet walkSheet(frameSize,walkSize);
 	std::vector<sf::IntRect> walkFrames = walkSheet.getAllFrames();
 	mWalking = new Animation(walkFrames, walking);
 
-	anime.setAnimation(*mIdle);
+	auto &spawn = mResource.getTexture("Assets/Characters/Shade_spawn.png");
+	sf::Vector2i spawnSize = static_cast<sf::Vector2i>(spawn.getSize());
+	SpriteSheet spawnSheet(frameSize,spawnSize);
+	std::vector<sf::IntRect> spawnFrames = spawnSheet.getAllFrames();
+	mSpawn = new Animation(spawnFrames,spawn);
+	
+	anime.setAnimation(*mSpawn);
 
 	updateSpriteOrigin();
 }
@@ -93,6 +99,7 @@ Shade::~Shade()
 {
 	delete mIdle;
 	delete mWalking;
+	delete mSpawn;
 }
 void Shade::render(sf::RenderTarget& renderTarget)
 {
@@ -110,26 +117,28 @@ void Shade::update(sf::Time deltaTime)
 	const b2Vec2& vel = body->GetLinearVelocity();
 	mFace = getFacing();
 
-	if(mFace = LEFT)
+	if(mFace == LEFT)
 	{
 		if(chaseSensorLeft->isChasing())
 		{
-			//body->SetLinearVelocity(b2Vec2(-10*1.5, vel.y));
+			body->SetLinearVelocity(b2Vec2(-3*1.5, vel.y));
+			std::cout << "I'm chasing left" << std::endl;
 		}
-		else
+		else if (!chaseSensorLeft->isChasing())
 		{
-			//body->SetLinearVelocity(b2Vec2(-10, vel.y));
+			body->SetLinearVelocity(b2Vec2(-3, vel.y));
+			std::cout << "I'm not chasing left" << std::endl;
 		}
 	}
-	else if(mFace = RIGHT)
+	else if(mFace == RIGHT)
 	{
 		if(chaseSensorRight->isChasing())
 		{
-			//body->SetLinearVelocity(b2Vec2(10*1.5, vel.y));
+			body->SetLinearVelocity(b2Vec2(10*1.5, vel.y));
 		}
 		else
 		{
-			//body->SetLinearVelocity(b2Vec2(10, vel.y));
+			body->SetLinearVelocity(b2Vec2(10, vel.y));
 		}
 	}
 	/*
@@ -167,11 +176,12 @@ void Shade::setupSensors(sf::Vector2f position, sf::Vector2f size)
 	b2Vec2 groundPosLeft = Convert::sfmlToB2(position);
 	b2Vec2 groundPosRight = Convert::sfmlToB2(position);
 	
-	groundPosRight.x += bodySize.x;
-	groundPosRight.y += bodySize.y;
-	groundPosLeft.y += bodySize.y;
-	bodyPos.x += bodySize.x/2;
-	bodyPos.y += bodySize.y/2;
+	groundPosRight.x = bodySize.x;
+	groundPosRight.y = bodySize.y;
+	groundPosLeft.y = bodySize.y;
+	groundPosLeft.x = bodySize.x;
+	bodyPos.x = bodySize.x/2;
+	bodyPos.y = bodySize.y/2;
 
 
 

@@ -52,5 +52,6 @@ private:
 	ResourceCollection& mResource;
 	Animation* mIdle;
 	Animation* mWalking;
+	Animation* mSpawn;
 };
 

@@ -60,5 +60,6 @@ private:
 	Animation* mIdle;
 	Animation* mJump;
 	Animation* mGrab;
+	Animation* mFall;
 	ResourceCollection& mResource;
 };
