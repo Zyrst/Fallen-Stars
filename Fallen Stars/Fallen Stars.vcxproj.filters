@@ -192,6 +192,9 @@
     <ClCompile Include="DialogueOverlay.cpp">
       <Filter>Source Files\Overlay</Filter>
     </ClCompile>
+    <ClCompile Include="ShaderTestState.cpp">
+      <Filter>Source Files\State</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -325,6 +328,9 @@
     </ClInclude>
     <ClInclude Include="DialogueOverlay.h">
       <Filter>Header Files\Overlay</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderTestState.h">
+      <Filter>Header Files\State</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
