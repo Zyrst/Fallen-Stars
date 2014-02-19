@@ -125,6 +125,7 @@
     <ClCompile Include="ResourceCollection.cpp" />
     <ClCompile Include="Shade.cpp" />
     <ClCompile Include="ShaderTestState.cpp" />
+    <ClCompile Include="LightSource.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="SpriteSheet.cpp" />
     <ClCompile Include="VecConverter.cpp" />
@@ -171,6 +172,7 @@
     <ClInclude Include="ResourceCollection.h" />
     <ClInclude Include="Shade.h" />
     <ClInclude Include="ShaderTestState.h" />
+    <ClInclude Include="LightSource.h" />
     <ClInclude Include="SpriteSheet.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="VecConverter.h" />
