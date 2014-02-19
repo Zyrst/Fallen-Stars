@@ -6,7 +6,6 @@
 namespace
 {
 	const std::string SHADER_DIR = "Assets/Shaders/";
-	const float UPSCALE = 1.0f;
 
 	sf::RenderTexture* createFBO(int width, int height)
 	{
@@ -37,6 +36,7 @@ LightSource::LightSource(int width, int height)
 , shadowRenderFBO(createFBO(width, height))
 , position(0, 0)
 , size((float) width, (float) height)
+, color(sf::Color::Transparent)
 { }
 
 
@@ -59,9 +59,19 @@ const sf::Vector2f& LightSource::getSize() const
 	return size;
 }
 
+const sf::Color& LightSource::getColor() const
+{
+	return color;
+}
+
 void LightSource::setPosition(const sf::Vector2f& pos)
 {
 	this->position = pos;
+}
+
+void LightSource::setColor(const sf::Color& color)
+{
+	this->color = color;
 }
 
 void LightSource::clear()
@@ -92,8 +102,6 @@ void LightSource::calculateShadow()
 	sf::Vector2f size = sf::Vector2f((float) usize.x, (float) usize.y);
 	mapShader->setParameter("resolution", size);
 	renderShader->setParameter("resolution", size);
-
-	mapShader->setParameter("upScale", UPSCALE);
 
 	//Create a shape which will render the shadowmap
 	sf::Vector2u usize2 = shadowMapFBO->getSize();

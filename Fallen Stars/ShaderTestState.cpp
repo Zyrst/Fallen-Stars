@@ -6,6 +6,7 @@
 #include "BoxWorld.h"
 #include "Entity.h"
 #include "ResourceCollection.h"
+#include "BaseResolution.h"
 
 using namespace std;
 using namespace sf;
@@ -19,103 +20,70 @@ namespace
 	LevelManager::EntityVector entities;
 	ResourceCollection rc;
 
-	sf::Shader *occluderShader, *shadowMap, *shadowRender;
-	sf::Texture* texture;
-	sf::Sprite* sp;
+	Shader *sh, *sh2;
+	LightSource *light, *light2;
 
-	sf::RenderTexture *occluderFBO, *shadowMapFBO, *shadowRenderFBO;
+	RenderTexture *darkness1, *darkness2;
 
-	LightSource* light;
-
-	sf::RenderTexture* createFBO(int width, int height)
+	RenderTexture* createFBO(int width, int height)
 	{
-		sf::RenderTexture* tx = new sf::RenderTexture();
-		tx->create(width, height, false);
-
+		RenderTexture* tx = new RenderTexture();
+		tx->create(width, height);
 		return tx;
 	}
 
-	void renderToOccluder()
+	Shader* createShader(const string& vert, const string& frag)
 	{
-		occluderFBO->clear(sf::Color::Transparent);
-		occluderFBO->draw(*sp, occluderShader);
-		occluderFBO->display();
+		Shader* shader = new Shader();
+		shader->loadFromFile(vert, frag);
+		return shader;
 	}
 
-	void renderToShadowMap()
+	void fixcolorlight()
 	{
-		sf::Vector2u usize = occluderFBO->getSize();
-		sf::Vector2f size = sf::Vector2f((float) usize.x, (float) usize.y);
-		shadowMap->setParameter("resolution", size);
-
-		sf::Vector2u usize2 = shadowMapFBO->getSize();
-		sf::Vector2f size2 = sf::Vector2f((float) usize2.x, (float) usize2.y);
-		sf::RectangleShape shape = sf::RectangleShape(size2);
-		shape.setTexture(&(occluderFBO->getTexture()));
-
-		shadowMapFBO->clear(sf::Color::Transparent);
-
-		//shadowMapFBO->draw(sf::Sprite(occluderFBO->getTexture()), shadowMap);
-		shadowMapFBO->draw(shape, shadowMap);
-
-		shadowMapFBO->display();
-	}
-
-	void renderToShadowRender()
-	{
-		sf::Vector2u usize = shadowRenderFBO->getSize();
-		sf::Vector2f size = sf::Vector2f((float)usize.x, (float)usize.y);
-		shadowRender->setParameter("resolution", size);
-
-		shadowRenderFBO->clear(sf::Color::Transparent);
-		sf::RectangleShape shape = sf::RectangleShape(size);
-		shape.setTexture(&(shadowMapFBO->getTexture()));
-		shadowRenderFBO->draw(shape, shadowRender);
-
-		shadowRenderFBO->display();
+		darkness2->clear(Color::Transparent);
+		RenderStates states = RenderStates(BlendMode::BlendAdd);
+		{
+			RectangleShape rect = RectangleShape(light->getSize());
+			rect.setOrigin(light->getSize().x / 2.0f, light->getSize().y / 2.0f);
+			rect.setFillColor(light->getColor());
+			rect.setPosition(light->getPosition());
+			rect.setTexture(&light->getResult());
+			darkness2->draw(rect, states);
+		}
+		{
+			RectangleShape rect = RectangleShape(light2->getSize());
+			rect.setOrigin(light2->getSize().x / 2.0f, light2->getSize().y / 2.0f);
+			rect.setFillColor(light2->getColor());
+			rect.setPosition(light2->getPosition());
+			rect.setTexture(&light2->getResult());
+			darkness2->draw(rect, states);
+		}
+		darkness2->display();
 	}
 }
 
 ShaderTestState::ShaderTestState()
 {
-	/*shadowMap = new Shader();
-	shadowRender = new Shader();
-	occluderShader = new Shader();
+	light = new LightSource(1024, 1024);
+	light2 = new LightSource(512, 512);
 
-	if (!shadowMap->loadFromFile("Assets/Shaders/default.vert", "Assets/Shaders/shadowMap.frag"))
-	{
-		cerr << "No loading shader0" << endl;
-	}
-	else if (!shadowRender->loadFromFile("Assets/Shaders/default.vert", "Assets/Shaders/shadowRender.frag"))
-	{
-		cerr << "No loading shader1" << endl;
-	}
-	else if (!occluderShader->loadFromFile("Assets/Shaders/default.vert", "Assets/Shaders/occluder.frag"))
-	{
-		cerr << "No loading shader2" << endl;
-	}
-	else
-	{
-		cout << "Woho!" << endl;
-	}
+	light->setColor(Color(255, 255, 0, 40));
+	light2->setPosition(sf::Vector2f(820, 200));
+	light2->setColor(Color(255, 0, 0, 50));
 
-	texture = new sf::Texture();
-	texture->loadFromFile("Assets/Shaders/hej.png");
-
-	sp = new sf::Sprite(*texture);
-
-	occluderFBO = createFBO(512, 512);
-	shadowMapFBO = createFBO(512, 1);
-	shadowRenderFBO = createFBO(512, 512);*/
-
-	light = new LightSource(512, 512);
 	level = new LevelManager("Test");
+	darkness1 = createFBO(baseWidth, baseHeight);
+	darkness2 = createFBO(baseWidth, baseHeight);
 
 	world = new BoxWorld();
 	level->genCollision(world);
-	//level->getEnemyLayer(rc, world, entities, sf::Vector2f(70, 220));
+	level->getEnemyLayer(rc, world, entities, sf::Vector2f(70, 220));
 	level->getStarLayer(rc, world, entities);
 	level->getStarDustLayer(rc, world, entities);
+
+	sh = createShader("Assets/Shaders/default.vert", "Assets/Shaders/default.frag");
+	sh2 = createShader("Assets/Shaders/default.vert", "Assets/Shaders/darkenPass.frag");
 }
 
 
@@ -150,29 +118,6 @@ void ShaderTestState::update(const sf::Time& deltaTime)
 
 void ShaderTestState::render(sf::RenderWindow& window)
 {
-	/*renderToOccluder();
-	renderToShadowMap();
-	renderToShadowRender();
-
-	window.clear(sf::Color::Blue);
-
-	sf::Sprite hej = sf::Sprite(occluderFBO->getTexture());
-
-	window.draw(hej);
-
-	sf::Sprite hej2 = sf::Sprite(shadowMapFBO->getTexture());
-	hej2.setPosition(0, hej.getLocalBounds().height);
-	window.draw(hej2);
-
-	sf::Sprite hej3 = sf::Sprite(shadowRenderFBO->getTexture());
-	hej3.setPosition(hej.getLocalBounds().width, 0);
-	window.draw(hej3);
-
-	sp->setPosition(hej.getLocalBounds().width, 0);
-	window.draw(*sp);
-
-	sp->setPosition(0, 0);*/
-
 	level->Render(window);
 
 	for (Entity* e : entities)
@@ -180,7 +125,64 @@ void ShaderTestState::render(sf::RenderWindow& window)
 		e->render(window);
 	}
 
-	world->drawDebug(window);
+	//world->drawDebug(window);
+
+	light->clear();
+	light2->clear();
+
+	sf::RenderTexture* tx = light->getOccluder();
+	sf::View view = tx->getView();
+	view.setCenter(light->getPosition());
+	tx->setView(view);
+
+	sf::RenderTexture* tx2 = light2->getOccluder();
+	view = tx2->getView();
+	view.setCenter(light2->getPosition());
+	tx2->setView(view);
+	for (Entity* e : entities)
+	{
+		e->render(*tx);
+		e->render(*tx2);
+	}
+
+	light->calculateShadow();
+	light2->calculateShadow();
+
+	fixcolorlight();
+
+	RenderStates states = RenderStates(BlendMode::BlendAdd);
+	states.shader = sh;
+
+	darkness1->clear(sf::Color(0, 0, 0, 0));
+	darkness1->draw(*light, states);
+	darkness1->draw(*light2, states);
+	darkness1->display();
+	{
+		RectangleShape shape = RectangleShape((Vector2f)darkness1->getSize());
+		shape.setTexture(&darkness1->getTexture(), false);
+		shape.setFillColor(light->getColor());
+		sh2->setParameter("darknessColor", sf::Color(0, 0, 10, 180));
+		sh2->setParameter("colorTexture", darkness2->getTexture());
+
+		states.blendMode = BlendMode::BlendNone;
+		states.shader = sh2;
+
+		////darkness1->clear(Color::Transparent);
+		darkness1->draw(shape, states);
+		darkness1->display();
+
+		//window.draw(*light);
+		Sprite spr = Sprite(darkness1->getTexture());
+
+		states.blendMode = BlendAlpha;
+		states.shader = nullptr;
+		window.draw(spr, states);
+	}
+	/*sf::Sprite spriteLol = sf::Sprite(light->getDebugMap());
+	sf::RectangleShape shape2 = sf::RectangleShape(sf::Vector2f(512, 512));
+	shape2.setFillColor(sf::Color::White);
+	window.draw(shape2);
+	window.draw(spriteLol);*/
 
 	sf::RectangleShape shape = sf::RectangleShape(light->getSize());
 	shape.setOrigin(light->getSize().x / 2.0f, light->getSize().y / 2.0f);
@@ -189,27 +191,7 @@ void ShaderTestState::render(sf::RenderWindow& window)
 	shape.setFillColor(sf::Color::Transparent);
 	shape.setOutlineThickness(1.0f);
 
-	window.draw(shape);
-
-	light->clear();
-
-	sf::RenderTexture* tx = light->getOccluder();
-	sf::View view = tx->getView();
-	view.setCenter(light->getPosition());
-	tx->setView(view);
-	for (Entity* e : entities)
-	{
-		e->render(*tx);
-	}
-
-	light->calculateShadow();
-	window.draw(*light);
-
-	/*sf::Sprite spriteLol = sf::Sprite(light->getDebugMap());
-	sf::RectangleShape shape2 = sf::RectangleShape(sf::Vector2f(512, 512));
-	shape2.setFillColor(sf::Color::White);
-	window.draw(shape2);
-	window.draw(spriteLol);*/
+	//window.draw(shape);
 
 }
 

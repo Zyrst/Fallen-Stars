@@ -14,8 +14,10 @@ public:
 
 	const sf::Vector2f& getPosition() const;
 	const sf::Vector2f& getSize() const;
+	const sf::Color& getColor() const;
 
 	void setPosition(const sf::Vector2f& pos);
+	void setColor(const sf::Color& color);
 
 	//Call this to clear the fbos.
 	void clear();
@@ -36,5 +38,6 @@ private:
 	sf::Shader *mapShader, *renderShader;
 	sf::RenderTexture *occluderFBO, *shadowMapFBO, *shadowRenderFBO;
 	sf::Vector2f position, size;
+	sf::Color color;
 };
 
