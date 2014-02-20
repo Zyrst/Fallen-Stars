@@ -1,6 +1,7 @@
 #pragma once
 #include "EntityLiving.h"
 #include "Player.h"
+
 class ChaseSensor : public CallBack
 {
 public:
@@ -8,12 +9,15 @@ public:
 	virtual void beginContact(b2Fixture* otherFixture) override;
 	virtual void endContact(b2Fixture* otherFixture) override;
 
-	bool isChasing();
-	bool isActive();
+	bool isChasing() const;
+	bool isActive() const;
 	void setActive(bool active);
 private:
-	int chasing;
+	void setVictim(b2Fixture* fix, const sf::FloatRect& bounds);
+	bool chasing;
 	bool mActive;
+	b2Fixture* chaseVictim;
+	sf::FloatRect victimBounds; 
 };
 
 class LedgeSensor : public CallBack
@@ -24,8 +28,9 @@ public:
 	virtual void endContact(b2Fixture* otherFixture) override;
 	bool isGrounded() const;
 private:
-	int grounded;
-	bool mActive;
+	void setFinder(b2Fixture* fix, const sf::FloatRect& bounds);
+	b2Fixture* groundFinder;
+	sf::FloatRect finderBounds;
 };
 
 class Shade: public EntityLiving
@@ -43,7 +48,6 @@ private:
 	Player* player;
 	sf::Vector2f velocity;
 	void setupSensors(sf::Vector2f position ,sf::Vector2f size);
-	Facing mFace;
 	ChaseSensor* chaseSensorLeft;
 	ChaseSensor* chaseSensorRight;
 	LedgeSensor* ledgeSensorLeft;

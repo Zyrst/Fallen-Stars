@@ -12,7 +12,8 @@ public:
 	virtual bool isAlive();
 
 protected:
-	EntityLiving(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position);
+	EntityLiving(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, Facing facing = LEFT);
 private:
 	sf::Vector2f velocity;
+	Facing currentFacing;
 };

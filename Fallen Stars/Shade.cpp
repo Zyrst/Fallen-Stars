@@ -9,30 +9,39 @@
 #include "SpriteSheet.h"
 
 
+#pragma region Chase
 ChaseSensor::ChaseSensor(b2Fixture* owner)
 	: CallBack(owner)
-	, chasing(0)
+	, chasing(false)
 	, mActive(false)
+	, chaseVictim(nullptr)
+
 { }
 void ChaseSensor::beginContact(b2Fixture* otherFixture)
 {
-	if (otherFixture->GetBody()->GetType() == b2_kinematicBody && isActive()==true)
+	sf::FloatRect bounds = BoxBounds::boundsOfFixture(otherFixture);
+	if (otherFixture->GetBody()->GetType() == b2_dynamicBody && chaseVictim == nullptr)
 	{
-		chasing++;
+		setVictim(otherFixture, bounds);
+		//std::cout<<"Contact Begun"<<std::endl;
 	}
+	
 }
 void ChaseSensor::endContact(b2Fixture* otherFixture)
 {
-	if (otherFixture->GetBody()->GetType() == b2_kinematicBody && isActive() == false)
+	if (otherFixture->GetBody()->GetType() == b2_dynamicBody &&  chaseVictim != nullptr)
 	{
-		chasing--;
+		chasing = false;
+		chaseVictim = nullptr;
+		//std::cout<<"Contact Begun Ended"<<std::endl;
 	}
+	
 }
-bool ChaseSensor::isChasing()
+bool ChaseSensor::isChasing() const
 {
-	return (chasing > 0);
+	return (chaseVictim !=nullptr);
 }
-bool ChaseSensor::isActive()
+bool ChaseSensor::isActive() const
 {
 	return mActive;
 }
@@ -40,38 +49,50 @@ void ChaseSensor::setActive(bool active)
 {
 	mActive = active;
 }
-/*----------------------------*/
-LedgeSensor::LedgeSensor(b2Fixture* otherFixture)
+void ChaseSensor::setVictim(b2Fixture* fix, const sf::FloatRect& bounds)
+{
+	chaseVictim = fix;
+	victimBounds = sf::FloatRect(bounds);
+}
+#pragma endregion
+#pragma region Ledge
+LedgeSensor::LedgeSensor(b2Fixture* owner)
 	: CallBack(owner)
-	, grounded(0)
-	, mActive(false)
+	, groundFinder(nullptr)
 {}
 void LedgeSensor::beginContact(b2Fixture* otherFixture)
 {
-	if (otherFixture->GetBody()->GetType() == b2_staticBody)
+	sf::FloatRect bounds = BoxBounds::boundsOfFixture(otherFixture);
+	if (otherFixture->GetBody()->GetType() == b2_staticBody && groundFinder == nullptr)
 	{
-		mActive = true;
+		setFinder(otherFixture, bounds);
+		//std::cout<<"G";
 	}
 }
 void LedgeSensor::endContact(b2Fixture* otherFixture)
 {
-	if (otherFixture->GetBody()->GetType() == b2_staticBody)
+	if (otherFixture->GetBody()->GetType() == b2_staticBody && groundFinder != nullptr)
 	{
-		mActive = false;
+		groundFinder = nullptr;
+		//std::cout<<"420 ground not found lel"<<std::endl;
 	}
 }
 bool LedgeSensor::isGrounded() const
 {
-	return mActive;
+	return (groundFinder != nullptr);
 }
-/*----------------------------*/
+void LedgeSensor::setFinder(b2Fixture* fix, const sf::FloatRect& bounds)
+{
+	groundFinder = fix;
+	finderBounds = sf::FloatRect(bounds);
+}
+#pragma endregion
+#pragma region Shade
 Shade::Shade(ResourceCollection& resource, BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position)
 : EntityLiving(world,size,position),
-  mFace(LEFT),
   mResource(resource)
 {
 	setupSensors(position,size);
-
 	auto &idle = mResource.getTexture("Assets/Characters/Shade_idle.png");
 	sf::Vector2i idleSize = static_cast<sf::Vector2i>(idle.getSize());
 	sf::Vector2i frameSize(256,256);
@@ -94,6 +115,7 @@ Shade::Shade(ResourceCollection& resource, BoxWorld* world, sf::Vector2f& size, 
 	anime.setAnimation(*mSpawn);
 
 	updateSpriteOrigin();
+	setFacing(LEFT);
 }
 Shade::~Shade()
 {
@@ -115,73 +137,77 @@ void Shade::render(sf::RenderTarget& renderTarget)
 void Shade::update(sf::Time deltaTime)
 {
 	const b2Vec2& vel = body->GetLinearVelocity();
-	mFace = getFacing();
-
-	if(mFace == LEFT)
+	if(getFacing() == LEFT)
 	{
 		if(chaseSensorLeft->isChasing())
 		{
-			body->SetLinearVelocity(b2Vec2(-3*1.5, vel.y));
-			std::cout << "I'm chasing left" << std::endl;
+			body->SetLinearVelocity(b2Vec2(-0.5*3.5, vel.y));
 		}
 		else if (!chaseSensorLeft->isChasing())
 		{
-			body->SetLinearVelocity(b2Vec2(-3, vel.y));
-			std::cout << "I'm not chasing left" << std::endl;
+			body->SetLinearVelocity(b2Vec2(-0.5, vel.y));
 		}
 	}
-	else if(mFace == RIGHT)
+	else if(getFacing() == RIGHT)
 	{
 		if(chaseSensorRight->isChasing())
 		{
-			body->SetLinearVelocity(b2Vec2(10*1.5, vel.y));
+			body->SetLinearVelocity(b2Vec2(0.5*3.5, vel.y));
 		}
 		else
 		{
-			body->SetLinearVelocity(b2Vec2(10, vel.y));
+			body->SetLinearVelocity(b2Vec2(0.5, vel.y));
 		}
 	}
-	/*
-	if(!ledgeSensorLeft->isGrounded()){
+	
+	
+	if(!ledgeSensorLeft->isGrounded())
+	{
 		setFacing(RIGHT);
 	}
-	else if(!ledgeSensorRight->isGrounded()){
+	else if(!ledgeSensorRight->isGrounded())
+	{
 		setFacing(LEFT);
-	}*/
-
+	}
+	else{}
+	
 	anime.update(deltaTime);
 }
 void Shade::setVelocityX(float x)
 {
 	velocity.x = x;
 }
-void Shade::setFacing(Facing Face)
+void Shade::setFacing(Facing face)
 {
-	mFace = Face;
-	if(Face = LEFT)
+	Entity::setFacing(face);
+	if(face == LEFT)
 	{
 		chaseSensorLeft->setActive(true);
 		chaseSensorRight->setActive(false);
 	}
-	else if(Face = RIGHT)
+	else if(face == RIGHT)
 	{ 
 		chaseSensorLeft->setActive(false);
 		chaseSensorRight->setActive(true);
 	}
 }
+
 void Shade::setupSensors(sf::Vector2f position, sf::Vector2f size)
 {
-	b2Vec2 bodyPos = Convert::sfmlToB2(position);
 	b2Vec2 bodySize = Convert::sfmlToB2(size);
-	b2Vec2 groundPosLeft = Convert::sfmlToB2(position);
-	b2Vec2 groundPosRight = Convert::sfmlToB2(position);
+	b2Vec2 bodyPosRight;
+	b2Vec2 bodyPosLeft;
+	b2Vec2 groundPosLeft; 
+	b2Vec2 groundPosRight;
 	
 	groundPosRight.x = bodySize.x;
 	groundPosRight.y = bodySize.y;
 	groundPosLeft.y = bodySize.y;
-	groundPosLeft.x = bodySize.x;
-	bodyPos.x = bodySize.x/2;
-	bodyPos.y = bodySize.y/2;
+	groundPosLeft.x = bodySize.x-(bodySize.x*2);
+	bodyPosLeft.x = bodySize.x-(bodySize.x*3.0);
+	bodyPosLeft.y = bodySize.y/2;
+	bodyPosRight.y = bodySize.y/2;
+	bodyPosRight.x = bodySize.x+(bodySize.x*1.2);
 
 
 
@@ -189,7 +215,7 @@ void Shade::setupSensors(sf::Vector2f position, sf::Vector2f size)
 
 //Vänster ChaseSensor
 	b2PolygonShape shapeLeft;
-	shapeLeft.SetAsBox(-3.0f, 0.2f, bodyPos, 0);
+	shapeLeft.SetAsBox(-1.0f, 0.05f, bodyPosLeft, 0);
 	b2FixtureDef defLeft;
 	defLeft.isSensor = true;
 	defLeft.shape = &shapeLeft;
@@ -199,7 +225,7 @@ void Shade::setupSensors(sf::Vector2f position, sf::Vector2f size)
 
 //Höger ChaseSensor
 	b2PolygonShape shapeRight;
-	shapeRight.SetAsBox(3.0f, 0.2f, bodyPos, 0);
+	shapeRight.SetAsBox(1.0f, 0.05f, bodyPosRight, 0);
 	b2FixtureDef defRight;
 	defRight.isSensor = true;
 	defRight.shape = &shapeRight;
@@ -210,20 +236,22 @@ void Shade::setupSensors(sf::Vector2f position, sf::Vector2f size)
 
 //Vänster Ground sensor
 	b2PolygonShape shapeGroundLeft;
-	shapeGroundLeft.SetAsBox(-0.2f, -0.2f,groundPosLeft,0);
+	shapeGroundLeft.SetAsBox(-0.05f, -0.15f,groundPosLeft,0);
 	b2FixtureDef defGroundLeft;
 	defGroundLeft.isSensor = true;
 	defGroundLeft.shape = &shapeGroundLeft;
 	b2Fixture* groundFixLeft = body->CreateFixture(&defGroundLeft);
+	ledgeSensorLeft = new LedgeSensor(groundFixLeft);
 	groundFixLeft->SetUserData(ledgeSensorLeft);
 	
 //Höger Ground sensor
 	b2PolygonShape shapeGroundRight;
-	shapeGroundLeft.SetAsBox(0.2f, -0.2f,groundPosRight,0);
+	shapeGroundRight.SetAsBox(0.05f, -0.15f,groundPosRight,0);
 	b2FixtureDef defGroundRight;
 	defGroundRight.isSensor = true;
 	defGroundRight.shape = &shapeGroundRight;
 	b2Fixture* groundFixRight = body->CreateFixture(&defGroundRight);
+	ledgeSensorRight = new LedgeSensor(groundFixRight);
 	groundFixRight->SetUserData(ledgeSensorRight);
 
 //Ändrar kategorier och maskar till de olika sensorerna
@@ -233,9 +261,9 @@ void Shade::setupSensors(sf::Vector2f position, sf::Vector2f size)
 	b2Filter filterChaseRight = fixRight->GetFilterData();
 
 	filterGroundLeft.categoryBits = ENEMY_GROUND;
-	filterGroundLeft.maskBits = ALL;
+	//filterGroundLeft.maskBits = ALL;
 	filterGroundRight.categoryBits = ENEMY_GROUND;
-	filterGroundRight.maskBits = ALL;
+	//filterGroundRight.maskBits = ALL;
 
 	filterChaseLeft.categoryBits = ENEMY_CHASE;
 	filterChaseLeft.maskBits = PLAYER;
@@ -273,3 +301,4 @@ void Shade::updateAnimation()
 }
 
 /* Animationer , gå , springa, attackera , dö */
+#pragma endregion

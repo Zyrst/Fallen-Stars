@@ -332,10 +332,14 @@
     <ClInclude Include="DialogueOverlay.h">
       <Filter>Header Files\Overlay</Filter>
     </ClInclude>
+<<<<<<< Updated upstream
     <ClInclude Include="ShaderTestState.h">
       <Filter>Header Files\State</Filter>
     </ClInclude>
     <ClInclude Include="LightSource.h">
+=======
+    <ClInclude Include="resource.h">
+>>>>>>> Stashed changes
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -346,5 +350,10 @@
     <None Include="Highlight.frag">
       <Filter>Resource Files\shaders</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Fallen Stars.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

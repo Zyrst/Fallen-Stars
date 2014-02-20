@@ -32,6 +32,11 @@ Entity::Facing Entity::getFacing()
 	return currentFacing;
 }
 
+Entity::EntityCategory Entity::getCategory()
+{
+	return currentCategory;
+}
+
 void Entity::setFacing(Facing facing)
 {
 	if(facing != currentFacing) 

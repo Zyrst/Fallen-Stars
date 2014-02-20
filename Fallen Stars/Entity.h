@@ -21,7 +21,8 @@ class Entity
 			 PLAYER =		1 << 0,
 			 ENEMY =		1 << 1,
 			 ENEMY_CHASE =	1 << 2,
-			 ENEMY_GROUND =	1 << 3
+			 ENEMY_GROUND =	1 << 3,
+			 ONESIDE_PLAT = 1 << 4
 		};
 
 		//TODO Update skall få funktioner
@@ -35,7 +36,7 @@ class Entity
 		virtual bool isAlive();
 		Facing getFacing();
 		void setFacing(Facing facing);
-
+		EntityCategory getCategory();
 	protected:
 		Entity(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, Facing facing = LEFT);
 		void updateSpriteOrigin();
@@ -46,4 +47,5 @@ class Entity
 		EntityCategory entityCategory; 
 	private:
 		Facing currentFacing;
+		EntityCategory currentCategory;
 };
