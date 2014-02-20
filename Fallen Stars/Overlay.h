@@ -20,6 +20,6 @@ public:
 	bool isEnabled();
 
 private:
-	bool mID;
+	int mID;
 	bool mEnabled;
 };
