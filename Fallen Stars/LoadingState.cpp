@@ -42,7 +42,7 @@ void LoadingState::update(const sf::Time& deltaTime)
 	{
 		std::cout << "Loading is complete. Loading thread will now join with the gameloop thread." << std::endl;
 		mLoadingThread->join();
-		std::cout << "Join successful!" << std::endl;
+		std::cout << "Join successful! (Loading thread stopped)" << std::endl;
 		
 		delete mLoadingThread; 
 		mLoadingThread = NULL;

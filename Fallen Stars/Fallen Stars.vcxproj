@@ -122,6 +122,8 @@
     <ClCompile Include="Overlay.cpp" />
     <ClCompile Include="PlatformState.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PuzzleRing.cpp" />
+    <ClCompile Include="PuzzleState.cpp" />
     <ClCompile Include="ResourceCollection.cpp" />
     <ClCompile Include="Shade.cpp" />
     <ClCompile Include="ShaderTestState.cpp" />
@@ -170,6 +172,8 @@
     <ClInclude Include="PlatformState.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="PuzzleRing.h" />
+    <ClInclude Include="PuzzleState.h" />
     <ClInclude Include="ResourceCollection.h" />
     <ClInclude Include="Shade.h" />
     <ClInclude Include="ShaderTestState.h" />
@@ -180,7 +184,6 @@
     <ClInclude Include="WaitState.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Highlight.frag" />
     <None Include="Libraries\SFML TmxLoader\lib\zlib\lib\zlib.def" />
   </ItemGroup>
   <ItemGroup>

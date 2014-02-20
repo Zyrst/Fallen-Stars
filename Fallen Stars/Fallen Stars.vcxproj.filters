@@ -70,6 +70,18 @@
     <Filter Include="Source Files\State">
       <UniqueIdentifier>{943b7e7c-9250-465a-99db-57090460561c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Overlay\Menu">
+      <UniqueIdentifier>{be454850-a5aa-4e2f-9948-a2f601e7df5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Overlay\Menu">
+      <UniqueIdentifier>{ceb16464-39a5-40b9-8690-75196707ec58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Animation">
+      <UniqueIdentifier>{7bfbd848-1eaa-4919-ac4c-f388dc1876bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Animation">
+      <UniqueIdentifier>{55d0cc4b-5ca8-4074-8695-7812840bc577}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -89,9 +101,6 @@
     </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Source Files\Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="Button.cpp">
-      <Filter>Source Files\Overlay</Filter>
     </ClCompile>
     <ClCompile Include="ControlMapping.cpp">
       <Filter>Source Files</Filter>
@@ -126,15 +135,6 @@
     <ClCompile Include="Libraries\SFML TmxLoader\src\tmx2box2d.cpp">
       <Filter>Source Files\Libraries\Tmx</Filter>
     </ClCompile>
-    <ClCompile Include="Animation.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SpriteSheet.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AnimatedSprite.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PlatformState.cpp">
       <Filter>Source Files\State</Filter>
     </ClCompile>
@@ -146,9 +146,6 @@
     </ClCompile>
     <ClCompile Include="WaitState.cpp">
       <Filter>Source Files\State</Filter>
-    </ClCompile>
-    <ClCompile Include="AnimatedBackgroundImage.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ResourceCollection.cpp">
       <Filter>Source Files</Filter>
@@ -171,14 +168,8 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Menu.cpp">
-      <Filter>Source Files\Overlay</Filter>
-    </ClCompile>
     <ClCompile Include="Shade.cpp">
       <Filter>Source Files\Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="MainMenu.cpp">
-      <Filter>Source Files\Overlay</Filter>
     </ClCompile>
     <ClCompile Include="MainMenuState.cpp">
       <Filter>Source Files\State</Filter>
@@ -188,6 +179,33 @@
     </ClCompile>
     <ClCompile Include="Overlay.cpp">
       <Filter>Source Files\Overlay</Filter>
+    </ClCompile>
+    <ClCompile Include="PuzzleState.cpp">
+      <Filter>Source Files\State</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenu.cpp">
+      <Filter>Source Files\Overlay\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>Source Files\Overlay\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimatedBackgroundImage.cpp">
+      <Filter>Source Files\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimatedSprite.cpp">
+      <Filter>Source Files\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation.cpp">
+      <Filter>Source Files\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteSheet.cpp">
+      <Filter>Source Files\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="PuzzleRing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Source Files\Overlay\Menu</Filter>
     </ClCompile>
     <ClCompile Include="DialogueOverlay.cpp">
       <Filter>Source Files\Overlay</Filter>
@@ -208,9 +226,6 @@
     </ClInclude>
     <ClInclude Include="Controls.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Button.h">
-      <Filter>Header Files\Overlay</Filter>
     </ClInclude>
     <ClInclude Include="ControlMapping.h">
       <Filter>Header Files</Filter>
@@ -266,15 +281,6 @@
     <ClInclude Include="Libraries\SFML TmxLoader\include\tmx\tmx2box2d.h">
       <Filter>Header Files\Libraries\Tmx</Filter>
     </ClInclude>
-    <ClInclude Include="SpriteSheet.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AnimatedSprite.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Animation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PlatformState.h">
       <Filter>Header Files\State</Filter>
     </ClInclude>
@@ -286,9 +292,6 @@
     </ClInclude>
     <ClInclude Include="WaitState.h">
       <Filter>Header Files\State</Filter>
-    </ClInclude>
-    <ClInclude Include="AnimatedBackgroundImage.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ResourceCollection.h">
       <Filter>Header Files</Filter>
@@ -311,14 +314,8 @@
     <ClInclude Include="Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Menu.h">
-      <Filter>Header Files\Overlay</Filter>
-    </ClInclude>
     <ClInclude Include="Shade.h">
       <Filter>Header Files\Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="MainMenu.h">
-      <Filter>Header Files\Overlay</Filter>
     </ClInclude>
     <ClInclude Include="MainMenuState.h">
       <Filter>Header Files\State</Filter>
@@ -328,6 +325,33 @@
     </ClInclude>
     <ClInclude Include="Overlay.h">
       <Filter>Header Files\Overlay</Filter>
+    </ClInclude>
+    <ClInclude Include="PuzzleState.h">
+      <Filter>Header Files\State</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenu.h">
+      <Filter>Header Files\Overlay\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu.h">
+      <Filter>Header Files\Overlay\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimatedBackgroundImage.h">
+      <Filter>Header Files\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimatedSprite.h">
+      <Filter>Header Files\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>Header Files\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteSheet.h">
+      <Filter>Header Files\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="PuzzleRing.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>Header Files\Overlay\Menu</Filter>
     </ClInclude>
     <ClInclude Include="DialogueOverlay.h">
       <Filter>Header Files\Overlay</Filter>
@@ -346,9 +370,6 @@
   <ItemGroup>
     <None Include="Libraries\SFML TmxLoader\lib\zlib\lib\zlib.def">
       <Filter>Source Files\Libraries\Zlib</Filter>
-    </None>
-    <None Include="Highlight.frag">
-      <Filter>Resource Files\shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

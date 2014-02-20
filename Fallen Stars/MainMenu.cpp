@@ -4,6 +4,7 @@
 #include "BaseResolution.h"
 #include "Game.h"
 #include "JumpingTest.h"
+#include "PuzzleState.h"
 
 #include <iostream> // TODO Remove!
 
@@ -17,10 +18,16 @@ MainMenu::MainMenu(int id, ResourceCollection& resources):
 
 	sf::Texture& buttonTexture = resources.getTexture("Assets/Menu/Button.png");
 	sf::Font& font = resources.getFont("Assets/Menu/24Janvier.otf");
-	sf::Text start("Start", font, 30U);
-	sf::Text settings("Settings", font, 30U);
+	
+	sf::Text start("PlatformState", font, 30U);
 	addButton(Button(START, width / 2.0f + height / 3.0f, buttonTexture, resources, start));
+	
+	sf::Text puzzle("PuzzleState", font, 30U);
+	addButton(Button(PUZZLE, width / 2.0f + height / 2.0f, buttonTexture, resources, puzzle));
+	
+	sf::Text settings("Settings", font, 30U);
 	addButton(Button(SETTINGS, width / 2.0f + height * 2.0f / 3.0f, buttonTexture, resources, settings));
+	
 }
 
 
@@ -40,8 +47,12 @@ void MainMenu::buttonPressed(int id)
 	{
 		Game::instance()->loadNewState(new JumpingTest());
 	}
+	if(id == Buttons::PUZZLE)
+	{
+		Game::instance()->loadNewState(new PuzzleState(1, 4, 13));
+	}
 	if(id == Buttons::SETTINGS)
 	{
-		std::cout << "Settings! Yay ^^ (There aren't any yet)";
+		std::cout << "Settings! Yay ^^ (There aren't any yet)" << std::endl;
 	}
 }
