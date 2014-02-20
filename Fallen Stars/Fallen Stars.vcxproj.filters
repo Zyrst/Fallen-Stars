@@ -356,14 +356,13 @@
     <ClInclude Include="DialogueOverlay.h">
       <Filter>Header Files\Overlay</Filter>
     </ClInclude>
-<<<<<<< Updated upstream
     <ClInclude Include="ShaderTestState.h">
       <Filter>Header Files\State</Filter>
     </ClInclude>
     <ClInclude Include="LightSource.h">
-=======
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="resource.h">
->>>>>>> Stashed changes
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
