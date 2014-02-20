@@ -10,7 +10,11 @@
 
 /* States represent the various different sections of the game. The state contatins the environment that the
  * game currently uses. The active state also takes care of all the rendering performed during the current
- * frame. When a state gets replaced, it is destroyed. */
+ * frame. When a state gets replaced, it is destroyed. 
+ * 
+ * States can also contain overlays, either menus or dialogue popups, picture album etc. which can be enabled
+ * and disabled at will. States that utilize overlays must call the appropriate updateOverlay(), renderOverlays()
+ * and handleOverlayAction() methods in order to make the overlays work properly. */
 class State
 {
 	public:
@@ -21,7 +25,7 @@ class State
 		virtual void handleAction(Controls::Action, Controls::KeyState) = 0;
 
 		void addOverlay(Overlay* overlay);
-		void setOverlayEnabled(int id, bool enabled);
+		Overlay& getOverlay(int id);
 
 		void updateOverlays(const sf::Time& deltaTime);
 		void renderOverlays(sf::RenderTarget& renderSurface);

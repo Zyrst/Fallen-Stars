@@ -1,5 +1,7 @@
 #include "State.h"
 
+#include <cassert>
+
 State::~State()
 {
 	for(auto it = mOverlays.begin(); it != mOverlays.end();it++)
@@ -13,16 +15,21 @@ void State::addOverlay(Overlay* overlay)
 	mOverlays.push_back(overlay);
 }
 
-void State::setOverlayEnabled(int id, bool enabled)
+Overlay& State::getOverlay(int id)
 {
-	for(auto it = mOverlays.begin(); it != mOverlays.end();it++)
+	Overlay* targetOverlay = NULL;
+
+	for(Overlay* overlay : mOverlays)
 	{
-		Overlay* overlay = *it;
 		if(overlay->getID() == id) 
 		{
-			overlay->setEnabledState(enabled);
+			targetOverlay = overlay;
+			break;
 		}
 	}
+
+	assert(targetOverlay != NULL);
+	return *targetOverlay;
 }
 
 void State::updateOverlays(const sf::Time& deltaTime)
