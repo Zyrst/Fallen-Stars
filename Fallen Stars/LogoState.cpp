@@ -11,7 +11,6 @@ LogoState::LogoState():
 	mSprite(),
 	mTime()
 {
-	
 }
 
 
@@ -23,7 +22,12 @@ LogoState::~LogoState(void)
 
 void LogoState::load()
 {
-	mSprite.setTexture(mResourceCollection.getTexture("Assets/Menu/Logo.png"));
+	std::string filename = "Assets/Menu/Logo.png";
+	if(mTexture.loadFromFile(filename))
+	{
+		std::cout << "Texture " << filename << " loaded successfully" << std::endl;
+	}
+	mSprite.setTexture(mTexture);
 }
 
 void LogoState::update(const sf::Time& deltaTime)
@@ -39,7 +43,7 @@ void LogoState::update(const sf::Time& deltaTime)
 	
 	if(mTime.asSeconds() >= animationTime)
 	{
-		Game::instance()->loadNewState(new PlatformState());
+		Game::instance()->loadNewState(new MainMenuState());
 	}
 }
 
