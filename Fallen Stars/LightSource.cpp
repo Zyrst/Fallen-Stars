@@ -35,8 +35,9 @@ LightSource::LightSource(int width, int height)
 , shadowMapFBO(createFBO(width, 1))
 , shadowRenderFBO(createFBO(width, height))
 , position(0, 0)
-, size((float) width, (float) height)
+, size((float)width, (float)height)
 , color(sf::Color::Transparent)
+, mask(nullptr)
 { }
 
 
@@ -47,6 +48,7 @@ LightSource::~LightSource()
 	delete occluderFBO;
 	delete shadowMapFBO;
 	delete shadowRenderFBO;
+	delete mask;
 }
 
 const sf::Vector2f& LightSource::getPosition() const
@@ -72,6 +74,11 @@ void LightSource::setPosition(const sf::Vector2f& pos)
 void LightSource::setColor(const sf::Color& color)
 {
 	this->color = color;
+}
+
+void LightSource::setMask(sf::Texture* mask)
+{
+	this->mask = mask;
 }
 
 void LightSource::clear()
@@ -101,7 +108,18 @@ void LightSource::calculateShadow()
 	sf::Vector2u usize = occluderFBO->getSize();
 	sf::Vector2f size = sf::Vector2f((float) usize.x, (float) usize.y);
 	mapShader->setParameter("resolution", size);
+
 	renderShader->setParameter("resolution", size);
+
+	if (mask == nullptr)
+	{
+		renderShader->setParameter("useMask", 0.0f);
+	}
+	else
+	{
+		renderShader->setParameter("useMask", 1.0f);
+		renderShader->setParameter("mask", *mask);
+	}
 
 	//Create a shape which will render the shadowmap
 	sf::Vector2u usize2 = shadowMapFBO->getSize();

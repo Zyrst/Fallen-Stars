@@ -62,3 +62,8 @@ void Entity::updateSpriteOrigin()
 	sf::FloatRect fixSize = BoxBounds::boundsOfFixture(body->GetFixtureList());
 	anime.setOrigin((psize.width) / 2.0f, psize.height - fixSize.height);
 }
+
+void Entity::draw(sf::RenderTarget &target, sf::RenderStates states) const
+{
+	target.draw(anime, states);
+}

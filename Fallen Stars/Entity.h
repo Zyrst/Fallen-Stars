@@ -12,7 +12,7 @@ class BoxWorld;
 /*
  * Entity är en basklass för alla levande och icke grid-baserade objekt
  */
-class Entity
+class Entity : public sf::Drawable
 {
 	public:
 		enum Facing{LEFT, RIGHT};
@@ -38,6 +38,7 @@ class Entity
 		void setFacing(Facing facing);
 		EntityCategory getCategory();
 	protected:
+		virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 		Entity(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, Facing facing = LEFT);
 		void updateSpriteOrigin();
 		AnimatedSprite anime;

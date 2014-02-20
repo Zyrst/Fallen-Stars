@@ -216,6 +216,9 @@
     <ClCompile Include="LightSource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LightSolver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -363,6 +366,8 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
+	</ClInclude>
+    <ClInclude Include="LightSolver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

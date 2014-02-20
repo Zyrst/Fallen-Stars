@@ -112,6 +112,7 @@
     <ClCompile Include="Libraries\SFML TmxLoader\src\pugixml\pugixml.cpp" />
     <ClCompile Include="Libraries\SFML TmxLoader\src\QuadTreeNode.cpp" />
     <ClCompile Include="Libraries\SFML TmxLoader\src\tmx2box2d.cpp" />
+    <ClCompile Include="LightSolver.cpp" />
     <ClCompile Include="LoadingState.cpp" />
     <ClCompile Include="LogoState.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -147,6 +148,7 @@
     <ClInclude Include="EntityLiving.h" />
     <ClInclude Include="JumpingTest.h" />
     <ClInclude Include="Libraries\SFML TmxLoader\include\tmx\tmx2box2d.h" />
+    <ClInclude Include="LightSolver.h" />
     <ClInclude Include="LoadingState.h" />
     <ClInclude Include="LogoState.h" />
     <ClInclude Include="MainMenu.h" />
