@@ -28,7 +28,7 @@ void PuzzleState::load()
 
 	std::random_device randomDevice;
 	std::mt19937 twisterEngine(randomDevice());
-	std::uniform_int_distribution<int> limit(0, mSteps);
+	std::uniform_int_distribution<int> limit(0, mSteps - 1);
 
 	for(int ringNum = 1; ringNum < mRingCount; ringNum++)
 	{
