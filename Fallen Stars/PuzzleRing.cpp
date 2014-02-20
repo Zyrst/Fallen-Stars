@@ -13,7 +13,7 @@ PuzzleRing::PuzzleRing(ResourceCollection& resources, int levelNum, int ringNum,
 	mSteps(steps),
 	mSelectedStep(initialStep),
 	mRotationSpeed(0.25),
-	mStepsPerMove(2),
+	mStepsPerMove(1),
 	mHighLighted(false)
 {
 	sf::Texture& texture = resources.getTexture("Assets/Puzzle/Level" + std::to_string(levelNum) + "/Ring" + std::to_string(ringNum) + ".png");
