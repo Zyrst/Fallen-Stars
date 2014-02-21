@@ -31,6 +31,7 @@ class Object: public Entity
 		TYPE getType();
 		void handleAction(Controls::Action action, Controls::KeyState);
 		void render(sf::RenderTarget& target);
+		void playSound(TYPE type);
 
 private:
 	TYPE mType;
@@ -38,4 +39,6 @@ private:
 	Animation* mStar;
 	Animation* mStarDust;
 	StarCallBack* starCallBack;
+	sf::Sound mStarDustSound;
+	sf::Sound mStarSound;
 };

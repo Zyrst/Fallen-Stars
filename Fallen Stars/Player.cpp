@@ -156,6 +156,9 @@ Player::Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position,Resou
 	
 	updateSpriteOrigin();
 
+	mJumpSound = mResource.getSound("Assets/Sound/Jump.wav");
+	mWalkSound = mResource.getSound("Assets/Sound/Walking 2.wav");
+
 	setupSensors(position, size);
 	body->SetLinearDamping(1.0f);
 	/* Set filter for collisions */
@@ -263,8 +266,7 @@ void Player::update(sf::Time deltaTime)
 		{
 			if (!rightSideCollision->isColliding())
 			{
-				body->SetLinearVelocity(b2Vec2(SPEED, vel.y));
-				
+				body->SetLinearVelocity(b2Vec2(SPEED, vel.y));				
 			}
 			
 			setFacing(Entity::RIGHT);
@@ -321,6 +323,7 @@ void Player::update(sf::Time deltaTime)
 	}
 	
 	updateAnimation();
+	updateSound();
 	anime.update(deltaTime);
 }
 
@@ -381,6 +384,7 @@ void Player::jump()
 			const b2Vec2& vel = body->GetLinearVelocity();
 			//body->ApplyLinearImpulse(b2Vec2(0, -7), b2Vec2(0, 0), true);
 			body->SetLinearVelocity(b2Vec2(vel.x, -6));
+			mJumpSound.play();
 		}
 
 	}
@@ -444,6 +448,12 @@ void Player::updateAnimation()
 	if(leftButton && rightButton || !leftButton && !rightButton)
 	{
 		currentAnimation = mIdle;
+		if(groundCallBack->isColliding())
+		{
+		/*This is to make so the Stella doesn't move while both buttons are down*/
+		/*But we can't jump while standing still so not working as intended*/
+		//body->SetLinearVelocity(b2Vec2(0, velocity.y));
+		}
 	}
 	if(!groundCallBack->isColliding())
 	{
@@ -456,4 +466,16 @@ void Player::updateAnimation()
 	
 	if(currentAnimation != NULL) anime.play(*currentAnimation);
 	anime.setPosition(Convert::b2ToSfml(body->GetPosition()));
+}
+
+void Player::updateSound()
+{
+	if (leftButton && groundCallBack->isColliding() || rightButton && groundCallBack->isColliding())
+	{
+
+		
+		mWalkSound.play();
+		std::cout << "Walking soundssss" << std::endl;
+	}
+
 }

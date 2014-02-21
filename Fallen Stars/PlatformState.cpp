@@ -51,6 +51,7 @@ void PlatformState::render(sf::RenderWindow& window)
 		mEntityVector[i]->render(window);
 	}
 	mLevel->getMapLoader().Draw(window, tmx::MapLayer::Foreground);
+	/*Remove this to remove the outdrawn collision boxes and other box2d stuff*/
 	mWorld->drawDebug(window);
 }
 
@@ -65,7 +66,7 @@ void PlatformState::killDeadEntities()
 	{
 		if(!(*i)->isAlive())
 		{
-			delete *i; //?
+			delete *i;
 			i = mEntityVector.erase(i);
 			std::cout << "Erased entity" << std::endl;
 		}

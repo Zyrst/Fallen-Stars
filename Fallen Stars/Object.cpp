@@ -53,11 +53,15 @@ Object::Object(BoxWorld* world, sf::Vector2f& position, ResourceCollection& reso
 
 	body->GetFixtureList()->SetSensor(true);
 	body->SetGravityScale(0.0f);
+	mStarDustSound = mResource.getSound("Assets/Sound/PickUp.wav");
+	mStarSound = mResource.getSound("Assets/Sound/StarPickUp.wav");
+
+	
 
 	if(mType == TYPE::STAR)
 	{
 		/*Star animation*/
-		auto &star = resource.getTexture("Assets/Map/SmallBox.png");
+		auto &star = mResource.getTexture("Assets/Map/SmallBox.png");
 		sf::Vector2i starSize = static_cast<sf::Vector2i>(star.getSize());
 		sf::Vector2i frameSize(120,120); /* Alter to right size */
 
@@ -67,6 +71,8 @@ Object::Object(BoxWorld* world, sf::Vector2f& position, ResourceCollection& reso
 		mStar = new Animation(starFrames, star);
 		anime.setAnimation(*mStar);
 		updateSpriteOrigin();
+		
+
 	}
 
 	if (mType == TYPE::STARDUST)
@@ -97,11 +103,13 @@ void Object::update(sf::Time deltaTime)
 	anime.update(deltaTime);
 	if (isAlive() && starCallBack->isColliding() && getType() == STARDUST)
 	{
+		playSound(STARDUST);
 		std::cout << "Collect stardust wow :D" << std::endl;
 		mAlive = false;
 	}
 	if (isAlive() && starCallBack->isColliding() && getType() == STAR)
 	{
+		playSound(STAR);
 		std::cout<< "Do you even get stars" << std::endl;
 		mAlive = false;
 	}
@@ -120,4 +128,18 @@ void Object::handleAction(Controls::Action action, Controls::KeyState)
 void Object::render(sf::RenderTarget& target)
 {
 	Entity::render(target);
+}
+
+void Object::playSound(TYPE type)
+{
+	if (type == STARDUST)
+	{
+		mStarDustSound.play();
+		std::cout << "Do you even make a sound when you stardust" << std::endl;
+	}
+	if (type == STAR)
+	{
+		mStarSound.play();
+		std::cout << "Star sounds are the best sounds" << std::endl;
+	}
 }

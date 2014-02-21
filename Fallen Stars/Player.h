@@ -62,7 +62,7 @@ public:
 	void jump();
 	virtual void handleAction(Controls::Action action, Controls::KeyState);
 	void updateAnimation();
-
+	void updateSound();
 	void setState(PLAYER_STATE state);
 private:
 	void setupSensors(sf::Vector2f& pos, sf::Vector2f& size);
@@ -78,5 +78,7 @@ private:
 	Animation* mJump;
 	Animation* mGrab;
 	Animation* mFall;
+	sf::Sound mJumpSound;
+	sf::Sound mWalkSound;
 	ResourceCollection& mResource;
 };
