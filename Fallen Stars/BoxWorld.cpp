@@ -44,7 +44,8 @@ namespace BoxBounds
 
 		//Since we are returning an sf::FloatRect, we should convert the coordinates to
 		//sfml coordinate space.
-		sf::Vector2f pos = Convert::b2ToSfml(b2Vec2(x1, y1));
+		const b2Vec2& bodyPos = fix->GetBody()->GetPosition();
+		sf::Vector2f pos = Convert::b2ToSfml(b2Vec2(x1+bodyPos.x, y1+bodyPos.y));
 		sf::Vector2f size = Convert::b2ToSfml(b2Vec2(x2 - x1, y2 - y1));
 
 		return sf::FloatRect(pos, size);
@@ -172,23 +173,24 @@ b2Body* BoxWorld::createEntityBody(const sf::Vector2f& position, const sf::Vecto
 	return body;
 }
 
-b2Body* BoxWorld::createStaticBody(const std::vector<tmx::MapObject>& objects)
+void BoxWorld::createStaticBody(const std::vector<tmx::MapObject>& objects)
 {
 	b2BodyDef def;
 	def.type = b2_staticBody;
-
-	b2Body* body = world->CreateBody(&def);
 	b2Vec2 points[4];
-
 	//Start generating collision rectangles.
 	for (auto& o : objects)
 	{
+		b2Body* body = world->CreateBody(&def);
+
 		b2Vec2 pos = Convert::sfmlToB2(o.GetPosition());
+		body->SetTransform(pos, 0.0f);
+
 		auto& polyPoints = o.PolyPoints();
 		
 		for (int i = 0; i < 4; i++)
 		{
-			points[i] = Convert::sfmlToB2(polyPoints[i]) + pos;
+			points[i] = Convert::sfmlToB2(polyPoints[i]);
 		}
 
 		b2PolygonShape shape;
@@ -196,6 +198,4 @@ b2Body* BoxWorld::createStaticBody(const std::vector<tmx::MapObject>& objects)
 
 		body->CreateFixture(&shape, 1.0f);
 	}
-
-	return body;
 }

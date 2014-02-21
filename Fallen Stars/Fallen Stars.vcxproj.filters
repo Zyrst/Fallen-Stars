@@ -366,7 +366,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
-	</ClInclude>
+    </ClInclude>
     <ClInclude Include="LightSolver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -375,10 +375,5 @@
     <None Include="Libraries\SFML TmxLoader\lib\zlib\lib\zlib.def">
       <Filter>Source Files\Libraries\Zlib</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Fallen Stars.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
   </ItemGroup>
 </Project>

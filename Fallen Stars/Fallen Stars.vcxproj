@@ -188,9 +188,6 @@
   <ItemGroup>
     <None Include="Libraries\SFML TmxLoader\lib\zlib\lib\zlib.def" />
   </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Fallen Stars.rc" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

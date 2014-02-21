@@ -87,4 +87,5 @@ private:
 	ResourceCollection& mResource;
 
 	LightSource* flashLight;
+	sf::Texture *maskRight, *maskLeft;
 };
