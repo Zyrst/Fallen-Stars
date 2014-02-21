@@ -472,10 +472,14 @@ void Player::updateSound()
 {
 	if (leftButton && groundCallBack->isColliding() || rightButton && groundCallBack->isColliding())
 	{
-
-		
+		if(mWalkSound.getLoop() == false)
+		{
 		mWalkSound.play();
 		std::cout << "Walking soundssss" << std::endl;
 	}
-
+	else
+	{
+		mWalkSound.stop();
+		mWalkSound.setLoop(false);
+	}
 }
