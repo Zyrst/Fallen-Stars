@@ -12,7 +12,10 @@ Entity::Entity(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& pos, Facing fa
 {
 	body->SetUserData(this);
 }
-Entity::~Entity() {}
+Entity::~Entity() 
+{
+	body->GetWorld()->DestroyBody(body);
+}
 bool Entity::isAlive()
 {
 	return mAlive;

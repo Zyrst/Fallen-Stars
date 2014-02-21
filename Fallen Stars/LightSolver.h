@@ -29,7 +29,7 @@ public:
 	const sf::Color& getVoidColor() const;
 
 	//Renderfunctions
-	void render();
+	void render(sf::RenderTarget& target);
 	const sf::Texture& getResult() const;
 
 private:

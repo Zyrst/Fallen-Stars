@@ -8,6 +8,7 @@
 #include "ControlMapping.h"
 #include "SpriteSheet.h"
 #include "ResourceCollection.h"
+#include "LightSolver.h"
 #include <iostream>
 
 static const float SPEED = 3;
@@ -106,13 +107,14 @@ bool OnesideCallBack::isColliding() const
 }
 */
 
-Player::Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position,ResourceCollection& resource)
+Player::Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position,ResourceCollection& resource, LightSolver* lightSolver)
 : EntityLiving(world, size, position)
 , groundCallBack(nullptr)
 , leftButton(false)
 , rightButton(false)
 , downButton(false)
 , mResource(resource)
+, flashLight(lightSolver->createLight(1024, 512))
 {
 
 	setState(PLAYER_STATE::NORMAL);
@@ -166,6 +168,8 @@ Player::Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position,Resou
 	filter.categoryBits = PLAYER;
 	//filter.groupIndex = ALL, ENEMY_CHASE;
 	body->GetFixtureList()->SetFilterData(filter);
+
+	flashLight->setMask(&resource.getTexture("Assets/Shaders/mask.png"));
 }
 
 Player::~Player()
@@ -325,12 +329,37 @@ void Player::update(sf::Time deltaTime)
 	updateAnimation();
 	updateSound();
 	anime.update(deltaTime);
+	
+	updateFlashlightPosition();
+}
+
+void Player::updateFlashlightPosition()
+{
+	const float offsetX = 75.0f;
+	const float offsetY = 100.0f;
+
+	sf::Vector2f pos = getPosition();
+	pos.y += offsetY;
+
+	if (getFacing() == Facing::LEFT)
+	{
+		pos.x -= offsetX;
+	}
+	else
+	{
+		pos.x += offsetX;
+	}
+
+	flashLight->setPosition(pos);
 }
 
 void Player::render(sf::RenderTarget& renderTarget)
 {
 	anime.setRotation(body->GetAngle() * 180 / 3.14159265f);
 	Entity::render(renderTarget);
+
+	sf::Sprite sp = sf::Sprite(flashLight->getResult());
+	renderTarget.draw(sp);
 
 	/*sf::FloatRect rect = anime.getGlobalBounds();
 

@@ -2,6 +2,7 @@
 #include "BaseResolution.h"
 #include <iostream>
 #include <SFML\Graphics\RectangleShape.hpp>
+#include <SFML\Graphics\Sprite.hpp>
 
 LightSolver::LightSolver()
 : lights()
@@ -80,17 +81,31 @@ const sf::Color& LightSolver::getVoidColor() const
 }
 
 //Renderfunctions
-void LightSolver::render()
+void LightSolver::render(sf::RenderTarget& target)
 {
 	fullScreenBuffer.clear(sf::Color::Transparent);
 	colorBuffer.clear(sf::Color::Transparent);
+
+	sf::View originalView = fullScreenBuffer.getView();
+	const sf::View& view = target.getView();
+	fullScreenBuffer.setView(view);
+	colorBuffer.setView(view);
 
 	//First pass calculates the lights based on the occluders
 	//and writes their colors to the color buffer
 	pass1();
 
+	//Restore the original view.
+	fullScreenBuffer.setView(originalView);
+	colorBuffer.setView(originalView);
+
 	//Second pass merges the color buffer with the fullscreen buffer.
 	pass2();
+
+	sf::Sprite sprite = sf::Sprite(getResult());
+	sf::Vector2f pos = sf::Vector2f(view.getCenter().x - view.getSize().x / 2.0f, view.getCenter().y - view.getSize().y / 2.0f);
+	sprite.setPosition(pos);
+	target.draw(sprite);
 }
 
 const sf::Texture& LightSolver::getResult() const

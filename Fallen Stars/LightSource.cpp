@@ -38,6 +38,7 @@ LightSource::LightSource(int width, int height)
 , size((float)width, (float)height)
 , color(sf::Color::Transparent)
 , mask(nullptr)
+, ownsMask(false)
 { }
 
 
@@ -48,7 +49,11 @@ LightSource::~LightSource()
 	delete occluderFBO;
 	delete shadowMapFBO;
 	delete shadowRenderFBO;
-	delete mask;
+
+	if (ownsMask)
+	{
+		delete mask;
+	}
 }
 
 const sf::Vector2f& LightSource::getPosition() const
@@ -76,9 +81,15 @@ void LightSource::setColor(const sf::Color& color)
 	this->color = color;
 }
 
-void LightSource::setMask(sf::Texture* mask)
+void LightSource::setMask(sf::Texture* mask, bool ownsMask)
 {
+	if (this->ownsMask)
+	{
+		delete this->mask;
+	}
+
 	this->mask = mask;
+	this->ownsMask = ownsMask;
 }
 
 void LightSource::clear()

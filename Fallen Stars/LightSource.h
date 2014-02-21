@@ -18,7 +18,7 @@ public:
 
 	void setPosition(const sf::Vector2f& pos);
 	void setColor(const sf::Color& color);
-	void setMask(sf::Texture* texture);
+	void setMask(sf::Texture* texture, bool ownsMask = false);
 
 	//Call this to clear the fbos.
 	void clear();
@@ -41,5 +41,7 @@ private:
 	sf::Vector2f position, size;
 	sf::Color color;
 	sf::Texture* mask;
+
+	bool ownsMask;
 };
 
