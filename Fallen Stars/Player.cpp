@@ -475,6 +475,8 @@ void Player::updateSound()
 		if(mWalkSound.getLoop() == false)
 		{
 		mWalkSound.play();
+		mWalkSound.setLoop(true);
+		}
 		std::cout << "Walking soundssss" << std::endl;
 	}
 	else
