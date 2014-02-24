@@ -82,6 +82,12 @@
     <Filter Include="Header Files\Animation">
       <UniqueIdentifier>{55d0cc4b-5ca8-4074-8695-7812840bc577}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Light">
+      <UniqueIdentifier>{3bf7b2a4-6dd7-42d8-aa46-5e70b22af739}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Light">
+      <UniqueIdentifier>{cbf53261-1ff1-4e60-a299-8108f0bc8699}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -213,10 +219,16 @@
     <ClCompile Include="ShaderTestState.cpp">
       <Filter>Source Files\State</Filter>
     </ClCompile>
-    <ClCompile Include="LightSource.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Occluder.cpp">
+      <Filter>Source Files\Light</Filter>
     </ClCompile>
     <ClCompile Include="LightSolver.cpp">
+      <Filter>Source Files\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="LightSource.cpp">
+      <Filter>Source Files\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="ConvexOccluder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -362,12 +374,18 @@
     <ClInclude Include="ShaderTestState.h">
       <Filter>Header Files\State</Filter>
     </ClInclude>
-    <ClInclude Include="LightSource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
     </ClInclude>
+    <ClInclude Include="Occluder.h">
+      <Filter>Header Files\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="LightSource.h">
+      <Filter>Header Files\Light</Filter>
+    </ClInclude>
     <ClInclude Include="LightSolver.h">
+      <Filter>Header Files\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="ConvexOccluder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

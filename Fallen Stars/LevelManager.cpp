@@ -4,6 +4,7 @@
 #include <Box2D\Box2D.h>
 #include "Object.h"
 #include "Shade.h"
+#include "LightSolver.h"
 
 LevelManager::LevelManager(std::string levelname):
 	mLevel(levelname),
@@ -105,7 +106,7 @@ void LevelManager::getEnemyLayer(ResourceCollection& resource,BoxWorld* world,En
 	}
 }
 
-void LevelManager::genCollision(BoxWorld* world)
+void LevelManager::genCollision(BoxWorld* world, LightSolver* solver)
 {
 	auto& layers = mapLoader.GetLayers();
 	for (auto& l : layers)
@@ -113,6 +114,10 @@ void LevelManager::genCollision(BoxWorld* world)
 		if (l.name.compare("Collision") == 0)
 		{
 			world->createStaticBody(l.objects);
+			if (solver != nullptr)
+			{
+				solver->addCollisionOccluders(l.objects);
+			}
 			break;
 		}
 	}

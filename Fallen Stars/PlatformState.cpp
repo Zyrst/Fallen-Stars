@@ -21,8 +21,8 @@ void PlatformState::load()
 	light->setPosition(sf::Vector2f(1000.0f, 70.0f));
 
 	mWorld = new BoxWorld(b2Vec2(0, 10));
-	mLevel = new LevelManager("Test");
-	mLevel->genCollision(mWorld);
+	mLevel = new LevelManager("test");
+	mLevel->genCollision(mWorld, mLightSolver);
 	
 	auto size = sf::Vector2f(70, 220);
 	
@@ -47,11 +47,12 @@ void PlatformState::load()
 void PlatformState::update(const sf::Time& deltaTime)
 {
 	killDeadEntities();
+	mWorld->step(deltaTime.asSeconds());
+
 	for(unsigned int i = 0; i< mEntityVector.size();i++)
 	{
 		mEntityVector[i]->update(deltaTime);
 	}
-	mWorld->step(deltaTime.asSeconds());
 }
 void PlatformState::render(sf::RenderWindow& window)
 {
@@ -65,10 +66,10 @@ void PlatformState::render(sf::RenderWindow& window)
 		mEntityVector[i]->render(window);
 	}
 
-	mLevel->getMapLoader().Draw(window, tmx::MapLayer::Foreground);
+	/*mLevel->getMapLoader().Draw(window, tmx::MapLayer::Foreground);*/
 
 	/*Remove this to remove the outdrawn collision boxes and other box2d stuff*/
-	mWorld->drawDebug(window);
+	//mWorld->drawDebug(window);
 }
 
 void PlatformState::handleAction(Controls::Action action, Controls::KeyState keystate)

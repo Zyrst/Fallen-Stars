@@ -129,8 +129,8 @@ Player::Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, Reso
 , rightButton(false)
 , downButton(false)
 , mResource(resource)
-, flashLight(lightSolver->createLight(2048, 512))
-, maskRight(&resource.getTexture("Assets/Shaders/mask.png"))
+, flashLight(lightSolver->createLight(1024, 512))
+, maskRight(&resource.getTexture("Assets/Shader/mask.png"))
 , maskLeft(flipTexture(maskRight))
 {
 
@@ -235,7 +235,7 @@ void Player::setupSensors(sf::Vector2f& pos, sf::Vector2f& size)
 	rightSideCollision = new CollisionCounterCallBack(fix);
 
 	//Left and right side grab detectors.
-	const float grabYPos = 0.05f;
+	const float grabYPos = 0.12f;
 	const float grabW = 0.05f;
 	const float grabH = 0.12f;
 	bpos = b2Vec2(-hw-grabW, grabYPos);
@@ -344,7 +344,8 @@ void Player::update(sf::Time deltaTime)
 	updateAnimation();
 	updateSound();
 	anime.update(deltaTime);
-	
+	anime.setPosition(Convert::b2ToSfml(body->GetPosition()));
+
 	updateFlashlightPosition();
 }
 
@@ -353,7 +354,7 @@ void Player::updateFlashlightPosition()
 	const float offsetX = 74.0f;
 	const float offsetY = 105.0f;
 
-	sf::Vector2f pos = getPosition();
+	sf::Vector2f pos = Convert::b2ToSfml(body->GetPosition());
 	sf::Texture* mask = nullptr;
 	pos.y += offsetY;
 
