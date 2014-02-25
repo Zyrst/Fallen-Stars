@@ -44,6 +44,10 @@ public:
 	void setFacing(Facing Face);
 	void handleAction(Controls::Action action, Controls::KeyState);
 	void updateAnimation();
+	enum Mode{PATROL, SPAWN, ATTACK};
+	void attack();
+	Mode getMode();
+	void setMode(Mode mode);
 private:
 	Player* player;
 	sf::Vector2f velocity;
@@ -57,5 +61,6 @@ private:
 	Animation* mIdle;
 	Animation* mWalking;
 	Animation* mSpawn;
+	Mode currentMode;
 };
 

@@ -7,8 +7,6 @@
 #include "BoxWorld.h"
 #include "ControlMapping.h"
 #include "SpriteSheet.h"
-
-
 #pragma region Chase
 ChaseSensor::ChaseSensor(b2Fixture* owner)
 	: CallBack(owner)
@@ -92,6 +90,7 @@ Shade::Shade(ResourceCollection& resource, BoxWorld* world, sf::Vector2f& size, 
 : EntityLiving(world,size,position),
   mResource(resource)
 {
+	setMode(PATROL);
 	setupSensors(position,size);
 	auto &idle = mResource.getTexture("Assets/Characters/Shade_idle.png");
 	sf::Vector2i idleSize = static_cast<sf::Vector2i>(idle.getSize());
@@ -116,6 +115,10 @@ Shade::Shade(ResourceCollection& resource, BoxWorld* world, sf::Vector2f& size, 
 
 	updateSpriteOrigin();
 	setFacing(LEFT);
+	b2Filter filter = (body->GetFixtureList())->GetFilterData();
+	filter.categoryBits = ENEMY;
+	filter.groupIndex = ALL, PLAYER;
+	body->GetFixtureList()->SetFilterData(filter);
 }
 Shade::~Shade()
 {
@@ -125,7 +128,6 @@ Shade::~Shade()
 }
 void Shade::render(sf::RenderTarget& renderTarget)
 {
-
 	sf::FloatRect rect = anime.getGlobalBounds();
 	sf::RectangleShape sh = sf::RectangleShape(sf::Vector2f(rect.width, rect.height));
 	sh.setPosition(rect.left, rect.top);
@@ -136,6 +138,7 @@ void Shade::render(sf::RenderTarget& renderTarget)
 }
 void Shade::update(sf::Time deltaTime)
 {
+	if(currentMode == PATROL){
 	const b2Vec2& vel = body->GetLinearVelocity();
 	if(getFacing() == LEFT)
 	{
@@ -169,8 +172,14 @@ void Shade::update(sf::Time deltaTime)
 	{
 		setFacing(LEFT);
 	}
-	else{}
-	
+	}
+	else if(currentMode==ATTACK)
+	{
+		attack();
+	}
+	else if(currentMode==SPAWN)
+	{
+	}
 	anime.update(deltaTime);
 }
 void Shade::setVelocityX(float x)
@@ -191,7 +200,6 @@ void Shade::setFacing(Facing face)
 		chaseSensorRight->setActive(true);
 	}
 }
-
 void Shade::setupSensors(sf::Vector2f position, sf::Vector2f size)
 {
 	b2Vec2 bodySize = Convert::sfmlToB2(size);
@@ -208,10 +216,6 @@ void Shade::setupSensors(sf::Vector2f position, sf::Vector2f size)
 	bodyPosLeft.y = bodySize.y/2;
 	bodyPosRight.y = bodySize.y/2;
 	bodyPosRight.x = bodySize.x+(bodySize.x*1.2);
-
-
-
-
 
 //Vänster ChaseSensor
 	b2PolygonShape shapeLeft;
@@ -277,12 +281,10 @@ void Shade::setupSensors(sf::Vector2f position, sf::Vector2f size)
 	fixRight->SetFilterData(filterChaseRight);
 
 }
-
 void Shade::handleAction(Controls::Action action, Controls::KeyState)
 {
 
 }
-
 void Shade::updateAnimation()
 {
 	Animation* currentAnimation = NULL;
@@ -299,6 +301,17 @@ void Shade::updateAnimation()
 	if (currentAnimation != NULL) anime.play(*currentAnimation);
 	anime.setPosition(Convert::b2ToSfml(body->GetPosition()));
 }
+Shade::Mode Shade::getMode()
+{
+	return currentMode;
+}
+void Shade::setMode(Mode mode)
+{
+	currentMode = mode;
+}
+void Shade::attack()
+{
 
+}
 /* Animationer , gå , springa, attackera , dö */
 #pragma endregion
