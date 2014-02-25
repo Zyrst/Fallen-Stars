@@ -54,5 +54,5 @@ void LogoState::render(sf::RenderWindow& window)
 
 void LogoState::handleAction(Controls::Action action, Controls::KeyState)
 {
-	Game::instance()->loadNewState(new PlatformState());
+	Game::instance()->loadNewState(new MainMenuState());
 }

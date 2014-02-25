@@ -20,7 +20,6 @@ public:
 private:
 	int collisions;
 };
-
 class GrabCallBack : public CallBack
 {
 public:
@@ -37,23 +36,6 @@ private:
 	b2Fixture* grabCandidate;
 	sf::FloatRect candidateBounds;
 };
-/*
-class OnesideCallBack : public CallBack
-{
-public:
-	OnesideCallBack(b2Fixture* owner);
-
-	virtual void beginContact(b2Fixture* otherFixture) override;
-	virtual void endContact(b2Fixture* otherFixture) override;
-
-	bool isColliding() const;
-
-private:
-	int collisions;
-};
-*/
-
-
 class Player : public EntityLiving
 {
 public:
@@ -75,7 +57,6 @@ private:
 	PLAYER_STATE state;
 	CollisionCounterCallBack *groundCallBack, *rightSideCollision, *leftSideCollision, *leftAntiGrabCallBack, *rightAntiGrabCallBack;
 	GrabCallBack *leftGrabCallBack, *rightGrabCallBack;
-	//OnesideCallBack *onesideCallBack;
 	bool leftButton, rightButton, downButton;
 	Animation* mWalking;
 	Animation* mIdle;

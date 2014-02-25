@@ -137,7 +137,7 @@ Player::Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, Reso
 	setState(PLAYER_STATE::NORMAL);
 
 	/* Walking/run animation */
-	auto &walking = mResource.getTexture("Assets/Map/Stella Left.png");
+	auto &walking = mResource.getTexture("Assets/Characters/Stella Left.png");
 	sf::Vector2i walkingSize = static_cast<sf::Vector2i>(walking.getSize());
 	sf::Vector2i frameSize(256, 256);
 	SpriteSheet spritesheet1(frameSize, walkingSize);
@@ -148,21 +148,21 @@ Player::Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, Reso
 	std::cout << mWalking->getSize()<<std::endl;
 	
 	/* Idle animation */
-	auto &idle = mResource.getTexture("Assets/Map/Stella_idle.png");
+	auto &idle = mResource.getTexture("Assets/Characters/Stella_idle.png");
 	sf::Vector2i idleSize = static_cast<sf::Vector2i>(idle.getSize());
 	SpriteSheet idleSheet(frameSize,idleSize);
 	std::vector<sf::IntRect> idleFrames = idleSheet.getAllFrames();
 	mIdle = new Animation(idleFrames,idle);
 	
 	/* Jump animation */
-	auto &jump = mResource.getTexture("Assets/Map/Stella_jumpLeft.png");
+	auto &jump = mResource.getTexture("Assets/Characters/Stella_jumpLeft.png");
 	sf::Vector2i jumpSize = static_cast<sf::Vector2i>(jump.getSize());
 	SpriteSheet jumpSheet(frameSize,jumpSize);
 	std::vector<sf::IntRect> jumpFrames = jumpSheet.getAllFrames();
 	mJump = new Animation(jumpFrames,jump);
 
 	/* Grab animation */
-	auto &grab = mResource.getTexture("Assets/Map/Stella_grabLeft.png");
+	auto &grab = mResource.getTexture("Assets/Characters/Stella_grabLeft.png");
 	sf::Vector2i grabSize = static_cast<sf::Vector2i>(grab.getSize());
 	SpriteSheet grabSheet (frameSize, grabSize);
 	std::vector<sf::IntRect> grabFrames = grabSheet.getAllFrames();
@@ -518,10 +518,10 @@ void Player::updateSound()
 {
 	if (leftButton && groundCallBack->isColliding() || rightButton && groundCallBack->isColliding())
 	{
-		if (mWalkSound.getLoop() == false)
+		if(mWalkSound.getLoop() == false)
 		{
-			mWalkSound.play();
-			//std::cout << "Walking soundssss" << std::endl;
+		mWalkSound.play();
+		mWalkSound.setLoop(true);
 		}
 	}
 	else

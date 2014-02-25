@@ -2,6 +2,7 @@
 #include "State.h"
 
 #include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Audio/Music.hpp>
 #include "MainMenu.h"
 
 class MainMenuState : public State
@@ -14,4 +15,5 @@ public:
 
 private:
 	enum Overlays {MAIN_MENU};
+	sf::Music mMusic;
 };
