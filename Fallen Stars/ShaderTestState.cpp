@@ -94,8 +94,8 @@ void ShaderTestState::render(sf::RenderWindow& window)
 		e->render(window);
 	}
 
-	solver->render();
-	window.draw(sf::Sprite(solver->getResult()));
+	solver->render(window);
+	//window.draw(sf::Sprite(solver->getResult()));
 
 	//world->drawDebug(window);
 

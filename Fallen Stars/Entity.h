@@ -6,13 +6,14 @@
 #include <SFML/System/Clock.hpp>
 #include "Controls.h"
 #include "AnimatedSprite.h"
+#include "Occluder.h"
 
 class b2Body;
 class BoxWorld;
 /*
  * Entity är en basklass för alla levande och icke grid-baserade objekt
  */
-class Entity : public sf::Drawable
+class Entity : public Occluder
 {
 	public:
 		enum Facing{LEFT, RIGHT};

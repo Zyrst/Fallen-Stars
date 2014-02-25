@@ -1,16 +1,22 @@
 #include "LightSolver.h"
 #include "BaseResolution.h"
+#include <tmx\MapObject.h>
 #include <iostream>
 #include <SFML\Graphics\RectangleShape.hpp>
+#include <SFML\Graphics\ConvexShape.hpp>
+#include <SFML\Graphics\Sprite.hpp>
+#include "ConvexOccluder.h"
 
 LightSolver::LightSolver()
 : lights()
 , voidColor(sf::Color(0, 0, 10, 180))
 , renderShader()
+, debugShader()
 , fullScreenBuffer()
 , colorBuffer()
 {
-	renderShader.loadFromFile("Assets/Shaders/default.vert", "Assets/Shaders/darkenPass.frag");
+	renderShader.loadFromFile("Assets/Shader/default.vert", "Assets/Shader/darkenPass.frag");
+	debugShader.loadFromFile("Assets/Shader/default.vert", "Assets/Shader/occluder.frag");
 	fullScreenBuffer.create(baseWidth, baseHeight);
 	colorBuffer.create(baseWidth, baseHeight);
 }
@@ -22,11 +28,16 @@ LightSolver::~LightSolver()
 	{
 		delete src;
 	}
+
+	for (sf::Drawable* draw : disposeableOccluders)
+	{
+		delete draw;
+	}
 }
 
-LightSource* LightSolver::createLight(int width, int height)
+LightSource* LightSolver::createLight(int width, int height, int filterGroup)
 {
-	LightSource* light = new LightSource(width, height);
+	LightSource* light = new LightSource(width, height, filterGroup);
 	lights.push_back(light);
 	return light;
 }
@@ -47,7 +58,7 @@ void LightSolver::destroyLight(LightSource* light)
 	std::cout << "Light was not found: " << light << "\n";
 }
 
-void LightSolver::removeOccluder(const sf::Drawable* occluder)
+void LightSolver::removeOccluder(const Occluder* occluder)
 {
 	for (auto i = occluders.begin(); i != occluders.end(); i++)
 	{
@@ -68,9 +79,29 @@ void LightSolver::setVoidColor(const sf::Color& color)
 	voidColor = color;
 }
 
-void LightSolver::addOccluder(const sf::Drawable* occluder)
+void LightSolver::addOccluder(const Occluder* occluder)
 {
 	occluders.push_back(occluder);
+}
+
+void LightSolver::addCollisionOccluders(const std::vector<tmx::MapObject>& objects)
+{
+	for (auto& o : objects)
+	{
+		auto& points = o.PolyPoints();
+		int size = points.size();
+		ConvexOccluder* shape = new ConvexOccluder(size);
+
+		for (int i = 0; i < size; i++)
+		{
+			shape->setPoint(i, points[i]);
+		}
+
+		shape->setPosition(o.GetPosition());
+
+		occluders.push_back(shape);
+		disposeableOccluders.push_back(shape);
+	}
 }
 
 //Getters
@@ -80,17 +111,40 @@ const sf::Color& LightSolver::getVoidColor() const
 }
 
 //Renderfunctions
-void LightSolver::render()
+void LightSolver::render(sf::RenderTarget& target)
 {
 	fullScreenBuffer.clear(sf::Color::Transparent);
 	colorBuffer.clear(sf::Color::Transparent);
+
+	sf::View originalView = fullScreenBuffer.getView();
+	const sf::View& view = target.getView();
+	fullScreenBuffer.setView(view);
+	colorBuffer.setView(view);
 
 	//First pass calculates the lights based on the occluders
 	//and writes their colors to the color buffer
 	pass1();
 
+	//Restore the original view.
+	fullScreenBuffer.setView(originalView);
+	colorBuffer.setView(originalView);
+
 	//Second pass merges the color buffer with the fullscreen buffer.
 	pass2();
+
+	sf::Sprite sprite = sf::Sprite(getResult());
+	sf::Vector2f pos = sf::Vector2f(view.getCenter().x - view.getSize().x / 2.0f, view.getCenter().y - view.getSize().y / 2.0f);
+	sprite.setPosition(pos);
+	target.draw(sprite);
+}
+
+void LightSolver::debugRenderOccluders(sf::RenderTarget& target) const
+{
+	sf::RenderStates states = sf::RenderStates(&debugShader);
+	for (const sf::Drawable* d : occluders)
+	{
+		target.draw(*d, states);
+	}
 }
 
 const sf::Texture& LightSolver::getResult() const
@@ -112,9 +166,12 @@ void LightSolver::pass1()
 		tx->setView(view);
 
 		//Draw occluders
-		for (const sf::Drawable* occluder : occluders)
+		for (const Occluder* occluder : occluders)
 		{
-			tx->draw(*occluder);
+			if ((light->getFilterGroup() & occluder->getFilterGroup()) != 0)
+			{
+				tx->draw(*occluder);
+			}
 		}
 
 		//Calculate shadows

@@ -3,6 +3,9 @@
 #include "CallBack.h"
 #include "Animation.h"
 #include "ResourceCollection.h"
+#include "LightSource.h"
+
+class LightSolver;
 
 class CollisionCounterCallBack : public CallBack
 {
@@ -55,7 +58,7 @@ class Player : public EntityLiving
 {
 public:
 	enum PLAYER_STATE { NORMAL, GRABBING };
-	Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, ResourceCollection& resource);
+	Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, ResourceCollection& resource, LightSolver* lightSolver);
 	~Player();
 	void render(sf::RenderTarget& renderSurface) override;
 	void update(sf::Time deltaTime) override;
@@ -66,6 +69,7 @@ public:
 	void setState(PLAYER_STATE state);
 private:
 	void setupSensors(sf::Vector2f& pos, sf::Vector2f& size);
+	void updateFlashlightPosition();
 
 	sf::Vector2f velocity;
 	PLAYER_STATE state;
@@ -81,4 +85,7 @@ private:
 	sf::Sound mJumpSound;
 	sf::Sound mWalkSound;
 	ResourceCollection& mResource;
+
+	LightSource* flashLight;
+	sf::Texture *maskRight, *maskLeft;
 };

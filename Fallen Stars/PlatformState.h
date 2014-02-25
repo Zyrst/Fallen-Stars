@@ -7,6 +7,8 @@
 #include "Camera.h"
 #include "LevelManager.h"
 
+class LightSolver;
+
 class PlatformState: public State
 {
 public:
@@ -25,6 +27,7 @@ private:
 	BoxWorld* mWorld;
 	Camera* mCamera;
 	LevelManager* mLevel;
+	LightSolver* mLightSolver;
 };
 
 /* TODO

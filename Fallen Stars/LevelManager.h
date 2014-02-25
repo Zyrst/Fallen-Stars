@@ -4,6 +4,9 @@
 #include "BoxWorld.h"
 #include "Entity.h"
 #include "ResourceCollection.h"
+
+class LightSolver;
+
 /*A class for managing Levels
 *Contains the tmx parser
 */
@@ -20,7 +23,7 @@ public:
 	void getStarLayer(ResourceCollection& resource,BoxWorld* world,EntityVector& entity);
 	void getStarDustLayer(ResourceCollection& resource,BoxWorld* world,EntityVector& entity);
 	void getEnemyLayer(ResourceCollection& resource,BoxWorld* world,EntityVector& entity,sf::Vector2f size);
-	void genCollision(BoxWorld* world);
+	void genCollision(BoxWorld* world, LightSolver* solver = nullptr);
 
 private:
 	std::string mLevel;

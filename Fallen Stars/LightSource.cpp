@@ -5,7 +5,7 @@
 
 namespace
 {
-	const std::string SHADER_DIR = "Assets/Shaders/";
+	const std::string SHADER_DIR = "Assets/Shader/";
 
 	sf::RenderTexture* createFBO(int width, int height)
 	{
@@ -28,7 +28,7 @@ namespace
 	}
 }
 
-LightSource::LightSource(int width, int height)
+LightSource::LightSource(int width, int height, int filter)
 : mapShader(createShader("default.vert", "shadowMap.frag"))
 , renderShader(createShader("default.vert", "shadowRender.frag"))
 , occluderFBO(createFBO(width, height))
@@ -38,6 +38,8 @@ LightSource::LightSource(int width, int height)
 , size((float)width, (float)height)
 , color(sf::Color::Transparent)
 , mask(nullptr)
+, ownsMask(false)
+, filterGroup(filter)
 { }
 
 
@@ -48,7 +50,11 @@ LightSource::~LightSource()
 	delete occluderFBO;
 	delete shadowMapFBO;
 	delete shadowRenderFBO;
-	delete mask;
+
+	if (ownsMask)
+	{
+		delete mask;
+	}
 }
 
 const sf::Vector2f& LightSource::getPosition() const
@@ -66,6 +72,11 @@ const sf::Color& LightSource::getColor() const
 	return color;
 }
 
+int LightSource::getFilterGroup() const
+{
+	return filterGroup;
+}
+
 void LightSource::setPosition(const sf::Vector2f& pos)
 {
 	this->position = pos;
@@ -76,9 +87,20 @@ void LightSource::setColor(const sf::Color& color)
 	this->color = color;
 }
 
-void LightSource::setMask(sf::Texture* mask)
+void LightSource::setMask(sf::Texture* mask, bool ownsMask)
 {
+	if (this->ownsMask)
+	{
+		delete this->mask;
+	}
+
 	this->mask = mask;
+	this->ownsMask = ownsMask;
+}
+
+void LightSource::setFilterGroup(int filter)
+{
+	filterGroup = filter;
 }
 
 void LightSource::clear()

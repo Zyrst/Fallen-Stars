@@ -5,31 +5,39 @@
 #include <SFML\Graphics\RenderTexture.hpp>
 #include "LightSource.h"
 #include <vector>
+#include "Occluder.h"
+
+namespace tmx
+{
+	class MapObject;
+}
 
 class LightSolver
 {
 public:
-	typedef std::vector<const sf::Drawable*> OccluderVector;
+	typedef std::vector<const Occluder*> OccluderVector;
 
 	LightSolver();
 	~LightSolver();
 
 	//Creators
-	LightSource* createLight(int width, int height);
+	LightSource* createLight(int width, int height, int filterGroup = 255);
 
 	//Removers/destroyers
 	void destroyLight(LightSource* light);
-	void removeOccluder(const sf::Drawable* occluder);
+	void removeOccluder(const Occluder* occluder);
 
 	//Setters
 	void setVoidColor(const sf::Color& color);
-	void addOccluder(const sf::Drawable* occluder);
+	void addOccluder(const Occluder* occluder);
+	void addCollisionOccluders(const std::vector<tmx::MapObject>& objects);
 
 	//Getters
 	const sf::Color& getVoidColor() const;
 
 	//Renderfunctions
-	void render();
+	void render(sf::RenderTarget& target);
+	void debugRenderOccluders(sf::RenderTarget& target) const;
 	const sf::Texture& getResult() const;
 
 private:
@@ -40,8 +48,13 @@ private:
 
 	std::vector<LightSource*> lights;
 	sf::Color voidColor;
-	sf::Shader renderShader;
+	sf::Shader renderShader, debugShader;
 	sf::RenderTexture fullScreenBuffer, colorBuffer;
+
+	//All occluders
 	OccluderVector occluders;
+
+	//Vector holding every occluder this lightsolver manages memory for.
+	std::vector<Occluder*> disposeableOccluders;
 };
 

@@ -9,6 +9,7 @@
 #include "Camera.h"
 #include "Object.h"
 #include "Shade.h"
+#include "LightSolver.h"
 
 namespace
 {
@@ -34,7 +35,7 @@ JumpingTest::JumpingTest()
 	level->genCollision(world);
 	/*This works */
 	auto playerPos = level->getPlayerLayer();
-	player = new Player(world, size, playerPos,mResourceCollection);
+	player = new Player(world, size, playerPos,mResourceCollection, new LightSolver());
 	mEntityVector.push_back(player);
 
 	level->getStarLayer(mResourceCollection,world,mEntityVector);

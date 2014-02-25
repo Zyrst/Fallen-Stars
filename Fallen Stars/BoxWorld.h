@@ -34,7 +34,7 @@ public:
 	b2Body* createEntityBody(const sf::Vector2f& position, const sf::Vector2f& size);
 
 	//Creates a static body (map collision)
-	b2Body* createStaticBody(const std::vector<tmx::MapObject>& objects);
+	void createStaticBody(const std::vector<tmx::MapObject>& objects);
 
 	//Call every frame with the deltaTime to simulate the world.
 	void step(float deltaTime);

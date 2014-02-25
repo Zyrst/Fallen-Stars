@@ -8,9 +8,25 @@
 #include "ControlMapping.h"
 #include "SpriteSheet.h"
 #include "ResourceCollection.h"
+#include "LightSolver.h"
 #include <iostream>
 
 static const float SPEED = 3;
+
+static sf::Texture* flipTexture(const sf::Texture* source)
+{
+	sf::RenderTexture fbo;
+	fbo.create(source->getSize().x, source->getSize().y);
+
+	sf::Transform trans;
+	trans.translate(source->getSize().x, 0.0f);
+	trans.scale(sf::Vector2f(-1.0f, 1.0f));
+	sf::RenderStates states = sf::RenderStates(trans);
+
+	fbo.draw(sf::Sprite(*source), states);
+
+	return new sf::Texture(fbo.getTexture());
+}
 
 /*
 * TODO:Fix falling through while grabbing (maybe three grab boxes?)
@@ -106,13 +122,16 @@ bool OnesideCallBack::isColliding() const
 }
 */
 
-Player::Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position,ResourceCollection& resource)
+Player::Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, ResourceCollection& resource, LightSolver* lightSolver)
 : EntityLiving(world, size, position)
 , groundCallBack(nullptr)
 , leftButton(false)
 , rightButton(false)
 , downButton(false)
 , mResource(resource)
+, flashLight(lightSolver->createLight(2048, 512))
+, maskRight(&resource.getTexture("Assets/Shader/mask.png"))
+, maskLeft(flipTexture(maskRight))
 {
 
 	setState(PLAYER_STATE::NORMAL);
@@ -216,7 +235,7 @@ void Player::setupSensors(sf::Vector2f& pos, sf::Vector2f& size)
 	rightSideCollision = new CollisionCounterCallBack(fix);
 
 	//Left and right side grab detectors.
-	const float grabYPos = 0.05f;
+	const float grabYPos = 0.12f;
 	const float grabW = 0.05f;
 	const float grabH = 0.12f;
 	bpos = b2Vec2(-hw-grabW, grabYPos);
@@ -325,6 +344,33 @@ void Player::update(sf::Time deltaTime)
 	updateAnimation();
 	updateSound();
 	anime.update(deltaTime);
+	anime.setPosition(Convert::b2ToSfml(body->GetPosition()));
+
+	updateFlashlightPosition();
+}
+
+void Player::updateFlashlightPosition()
+{
+	const float offsetX = 74.0f;
+	const float offsetY = 105.0f;
+
+	sf::Vector2f pos = Convert::b2ToSfml(body->GetPosition());
+	sf::Texture* mask = nullptr;
+	pos.y += offsetY;
+
+	if (getFacing() == Facing::LEFT)
+	{
+		pos.x -= offsetX;
+		mask = maskLeft;
+	}
+	else
+	{
+		pos.x += offsetX;
+		mask = maskRight;
+	}
+
+	flashLight->setPosition(pos);
+	flashLight->setMask(mask);
 }
 
 void Player::render(sf::RenderTarget& renderTarget)
@@ -472,10 +518,11 @@ void Player::updateSound()
 {
 	if (leftButton && groundCallBack->isColliding() || rightButton && groundCallBack->isColliding())
 	{
-		if(mWalkSound.getLoop() == false)
+		if (mWalkSound.getLoop() == false)
 		{
-		mWalkSound.play();
-		std::cout << "Walking soundssss" << std::endl;
+			mWalkSound.play();
+			//std::cout << "Walking soundssss" << std::endl;
+		}
 	}
 	else
 	{

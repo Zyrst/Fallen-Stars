@@ -97,6 +97,7 @@
     <ClCompile Include="CallBack.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ControlMapping.cpp" />
+    <ClCompile Include="ConvexOccluder.cpp" />
     <ClCompile Include="debugdraw.cpp" />
     <ClCompile Include="DialogueOverlay.cpp" />
     <ClCompile Include="Entity.cpp" />
@@ -120,6 +121,7 @@
     <ClCompile Include="MainMenuState.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Object.cpp" />
+    <ClCompile Include="Occluder.cpp" />
     <ClCompile Include="Overlay.cpp" />
     <ClCompile Include="PlatformState.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -142,6 +144,7 @@
     <ClInclude Include="BoxWorld.h" />
     <ClInclude Include="CallBack.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="ConvexOccluder.h" />
     <ClInclude Include="debugdraw.h" />
     <ClInclude Include="DialogueOverlay.h" />
     <ClInclude Include="Entity.h" />
@@ -170,6 +173,7 @@
     <ClInclude Include="ControlMapping.h" />
     <ClInclude Include="Controls.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Occluder.h" />
     <ClInclude Include="Overlay.h" />
     <ClInclude Include="PlatformState.h" />
     <ClInclude Include="Player.h" />
@@ -187,9 +191,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Libraries\SFML TmxLoader\lib\zlib\lib\zlib.def" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Fallen Stars.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

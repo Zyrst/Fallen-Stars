@@ -3,7 +3,8 @@
 #include "Libraries/Box2D/Box2D/Box2D.h"
 #include "VecConverter.h"
 
-Entity::Entity(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& pos, Facing facing):
+Entity::Entity(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& pos, Facing facing) :
+	Occluder(),
 	mAlive(true),
 	body(world->createEntityBody(pos, size)),
 	anime(),
@@ -12,7 +13,10 @@ Entity::Entity(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& pos, Facing fa
 {
 	body->SetUserData(this);
 }
-Entity::~Entity() {}
+Entity::~Entity() 
+{
+	body->GetWorld()->DestroyBody(body);
+}
 bool Entity::isAlive()
 {
 	return mAlive;
