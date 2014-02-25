@@ -17,11 +17,9 @@ PlatformState::~PlatformState()
 void PlatformState::load()
 {
 	mLightSolver = new LightSolver();
-	LightSource* light = mLightSolver->createLight(1024, 1024);
-	light->setPosition(sf::Vector2f(1000.0f, 70.0f));
 
 	mWorld = new BoxWorld(b2Vec2(0, 10));
-	mLevel = new LevelManager("test");
+	mLevel = new LevelManager("level_1_prototyp");
 	mLevel->genCollision(mWorld, mLightSolver);
 	
 	auto size = sf::Vector2f(70, 220);

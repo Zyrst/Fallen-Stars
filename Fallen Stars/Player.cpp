@@ -129,7 +129,7 @@ Player::Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, Reso
 , rightButton(false)
 , downButton(false)
 , mResource(resource)
-, flashLight(lightSolver->createLight(1024, 512))
+, flashLight(lightSolver->createLight(2048, 512))
 , maskRight(&resource.getTexture("Assets/Shader/mask.png"))
 , maskLeft(flipTexture(maskRight))
 {
