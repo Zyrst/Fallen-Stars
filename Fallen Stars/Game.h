@@ -25,6 +25,7 @@ class Game
 		void handleHeldKeys();
 		void setState(State* state); // Sets a state to be replaced at the end of the current frame
 		void swapState(); // Performs the swap of the upcoming and current states (at the end of the frame)
+		void centerView();
 
 		static Game* theGame;
 

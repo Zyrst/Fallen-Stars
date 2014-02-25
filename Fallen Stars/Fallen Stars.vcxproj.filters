@@ -231,6 +231,15 @@
     <ClCompile Include="ConvexOccluder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LevelTracker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PuzzleSelectMenu.cpp">
+      <Filter>Source Files\Overlay\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="PlatformLevelSelectMenu.cpp">
+      <Filter>Source Files\Overlay\Menu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -382,11 +391,22 @@
     <ClInclude Include="LightSource.h">
       <Filter>Header Files\Light</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+    </ClInclude>
     <ClInclude Include="LightSolver.h">
       <Filter>Header Files\Light</Filter>
     </ClInclude>
     <ClInclude Include="ConvexOccluder.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelTracker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PlatformLevelSelectMenu.h">
+      <Filter>Header Files\Overlay\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="PuzzleSelectMenu.h">
+      <Filter>Header Files\Overlay\Menu</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

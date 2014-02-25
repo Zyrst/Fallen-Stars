@@ -7,7 +7,7 @@
 class Menu : public Overlay
 {
 	public:
-		Menu(int mID);
+		Menu(int mID, bool enabled = true);
 		virtual ~Menu() {};
 
 		virtual void render(sf::RenderTarget& renderSurface) override;

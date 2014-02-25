@@ -139,6 +139,15 @@ void Game::swapState()
 	delete currentState;
 	currentState = nextState;
 	nextState = NULL;
+
+	centerView();
+}
+
+void Game::centerView()
+{
+	sf::View view = window->getView();
+	view.setCenter(baseResolution / 2.0f);
+	window->setView(view);
 }
 
 Game* Game::instance()

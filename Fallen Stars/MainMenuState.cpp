@@ -1,8 +1,17 @@
 #include "MainMenuState.h"
 
+#include "MainMenu.h"
+#include "PlatformLevelSelectMenu.h"
+#include "PuzzleSelectMenu.h"
+
 void MainMenuState::load()
 {
-	addOverlay(new MainMenu(MAIN_MENU, mResourceCollection));
+	mBackground.setTexture(mResourceCollection.getTexture("Assets/Menu/Main Menu.png"));
+
+	addOverlay(new MainMenu(MAIN_MENU, mResourceCollection, this));
+	addOverlay(new PlatformLevelSelectMenu(PLATFORM_SELECT, mResourceCollection, this));
+	addOverlay(new PuzzleSelectMenu(PUZZLE_SELECT, mResourceCollection, this));
+
 	mMusic.openFromFile("Assets/Sound/MainMenuMusic.ogg");
 	mMusic.setLoop(false);
 }
@@ -18,6 +27,7 @@ void MainMenuState::update(const sf::Time& deltaTime)
 
 void MainMenuState::render(sf::RenderWindow& window)
 {
+	window.draw(mBackground);
 	renderOverlays(window);
 }
 

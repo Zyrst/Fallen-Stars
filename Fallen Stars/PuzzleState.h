@@ -7,7 +7,7 @@
 class PuzzleState : public State
 {
 public:
-	PuzzleState(int level, int ringCount, int steps);
+	PuzzleState(std::string level, int ringCount, int steps);
 	~PuzzleState();
 
 	void load() override;
@@ -16,7 +16,7 @@ public:
 	void handleAction(Controls::Action action, Controls::KeyState keystate) override;
 
 private:
-	int mLevel;
+	std::string mLevel;
 	int mRingCount;
 	int mSteps;
 

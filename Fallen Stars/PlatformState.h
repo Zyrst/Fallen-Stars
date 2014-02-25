@@ -12,7 +12,7 @@ class LightSolver;
 class PlatformState: public State
 {
 public:
-	PlatformState();
+	PlatformState(std::string);
 	~PlatformState();
 	void update(const sf::Time& deltaTime) override;
 	void render(sf::RenderWindow& window) override;
@@ -28,6 +28,7 @@ private:
 	Camera* mCamera;
 	LevelManager* mLevel;
 	LightSolver* mLightSolver;
+	std::string mLevelName;
 };
 
 /* TODO

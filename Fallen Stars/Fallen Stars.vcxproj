@@ -105,6 +105,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="JumpingTest.cpp" />
     <ClCompile Include="LevelManager.cpp" />
+    <ClCompile Include="LevelTracker.cpp" />
     <ClCompile Include="Libraries\SFML TmxLoader\src\DebugShape.cpp" />
     <ClCompile Include="Libraries\SFML TmxLoader\src\MapLayer.cpp" />
     <ClCompile Include="Libraries\SFML TmxLoader\src\MapLoaderPrivate.cpp" />
@@ -123,9 +124,11 @@
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Occluder.cpp" />
     <ClCompile Include="Overlay.cpp" />
+    <ClCompile Include="PlatformLevelSelectMenu.cpp" />
     <ClCompile Include="PlatformState.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PuzzleRing.cpp" />
+    <ClCompile Include="PuzzleSelectMenu.cpp" />
     <ClCompile Include="PuzzleState.cpp" />
     <ClCompile Include="ResourceCollection.cpp" />
     <ClCompile Include="Shade.cpp" />
@@ -150,6 +153,7 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityLiving.h" />
     <ClInclude Include="JumpingTest.h" />
+    <ClInclude Include="LevelTracker.h" />
     <ClInclude Include="Libraries\SFML TmxLoader\include\tmx\tmx2box2d.h" />
     <ClInclude Include="LightSolver.h" />
     <ClInclude Include="LoadingState.h" />
@@ -175,8 +179,10 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="Occluder.h" />
     <ClInclude Include="Overlay.h" />
+    <ClInclude Include="PlatformLevelSelectMenu.h" />
     <ClInclude Include="PlatformState.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PuzzleSelectMenu.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="PuzzleRing.h" />
     <ClInclude Include="PuzzleState.h" />

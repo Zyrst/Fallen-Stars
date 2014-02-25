@@ -1,7 +1,11 @@
 #include "PlatformState.h"
 #include "LightSolver.h"
 
-PlatformState::PlatformState()
+#include "Game.h"
+#include "MainMenuState.h"
+
+PlatformState::PlatformState(std::string levelname):
+	mLevelName(levelname)
 {
 }
 
@@ -19,7 +23,8 @@ void PlatformState::load()
 	mLightSolver = new LightSolver();
 
 	mWorld = new BoxWorld(b2Vec2(0, 10));
-	mLevel = new LevelManager("level_1_prototyp");
+	
+	mLevel = new LevelManager(mLevelName);
 	mLevel->genCollision(mWorld, mLightSolver);
 	
 	auto size = sf::Vector2f(70, 220);
@@ -44,13 +49,12 @@ void PlatformState::load()
 
 void PlatformState::update(const sf::Time& deltaTime)
 {
-	killDeadEntities();
 	mWorld->step(deltaTime.asSeconds());
-
-	for(unsigned int i = 0; i< mEntityVector.size();i++)
+	for(unsigned int i = 0; i < mEntityVector.size(); i++)
 	{
 		mEntityVector[i]->update(deltaTime);
 	}
+	killDeadEntities();
 }
 void PlatformState::render(sf::RenderWindow& window)
 {
@@ -73,6 +77,7 @@ void PlatformState::render(sf::RenderWindow& window)
 void PlatformState::handleAction(Controls::Action action, Controls::KeyState keystate)
 {
 	mPlayer->handleAction(action, keystate);
+	if(keystate == Controls::RELEASED && action == Controls::MENU) Game::instance()->loadNewState(new MainMenuState());
 }
 
 void PlatformState::killDeadEntities()

@@ -5,18 +5,18 @@
 bool leftPressed = false;
 bool rightPressed = false;
 
-PuzzleRing::PuzzleRing(ResourceCollection& resources, int levelNum, int ringNum, sf::Vector2f position, int initialStep, int steps):
+PuzzleRing::PuzzleRing(ResourceCollection& resources, std::string level, int ringNum, sf::Vector2f position, int initialStep, int steps):
 	mCurrentDirection(NONE),
 	mNextDirection(NONE),
 	mCurrentRotation((double) initialStep * 360.0 / (double) steps),
-	mTargetRotation(),
 	mSteps(steps),
 	mSelectedStep(initialStep),
 	mRotationSpeed(0.25),
-	mStepsPerMove(1),
-	mHighLighted(false)
+	mStepsPerMove(2),
+	mHighlighted(false),
+	mHighlightShader(resources.getShader("Assets/Shader/highlight.frag", sf::Shader::Type::Fragment))
 {
-	sf::Texture& texture = resources.getTexture("Assets/Puzzle/Level" + std::to_string(levelNum) + "/Ring" + std::to_string(ringNum) + ".png");
+	sf::Texture& texture = resources.getTexture("Assets/Puzzle/" + level + "/Ring" + std::to_string(ringNum) + ".png");
 
 	mSprite.setTexture(texture);
 	mSprite.setPosition(position);
@@ -64,13 +64,15 @@ void PuzzleRing::update(const sf::Time& deltaTime)
 
 void PuzzleRing::render(sf::RenderTarget& renderSurface)
 {
-	renderSurface.draw(mSprite);
+	mHighlightShader.setParameter("highlightStrength", mHighlighted ? 1.4f : 1.0f);
+	mHighlightShader.setParameter("texture", sf::Shader::CurrentTexture);
+	renderSurface.draw(mSprite, &mHighlightShader);
 }
 
 
 void PuzzleRing::handleAction(Controls::Action action, Controls::KeyState keystate)
 {
-	if(keystate == Controls::KeyState::PRESSED)
+	if(keystate == Controls::KeyState::PRESSED && mCurrentDirection == NONE)
 	{
 		if(action == Controls::Action::LEFT) mNextDirection = LEFT;
 		if(action == Controls::Action::RIGHT) mNextDirection = RIGHT;
@@ -99,7 +101,7 @@ void PuzzleRing::setNewTarget(RotationDirection direction)
 
 void PuzzleRing::setHighLighted(bool state)
 {
-	mHighLighted = state;
+	mHighlighted = state;
 }
 
 bool PuzzleRing::isCorrect()

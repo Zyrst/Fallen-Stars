@@ -12,8 +12,10 @@ public:
 	void update(const sf::Time& deltaTime) override;
 	void render(sf::RenderWindow& window) override;
 	void handleAction(Controls::Action, Controls::KeyState) override;
+	
+	enum Overlays {MAIN_MENU, PLATFORM_SELECT, PUZZLE_SELECT};
 
 private:
-	enum Overlays {MAIN_MENU};
 	sf::Music mMusic;
+	sf::Sprite mBackground;
 };

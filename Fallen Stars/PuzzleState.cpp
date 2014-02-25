@@ -8,7 +8,7 @@
 #include "MainMenuState.h"
 #include "Game.h"
 
-PuzzleState::PuzzleState(int level, int ringCount, int steps):
+PuzzleState::PuzzleState(std::string level, int ringCount, int steps):
 	mLevel(level),
 	mRingCount(ringCount),
 	mSteps(steps),

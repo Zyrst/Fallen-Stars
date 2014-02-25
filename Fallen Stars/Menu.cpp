@@ -1,7 +1,7 @@
 #include "Menu.h"
 
-Menu::Menu(int id):
-	Overlay(id),
+Menu::Menu(int id, bool enabled):
+	Overlay(id, enabled),
 	buttonList(),
 	selectedButton(0)
 {}

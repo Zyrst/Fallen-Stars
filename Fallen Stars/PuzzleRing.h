@@ -12,7 +12,7 @@ class PuzzleRing
 public:
 	enum RotationDirection {LEFT, RIGHT, NONE};
 
-	PuzzleRing(ResourceCollection& resources, int level, int ringNum, sf::Vector2f position, int initialStep, int steps);
+	PuzzleRing(ResourceCollection& resources, std::string level, int ringNum, sf::Vector2f position, int initialStep, int steps);
 	~PuzzleRing();
 
 	void update(const sf::Time& deltaTime);
@@ -24,6 +24,7 @@ public:
 
 private:
 	sf::Sprite mSprite;
+	sf::Shader& mHighlightShader;
 
 	RotationDirection mCurrentDirection;
 	RotationDirection mNextDirection;
@@ -34,9 +35,8 @@ private:
 	int mSteps;
 	int mSelectedStep;
 	int mStepsPerMove;
-	bool mHighLighted;
+	bool mHighlighted;
 
 	void setRotationFinished();
 	void setNewTarget(RotationDirection direction);
 };
-

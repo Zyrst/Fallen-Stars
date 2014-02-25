@@ -5,14 +5,14 @@
 #include "Game.h"
 #include "JumpingTest.h"
 #include "PuzzleState.h"
+#include "MainMenuState.h"
 
 #include <iostream> // TODO Remove!
 
-MainMenu::MainMenu(int id, ResourceCollection& resources):
-	Menu(id)
+MainMenu::MainMenu(int id, ResourceCollection& resources, const MainMenuState* state):
+	Menu(id),
+	mState(const_cast<MainMenuState*>(state))
 {
-	mBackground.setTexture(resources.getTexture("Assets/Menu/Main Menu.png"));
-
 	sf::Vector2f width = sf::Vector2f((float)baseWidth, 0.0f);
 	sf::Vector2f height = sf::Vector2f(0.0f, (float)baseHeight);
 
@@ -30,26 +30,17 @@ MainMenu::MainMenu(int id, ResourceCollection& resources):
 	
 }
 
-
-MainMenu::~MainMenu(void)
-{
-}
-
-void MainMenu::render(sf::RenderTarget& renderSurface)
-{
-	renderSurface.draw(mBackground);
-	renderButtons(renderSurface);
-}
-
 void MainMenu::buttonPressed(int id)
 {
 	if(id == Buttons::START)
 	{
-		Game::instance()->loadNewState(new JumpingTest());
+		mState->getOverlay(MainMenuState::MAIN_MENU).setEnabledState(false);
+		mState->getOverlay(MainMenuState::PLATFORM_SELECT).setEnabledState(true);
 	}
 	if(id == Buttons::PUZZLE)
 	{
-		Game::instance()->loadNewState(new PuzzleState(1, 4, 13));
+		mState->getOverlay(MainMenuState::MAIN_MENU).setEnabledState(false);
+		mState->getOverlay(MainMenuState::PUZZLE_SELECT).setEnabledState(true);
 	}
 	if(id == Buttons::SETTINGS)
 	{

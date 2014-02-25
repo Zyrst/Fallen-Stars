@@ -58,10 +58,17 @@ void State::renderOverlays(sf::RenderTarget& renderSurface)
 
 void State::handleOverlayAction(Controls::Action action, Controls::KeyState keystate)
 {
-	for(auto it = mOverlays.begin(); it != mOverlays.end(); it++)
+	// Store the states of the overlays in case they change from a button press
+	std::vector<bool> overlaysEnabled(mOverlays.size());
+	for(int i = 0; i < mOverlays.size(); i++)
 	{
-		Overlay* overlay = *it;
-		if(overlay->isEnabled())
+		overlaysEnabled[i] = mOverlays[i]->isEnabled();
+	}
+
+	for(int i = 0; i < mOverlays.size(); i++)
+	{
+		Overlay* overlay = mOverlays[i];
+		if(overlaysEnabled[i])
 		{
 			overlay->handleAction(action, keystate);
 		}

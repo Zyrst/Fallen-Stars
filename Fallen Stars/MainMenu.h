@@ -3,16 +3,16 @@
 #include "Menu.h"
 #include "ResourceCollection.h"
 
+class MainMenuState;
+
 class MainMenu : public Menu
 {
 public:
-	MainMenu(int id, ResourceCollection& resources);
-	~MainMenu();
-	void render(sf::RenderTarget& renderSurface) override;
+	MainMenu(int id, ResourceCollection& resources, const MainMenuState* state);
 	void buttonPressed(int id);
 
 private:
 	enum Buttons {START, PUZZLE, SETTINGS};
-	sf::Sprite mBackground;
+	MainMenuState* mState;
 };
 
