@@ -6,6 +6,7 @@
 #include "JumpingTest.h"
 #include "PuzzleState.h"
 #include "MainMenuState.h"
+#include "PlatformState.h"
 
 #include <iostream> // TODO Remove!
 
@@ -30,17 +31,28 @@ MainMenu::MainMenu(int id, ResourceCollection& resources, const MainMenuState* s
 	
 }
 
+
+MainMenu::~MainMenu(void)
+{
+}
+
+void MainMenu::render(sf::RenderTarget& renderSurface)
+{
+	renderSurface.draw(mBackground);
+	renderButtons(renderSurface);
+}
+
 void MainMenu::buttonPressed(int id)
 {
 	if(id == Buttons::START)
 	{
 		mState->getOverlay(MainMenuState::MAIN_MENU).setEnabledState(false);
 		mState->getOverlay(MainMenuState::PLATFORM_SELECT).setEnabledState(true);
+		Game::instance()->loadNewState(new PlatformState());
 	}
 	if(id == Buttons::PUZZLE)
 	{
-		mState->getOverlay(MainMenuState::MAIN_MENU).setEnabledState(false);
-		mState->getOverlay(MainMenuState::PUZZLE_SELECT).setEnabledState(true);
+		Game::instance()->loadNewState(new PuzzleState(1, 4, 13));
 	}
 	if(id == Buttons::SETTINGS)
 	{

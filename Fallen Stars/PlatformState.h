@@ -6,6 +6,7 @@
 #include "State.h"
 #include "Camera.h"
 #include "LevelManager.h"
+#include <SFML/Audio/Music.hpp>
 
 class LightSolver;
 
@@ -29,6 +30,8 @@ private:
 	LevelManager* mLevel;
 	LightSolver* mLightSolver;
 	std::string mLevelName;
+	sf::Music mFirstSong;
+	sf::Music mSecondSong;
 };
 
 /* TODO

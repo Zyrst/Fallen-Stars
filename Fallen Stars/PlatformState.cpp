@@ -42,6 +42,10 @@ void PlatformState::load()
 	{
 		mLightSolver->addOccluder(e);
 	}
+	mFirstSong.openFromFile("Assets/Sound/Test music.ogg");
+	mSecondSong.openFromFile("Assets/Sound/Art of Dying.ogg");
+	
+	mFirstSong.setLoop(false);
 
 	sf::Vector2u mapSize =  mLevel->getMapLoader().GetMapSize();
 	mCamera = new Camera(mPlayer, mapSize);
@@ -55,6 +59,19 @@ void PlatformState::update(const sf::Time& deltaTime)
 		mEntityVector[i]->update(deltaTime);
 	}
 	killDeadEntities();
+	mWorld->step(deltaTime.asSeconds());
+	if ( mLevel->getMusicLayer(1) == mPlayer->getPosition() && mFirstSong.getLoop() == false)
+	{
+		mFirstSong.play();
+		std::cout << "that's the spot" << std::endl;
+		mFirstSong.setLoop(true);
+	}
+	if (mLevel->getMusicLayer(2) != mPlayer->getPosition() && mFirstSong.getLoop() == false)
+	{
+		//mFirstSong.stop();
+		//mFirstSong.setLoop(false);
+		mSecondSong.play();
+	}
 }
 void PlatformState::render(sf::RenderWindow& window)
 {

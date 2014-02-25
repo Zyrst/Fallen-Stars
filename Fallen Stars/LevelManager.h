@@ -24,6 +24,7 @@ public:
 	void getStarDustLayer(ResourceCollection& resource,BoxWorld* world,EntityVector& entity);
 	void getEnemyLayer(ResourceCollection& resource,BoxWorld* world,EntityVector& entity,sf::Vector2f size);
 	void genCollision(BoxWorld* world, LightSolver* solver = nullptr);
+	sf::Vector2f getMusicLayer(int songNumber);
 
 private:
 	std::string mLevel;
