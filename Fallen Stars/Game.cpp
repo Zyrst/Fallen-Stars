@@ -115,7 +115,7 @@ void Game::resize(int width, int height)
 void Game::loadNewState(State* state)
 {
 	assert(state != NULL);
-	assert(nextState == NULL);
+	if(nextState == NULL) delete nextState;
 	LoadingState* loadingState = new LoadingState(state);
 	loadingState->load(); // This only takes time once. Every call after that will simply retrieves a reference
 	nextState = loadingState;
@@ -195,12 +195,9 @@ void Game::handleEvent(sf::Event event)
 
 void Game::handleHeldKeys()
 {
-	if( sf::Keyboard::isKeyPressed( ControlMapping::getKey( Controls::Action::UP ) ) ) currentState->handleAction( Controls::Action::UP, Controls::KeyState::HELD );
-	if( sf::Keyboard::isKeyPressed( ControlMapping::getKey( Controls::Action::DOWN ) ) ) currentState->handleAction( Controls::Action::DOWN, Controls::KeyState::HELD );
-	if( sf::Keyboard::isKeyPressed( ControlMapping::getKey( Controls::Action::LEFT ) ) ) currentState->handleAction( Controls::Action::LEFT, Controls::KeyState::HELD );
-	if( sf::Keyboard::isKeyPressed( ControlMapping::getKey( Controls::Action::RIGHT ) ) ) currentState->handleAction( Controls::Action::RIGHT, Controls::KeyState::HELD );
-	if( sf::Keyboard::isKeyPressed( ControlMapping::getKey( Controls::Action::JUMP ) ) ) currentState->handleAction( Controls::Action::JUMP, Controls::KeyState::HELD );
-	if( sf::Keyboard::isKeyPressed( ControlMapping::getKey( Controls::Action::INTERACT ) ) ) currentState->handleAction( Controls::Action::INTERACT, Controls::KeyState::HELD );
-	if( sf::Keyboard::isKeyPressed( ControlMapping::getKey( Controls::Action::MENU ) )) currentState->handleAction( Controls::Action::MENU, Controls::KeyState::HELD );
-	if( sf::Keyboard::isKeyPressed( ControlMapping::getKey( Controls::Action::SIRIUS ) ) ) currentState->handleAction( Controls::Action::SIRIUS, Controls::KeyState::HELD );
+	for(Controls::Action action = Controls::Action::UP; action != Controls::Action::UNUSED; ++action)
+	{
+		if( sf::Keyboard::isKeyPressed( ControlMapping::getKey( action ) ) ) currentState->handleAction( action, Controls::KeyState::HELD );
+		if( sf::Keyboard::isKeyPressed( ControlMapping::getAlternativeKey( action ) ) ) currentState->handleAction( action, Controls::KeyState::HELD );
+	}
 }

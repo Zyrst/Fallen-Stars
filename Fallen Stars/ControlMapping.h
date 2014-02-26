@@ -12,4 +12,5 @@ public:
 	static Controls::Action getAction(sf::Event::JoystickMoveEvent);
 
 	static sf::Keyboard::Key getKey(Controls::Action);
+	static sf::Keyboard::Key getAlternativeKey(Controls::Action);
 };

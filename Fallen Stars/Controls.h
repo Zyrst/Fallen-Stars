@@ -6,6 +6,8 @@
 
 namespace Controls
 {
-	enum Action {UP, DOWN, LEFT, RIGHT, JUMP, MENU, CONFIRM, SIRIUS, INTERACT, UNUSED};
+	enum Action {UP, DOWN, LEFT, RIGHT, JUMP, MENU, CONFIRM, SIRIUS, INTERACT, UNUSED}; // UNUSED is also used as iteration end value
 	enum KeyState {PRESSED, RELEASED, HELD};
+	
+	Action& operator++(Action& value);
 }
