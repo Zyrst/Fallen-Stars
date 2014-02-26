@@ -144,9 +144,6 @@ Player::Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, Reso
 	std::vector<sf::IntRect> frames = spritesheet1.getAllFrames();
 	mWalking = new Animation(frames,walking);
 	
-	std::cout << spritesheet1.getFrameCount()<<std::endl;
-	std::cout << mWalking->getSize()<<std::endl;
-	
 	/* Idle animation */
 	auto &idle = mResource.getTexture("Assets/Characters/Stella_idle.png");
 	sf::Vector2i idleSize = static_cast<sf::Vector2i>(idle.getSize());
@@ -155,7 +152,7 @@ Player::Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, Reso
 	mIdle = new Animation(idleFrames,idle);
 	
 	/* Jump animation */
-	auto &jump = mResource.getTexture("Assets/Characters/Stella_jumpLeft.png");
+	auto &jump = mResource.getTexture("Assets/Characters/Stella jump.png");
 	sf::Vector2i jumpSize = static_cast<sf::Vector2i>(jump.getSize());
 	SpriteSheet jumpSheet(frameSize,jumpSize);
 	std::vector<sf::IntRect> jumpFrames = jumpSheet.getAllFrames();
@@ -168,8 +165,12 @@ Player::Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, Reso
 	std::vector<sf::IntRect> grabFrames = grabSheet.getAllFrames();
 	mGrab = new Animation(grabFrames,grab);
 
-
-	std::cout << mIdle->getSize()<<std::endl;
+	/* Fall Animation*/
+	auto &fall = mResource.getTexture("Assets/Characters/Stella fall.png");
+	sf::Vector2i fallSize = static_cast<sf::Vector2i>(fall.getSize());
+	SpriteSheet fallSheet(frameSize, fallSize);
+	std::vector<sf::IntRect> fallFrames = jumpSheet.getAllFrames();
+	mFall = new Animation(fallFrames,fall);
 
 	anime.setAnimation(*mIdle);
 	
@@ -194,6 +195,7 @@ Player::~Player()
 	delete mWalking;
 	delete mJump;
 	delete mGrab;
+	delete mFall;
 }
 
 void Player::setupSensors(sf::Vector2f& pos, sf::Vector2f& size)
@@ -285,7 +287,7 @@ void Player::update(sf::Time deltaTime)
 		{
 			if (!rightSideCollision->isColliding())
 			{
-				body->SetLinearVelocity(b2Vec2(SPEED, vel.y));				
+				body->SetLinearVelocity(b2Vec2(SPEED, vel.y));
 			}
 			
 			setFacing(Entity::RIGHT);
@@ -501,9 +503,17 @@ void Player::updateAnimation()
 		//body->SetLinearVelocity(b2Vec2(0, velocity.y));
 		}
 	}
+	/*Jump*/
 	if(!groundCallBack->isColliding())
 	{
-		currentAnimation = mJump;
+		if (body->GetLinearVelocity().y >= 1)
+		{
+			currentAnimation = mFall;
+		}
+		if (body->GetLinearVelocity().y <= 0)
+		{
+			currentAnimation = mJump;
+		}
 	}
 	if(state == PLAYER_STATE::GRABBING)
 	{
