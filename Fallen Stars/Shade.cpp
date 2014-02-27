@@ -91,7 +91,7 @@ Shade::Shade(ResourceCollection& resource, BoxWorld* world, sf::Vector2f& size, 
   mResource(resource)
 {
 	setMode(PATROL);
-	setupSensors(position,size);
+	
 	auto &idle = mResource.getTexture("Assets/Characters/Shade_idle.png");
 	sf::Vector2i idleSize = static_cast<sf::Vector2i>(idle.getSize());
 	sf::Vector2i frameSize(256,256);
@@ -111,9 +111,9 @@ Shade::Shade(ResourceCollection& resource, BoxWorld* world, sf::Vector2f& size, 
 	std::vector<sf::IntRect> spawnFrames = spawnSheet.getAllFrames();
 	mSpawn = new Animation(spawnFrames,spawn);
 	
-	anime.setAnimation(*mSpawn);
-
+	anime.setAnimation(*mWalking);
 	updateSpriteOrigin();
+	setupSensors(position,size);
 	setFacing(LEFT);
 	b2Filter filter = (body->GetFixtureList())->GetFilterData();
 	filter.categoryBits = ENEMY;
@@ -299,7 +299,8 @@ void Shade::updateAnimation()
 	}
 
 	if (currentAnimation != NULL) anime.play(*currentAnimation);
-	anime.setPosition(Convert::b2ToSfml(body->GetPosition()));
+	//anime.setPosition(Convert::b2ToSfml(body->GetPosition()));
+
 }
 Shade::Mode Shade::getMode()
 {

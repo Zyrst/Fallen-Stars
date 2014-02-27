@@ -12,7 +12,6 @@
 #include <iostream>
 
 static const float SPEED = 3;
-
 static sf::Texture* flipTexture(const sf::Texture* source)
 {
 	sf::RenderTexture fbo;
@@ -28,10 +27,7 @@ static sf::Texture* flipTexture(const sf::Texture* source)
 	return new sf::Texture(fbo.getTexture());
 }
 
-/*
-* TODO:Fix falling through while grabbing (maybe three grab boxes?)
-*/
-
+#pragma region CollisionCounterCallBack
 CollisionCounterCallBack::CollisionCounterCallBack(b2Fixture* owner)
 	: CallBack(owner)
 	, collisions(0)
@@ -56,7 +52,8 @@ bool CollisionCounterCallBack::isColliding() const
 {
 	return (collisions > 0);
 }
-/*----*/
+#pragma endregion
+#pragma region GrabCallBack
 GrabCallBack::GrabCallBack(b2Fixture* owner)
 	: CallBack(owner)
 	, grabCandidate(nullptr)
@@ -94,34 +91,8 @@ void GrabCallBack::setCandidate(b2Fixture* fix, const sf::FloatRect& bounds)
 	grabCandidate = fix;
 	candidateBounds = sf::FloatRect(bounds);
 }
-/*----*//*
-OnesideCallBack::OnesideCallBack(b2Fixture* owner)
-	: CallBack(owner)
-	, collisions(0)
-{
-
-}
-void OnesideCallBack::beginContact(b2Fixture* otherFixture)
-{
-		if (otherFixture->GetBody()->GetType() == b2_staticBody&& otherFixture->)
-	{
-		collisions++;
-	}
-}
-void OnesideCallBack::endContact(b2Fixture* otherFixture)
-{
-		if (otherFixture->GetBody()->GetType() == b2_staticBody)
-	{
-		collisions--;
-	}
-}
-
-bool OnesideCallBack::isColliding() const
-{
-	return(collisions > 0);
-}
-*/
-
+#pragma endregion
+#pragma region Player
 Player::Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, ResourceCollection& resource, LightSolver* lightSolver)
 : EntityLiving(world, size, position)
 , groundCallBack(nullptr)
@@ -346,7 +317,7 @@ void Player::update(sf::Time deltaTime)
 	updateAnimation();
 	updateSound();
 	anime.update(deltaTime);
-	anime.setPosition(Convert::b2ToSfml(body->GetPosition()));
+	//anime.setPosition(Convert::b2ToSfml(body->GetPosition()));
 
 	updateFlashlightPosition();
 }
@@ -540,3 +511,4 @@ void Player::updateSound()
 		mWalkSound.setLoop(false);
 	}
 }
+#pragma endregion
