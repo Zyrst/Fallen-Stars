@@ -1,5 +1,6 @@
 #include "LoadingState.h"
 
+#include <SFML/Graphics/RenderWindow.hpp>
 #include <thread>
 #include <cassert>
 #include <cmath>

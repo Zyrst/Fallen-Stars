@@ -155,7 +155,7 @@ Game* Game::instance()
 	return theGame;
 }
 
-void Game::handleEvent(sf::Event event)
+void Game::handleEvent(sf::Event& event)
 {
 	assert(currentState != NULL);
 

@@ -1,5 +1,6 @@
 #include "WaitState.h"
 
+#include <SFML/Graphics/RenderWindow.hpp>
 #include <chrono>
 #include <thread>
 

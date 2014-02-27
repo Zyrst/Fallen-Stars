@@ -1,8 +1,9 @@
 #pragma once
 
-#include <SFML/System/Time.hpp>
-#include <SFML/Graphics/RenderTarget.hpp>
 #include "Controls.h"
+
+namespace sf{ class Time; }
+namespace sf{ class RenderTarget; }
 
 class Overlay
 {

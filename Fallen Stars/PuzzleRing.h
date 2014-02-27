@@ -1,11 +1,12 @@
 #pragma once
 
 #include <SFML/Graphics/Sprite.hpp>
-#include <SFML/Graphics/Texture.hpp>
-#include <SFML/System/Time.hpp>
+#include <string>
 
 #include "Controls.h"
-#include "ResourceCollection.h"
+
+namespace sf{ class Time; }
+class ResourceCollection;
 
 class PuzzleRing
 {

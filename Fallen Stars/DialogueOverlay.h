@@ -1,10 +1,10 @@
 #pragma once
 
 #include "Overlay.h"
-#include "ResourceCollection"
+
+class ResourceCollection;
 
 class DialogueOverlay : public Overlay
 {
-	DialogueOverlay(ResourceColletion& resources);
-
-}
+	DialogueOverlay(ResourceCollection& resources);
+};

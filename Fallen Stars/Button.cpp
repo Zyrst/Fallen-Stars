@@ -1,5 +1,6 @@
 #include "Button.h"
 
+#include <SFML/Graphics/RenderTarget.hpp>
 #include "ResourceCollection.h"
 
 Button::Button(int id, sf::Vector2f position, sf::Texture& texture, ResourceCollection& resources, sf::Text text, sf::IntRect textureRect):

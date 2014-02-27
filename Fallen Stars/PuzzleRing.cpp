@@ -1,6 +1,9 @@
 #include "PuzzleRing.h"
 
 #include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/Texture.hpp>
+
+#include "ResourceCollection.h"
 
 bool leftPressed = false;
 bool rightPressed = false;

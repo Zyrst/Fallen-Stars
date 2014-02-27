@@ -1,14 +1,15 @@
 #pragma once
 
 #include <SFML/System/Vector2.hpp>
-#include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Sprite.hpp>
-#include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/Rect.hpp>
-#include <SFML/Graphics/Shader.hpp>
 
-#include "ResourceCollection.h"
+namespace sf { class Shader; }
+namespace sf { class Texture; }
+namespace sf { class RenderTarget; }
+
+class ResourceCollection;
 
 // TODO Implement buttons
 

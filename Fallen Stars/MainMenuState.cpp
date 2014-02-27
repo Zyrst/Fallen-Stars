@@ -1,5 +1,6 @@
 #include "MainMenuState.h"
 
+#include <SFML/Graphics/RenderWindow.hpp>
 #include "MainMenu.h"
 #include "PlatformLevelSelectMenu.h"
 #include "PuzzleSelectMenu.h"

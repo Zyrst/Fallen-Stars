@@ -1,8 +1,9 @@
 #pragma once
 
 #include <vector>
-#include "Button.h"
+
 #include "Overlay.h"
+#include "Button.h"
 
 class Menu : public Overlay
 {

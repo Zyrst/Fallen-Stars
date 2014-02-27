@@ -1,5 +1,6 @@
 #include "PuzzleState.h"
 
+#include <SFML/Graphics/RenderWindow.hpp>
 #include <random>
 #include <chrono>
 
