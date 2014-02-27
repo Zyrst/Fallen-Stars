@@ -59,7 +59,7 @@ void PlatformState::update(const sf::Time& deltaTime)
 		mEntityVector[i]->update(deltaTime);
 	}
 	killDeadEntities();
-	mWorld->step(deltaTime.asSeconds());
+	
 	if ( mLevel->getMusicLayer(1) == mPlayer->getPosition() && mFirstSong.getLoop() == false)
 	{
 		mFirstSong.play();
