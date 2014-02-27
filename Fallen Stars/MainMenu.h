@@ -1,9 +1,9 @@
 #pragma once
 
 #include "Menu.h"
-#include "ResourceCollection.h"
 
 class MainMenuState;
+class ResourceCollection;
 
 class MainMenu : public Menu
 {
@@ -15,4 +15,3 @@ private:
 	enum Buttons {START, PUZZLE, SETTINGS};
 	MainMenuState* mState;
 };
-

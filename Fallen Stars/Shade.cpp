@@ -211,11 +211,11 @@ void Shade::setupSensors(sf::Vector2f position, sf::Vector2f size)
 	groundPosRight.x = bodySize.x;
 	groundPosRight.y = bodySize.y;
 	groundPosLeft.y = bodySize.y;
-	groundPosLeft.x = bodySize.x-(bodySize.x*2);
-	bodyPosLeft.x = bodySize.x-(bodySize.x*3.0);
+	groundPosLeft.x = bodySize.x-(bodySize.x*2.0f);
+	bodyPosLeft.x = bodySize.x-(bodySize.x*3.0f);
 	bodyPosLeft.y = bodySize.y/2;
 	bodyPosRight.y = bodySize.y/2;
-	bodyPosRight.x = bodySize.x+(bodySize.x*1.2);
+	bodyPosRight.x = bodySize.x+(bodySize.x*1.2f);
 
 //Vänster ChaseSensor
 	b2PolygonShape shapeLeft;

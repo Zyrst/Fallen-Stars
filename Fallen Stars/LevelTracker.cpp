@@ -15,7 +15,7 @@ std::vector<PuzzleData> LevelTracker::getPuzzles()
 	{
 		while ( getline (file,line) )
 		{
-			std::cout << line << std::endl;
+			//std::cout << line << std::endl;
 
 			if(line.size() > 0 && line.front() == '#') continue;
 			
@@ -29,7 +29,7 @@ std::vector<PuzzleData> LevelTracker::getPuzzles()
 				puzzleData.foldername = foldername;
 				puzzleData.rings = rings;
 				puzzles.push_back(puzzleData);
-				std::cout << "Puzzle added" << std::endl;
+				std::cout << "Puzzle " << puzzleData.foldername <<" added with " << puzzleData.rings << " rings" << std::endl;
 			}
 			catch(const std::exception&){}
 		}
@@ -52,7 +52,7 @@ std::vector<PlatformData> LevelTracker::getPlatformLevels()
 	{
 		while ( getline (file,line) )
 		{
-			std::cout << line << std::endl;
+			//std::cout << line << std::endl;
 
 			if(line.size() > 0 && line.front() == '#') continue;
 
@@ -60,7 +60,7 @@ std::vector<PlatformData> LevelTracker::getPlatformLevels()
 			platformData.filename = line;
 			platformLevels.push_back(platformData);
 
-			std::cout << "Level added" << std::endl;
+			std::cout << "Level " << line << " added" << std::endl;
 		}
 		file.close();
 	}

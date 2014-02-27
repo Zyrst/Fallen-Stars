@@ -97,6 +97,7 @@
     <ClCompile Include="CallBack.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ControlMapping.cpp" />
+    <ClCompile Include="Controls.cpp" />
     <ClCompile Include="ConvexOccluder.cpp" />
     <ClCompile Include="debugdraw.cpp" />
     <ClCompile Include="DialogueOverlay.cpp" />

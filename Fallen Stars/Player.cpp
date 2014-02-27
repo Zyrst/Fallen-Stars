@@ -19,7 +19,7 @@ static sf::Texture* flipTexture(const sf::Texture* source)
 	fbo.create(source->getSize().x, source->getSize().y);
 
 	sf::Transform trans;
-	trans.translate(source->getSize().x, 0.0f);
+	trans.translate((float)source->getSize().x, 0.0f);
 	trans.scale(sf::Vector2f(-1.0f, 1.0f));
 	sf::RenderStates states = sf::RenderStates(trans);
 

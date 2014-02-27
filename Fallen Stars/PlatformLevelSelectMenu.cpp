@@ -16,11 +16,11 @@ PlatformLevelSelectMenu::PlatformLevelSelectMenu(int id, ResourceCollection& res
 	sf::Texture& buttonTexture = resources.getTexture("Assets/Menu/Button.png");
 	sf::Font& font = resources.getFont("Assets/Menu/24Janvier.otf");
 	
-	for(int i = 0; i < mLevels.size(); i++)
+	for(unsigned int i = 0; i < mLevels.size(); i++)
 	{
 		sf::Text text(mLevels[i].filename, font, 30U);
 		sf::Vector2f offset = height / 2.0f * (float) i / (float) mLevels.size();
-		addButton(Button(i, width / 2.0f + height / 4.0f + offset, buttonTexture, resources, text));
+		addButton(Button((int)i, width / 2.0f + height / 4.0f + offset, buttonTexture, resources, text));
 	}
 	
 	sf::Text back("Back", font, 30U);
@@ -35,7 +35,7 @@ void PlatformLevelSelectMenu::buttonPressed(int id)
 		mState->getOverlay(MainMenuState::MAIN_MENU).setEnabledState(true);
 	}
 
-	if(id >= 0 && id < mLevels.size())
+	if(id >= 0 && id < (int)mLevels.size())
 	{
 		Game::instance()->loadNewState(new PlatformState(mLevels[id].filename));
 	}

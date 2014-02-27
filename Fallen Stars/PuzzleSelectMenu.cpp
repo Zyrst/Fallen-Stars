@@ -16,7 +16,7 @@ PuzzleSelectMenu::PuzzleSelectMenu(int id, ResourceCollection& resources, const 
 	sf::Texture& buttonTexture = resources.getTexture("Assets/Menu/Button.png");
 	sf::Font& font = resources.getFont("Assets/Menu/24Janvier.otf");
 	
-	for(int i = 0; i < mPuzzles.size(); i++)
+	for(unsigned int i = 0; i < mPuzzles.size(); i++)
 	{
 		sf::Text text(mPuzzles[i].foldername, font, 30U);
 		sf::Vector2f offset = height / 2.0f * (float) i / (float) mPuzzles.size();
@@ -35,7 +35,7 @@ void PuzzleSelectMenu::buttonPressed(int id)
 		mState->getOverlay(MainMenuState::MAIN_MENU).setEnabledState(true);
 	}
 
-	if(id >= 0 && id < mPuzzles.size())
+	if(id >= 0 && id < (int)mPuzzles.size())
 	{
 		Game::instance()->loadNewState(new PuzzleState(mPuzzles[id].foldername, mPuzzles[id].rings, 17));
 	}

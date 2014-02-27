@@ -60,12 +60,12 @@ void State::handleOverlayAction(Controls::Action action, Controls::KeyState keys
 {
 	// Store the states of the overlays in case they change from a button press
 	std::vector<bool> overlaysEnabled(mOverlays.size());
-	for(int i = 0; i < mOverlays.size(); i++)
+	for(unsigned int i = 0; i < mOverlays.size(); i++)
 	{
 		overlaysEnabled[i] = mOverlays[i]->isEnabled();
 	}
 
-	for(int i = 0; i < mOverlays.size(); i++)
+	for(unsigned  int i = 0; i < mOverlays.size(); i++)
 	{
 		Overlay* overlay = mOverlays[i];
 		if(overlaysEnabled[i])
