@@ -31,7 +31,7 @@ void PlatformState::load()
 	
 	/*Adds player and objects to the Level*/
 	auto playerPos = mLevel->getPlayerLayer();
-	mPlayer = new Player(mWorld, size, playerPos,mResourceCollection, mLightSolver);
+	mPlayer = new Player(mWorld, size, playerPos, mResourceCollection, mLightSolver);
 	mEntityVector.push_back(mPlayer);
 	
 	mLevel->getStarLayer(mResourceCollection,mWorld,mEntityVector);
@@ -42,10 +42,9 @@ void PlatformState::load()
 	{
 		mLightSolver->addOccluder(e);
 	}
-	mFirstSong.openFromFile("Assets/Sound/Test music.ogg");
-	mSecondSong.openFromFile("Assets/Sound/Art of Dying.ogg");
+//	mFirstSong.openFromFile("Assets/Sound/" + mLevelName + ".ogg");
 	
-	mFirstSong.setLoop(false);
+	//mFirstSong.setLoop(true);
 
 	sf::Vector2u mapSize =  mLevel->getMapLoader().GetMapSize();
 	mCamera = new Camera(mPlayer, mapSize);
@@ -60,18 +59,12 @@ void PlatformState::update(const sf::Time& deltaTime)
 	}
 	killDeadEntities();
 	
-	if ( mLevel->getMusicLayer(1) == mPlayer->getPosition() && mFirstSong.getLoop() == false)
+/*	if (mFirstSong.getLoop() == false)
 	{
 		mFirstSong.play();
-		std::cout << "that's the spot" << std::endl;
 		mFirstSong.setLoop(true);
-	}
-	if (mLevel->getMusicLayer(2) != mPlayer->getPosition() && mFirstSong.getLoop() == false)
-	{
-		//mFirstSong.stop();
-		//mFirstSong.setLoop(false);
-		mSecondSong.play();
-	}
+	}*/
+
 }
 void PlatformState::render(sf::RenderWindow& window)
 {
@@ -85,10 +78,10 @@ void PlatformState::render(sf::RenderWindow& window)
 		mEntityVector[i]->render(window);
 	}
 
-	/*mLevel->getMapLoader().Draw(window, tmx::MapLayer::Foreground);*/
+	//mLevel->getMapLoader().Draw(window, tmx::MapLayer::Foreground);
 
 	/*Remove this to remove the outdrawn collision boxes and other box2d stuff*/
-	//mWorld->drawDebug(window);
+	mWorld->drawDebug(window);
 }
 
 void PlatformState::handleAction(Controls::Action action, Controls::KeyState keystate)

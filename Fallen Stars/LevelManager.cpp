@@ -121,33 +121,3 @@ void LevelManager::genCollision(BoxWorld* world, LightSolver* solver)
 		}
 	}
 }
-
-sf::Vector2f LevelManager::getMusicLayer(int songNumber)
-{
-	auto& layer = mapLoader.GetLayers();
-	for (auto i : layer)
-	{
-		if (songNumber == 1)
-		{
-			if (i.name.compare("First music") == 0)
-			{
-				for (auto& k : i.objects)
-				{
-					auto pos = k.GetPosition();
-					return pos;
-				}
-			}
-		}
-		if (songNumber == 2)
-		{
-			if (i.name.compare("Second music") == 0)
-			{
-				for (auto& k : i.objects)
-				{
-					auto pos = k.GetPosition();
-					return pos;
-				}
-			}
-		}
-	}
-}

@@ -63,7 +63,7 @@ Object::Object(BoxWorld* world, sf::Vector2f& position, ResourceCollection& reso
 		/*Star animation*/
 		auto &star = mResource.getTexture("Assets/Characters/Star Anime.png");
 		sf::Vector2i starSize = static_cast<sf::Vector2i>(star.getSize());
-		sf::Vector2i frameSize(120,120); /* Alter to right size */
+		sf::Vector2i frameSize(256,256); /* Alter to right size */
 
 		SpriteSheet starSheet(frameSize, starSize);
 		std::vector<sf::IntRect> starFrames = starSheet.getAllFrames();
@@ -81,7 +81,7 @@ Object::Object(BoxWorld* world, sf::Vector2f& position, ResourceCollection& reso
 		auto &starDust = mResource.getTexture("Assets/Characters/StarDustAnimation.png");
 
 		sf::Vector2i starDustSize = static_cast<sf::Vector2i>(starDust.getSize());
-		sf::Vector2i frameSize(120,120); /* Alter to right size */
+		sf::Vector2i frameSize(85,85); /* Alter to right size */
 		SpriteSheet starDustSheet(frameSize, starDustSize);
 		std::vector<sf::IntRect> starDustFrames = starDustSheet.getAllFrames();
 
@@ -135,11 +135,9 @@ void Object::playSound(TYPE type)
 	if (type == STARDUST)
 	{
 		mStarDustSound.play();
-		std::cout << "Do you even make a sound when you stardust" << std::endl;
 	}
 	if (type == STAR)
 	{
 		mStarSound.play();
-		std::cout << "Star sounds are the best sounds" << std::endl;
 	}
 }
