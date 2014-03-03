@@ -69,4 +69,6 @@ private:
 
 	LightSource* flashLight;
 	sf::Texture *maskRight, *maskLeft;
+
+	b2Fixture* collisionFixture;
 };

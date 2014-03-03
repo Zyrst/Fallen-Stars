@@ -103,6 +103,7 @@ Player::Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, Reso
 , flashLight(lightSolver->createLight(2048, 512))
 , maskRight(&resource.getTexture("Assets/Shader/mask.png"))
 , maskLeft(flipTexture(maskRight))
+, collisionFixture(body->GetFixtureList())
 {
 
 	setState(PLAYER_STATE::NORMAL);
@@ -445,11 +446,13 @@ void Player::setState(Player::PLAYER_STATE state)
 	{
 	case PLAYER_STATE::NORMAL:
 		body->SetGravityScale(1.0f);
+		collisionFixture->SetSensor(false);
 		body->SetAwake(true);
 		break;
 	case PLAYER_STATE::GRABBING:
 		body->SetGravityScale(0.0f);
 		body->SetLinearVelocity(b2Vec2(0, 0));
+		collisionFixture->SetSensor(true);
 		body->SetAwake(false);
 		break;
 	}
