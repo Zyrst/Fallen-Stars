@@ -15,6 +15,7 @@
 #include "JumpingTest.h"
 
 #include "BaseResolution.h"
+#include "PlatformState.h"
 
 std::vector<sf::VideoMode> modes = sf::VideoMode::getFullscreenModes();
 
@@ -23,8 +24,14 @@ static State* nextState;
 
 Game* Game::theGame = NULL;
 
+RuntimeEvent::RuntimeEvent() { }
+RuntimeEvent::~RuntimeEvent() { }
+
 Game::Game()
+: runtimeEventQueue()
 {
+
+	Game::theGame = this;
 	// TODO Get actual resolution + fix fullscreen
 
 	//sf::VideoMode fullscreen = sf::VideoMode::getFullscreenModes().front();
@@ -40,7 +47,7 @@ Game::Game()
 	// TODO Set viewport to 1080 to fix rendering scale for other monitor sizes
 
 	// TODO Create a first state
-	currentState = new LogoState();/*new JumpingTest();*/
+	currentState =  new LogoState();/*new JumpingTest();*/
 	currentState->load();
 
 	sf::Image icon;
@@ -52,8 +59,6 @@ Game::Game()
 	{
 		window->setIcon(32, 32, icon.getPixelsPtr());
 	}
-
-	Game::theGame = this;
 }
 
 
@@ -93,6 +98,17 @@ void Game::run()
 
 
 		window->display();
+
+		//Handle runtime events
+		while (!runtimeEventQueue.empty())
+		{
+			RuntimeEvent* ev = runtimeEventQueue.front();
+			runtimeEventQueue.pop();
+
+			ev->run();
+
+			delete ev;
+		}
 
 		// If we're going to swap state, do that at the end of the frame
 		if(nextState != NULL) swapState();
@@ -148,6 +164,11 @@ void Game::centerView()
 	sf::View view = window->getView();
 	view.setCenter(baseResolution / 2.0f);
 	window->setView(view);
+}
+
+void Game::postRuntimeEvent(RuntimeEvent* ev)
+{
+	runtimeEventQueue.push(ev);
 }
 
 Game* Game::instance()

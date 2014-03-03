@@ -3,13 +3,34 @@
 #include <iostream>
 #include <SFML\Graphics.hpp>
 #include <SFML\Graphics\Shader.hpp>
+#include "Game.h"
 
 namespace
 {
+	class FBORuntimeEvent : public RuntimeEvent
+	{
+	public:
+		FBORuntimeEvent(sf::RenderTexture* fbo, int width, int height)
+			: fbo(fbo) 
+			, width(width)
+			, height(height)
+		{ }
+
+		virtual void run()
+		{
+			fbo->create(width, height, false);
+		}
+
+	private:
+		int width, height;
+		sf::RenderTexture* fbo;
+	};
+
 	sf::RenderTexture* createFBO(int width, int height)
 	{
 		sf::RenderTexture* fbo = new sf::RenderTexture();
-		fbo->create(width, height, false);
+		
+		Game::instance()->postRuntimeEvent(new FBORuntimeEvent(fbo, width, height));
 
 		return fbo;
 	}

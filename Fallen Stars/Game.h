@@ -1,8 +1,18 @@
 #pragma once
+#include <queue>
 
 namespace sf{ class Event; }
 namespace sf{ class RenderWindow; }
 class State;
+
+class RuntimeEvent
+{
+public:
+	RuntimeEvent();
+	virtual ~RuntimeEvent();
+
+	virtual void run() = 0;
+};
 
 class Game
 {
@@ -14,11 +24,14 @@ class Game
 		void resize(int width, int height);
 		void loadNewState(State* state); // Forwards to setState(), but first wraps the state in a LoadingState
 
+		void postRuntimeEvent(RuntimeEvent* ev);
+
 		static Game* instance();
 
 	private:
 		sf::RenderWindow *window;
 		State* currentState;
+		std::queue<RuntimeEvent*> runtimeEventQueue;
 
 		void handleEvent(sf::Event&);
 		void handleHeldKeys();
