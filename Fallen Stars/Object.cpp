@@ -70,7 +70,7 @@ Object::Object(BoxWorld* world, sf::Vector2f& position, ResourceCollection& reso
 
 		mStar = new Animation(starFrames, star);
 		anime.setAnimation(*mStar);
-		updateSpriteOrigin();
+		updateSpriteOrigin(SpriteOrigin::ORIGIN_CENTER, SpriteOrigin::ORIGIN_CENTER);
 		
 
 	}
@@ -87,7 +87,7 @@ Object::Object(BoxWorld* world, sf::Vector2f& position, ResourceCollection& reso
 
 		mStarDust = new Animation(starDustFrames, starDust);
 		anime.setAnimation(*mStarDust);
-		updateSpriteOrigin();
+		updateSpriteOrigin(SpriteOrigin::ORIGIN_CENTER, SpriteOrigin::ORIGIN_CENTER);
 	}
 }
 

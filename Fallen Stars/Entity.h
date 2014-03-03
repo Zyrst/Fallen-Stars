@@ -25,6 +25,10 @@ class Entity : public Occluder
 			 ENEMY_GROUND =	1 << 3,
 			 ONESIDE_PLAT = 1 << 4
 		};
+		enum SpriteOrigin
+		{
+			ORIGIN_CENTER, ORIGIN_UP, ORIGIN_DOWN, ORIGIN_LEFT, ORIGIN_RIGHT
+		};
 
 		//TODO Update skall få funktioner
 		//TODO collisionWith måste ta emot boundingBoxes(bodys?)
@@ -41,7 +45,7 @@ class Entity : public Occluder
 	protected:
 		virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 		Entity(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, Facing facing = LEFT);
-		void updateSpriteOrigin();
+		void updateSpriteOrigin(SpriteOrigin horizontal = SpriteOrigin::ORIGIN_CENTER, SpriteOrigin vertical = SpriteOrigin::ORIGIN_DOWN);
 		AnimatedSprite anime;
 		bool mAlive;
 		b2Body* body;

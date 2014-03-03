@@ -60,11 +60,40 @@ void Entity::render(sf::RenderTarget& target)
 	
 }
 
-void Entity::updateSpriteOrigin()
+void Entity::updateSpriteOrigin(SpriteOrigin hor, SpriteOrigin vert)
 {
 	const sf::FloatRect& psize = anime.getLocalBounds();
 	sf::FloatRect fixSize = BoxBounds::boundsOfFixture(body->GetFixtureList());
-	anime.setOrigin((psize.width) / 2.0f, psize.height - fixSize.height);
+
+	float x, y;
+
+	switch (hor)
+	{
+	case SpriteOrigin::ORIGIN_CENTER:
+		x = (psize.width) / 2.0f;
+		break;
+	case SpriteOrigin::ORIGIN_RIGHT:
+		x = psize.width - fixSize.width;
+		break;
+	case SpriteOrigin::ORIGIN_LEFT:
+	default:
+		x = 0.0f;
+	}
+
+	switch (vert)
+	{
+	case SpriteOrigin::ORIGIN_CENTER:
+		y = (psize.height) / 2.0f - fixSize.height / 2.0f;
+		break;
+	case SpriteOrigin::ORIGIN_DOWN:
+		y = psize.height - fixSize.height;
+		break;
+	case SpriteOrigin::ORIGIN_UP:
+	default:
+		y = 0.0f;
+	}
+
+	anime.setOrigin(x, y);
 }
 
 void Entity::draw(sf::RenderTarget &target, sf::RenderStates states) const
