@@ -5,11 +5,28 @@
 #include <SFML\System\Vector2.hpp>
 #include <SFML\Graphics\Drawable.hpp>
 
+//Class to hold shaders. Mainly used to avoid duplicates with LightSolver
+class LightShaderPair
+{
+public:
+	LightShaderPair(sf::Shader* mapShader, sf::Shader* renderShader)
+		: mapShader(mapShader)
+		, renderShader(renderShader)
+	{}
+
+	~LightShaderPair()
+	{
+		delete mapShader;
+		delete renderShader;
+	}
+
+	sf::Shader *mapShader, *renderShader;
+};
 
 class LightSource : public sf::Drawable
 {
 public:
-	LightSource(int width = 512, int height = 512, int filterGroup = 255);
+	LightSource(LightShaderPair* shaders, int width = 512, int height = 512, int filterGroup = 255);
 	virtual ~LightSource();
 
 	const sf::Vector2f& getPosition() const;

@@ -4,8 +4,9 @@
 #include "Game.h"
 #include "MainMenuState.h"
 
-PlatformState::PlatformState(std::string levelname):
-	mLevelName(levelname)
+PlatformState::PlatformState(std::string levelname)
+: mLevelName(levelname)
+, mLightSolver(new LightSolver())
 {
 }
 
@@ -20,7 +21,7 @@ PlatformState::~PlatformState()
 
 void PlatformState::load()
 {
-	mLightSolver = new LightSolver();
+	//mLightSolver = new LightSolver();
 
 	mWorld = new BoxWorld(b2Vec2(0, 10));
 	

@@ -5,18 +5,39 @@
 #include <SFML\Graphics\RectangleShape.hpp>
 #include <SFML\Graphics\ConvexShape.hpp>
 #include <SFML\Graphics\Sprite.hpp>
+#include <SFML\Graphics\Shader.hpp>
 #include "ConvexOccluder.h"
+
+namespace
+{
+	const std::string SHADER_DIR = "Assets/Shader/";
+
+	sf::Shader* createShader(const std::string& vertex, const std::string& fragment)
+	{
+		sf::Shader* sh = new sf::Shader();
+
+		if (!sh->loadFromFile(SHADER_DIR + vertex, SHADER_DIR + fragment))
+		{
+			std::cerr << "Failed to load shader: [" << vertex << "], [" << fragment << "]\n";
+		}
+
+		return sh;
+	}
+}
 
 LightSolver::LightSolver()
 : lights()
 , voidColor(sf::Color(0, 0, 10, 180))
 , renderShader()
 , debugShader()
+, lightShaderPair(createShader("default.vert", "shadowMap.frag"), createShader("default.vert", "shadowRender.frag"))
 , fullScreenBuffer()
 , colorBuffer()
+, occluders()
+, disposeableOccluders()
 {
-	renderShader.loadFromFile("Assets/Shader/default.vert", "Assets/Shader/darkenPass.frag");
-	debugShader.loadFromFile("Assets/Shader/default.vert", "Assets/Shader/occluder.frag");
+	renderShader.loadFromFile(SHADER_DIR + "default.vert", SHADER_DIR + "darkenPass.frag");
+	debugShader.loadFromFile(SHADER_DIR + "default.vert", SHADER_DIR + "occluder.frag");
 	fullScreenBuffer.create(baseWidth, baseHeight);
 	colorBuffer.create(baseWidth, baseHeight);
 }
@@ -37,7 +58,7 @@ LightSolver::~LightSolver()
 
 LightSource* LightSolver::createLight(int width, int height, int filterGroup)
 {
-	LightSource* light = new LightSource(width, height, filterGroup);
+	LightSource* light = new LightSource(&lightShaderPair, width, height, filterGroup);
 	lights.push_back(light);
 	return light;
 }

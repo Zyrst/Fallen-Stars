@@ -1,7 +1,6 @@
 #pragma once
 
 #include <SFML\Graphics\Color.hpp>
-#include <SFML\Graphics\Shader.hpp>
 #include <SFML\Graphics\RenderTexture.hpp>
 #include "LightSource.h"
 #include <vector>
@@ -10,6 +9,11 @@
 namespace tmx
 {
 	class MapObject;
+}
+
+namespace sf
+{
+	class Shader;
 }
 
 class LightSolver
@@ -49,6 +53,7 @@ private:
 	std::vector<LightSource*> lights;
 	sf::Color voidColor;
 	sf::Shader renderShader, debugShader;
+	LightShaderPair lightShaderPair;
 	sf::RenderTexture fullScreenBuffer, colorBuffer;
 
 	//All occluders

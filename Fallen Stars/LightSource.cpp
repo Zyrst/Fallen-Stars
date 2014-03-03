@@ -2,11 +2,10 @@
 #include <string>
 #include <iostream>
 #include <SFML\Graphics.hpp>
+#include <SFML\Graphics\Shader.hpp>
 
 namespace
 {
-	const std::string SHADER_DIR = "Assets/Shader/";
-
 	sf::RenderTexture* createFBO(int width, int height)
 	{
 		sf::RenderTexture* fbo = new sf::RenderTexture();
@@ -14,23 +13,11 @@ namespace
 
 		return fbo;
 	}
-
-	sf::Shader* createShader(const std::string& vertex, const std::string& fragment)
-	{
-		sf::Shader* sh = new sf::Shader();
-		
-		if (!sh->loadFromFile(SHADER_DIR + vertex, SHADER_DIR + fragment))
-		{
-			std::cerr << "Failed to load shader: [" << vertex << "], [" << fragment << "]\n";
-		}
-
-		return sh;
-	}
 }
 
-LightSource::LightSource(int width, int height, int filter)
-: mapShader(createShader("default.vert", "shadowMap.frag"))
-, renderShader(createShader("default.vert", "shadowRender.frag"))
+LightSource::LightSource(LightShaderPair* shaders, int width, int height, int filter)
+: mapShader(shaders->mapShader)
+, renderShader(shaders->renderShader)
 , occluderFBO(createFBO(width, height))
 , shadowMapFBO(createFBO(width, 1))
 , shadowRenderFBO(createFBO(width, height))
@@ -45,8 +32,6 @@ LightSource::LightSource(int width, int height, int filter)
 
 LightSource::~LightSource()
 {
-	delete mapShader;
-	delete renderShader;
 	delete occluderFBO;
 	delete shadowMapFBO;
 	delete shadowRenderFBO;
