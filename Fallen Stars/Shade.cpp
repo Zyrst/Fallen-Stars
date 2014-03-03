@@ -85,52 +85,6 @@ void LedgeSensor::setFinder(b2Fixture* fix, const sf::FloatRect& bounds)
 	finderBounds = sf::FloatRect(bounds);
 }
 #pragma endregion
-#pragma region Attack
-AttackSensor::AttackSensor(b2Fixture* owner)
-	: CallBack(owner)
-	, attacking(false)
-	, mActive(false)
-	, attackVictim(nullptr)
-
-{ }
-void AttackSensor::beginContact(b2Fixture* otherFixture)
-{
-	sf::FloatRect bounds = BoxBounds::boundsOfFixture(otherFixture);
-	if (otherFixture->GetBody()->GetType() == b2_dynamicBody && attackVictim == nullptr)
-	{
-		setVictim(otherFixture, bounds);
-		//std::cout<<"Contact Begun"<<std::endl;
-	}
-	
-}
-void AttackSensor::endContact(b2Fixture* otherFixture)
-{
-	if (otherFixture->GetBody()->GetType() == b2_dynamicBody &&  attackVictim != nullptr)
-	{
-		attacking = false;
-		attackVictim = nullptr;
-		//std::cout<<"Contact Begun Ended"<<std::endl;
-	}
-	
-}
-bool ChaseSensor::isChasing() const
-{
-	return (chaseVictim !=nullptr);
-}
-bool ChaseSensor::isActive() const
-{
-	return mActive;
-}
-void ChaseSensor::setActive(bool active)
-{
-	mActive = active;
-}
-void ChaseSensor::setVictim(b2Fixture* fix, const sf::FloatRect& bounds)
-{
-	chaseVictim = fix;
-	victimBounds = sf::FloatRect(bounds);
-}
-#pragma endregion
 #pragma region Shade
 Shade::Shade(ResourceCollection& resource, BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position)
 : EntityLiving(world,size,position),
