@@ -33,6 +33,24 @@ private:
 	sf::FloatRect finderBounds;
 };
 
+class AttackSensor : public CallBack
+{
+public:
+	AttackSensor(b2Fixture* owner);
+	virtual void beginContact(b2Fixture* otherFixture) override;
+	virtual void endContact(b2Fixture* otherFixture) override;
+
+	bool isAttacking() const;
+	bool isActive() const;
+	void setActive(bool active);
+private:
+	void setVictim(b2Fixture* fix, const sf::FloatRect& bounds);
+	bool attacking;
+	bool mActive;
+	b2Fixture* attackVictim;
+	sf::FloatRect victimBounds; 
+};
+
 class Shade: public EntityLiving
 {
 public:
@@ -56,6 +74,8 @@ private:
 	ChaseSensor* chaseSensorRight;
 	LedgeSensor* ledgeSensorLeft;
 	LedgeSensor* ledgeSensorRight;
+	AttackSensor* attackSensorLeft;
+	AttackSensor* attackSensorRight;
 	EntityCategory entityCategory;
 	ResourceCollection& mResource;
 	Animation* mIdle;

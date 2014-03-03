@@ -147,8 +147,8 @@ Player::Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, Reso
 	
 	updateSpriteOrigin();
 
-	mJumpSound = mResource.getSound("Assets/Sound/Jump.wav");
-	mWalkSound = mResource.getSound("Assets/Sound/Walking 2.wav");
+	mJumpSound = mResource.getSound("Assets/Sound/Stella_Jump.wav");
+	mWalkSound = mResource.getSound("Assets/Sound/Stella_Run_Loop_1.wav");
 
 	setupSensors(position, size);
 	body->SetLinearDamping(1.0f);
