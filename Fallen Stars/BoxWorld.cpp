@@ -5,8 +5,6 @@
 #include "CallBack.h"
 #include "VecConverter.h"
 
-#include <iostream>
-
 namespace BoxBounds
 {
 	sf::FloatRect boundsOfFixture(const b2Fixture* fix)
@@ -118,7 +116,6 @@ BoxWorld::BoxWorld(const b2Vec2& gravity)
 	world->SetContactListener(contactListener);
 }
 
-
 BoxWorld::~BoxWorld()
 { 
 	delete world;
@@ -188,17 +185,12 @@ void BoxWorld::createStaticBody(const std::vector<tmx::MapObject>& objects)
 		b2Vec2 pos = Convert::sfmlToB2(o.GetPosition());
 		body->SetTransform(pos, 0.0f);
 
-		std::cout << "Pos: " << o.GetPosition().x << ":" << o.GetPosition().y << "\n";
-
 		auto& polyPoints = o.PolyPoints();
 		
 		for (int i = 0; i < 4; i++)
 		{
 			points[i] = Convert::sfmlToB2(polyPoints[i]);
-			std::cout << "point: " << polyPoints[i].x << ":" << polyPoints[i].y << "\n";
 		}
-
-		std::cout << "\n";
 
 		b2PolygonShape shape;
 		shape.Set(points, 4);
