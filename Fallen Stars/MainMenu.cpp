@@ -21,14 +21,16 @@ MainMenu::MainMenu(int id, ResourceCollection& resources, const MainMenuState* s
 	sf::Font& font = resources.getFont("Assets/Menu/24Janvier.otf");
 	
 	sf::Text start("PlatformState", font, 30U);
-	addButton(Button(START, width / 2.0f + height / 3.0f, buttonTexture, resources, start));
+	addButton(Button(START, width / 2.0f + height / 4.0f, buttonTexture, resources, start));
 	
 	sf::Text puzzle("PuzzleState", font, 30U);
-	addButton(Button(PUZZLE, width / 2.0f + height / 2.0f, buttonTexture, resources, puzzle));
+	addButton(Button(PUZZLE, width / 2.0f + height * (1/4.0f + 1/6.0f), buttonTexture, resources, puzzle));
 	
-	sf::Text settings("Settings", font, 30U);
-	addButton(Button(SETTINGS, width / 2.0f + height * 2.0f / 3.0f, buttonTexture, resources, settings));
-	
+	sf::Text settings("Toggle Fullscreen", font, 30U);
+	addButton(Button(FULLSCREEN, width / 2.0f + height * (1/4.0f + 2/6.0f), buttonTexture, resources, settings));
+		
+	sf::Text exit("Exit", font, 30U);
+	addButton(Button(EXIT, width / 2.0f + height * (1/4.0f + 3/6.0f), buttonTexture, resources, exit));
 }
 
 
@@ -36,16 +38,20 @@ void MainMenu::buttonPressed(int id)
 {
 	if(id == Buttons::START)
 	{
-		mState->getOverlay(MainMenuState::MAIN_MENU).setEnabledState(false);
+		setEnabledState(false);
 		mState->getOverlay(MainMenuState::PLATFORM_SELECT).setEnabledState(true);
 	}
 	if(id == Buttons::PUZZLE)
 	{
-		mState->getOverlay(MainMenuState::MAIN_MENU).setEnabledState(false);
+		setEnabledState(false);
 		mState->getOverlay(MainMenuState::PUZZLE_SELECT).setEnabledState(true);
 	}
-	if(id == Buttons::SETTINGS)
+	if(id == Buttons::FULLSCREEN)
 	{
-		std::cout << "Settings! Yay ^^ (There aren't any yet)" << std::endl;
+		Game::instance()->toggleFullscreen();
+	}
+	if(id == Buttons::EXIT)
+	{
+		Game::instance()->exit();
 	}
 }
