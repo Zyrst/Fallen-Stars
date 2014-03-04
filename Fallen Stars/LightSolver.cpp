@@ -12,6 +12,9 @@ namespace
 {
 	const std::string SHADER_DIR = "Assets/Shader/";
 
+	const int INCLUSION_FILTER = 0xFF;
+	const int EXCLUSION_FILTER = 0xFF00;
+
 	sf::Shader* createShader(const std::string& vertex, const std::string& fragment)
 	{
 		sf::Shader* sh = new sf::Shader();
@@ -23,6 +26,14 @@ namespace
 
 		return sh;
 	}
+
+	bool checkFilter(const LightSource* light, const Occluder* occluder)
+	{
+		int lg = light->getFilterGroup();
+		int og = occluder->getFilterGroup();
+		int result = (lg & og);
+		return ((result & INCLUSION_FILTER) != 0) && ((result & EXCLUSION_FILTER) == 0);
+	}
 }
 
 LightSolver::LightSolver()
@@ -30,6 +41,7 @@ LightSolver::LightSolver()
 , voidColor(sf::Color(0, 0, 10, 180))
 , renderShader()
 , debugShader()
+, colorShader()
 , lightShaderPair(createShader("default.vert", "shadowMap.frag"), createShader("default.vert", "shadowRender.frag"))
 , fullScreenBuffer()
 , colorBuffer()
@@ -38,6 +50,7 @@ LightSolver::LightSolver()
 {
 	renderShader.loadFromFile(SHADER_DIR + "default.vert", SHADER_DIR + "darkenPass.frag");
 	debugShader.loadFromFile(SHADER_DIR + "default.vert", SHADER_DIR + "occluder.frag");
+	colorShader.loadFromFile(SHADER_DIR + "default.vert", SHADER_DIR + "lightColor.frag");
 	fullScreenBuffer.create(baseWidth, baseHeight);
 	colorBuffer.create(baseWidth, baseHeight);
 }
@@ -134,7 +147,7 @@ const sf::Color& LightSolver::getVoidColor() const
 //Renderfunctions
 void LightSolver::render(sf::RenderTarget& target)
 {
-	fullScreenBuffer.clear(sf::Color::Transparent);
+	fullScreenBuffer.clear(sf::Color(100, 100, 200, 255));
 	colorBuffer.clear(sf::Color::Transparent);
 
 	sf::View originalView = fullScreenBuffer.getView();
@@ -156,7 +169,10 @@ void LightSolver::render(sf::RenderTarget& target)
 	sf::Sprite sprite = sf::Sprite(getResult());
 	sf::Vector2f pos = sf::Vector2f(view.getCenter().x - view.getSize().x / 2.0f, view.getCenter().y - view.getSize().y / 2.0f);
 	sprite.setPosition(pos);
-	target.draw(sprite);
+	target.draw(sprite, sf::BlendMultiply);
+
+	sprite.setTexture(colorBuffer.getTexture());
+	target.draw(sprite, sf::BlendAdd);
 }
 
 void LightSolver::debugRenderOccluders(sf::RenderTarget& target) const
@@ -189,7 +205,7 @@ void LightSolver::pass1()
 		//Draw occluders
 		for (const Occluder* occluder : occluders)
 		{
-			if ((light->getFilterGroup() & occluder->getFilterGroup()) != 0)
+			if (checkFilter(light, occluder))
 			{
 				tx->draw(*occluder);
 			}
@@ -215,8 +231,8 @@ void LightSolver::pass2()
 	rect.setTexture(&fullScreenBuffer.getTexture());
 
 	//Set the parameters used by the shaders.
-	renderShader.setParameter("voidColor", voidColor);
-	renderShader.setParameter("colorTexture", colorBuffer.getTexture());
+	//renderShader.setParameter("voidColor", voidColor);
+	//renderShader.setParameter("colorTexture", colorBuffer.getTexture());
 
 	//We want to overwrite the entire buffer when we merge
 	sf::RenderStates states = sf::RenderStates(sf::BlendMode::BlendNone);
@@ -230,6 +246,7 @@ void LightSolver::pass2()
 void LightSolver::drawToColorFBO(const LightSource* light)
 {
 	sf::RenderStates states = sf::RenderStates(sf::BlendMode::BlendAdd);
+	states.shader = &colorShader;
 
 	//Set up and render a rectangle representing the color of the light.
 	sf::RectangleShape rect = sf::RectangleShape(light->getSize());

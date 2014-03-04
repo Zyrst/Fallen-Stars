@@ -105,6 +105,11 @@ Player::Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, Reso
 , maskLeft(flipTexture(maskRight))
 , collisionFixture(body->GetFixtureList())
 {
+	flashLight->setColor(sf::Color(255, 255, 0, 10));
+	int group = flashLight->getFilterGroup();
+	group |= (1 << 8);
+	flashLight->setFilterGroup(group);
+	setFilterGroup(getFilterGroup() | (1 << 8));
 
 	setState(PLAYER_STATE::NORMAL);
 
@@ -325,8 +330,13 @@ void Player::update(sf::Time deltaTime)
 
 void Player::updateFlashlightPosition()
 {
-	const float offsetX = 74.0f;
-	const float offsetY = 105.0f;
+	const float offsetX = 50.0f;
+	float offsetY = 95.0f;
+
+	if (anime.getAnimation() == mWalking)
+	{
+		offsetY = 106.0f;
+	}
 
 	sf::Vector2f pos = Convert::b2ToSfml(body->GetPosition());
 	sf::Texture* mask = nullptr;
