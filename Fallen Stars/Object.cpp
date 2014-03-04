@@ -56,7 +56,10 @@ Object::Object(BoxWorld* world, sf::Vector2f& position, ResourceCollection& reso
 	mStarDustSound = mResource.getSound("Assets/Sound/PickUp.wav");
 	mStarSound = mResource.getSound("Assets/Sound/StarPickUp.wav");
 
-	
+	b2Filter objectFilter = body->GetFixtureList()->GetFilterData();
+	objectFilter.categoryBits = OBJECT;
+	objectFilter.maskBits = PLAYER;
+	body->GetFixtureList()->SetFilterData(objectFilter);
 
 	if(mType == TYPE::STAR)
 	{

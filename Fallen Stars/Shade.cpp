@@ -266,11 +266,19 @@ void Shade::setupSensors(sf::Vector2f position, sf::Vector2f size)
 
 	filterGroundLeft.categoryBits = ENEMY_GROUND;
 	//filterGroundLeft.maskBits = ALL;
+	groundFixLeft->SetFilterData(filterGroundLeft);
+
+	b2Filter filterGroundRight = groundFixRight->GetFilterData();
 	filterGroundRight.categoryBits = ENEMY_GROUND;
 	//filterGroundRight.maskBits = ALL;
+	groundFixRight->SetFilterData(filterGroundRight);
 
+	b2Filter filterChaseLeft = fixLeft->GetFilterData();
 	filterChaseLeft.categoryBits = ENEMY_CHASE;
 	filterChaseLeft.maskBits = PLAYER;
+	fixLeft->SetFilterData(filterChaseLeft);
+
+	b2Filter filterChaseRight = fixRight->GetFilterData();
 	filterChaseRight.categoryBits = ENEMY_CHASE;
 	filterChaseRight.maskBits = PLAYER;
 

@@ -117,7 +117,7 @@ Player::Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, Reso
 	mWalking = new Animation(frames,walking);
 	
 	/* Idle animation */
-	auto &idle = mResource.getTexture("Assets/Characters/Stella idle.png");
+	auto &idle = mResource.getTexture("Assets/Characters/Stella_idle.png");
 	sf::Vector2i idleSize = static_cast<sf::Vector2i>(idle.getSize());
 	SpriteSheet idleSheet(frameSize,idleSize);
 	std::vector<sf::IntRect> idleFrames = idleSheet.getAllFrames();
