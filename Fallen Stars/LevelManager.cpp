@@ -5,6 +5,9 @@
 #include "Object.h"
 #include "Shade.h"
 #include "LightSolver.h"
+#include <iostream>
+#include <SFML/Audio/Music.hpp>
+#include <tmx/MapObject.h>
 
 LevelManager::LevelManager(std::string levelname):
 	mLevel(levelname),
@@ -94,8 +97,7 @@ void LevelManager::getEnemyLayer(ResourceCollection& resource,BoxWorld* world,En
 	{
 		if (i.name.compare("Enemy") == 0)
 		{
-			auto j = i.objects;
-			for (auto k : j)
+			for (auto& k : i.objects)
 			{
 				auto pos = k.GetPosition();
 				entity.push_back(new Shade(resource,world,size,pos));
@@ -118,6 +120,31 @@ void LevelManager::genCollision(BoxWorld* world, LightSolver* solver)
 				solver->addCollisionOccluders(l.objects);
 			}
 			break;
+		}
+	}
+}
+
+void LevelManager::getSoundLayer(MusicVector& musicVec)
+{
+	auto& layers = mapLoader.GetLayers();
+	auto music = new sf::Music;
+	for (auto& l : layers)
+	{
+		if (l.name.compare("Sound") == 0)
+		{
+			for (auto &s : l.objects)
+			{
+				std::cout << s.GetPosition().x << std::endl;
+				std::cout << s.GetPosition().y << std::endl;
+				std::cout << s.GetType() << std::endl;
+				music->openFromFile(s.GetPropertyMap());
+				music->setPosition(s.GetPosition().x, s.GetPosition().y,0);
+				std::cout << "Pos x:" <<  music->getPosition().x << std::endl;
+				std::cout << "Pos y:" << music->getPosition().y << std::endl;
+				music->setAttenuation(10.0f);
+				music->setLoop(false);
+				musicVec.push_back(music);
+			}
 		}
 	}
 }

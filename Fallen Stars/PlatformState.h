@@ -24,14 +24,14 @@ public:
 
 private:
 	std::vector <Entity*> mEntityVector;
+	std::vector <sf::Music*> mMusicVector;
 	Player* mPlayer;
 	BoxWorld* mWorld;
 	Camera* mCamera;
 	LevelManager* mLevel;
 	LightSolver* mLightSolver;
 	std::string mLevelName;
-	sf::Music mFirstSong;
-	sf::Music mSecondSong;
+	sf::Music* mFirstSong;
 };
 
 /* TODO

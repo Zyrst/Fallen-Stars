@@ -26,6 +26,7 @@ void PlatformState::load()
 	mLevel = new LevelManager(mLevelName);
 	mLevel->genCollision(mWorld, mLightSolver);
 	
+
 	auto size = sf::Vector2f(70, 220);
 	
 	/*Adds player and objects to the Level*/
@@ -36,14 +37,20 @@ void PlatformState::load()
 	mLevel->getStarLayer(mResourceCollection,mWorld,mEntityVector);
 	mLevel->getStarDustLayer(mResourceCollection,mWorld,mEntityVector);
 	mLevel->getEnemyLayer(mResourceCollection,mWorld,mEntityVector,size);
+	mLevel->getSoundLayer(mMusicVector);
+	
 
 	for (Entity* e : mEntityVector)
 	{
 		mLightSolver->addOccluder(e);
 	}
-//	mFirstSong.openFromFile("Assets/Sound/" + mLevelName + ".ogg");
+
+	mFirstSong = new sf::Music;
+
+	mFirstSong->openFromFile("Assets/Sound/" + mLevelName + ".ogg");
+	mFirstSong->setLoop(false);
+	mMusicVector.push_back(mFirstSong);
 	
-	//mFirstSong.setLoop(true);
 
 	sf::Vector2u mapSize =  mLevel->getMapLoader().GetMapSize();
 	mCamera = new Camera(mPlayer, mapSize);
@@ -57,13 +64,15 @@ void PlatformState::update(const sf::Time& deltaTime)
 		mEntityVector[i]->update(deltaTime);
 	}
 	killDeadEntities();
-	
-/*	if (mFirstSong.getLoop() == false)
-	{
-		mFirstSong.play();
-		mFirstSong.setLoop(true);
-	}*/
 
+	for(unsigned int i = 0; i < mMusicVector.size(); i++)
+	{
+		if(mMusicVector[i]->getLoop() == false)
+		{
+			mMusicVector[i]->play();
+			mMusicVector[i]->setLoop(true);
+		}
+	}
 }
 void PlatformState::render(sf::RenderWindow& window)
 {
@@ -77,7 +86,7 @@ void PlatformState::render(sf::RenderWindow& window)
 		mEntityVector[i]->render(window);
 	}
 
-	//mLevel->getMapLoader().Draw(window, tmx::MapLayer::Foreground);
+	mLevel->getMapLoader().Draw(window, tmx::MapLayer::Foreground);
 
 	/*Remove this to remove the outdrawn collision boxes and other box2d stuff*/
 	mWorld->drawDebug(window);
@@ -98,7 +107,6 @@ void PlatformState::killDeadEntities()
 			mLightSolver->removeOccluder(*i);
 			delete *i;
 			i = mEntityVector.erase(i);
-			std::cout << "Erased entity" << std::endl;
 		}
 		else 
 			i++;
@@ -111,5 +119,17 @@ void PlatformState::clear()
 	for (auto it = mEntityVector.begin(); it != mEntityVector.end();)
 	{
 		it = mEntityVector.erase(it);
+	}
+
+	for(unsigned int i = 0; i < mMusicVector.size(); i++)
+	{
+		//Stop the music before we erase it from the vector
+		mMusicVector[i]->stop();
+		mMusicVector[i]->setLoop(false);
+	}
+
+	for (auto it = mMusicVector.begin(); it != mMusicVector.end();)
+	{
+		it = mMusicVector.erase(it);
 	}
 }
