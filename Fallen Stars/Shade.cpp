@@ -260,10 +260,6 @@ void Shade::setupSensors(sf::Vector2f position, sf::Vector2f size)
 
 //Ändrar kategorier och maskar till de olika sensorerna
 	b2Filter filterGroundLeft = groundFixLeft->GetFilterData();
-	b2Filter filterGroundRight = groundFixRight->GetFilterData();
-	b2Filter filterChaseLeft = fixLeft->GetFilterData();
-	b2Filter filterChaseRight = fixRight->GetFilterData();
-
 	filterGroundLeft.categoryBits = ENEMY_GROUND;
 	//filterGroundLeft.maskBits = ALL;
 	groundFixLeft->SetFilterData(filterGroundLeft);
@@ -281,11 +277,6 @@ void Shade::setupSensors(sf::Vector2f position, sf::Vector2f size)
 	b2Filter filterChaseRight = fixRight->GetFilterData();
 	filterChaseRight.categoryBits = ENEMY_CHASE;
 	filterChaseRight.maskBits = PLAYER;
-
-
-	groundFixLeft->SetFilterData(filterGroundLeft);
-	groundFixRight->SetFilterData(filterGroundRight);
-	fixLeft->SetFilterData(filterChaseLeft);
 	fixRight->SetFilterData(filterChaseRight);
 
 }
