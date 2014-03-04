@@ -8,7 +8,7 @@
 #include <iostream>
 
 ResourceCollection::ResourceCollection():
-	renderThreadID(new std::thread::id(std::this_thread::get_id()))	
+	renderThreadID(std::this_thread::get_id())	
 {}
 
 ResourceCollection::~ResourceCollection()
@@ -21,9 +21,6 @@ ResourceCollection::~ResourceCollection()
 	mSoundBuffers.clear();
 	mFonts.clear();
 	mShaders.clear();
-
-	delete renderThreadID; 
-	renderThreadID = NULL;
 }
 
 /* Texture loader */
@@ -39,7 +36,7 @@ void ResourceCollection::loadTexture(std::string filename)
 			std::cout << "Texture " << filename << " loaded successfully" << std::endl;
 		}
 
-		if(std::this_thread::get_id() == *renderThreadID)
+		if(std::this_thread::get_id() == renderThreadID)
 		{
 			std::cout << "The texture was loaded in the game loop! This freezes the thread while loading!" << std::endl;
 		}
@@ -66,7 +63,7 @@ void ResourceCollection::loadSound(std::string filename)
 			std::cout << "Sound " << filename << " loaded successfully" << std::endl;
 		}
 
-		if(std::this_thread::get_id() == *renderThreadID)
+		if(std::this_thread::get_id() == renderThreadID)
 		{
 			std::cout << "The sound was loaded in the game loop! This freezes the thread while loading!" << std::endl;
 		}
@@ -93,7 +90,7 @@ void ResourceCollection::loadFont(std::string filename)
 			std::cout << "Font " << filename << " loaded successfully" << std::endl;
 		}
 
-		if(std::this_thread::get_id() == *renderThreadID)
+		if(std::this_thread::get_id() == renderThreadID)
 		{
 			std::cout << "The font was loaded in the game loop! This freezes the thread while loading!" << std::endl;
 		}
@@ -119,7 +116,7 @@ void ResourceCollection::loadShader(std::string filename, sf::Shader::Type type)
 			std::cout << "Shader " << filename << " loaded successfully" << std::endl;
 		}
 
-		if(std::this_thread::get_id() == *renderThreadID)
+		if(std::this_thread::get_id() == renderThreadID)
 		{
 			std::cout << "The shader was loaded in the game loop! This freezes the thread while loading!" << std::endl;
 		}
@@ -137,7 +134,7 @@ void ResourceCollection::loadShader(std::string vertFilename, std::string fragFi
 			std::cout << "Shader " << vertFilename << " + " << fragFilename << " loaded successfully" << std::endl;
 		}
 
-		if(std::this_thread::get_id() == *renderThreadID)
+		if(std::this_thread::get_id() == renderThreadID)
 		{
 			std::cout << "The shader was loaded in the game loop! This freezes the thread while loading!" << std::endl;
 		}

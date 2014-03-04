@@ -40,7 +40,7 @@ class ResourceCollection
 	private:
 		/* Keep the id of the render thread, so a warning can be shown if resource
 		 * loading is locking up the rendering */
-		std::thread::id* renderThreadID; 
+		std::thread::id renderThreadID; 
 		
 		std::map<std::string, sf::Texture*> mTextures;
 		std::map<std::string, sf::SoundBuffer*> mSoundBuffers;

@@ -18,12 +18,12 @@ PuzzleSelectMenu::PuzzleSelectMenu(int id, ResourceCollection& resources, const 
 	
 	for(unsigned int i = 0; i < mPuzzles.size(); i++)
 	{
-		sf::Text text(mPuzzles[i].foldername, font, 30U);
+		sf::Text text(mPuzzles[i].foldername, font, 40U);
 		sf::Vector2f offset = height / 2.0f * (float) i / (float) mPuzzles.size();
-		addButton(Button(i, width / 2.0f + height / 4.0f + offset, buttonTexture, resources, text));
+		addButton(Button((int)i, width / 2.0f + height / 4.0f + offset, buttonTexture, resources, text));
 	}
 	
-	sf::Text back("Back", font, 30U);
+	sf::Text back("Back", font, 40U);
 	addButton(Button(BACK, width / 2.0f + height * 3.0f / 4.0f, buttonTexture, resources, back));
 }
 
@@ -31,7 +31,7 @@ void PuzzleSelectMenu::buttonPressed(int id)
 {
 	if(id == Buttons::BACK)
 	{
-		mState->getOverlay(MainMenuState::PUZZLE_SELECT).setEnabledState(false);
+		setEnabledState(false);
 		mState->getOverlay(MainMenuState::MAIN_MENU).setEnabledState(true);
 	}
 
