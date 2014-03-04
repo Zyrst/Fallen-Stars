@@ -12,6 +12,9 @@ namespace
 {
 	const std::string SHADER_DIR = "Assets/Shader/";
 
+	const int INCLUSION_FILTER = 0xFF;
+	const int EXCLUSION_FILTER = 0xFF00;
+
 	sf::Shader* createShader(const std::string& vertex, const std::string& fragment)
 	{
 		sf::Shader* sh = new sf::Shader();
@@ -23,6 +26,14 @@ namespace
 
 		return sh;
 	}
+
+	bool checkFilter(const LightSource* light, const Occluder* occluder)
+	{
+		int lg = light->getFilterGroup();
+		int og = occluder->getFilterGroup();
+		int result = (lg & og);
+		return ((result & INCLUSION_FILTER) != 0) && ((result & EXCLUSION_FILTER) == 0);
+	}
 }
 
 LightSolver::LightSolver()
@@ -31,7 +42,6 @@ LightSolver::LightSolver()
 , renderShader()
 , debugShader()
 , colorShader()
-, multiplyShader()
 , lightShaderPair(createShader("default.vert", "shadowMap.frag"), createShader("default.vert", "shadowRender.frag"))
 , fullScreenBuffer()
 , colorBuffer()
@@ -41,7 +51,6 @@ LightSolver::LightSolver()
 	renderShader.loadFromFile(SHADER_DIR + "default.vert", SHADER_DIR + "darkenPass.frag");
 	debugShader.loadFromFile(SHADER_DIR + "default.vert", SHADER_DIR + "occluder.frag");
 	colorShader.loadFromFile(SHADER_DIR + "default.vert", SHADER_DIR + "lightColor.frag");
-	multiplyShader.loadFromFile(SHADER_DIR + "default.vert", SHADER_DIR + "multiplyTexture.frag");
 	fullScreenBuffer.create(baseWidth, baseHeight);
 	colorBuffer.create(baseWidth, baseHeight);
 }
@@ -162,7 +171,6 @@ void LightSolver::render(sf::RenderTarget& target)
 	sprite.setPosition(pos);
 	target.draw(sprite, sf::BlendMultiply);
 
-	//multiplyShader.setParameter("background", getResult());
 	sprite.setTexture(colorBuffer.getTexture());
 	target.draw(sprite, sf::BlendAdd);
 }
@@ -197,7 +205,7 @@ void LightSolver::pass1()
 		//Draw occluders
 		for (const Occluder* occluder : occluders)
 		{
-			if ((light->getFilterGroup() & occluder->getFilterGroup()) != 0)
+			if (checkFilter(light, occluder))
 			{
 				tx->draw(*occluder);
 			}
