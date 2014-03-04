@@ -23,14 +23,16 @@ class Game
 
 		void run();
 		void resize(int width, int height);
+		void toggleFullscreen();
 		void loadNewState(State* state); // Forwards to setState(), but first wraps the state in a LoadingState
+		void exit();
 
 		void postRuntimeEvent(RuntimeEvent* ev);
 
 		static Game* instance();
 
 	private:
-		sf::RenderWindow *window;
+		sf::RenderWindow* window;
 		State* currentState;
 
 		std::queue<RuntimeEvent*> runtimeEventQueue;

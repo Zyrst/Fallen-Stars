@@ -18,12 +18,12 @@ PlatformLevelSelectMenu::PlatformLevelSelectMenu(int id, ResourceCollection& res
 	
 	for(unsigned int i = 0; i < mLevels.size(); i++)
 	{
-		sf::Text text(mLevels[i].filename, font, 30U);
+		sf::Text text(mLevels[i].filename, font, 40U);
 		sf::Vector2f offset = height / 2.0f * (float) i / (float) mLevels.size();
 		addButton(Button((int)i, width / 2.0f + height / 4.0f + offset, buttonTexture, resources, text));
 	}
 	
-	sf::Text back("Back", font, 30U);
+	sf::Text back("Back", font, 40U);
 	addButton(Button(BACK, width / 2.0f + height * 3.0f / 4.0f, buttonTexture, resources, back));
 }
 
@@ -31,7 +31,7 @@ void PlatformLevelSelectMenu::buttonPressed(int id)
 {
 	if(id == Buttons::BACK)
 	{
-		mState->getOverlay(MainMenuState::PLATFORM_SELECT).setEnabledState(false);
+		setEnabledState(false);
 		mState->getOverlay(MainMenuState::MAIN_MENU).setEnabledState(true);
 	}
 

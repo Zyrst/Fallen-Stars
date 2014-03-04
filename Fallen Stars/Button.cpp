@@ -3,7 +3,7 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 #include "ResourceCollection.h"
 
-Button::Button(int id, sf::Vector2f position, sf::Texture& texture, ResourceCollection& resources, sf::Text text, sf::IntRect textureRect):
+Button::Button(int id, sf::Vector2f position, sf::Texture& texture, ResourceCollection& resources, sf::Text text, float textOffset, sf::IntRect textureRect):
 	mText(text),
 	mPosition(position),
 	mSprite(texture),
@@ -17,7 +17,7 @@ Button::Button(int id, sf::Vector2f position, sf::Texture& texture, ResourceColl
 	mSprite.setPosition(position - sf::Vector2f(spriteBounds.width, spriteBounds.height) / 2.0f);
 	
 	sf::FloatRect textBounds = mText.getLocalBounds();
-	mText.setPosition(position - sf::Vector2f(textBounds.width, textBounds.height) / 2.0f);
+	mText.setPosition(position - sf::Vector2f(textBounds.width + spriteBounds.width * textOffset, textBounds.height) / 2.0f);
 }
 
 Button::~Button()

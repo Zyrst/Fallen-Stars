@@ -17,12 +17,17 @@
 #include "BaseResolution.h"
 #include "PlatformState.h"
 
-std::vector<sf::VideoMode> modes = sf::VideoMode::getFullscreenModes();
+Game* Game::theGame = NULL;
 
 /* Temporarily stores the next state while waiting for the current state to end */
 static State* nextState;
 
-Game* Game::theGame = NULL;
+std::string title = "Fallen Stars";
+std::vector<sf::VideoMode> modes = sf::VideoMode::getFullscreenModes();
+
+
+bool isFullscreenMode = false;
+sf::Vector2u screenSize;
 
 RuntimeEvent::RuntimeEvent() { }
 RuntimeEvent::~RuntimeEvent() { }
@@ -37,12 +42,12 @@ Game::Game()
 	//sf::VideoMode fullscreen = sf::VideoMode::getFullscreenModes().front();
 	sf::VideoMode size(1280, 720);
 
-	window = new sf::RenderWindow(size, "Fallen Stars", sf::Style::Default);
+	window = new sf::RenderWindow(size, title, sf::Style::Default);
 	
-	sf::Vector2u screenSize = window->getSize();
+	screenSize = window->getSize();
 	resize((int)screenSize.x, (int)screenSize.y);
 	
-	window->setMouseCursorVisible(false);
+	//window->setMouseCursorVisible(false);
 
 	// TODO Set viewport to 1080 to fix rendering scale for other monitor sizes
 
@@ -129,6 +134,26 @@ void Game::resize(int width, int height)
 	sf::View view(sf::FloatRect(baseWidth * cropMargin, 0.0f, baseWidth * widthMultiplier, (float)baseHeight));
 
 	window->setView(view);
+}
+
+void Game::toggleFullscreen()
+{
+	isFullscreenMode = !isFullscreenMode;
+	
+	if(isFullscreenMode)
+	{
+		screenSize = window->getSize();
+		window->create(sf::VideoMode::getFullscreenModes().front(), title, sf::Style::Fullscreen);
+	}
+	else
+	{
+		window->create(sf::VideoMode(screenSize.x, screenSize.y), title, sf::Style::Default);
+	}
+}
+
+void Game::exit()
+{
+	window->close();
 }
 
 void Game::loadNewState(State* state)

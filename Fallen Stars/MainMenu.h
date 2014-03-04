@@ -12,6 +12,6 @@ public:
 	void buttonPressed(int id);
 
 private:
-	enum Buttons {START, PUZZLE, SETTINGS};
+	enum Buttons {START, PUZZLE, FULLSCREEN, EXIT};
 	MainMenuState* mState;
 };
