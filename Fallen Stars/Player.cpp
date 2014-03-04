@@ -105,7 +105,7 @@ Player::Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, Reso
 , maskLeft(flipTexture(maskRight))
 , collisionFixture(body->GetFixtureList())
 {
-
+	flashLight->setColor(sf::Color(255, 255, 0, 150));
 	setState(PLAYER_STATE::NORMAL);
 
 	/* Walking/run animation */

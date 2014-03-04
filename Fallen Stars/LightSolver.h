@@ -52,7 +52,7 @@ private:
 
 	std::vector<LightSource*> lights;
 	sf::Color voidColor;
-	sf::Shader renderShader, debugShader;
+	sf::Shader renderShader, debugShader, colorShader, multiplyShader;
 	LightShaderPair lightShaderPair;
 	sf::RenderTexture fullScreenBuffer, colorBuffer;
 
