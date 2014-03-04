@@ -1,5 +1,6 @@
 #pragma once
 #include <queue>
+#include <mutex>
 
 namespace sf{ class Event; }
 namespace sf{ class RenderWindow; }
@@ -31,7 +32,9 @@ class Game
 	private:
 		sf::RenderWindow *window;
 		State* currentState;
+
 		std::queue<RuntimeEvent*> runtimeEventQueue;
+		std::recursive_mutex runtimeEventQueueMutex;
 
 		void handleEvent(sf::Event&);
 		void handleHeldKeys();

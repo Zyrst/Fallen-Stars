@@ -100,16 +100,19 @@ void Game::run()
 		window->display();
 
 		//Handle runtime events
-		while (!runtimeEventQueue.empty())
 		{
-			RuntimeEvent* ev = runtimeEventQueue.front();
-			runtimeEventQueue.pop();
+			//Lock the mutex to avoid concurrency problems.
+			std::lock_guard<std::recursive_mutex> lock(runtimeEventQueueMutex);
+			while (!runtimeEventQueue.empty())
+			{
+				RuntimeEvent* ev = runtimeEventQueue.front();
+				runtimeEventQueue.pop();
 
-			ev->run();
+				ev->run();
 
-			delete ev;
+				delete ev;
+			}
 		}
-
 		// If we're going to swap state, do that at the end of the frame
 		if(nextState != NULL) swapState();
     }
@@ -168,6 +171,8 @@ void Game::centerView()
 
 void Game::postRuntimeEvent(RuntimeEvent* ev)
 {
+	//Lock the mutex to avoid concurrency problems.
+	std::lock_guard<std::recursive_mutex> lock(runtimeEventQueueMutex);
 	runtimeEventQueue.push(ev);
 }
 
