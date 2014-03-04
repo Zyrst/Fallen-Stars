@@ -16,7 +16,7 @@ class ResourceCollection;
 class Button
 {
 	public:
-		Button(int id, sf::Vector2f position, sf::Texture& texture, ResourceCollection& resources, sf::Text text = sf::Text(), sf::IntRect textureRect = sf::IntRect());
+		Button(int id, sf::Vector2f position, sf::Texture& texture, ResourceCollection& resources, sf::Text text = sf::Text(), float textOffset = 0.0f, sf::IntRect textureRect = sf::IntRect());
 		~Button();
 		void render(sf::RenderTarget& renderSurface);
 		void setHighlighted(bool state);
