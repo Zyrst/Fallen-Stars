@@ -76,11 +76,15 @@ private:
 	LedgeSensor* ledgeSensorRight;
 	AttackSensor* attackSensorLeft;
 	AttackSensor* attackSensorRight;
+	AttackSensor* attackSensorRight;
+	AttackSensor* attackSensorLeft;
 	EntityCategory entityCategory;
 	ResourceCollection& mResource;
 	Animation* mIdle;
 	Animation* mWalking;
 	Animation* mSpawn;
+	Animation* mAttack;
 	Mode currentMode;
+	float chasingMultiplier;
 };
 

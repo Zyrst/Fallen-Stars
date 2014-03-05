@@ -161,6 +161,7 @@ Player::Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, Reso
 	/* Set filter for collisions */
 	b2Filter filter = (body->GetFixtureList())->GetFilterData();
 	filter.categoryBits = PLAYER;
+	filter.maskBits = ENEMY_CHASE, ENEMY_ATTACK;
 	//filter.groupIndex = ALL, ENEMY_CHASE;
 	body->GetFixtureList()->SetFilterData(filter);
 }
