@@ -194,30 +194,33 @@ void LightSolver::pass1()
 	//Clear the lights and draw occluders into them.
 	for (LightSource* light : lights)
 	{
-		light->clear();
-		sf::RenderTexture* tx = light->getOccluder();
-
-		//Set up the view of the light.
-		sf::View view = tx->getView();
-		view.setCenter(light->getPosition());
-		tx->setView(view);
-
-		//Draw occluders
-		for (const Occluder* occluder : occluders)
+		if (light->isEnabled())
 		{
-			if (checkFilter(light, occluder))
+			light->clear();
+			sf::RenderTexture* tx = light->getOccluder();
+
+			//Set up the view of the light.
+			sf::View view = tx->getView();
+			view.setCenter(light->getPosition());
+			tx->setView(view);
+
+			//Draw occluders
+			for (const Occluder* occluder : occluders)
 			{
-				tx->draw(*occluder);
+				if (checkFilter(light, occluder))
+				{
+					tx->draw(*occluder);
+				}
 			}
+
+			//Calculate shadows
+			light->calculateShadow();
+
+			//Draw the light into the color buffer.
+			drawToColorFBO(light);
+
+			fullScreenBuffer.draw(*light, sf::BlendMode::BlendAdd);
 		}
-
-		//Calculate shadows
-		light->calculateShadow();
-
-		//Draw the light into the color buffer.
-		drawToColorFBO(light);
-
-		fullScreenBuffer.draw(*light, sf::BlendMode::BlendAdd);
 	}
 
 	//Once all lights are rendered, update the respective fbo-textures.

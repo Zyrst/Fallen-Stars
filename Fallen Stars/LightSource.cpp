@@ -37,7 +37,8 @@ namespace
 }
 
 LightSource::LightSource(LightShaderPair* shaders, int width, int height, int filter)
-: mapShader(shaders->mapShader)
+: enabled(true)
+, mapShader(shaders->mapShader)
 , renderShader(shaders->renderShader)
 , occluderFBO(createFBO(width, height))
 , shadowMapFBO(createFBO(width, 1))
@@ -83,6 +84,11 @@ int LightSource::getFilterGroup() const
 	return filterGroup;
 }
 
+bool LightSource::isEnabled() const
+{
+	return enabled;
+}
+
 void LightSource::setPosition(const sf::Vector2f& pos)
 {
 	this->position = pos;
@@ -107,6 +113,11 @@ void LightSource::setMask(sf::Texture* mask, bool ownsMask)
 void LightSource::setFilterGroup(int filter)
 {
 	filterGroup = filter;
+}
+
+void LightSource::setEnabled(bool enabled)
+{
+	this->enabled = enabled;
 }
 
 void LightSource::clear()
