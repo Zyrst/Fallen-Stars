@@ -31,7 +31,7 @@ public:
 	b2World* getWorld();
 
 	//Generates a body for movable objects (entities)
-	b2Body* createEntityBody(const sf::Vector2f& position, const sf::Vector2f& size);
+	b2Body* createEntityBody(const sf::Vector2f& position, const sf::Vector2f& size, bool createCollisionBody = true);
 
 	//Creates a static body (map collision)
 	void createStaticBody(const std::vector<tmx::MapObject>& objects);

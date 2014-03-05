@@ -145,7 +145,7 @@ void BoxWorld::drawDebug(sf::RenderWindow& wnd)
 	world->DrawDebugData();
 }
 
-b2Body* BoxWorld::createEntityBody(const sf::Vector2f& position, const sf::Vector2f& size)
+b2Body* BoxWorld::createEntityBody(const sf::Vector2f& position, const sf::Vector2f& size, bool createCollisionBody)
 {
 	//Define and convert the position and size vectors.
 	b2Vec2 bpos = Convert::sfmlToB2(position);
@@ -159,16 +159,18 @@ b2Body* BoxWorld::createEntityBody(const sf::Vector2f& position, const sf::Vecto
 
 	b2Body* body = world->CreateBody(&bodyDef);
 
-	//TODO: SET CENTER OF COLLISION BOX.
-	b2PolygonShape shape;
-	b2Vec2 points[4];
+	if (createCollisionBody)
+	{
+		//TODO: SET CENTER OF COLLISION BOX.
+		b2PolygonShape shape;
+		b2Vec2 points[4];
 
-	//Generate the points of the shape.
-	genPoints(points, bsize);
-	shape.Set(points, 4);
+		//Generate the points of the shape.
+		genPoints(points, bsize);
+		shape.Set(points, 4);
 
-	body->CreateFixture(&shape, 1.0f);
-
+		body->CreateFixture(&shape, 1.0f);
+	}
 	return body;
 }
 

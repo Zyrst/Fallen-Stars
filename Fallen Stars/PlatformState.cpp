@@ -37,6 +37,7 @@ void PlatformState::load()
 	mLevel->getStarLayer(mResourceCollection,mWorld,mEntityVector);
 	mLevel->getStarDustLayer(mResourceCollection,mWorld,mEntityVector);
 	mLevel->getEnemyLayer(mResourceCollection,mWorld,mEntityVector,size);
+	mLevel->getStreetlightLayer(mResourceCollection, mWorld, mLightSolver, mEntityVector);
 	mLevel->getSoundLayer(mMusicVector);
 	
 
@@ -89,7 +90,7 @@ void PlatformState::render(sf::RenderWindow& window)
 	mLevel->getMapLoader().Draw(window, tmx::MapLayer::Foreground);
 
 	/*Remove this to remove the outdrawn collision boxes and other box2d stuff*/
-	mWorld->drawDebug(window);
+	//mWorld->drawDebug(window);
 }
 
 void PlatformState::handleAction(Controls::Action action, Controls::KeyState keystate)

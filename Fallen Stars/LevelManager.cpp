@@ -8,6 +8,7 @@
 #include <iostream>
 #include <SFML/Audio/Music.hpp>
 #include <tmx/MapObject.h>
+#include "StreetLight.h"
 
 LevelManager::LevelManager(std::string levelname):
 	mLevel(levelname),
@@ -120,6 +121,38 @@ void LevelManager::genCollision(BoxWorld* world, LightSolver* solver)
 				solver->addCollisionOccluders(l.objects);
 			}
 			break;
+		}
+	}
+}
+
+void LevelManager::getStreetlightLayer(ResourceCollection& resource, BoxWorld* world, LightSolver* solver, EntityVector& entity)
+{
+	auto& layers = mapLoader.GetLayers();
+	for (tmx::MapLayer& l : layers)
+	{
+		if (l.name.compare("StreetLight") == 0)
+		{
+			std::cout << "====\n";
+			sf::Vector2f position(0.0f, 0.0f);
+			
+			int scale = std::atoi(l.properties["scale"].c_str());
+			sf::Vector2f size(scale, scale);
+
+			auto& objects = l.objects;
+			
+			for (tmx::MapObject& o : objects)
+			{
+				if (o.GetName().compare("bounds") == 0)
+				{
+					sf::FloatRect aabb = o.GetAABB();
+					position = sf::Vector2f(aabb.left, aabb.top);
+				}
+			}
+
+			StreetLight* light = new StreetLight(world, solver, position, size, &resource.getTexture("Assets/Shader/streetlightmask.png"));
+			entity.push_back(light);
+
+			std::cout << "====\n";
 		}
 	}
 }

@@ -24,6 +24,7 @@ public:
 	sf::Vector2f getPlayerLayer();
 	void getStarLayer(ResourceCollection& resource,BoxWorld* world,EntityVector& entity);
 	void getStarDustLayer(ResourceCollection& resource,BoxWorld* world,EntityVector& entity);
+	void getStreetlightLayer(ResourceCollection& resource, BoxWorld* world, LightSolver* solver, EntityVector& entity);
 	void getEnemyLayer(ResourceCollection& resource,BoxWorld* world,EntityVector& entity,sf::Vector2f size);
 	void genCollision(BoxWorld* world, LightSolver* solver = nullptr);
 	void getSoundLayer(MusicVector& music);
