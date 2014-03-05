@@ -37,7 +37,7 @@ void PlatformState::load()
 	mLevel->getStarLayer(mResourceCollection,mWorld,mEntityVector);
 	mLevel->getStarDustLayer(mResourceCollection,mWorld,mEntityVector);
 	mLevel->getEnemyLayer(mResourceCollection,mWorld,mEntityVector,size);
-	mLevel->getSoundLayer(mMusicVector);
+	mLevel->getSoundLayer(mMusicVector, mResourceCollection);
 	
 
 	for (Entity* e : mEntityVector)
@@ -45,12 +45,13 @@ void PlatformState::load()
 		mLightSolver->addOccluder(e);
 	}
 
+	/*Level 'theme' music*/
 	mFirstSong = new sf::Music;
-
 	mFirstSong->openFromFile("Assets/Sound/" + mLevelName + ".ogg");
 	mFirstSong->setLoop(false);
-	mMusicVector.push_back(mFirstSong);
+	mFirstSong->setVolume(100);
 	
+	mListener.setPosition(mPlayer->getPosition().x,mPlayer->getPosition().y,0);
 
 	sf::Vector2u mapSize =  mLevel->getMapLoader().GetMapSize();
 	mCamera = new Camera(mPlayer, mapSize);
@@ -65,12 +66,47 @@ void PlatformState::update(const sf::Time& deltaTime)
 	}
 	killDeadEntities();
 
+	//Background sounds/music
 	for(unsigned int i = 0; i < mMusicVector.size(); i++)
 	{
 		if(mMusicVector[i]->getLoop() == false)
 		{
 			mMusicVector[i]->play();
 			mMusicVector[i]->setLoop(true);
+		}
+	}
+	
+	if(mFirstSong->getLoop() == false)
+	{
+		mFirstSong->play();
+		mFirstSong->setLoop(true);
+	}
+
+	mListener.setPosition(mPlayer->getPosition().x,mPlayer->getPosition().y,0);
+
+	for (auto i = 0; i < mMusicVector.size(); i++)
+	{
+
+		auto x= (mMusicVector[i]->getPosition().x - mListener.getPosition().x) * (mMusicVector[i]->getPosition().x - mListener.getPosition().x);
+		auto y = (mMusicVector[i]->getPosition().y - mListener.getPosition().y) * (mMusicVector[i]->getPosition().y - mListener.getPosition().y);
+		auto distance = std::sqrtf(x + y);
+		std::cout << distance << std::endl;
+
+		if (distance > 1000 )
+		{
+			mMusicVector[i]->setVolume(0);
+		}
+		if (distance <= 200)
+		{
+			mMusicVector[i]->setVolume(20);
+		}
+		if (distance >200 && distance <= 500 )
+		{
+			mMusicVector[i]->setVolume(15);
+		}
+		if (distance > 501 && distance <=1000)
+		{
+			mMusicVector[i]->setVolume(5);
 		}
 	}
 }

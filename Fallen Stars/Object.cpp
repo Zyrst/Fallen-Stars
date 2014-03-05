@@ -64,9 +64,9 @@ Object::Object(BoxWorld* world, sf::Vector2f& position, ResourceCollection& reso
 	if(mType == TYPE::STAR)
 	{
 		/*Star animation*/
-		auto &star = mResource.getTexture("Assets/Characters/Star Anime.png");
+		auto &star = mResource.getTexture("Assets/Characters/Star anime.png");
 		sf::Vector2i starSize = static_cast<sf::Vector2i>(star.getSize());
-		sf::Vector2i frameSize(256,256); /* Alter to right size */
+		sf::Vector2i frameSize(85,85); /* Alter to right size */
 
 		SpriteSheet starSheet(frameSize, starSize);
 		std::vector<sf::IntRect> starFrames = starSheet.getAllFrames();

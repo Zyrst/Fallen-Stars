@@ -26,10 +26,9 @@ public:
 	void getStarDustLayer(ResourceCollection& resource,BoxWorld* world,EntityVector& entity);
 	void getEnemyLayer(ResourceCollection& resource,BoxWorld* world,EntityVector& entity,sf::Vector2f size);
 	void genCollision(BoxWorld* world, LightSolver* solver = nullptr);
-	void getSoundLayer(MusicVector& music);
+	void getSoundLayer(MusicVector& music,ResourceCollection& resource);
 
 private:
 	std::string mLevel;
-	tmx::MapLoader mapLoader;
-	
+	tmx::MapLoader mapLoader;	
 };

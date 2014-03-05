@@ -124,24 +124,22 @@ void LevelManager::genCollision(BoxWorld* world, LightSolver* solver)
 	}
 }
 
-void LevelManager::getSoundLayer(MusicVector& musicVec)
+void LevelManager::getSoundLayer(MusicVector& musicVec,ResourceCollection& resource)
 {
 	auto& layers = mapLoader.GetLayers();
 	auto music = new sf::Music;
+	auto sound = new sf::Sound;
 	for (auto& l : layers)
 	{
 		if (l.name.compare("Sound") == 0)
 		{
 			for (auto &s : l.objects)
 			{
-				std::cout << s.GetPosition().x << std::endl;
-				std::cout << s.GetPosition().y << std::endl;
-				std::cout << s.GetType() << std::endl;
 				music->openFromFile(s.GetPropertyMap());
 				music->setPosition(s.GetPosition().x, s.GetPosition().y,0);
 				std::cout << "Pos x:" <<  music->getPosition().x << std::endl;
 				std::cout << "Pos y:" << music->getPosition().y << std::endl;
-				music->setAttenuation(10.0f);
+				music->setVolume(0);
 				music->setLoop(false);
 				musicVec.push_back(music);
 			}

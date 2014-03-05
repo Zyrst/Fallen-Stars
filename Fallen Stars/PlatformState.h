@@ -7,6 +7,7 @@
 #include "Camera.h"
 #include "LevelManager.h"
 #include <SFML/Audio/Music.hpp>
+#include <SFML/Audio/Listener.hpp>
 
 class LightSolver;
 
@@ -32,6 +33,7 @@ private:
 	LightSolver* mLightSolver;
 	std::string mLevelName;
 	sf::Music* mFirstSong;
+	sf::Listener mListener;
 };
 
 /* TODO
