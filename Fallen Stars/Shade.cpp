@@ -163,6 +163,12 @@ Shade::Shade(ResourceCollection& resource, BoxWorld* world, sf::Vector2f& size, 
 	std::vector<sf::IntRect> attackFrames = attackSheet.getAllFrames();
 	mAttack = new Animation(attackFrames,attack);
 
+	auto &chase = mResource.getTexture("Assets/Characters/Shade_chase.png");
+	sf::Vector2i chaseSize = static_cast<sf::Vector2i>(chase.getSize());
+	SpriteSheet chaseSheet(frameSize,chaseSize);
+	std::vector<sf::IntRect> chaseFrames = chaseSheet.getAllFrames();
+	mChase = new Animation(chaseFrames, chase);
+
 	chasingMultiplier = 3.5f;
 	anime.setAnimation(*mWalking);
 	updateSpriteOrigin();
@@ -192,32 +198,35 @@ void Shade::render(sf::RenderTarget& renderTarget)
 }
 void Shade::update(sf::Time deltaTime)
 {
-	if(attackSensorLeft->isAttacking()||attackSensorRight->isAttacking()){
+	if((attackSensorLeft->isAttacking()&& attackSensorLeft->isActive())||(attackSensorRight->isAttacking() && attackSensorRight->isActive())){
 		setMode(ATTACK);
 	}
+	else if((chaseSensorLeft->isChasing()&&chaseSensorLeft->isActive())||(chaseSensorRight->isChasing()&&chaseSensorRight->isActive())){
+		setMode(CHASING);
+	}
 	else{setMode(PATROL);}
-	if(currentMode == PATROL){
+	if(currentMode == PATROL|| currentMode == CHASING){
 		const b2Vec2& vel = body->GetLinearVelocity();
 		if(getFacing() == LEFT)
 		{
 			if(chaseSensorLeft->isChasing())
 			{
-				body->SetLinearVelocity(b2Vec2(-0.5*chasingMultiplier, vel.y));
+				body->SetLinearVelocity(b2Vec2(-0.5f*chasingMultiplier, vel.y));
 			}
 			else
 			{
-				body->SetLinearVelocity(b2Vec2(-0.5, vel.y));
+				body->SetLinearVelocity(b2Vec2(-0.5f, vel.y));
 			}
 		}
 		else if(getFacing() == RIGHT)
 		{
 			if(chaseSensorRight->isChasing())
 			{
-				body->SetLinearVelocity(b2Vec2(0.5*chasingMultiplier, vel.y));
+				body->SetLinearVelocity(b2Vec2(0.5f*chasingMultiplier, vel.y));
 			}
 			else 
 			{
-				body->SetLinearVelocity(b2Vec2(0.5, vel.y));
+				body->SetLinearVelocity(b2Vec2(0.5f, vel.y));
 			}
 		}
 		if(!ledgeSensorLeft->isGrounded())
@@ -237,6 +246,7 @@ void Shade::update(sf::Time deltaTime)
 	else if(currentMode==SPAWN)
 	{
 	}
+	if(attackSensorRight->isAttacking()){std::cout<<"Lel"<<std::endl;}
 	anime.update(deltaTime);
 	updateAnimation();
 }
@@ -246,6 +256,8 @@ void Shade::setVelocityX(float x)
 }
 void Shade::setFacing(Facing face)
 {
+	if(face == getFacing()) return;
+
 	Entity::setFacing(face);
 	if(face == LEFT)
 	{
@@ -253,6 +265,7 @@ void Shade::setFacing(Facing face)
 		chaseSensorRight->setActive(false);
 		attackSensorLeft->setActive(true);
 		attackSensorRight->setActive(false);
+		std::cout << "LEFT" << std::endl;
 	}
 	else if(face == RIGHT)
 	{ 
@@ -260,6 +273,7 @@ void Shade::setFacing(Facing face)
 		chaseSensorRight->setActive(true);
 		attackSensorLeft->setActive(false);
 		attackSensorRight->setActive(true);
+		std::cout << "RIGHT" << std::endl;
 	}
 }
 void Shade::setupSensors(sf::Vector2f position, sf::Vector2f size)
@@ -347,6 +361,11 @@ void Shade::setupSensors(sf::Vector2f position, sf::Vector2f size)
 	attackSensorRight = new AttackSensor(aFixRight);
 	aFixRight->SetUserData(attackSensorRight);
 
+	chaseSensorLeft->setActive(false);
+	chaseSensorRight->setActive(false);
+	attackSensorLeft->setActive(false);
+	attackSensorRight->setActive(false);
+
 //Ändrar kategorier och maskar till de olika sensorerna
 	b2Filter filterGroundLeft = groundFixLeft->GetFilterData();
 	b2Filter filterGroundRight = groundFixRight->GetFilterData();
@@ -357,24 +376,19 @@ void Shade::setupSensors(sf::Vector2f position, sf::Vector2f size)
 
 	filterGroundLeft.categoryBits = ENEMY_GROUND;
 	//filterGroundLeft.maskBits = ALL;
-	groundFixLeft->SetFilterData(filterGroundLeft);
 
-	b2Filter filterGroundRight = groundFixRight->GetFilterData();
 	filterGroundRight.categoryBits = ENEMY_GROUND;
 	//filterGroundRight.maskBits = ALL;
-	groundFixRight->SetFilterData(filterGroundRight);
 
-	b2Filter filterChaseLeft = fixLeft->GetFilterData();
 	filterChaseLeft.categoryBits = ENEMY_CHASE;
 	filterChaseLeft.maskBits = PLAYER;
-	fixLeft->SetFilterData(filterChaseLeft);
 
-	b2Filter filterChaseRight = fixRight->GetFilterData();
 	filterChaseRight.categoryBits = ENEMY_CHASE;
 	filterChaseRight.maskBits = PLAYER;
 
 	filterAttackLeft.categoryBits = ENEMY_ATTACK;
 	filterAttackLeft.maskBits = PLAYER;
+
 	filterAttackRight.categoryBits = ENEMY_ATTACK;
 	filterAttackRight.maskBits = PLAYER;
 
@@ -392,28 +406,17 @@ void Shade::handleAction(Controls::Action action, Controls::KeyState)
 void Shade::updateAnimation()
 {
 	Animation* currentAnimation = NULL;
-	if(currentMode == PATROL){
-	if(chaseSensorLeft->isActive() || chaseSensorRight->isActive())
+	if(currentMode == PATROL)
 	{
 		currentAnimation = mWalking;
 	}
-
-	if(!chaseSensorLeft->isActive() && !chaseSensorRight->isActive())
+	else if(currentMode == CHASING)
 	{
-		currentAnimation = mIdle;
-	}
+		currentAnimation = mChase;
 	}
 	else if(currentMode == ATTACK)
 	{
-	if(attackSensorLeft->isActive() || attackSensorRight->isActive())
-	{
 		currentAnimation = mAttack;
-	}
-
-	if(!attackSensorLeft->isActive() && !attackSensorRight->isActive())
-	{
-		currentAnimation = mIdle;
-	}
 	}
 	else{currentAnimation = mIdle;}
 	if (currentAnimation != NULL) anime.play(*currentAnimation);
@@ -432,5 +435,5 @@ void Shade::attack()
 {
 	std::cout<<"Watch out!"<<std::endl;
 }
-/* Animationer , gå , springa, attackera , dö */
+/* Animationer , dö */
 #pragma endregion

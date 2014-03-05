@@ -62,7 +62,7 @@ public:
 	void setFacing(Facing Face);
 	void handleAction(Controls::Action action, Controls::KeyState);
 	void updateAnimation();
-	enum Mode{PATROL, SPAWN, ATTACK};
+	enum Mode{PATROL, SPAWN, ATTACK, CHASING, IDLE};
 	void attack();
 	Mode getMode();
 	void setMode(Mode mode);
@@ -76,14 +76,13 @@ private:
 	LedgeSensor* ledgeSensorRight;
 	AttackSensor* attackSensorLeft;
 	AttackSensor* attackSensorRight;
-	AttackSensor* attackSensorRight;
-	AttackSensor* attackSensorLeft;
 	EntityCategory entityCategory;
 	ResourceCollection& mResource;
 	Animation* mIdle;
 	Animation* mWalking;
 	Animation* mSpawn;
 	Animation* mAttack;
+	Animation* mChase;
 	Mode currentMode;
 	float chasingMultiplier;
 };

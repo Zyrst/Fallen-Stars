@@ -84,7 +84,6 @@ Object::Object(BoxWorld* world, sf::Vector2f& position, ResourceCollection& reso
 		auto &starDust = mResource.getTexture("Assets/Characters/StarDustAnimation.png");
 
 		sf::Vector2i starDustSize = static_cast<sf::Vector2i>(starDust.getSize());
-		sf::Vector2i frameSize(85,85); /* Alter to right size */
 		sf::Vector2i frameSize(256,256); /* Alter to right size */
 		SpriteSheet starDustSheet(frameSize, starDustSize);
 		std::vector<sf::IntRect> starDustFrames = starDustSheet.getAllFrames();
