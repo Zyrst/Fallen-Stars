@@ -3,7 +3,6 @@
 #include <Box2D\Box2D.h>
 #include "BoxWorld.h"
 #include "VecConverter.h"
-#include <iostream>
 
 
 StarCallBack::StarCallBack(b2Fixture* owner)
@@ -51,18 +50,20 @@ Object::Object(BoxWorld* world, sf::Vector2f& position, ResourceCollection& reso
 	starCallBack(new StarCallBack(body->GetFixtureList()))
 {
 
-	body->GetFixtureList()->SetSensor(true);
-	body->SetGravityScale(0.0f);
 	mStarDustSound = mResource.getSound("Assets/Sound/PickUp.wav");
 	mStarSound = mResource.getSound("Assets/Sound/StarPickUp.wav");
 
-	b2Filter objectFilter = body->GetFixtureList()->GetFilterData();
-	objectFilter.categoryBits = OBJECT;
-	objectFilter.maskBits = PLAYER;
-	body->GetFixtureList()->SetFilterData(objectFilter);
-
 	if(mType == TYPE::STAR)
 	{
+
+		body->GetFixtureList()->SetSensor(true);
+		body->SetGravityScale(0.0f);
+
+		b2Filter objectFilter = body->GetFixtureList()->GetFilterData();
+		objectFilter.categoryBits = OBJECT;
+		objectFilter.maskBits = PLAYER;
+		body->GetFixtureList()->SetFilterData(objectFilter);
+
 		/*Star animation*/
 		auto &star = mResource.getTexture("Assets/Characters/Star anime.png");
 		sf::Vector2i starSize = static_cast<sf::Vector2i>(star.getSize());
@@ -80,16 +81,40 @@ Object::Object(BoxWorld* world, sf::Vector2f& position, ResourceCollection& reso
 
 	if (mType == TYPE::STARDUST)
 	{
+
+		body->GetFixtureList()->SetSensor(true);
+		body->SetGravityScale(0.0f);
+
+		b2Filter objectFilter = body->GetFixtureList()->GetFilterData();
+		objectFilter.categoryBits = OBJECT;
+		objectFilter.maskBits = PLAYER;
+		body->GetFixtureList()->SetFilterData(objectFilter);
+
 		/*StarDust animation*/
 		auto &starDust = mResource.getTexture("Assets/Characters/StarDustAnimation.png");
 
 		sf::Vector2i starDustSize = static_cast<sf::Vector2i>(starDust.getSize());
-		sf::Vector2i frameSize(256,256); /* Alter to right size */
+		sf::Vector2i frameSize(85,85); /* Alter to right size */
 		SpriteSheet starDustSheet(frameSize, starDustSize);
 		std::vector<sf::IntRect> starDustFrames = starDustSheet.getAllFrames();
 
 		mStarDust = new Animation(starDustFrames, starDust);
 		anime.setAnimation(*mStarDust);
+		updateSpriteOrigin(SpriteOrigin::ORIGIN_CENTER, SpriteOrigin::ORIGIN_CENTER);
+	}
+
+	if(mType == TYPE::WINDOW)
+	{
+		/*Window animation, windowanime.png is placeholdername*/
+		auto &window = mResource.getTexture("Assets/Characters/WindowAnime.png");
+
+		sf::Vector2i windowSize = static_cast<sf::Vector2i>(window.getSize());
+		sf::Vector2i frameSize(400, 207); /*Alter to right size if doesn't work*/
+		SpriteSheet windowSheet (frameSize, windowSize);
+		std::vector<sf::IntRect> windowFrames = windowSheet.getAllFrames();
+
+		mWindow = new Animation(windowFrames, window);
+		anime.setAnimation(*mWindow);
 		updateSpriteOrigin(SpriteOrigin::ORIGIN_CENTER, SpriteOrigin::ORIGIN_CENTER);
 	}
 }
@@ -107,13 +132,11 @@ void Object::update(sf::Time deltaTime)
 	if (isAlive() && starCallBack->isColliding() && getType() == STARDUST)
 	{
 		playSound(STARDUST);
-		std::cout << "Collect stardust wow :D" << std::endl;
 		mAlive = false;
 	}
 	if (isAlive() && starCallBack->isColliding() && getType() == STAR)
 	{
 		playSound(STAR);
-		std::cout<< "Do you even get stars" << std::endl;
 		mAlive = false;
 	}
 }

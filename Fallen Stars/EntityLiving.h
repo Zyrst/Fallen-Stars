@@ -2,7 +2,7 @@
 #include "Entity.h"
 #include <SFML/Graphics/Sprite.hpp>
 /*
- * EntityLiving består utav levande objekt, både vänliga och fientliga
+ * EntityLiving contains living objects, both friendly and hostile
  */
 class EntityLiving : public Entity
 {

@@ -35,7 +35,3 @@ private:
 	sf::Music* mFirstSong;
 	sf::Listener mListener;
 };
-
-/* TODO
- * Hantering av Star och Stardust
-*/

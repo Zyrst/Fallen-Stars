@@ -19,7 +19,6 @@ public:
 	LevelManager(std::string levelname);
 	~LevelManager();
 	void Load();
-	void Render(sf::RenderTarget& rendertarget);
 	tmx::MapLoader& getMapLoader();
 	sf::Vector2f getPlayerLayer();
 	void getStarLayer(ResourceCollection& resource,BoxWorld* world,EntityVector& entity);

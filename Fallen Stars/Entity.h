@@ -11,7 +11,7 @@
 class b2Body;
 class BoxWorld;
 /*
- * Entity är en basklass för alla levande och icke grid-baserade objekt
+ * Entity is a baseclass for all living and non grid-based objecets
  */
 class Entity : public Occluder
 {

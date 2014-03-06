@@ -111,35 +111,14 @@
     <ClCompile Include="ControlMapping.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Libraries\SFML TmxLoader\src\MapLoaderPrivate.cpp">
-      <Filter>Source Files\Libraries\Tmx</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\SFML TmxLoader\src\MapLoaderPublic.cpp">
-      <Filter>Source Files\Libraries\Tmx</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\SFML TmxLoader\src\DebugShape.cpp">
-      <Filter>Source Files\Libraries\Tmx</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\SFML TmxLoader\src\MapObject.cpp">
-      <Filter>Source Files\Libraries\Tmx</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\SFML TmxLoader\src\QuadTreeNode.cpp">
-      <Filter>Source Files\Libraries\Tmx</Filter>
-    </ClCompile>
     <ClCompile Include="Libraries\SFML TmxLoader\src\pugixml\pugixml.cpp">
       <Filter>Source Files\Libraries\Pugi</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\SFML TmxLoader\src\MapLayer.cpp">
-      <Filter>Source Files\Libraries\Tmx</Filter>
     </ClCompile>
     <ClCompile Include="LevelManager.cpp">
       <Filter>Source Files\Managers</Filter>
     </ClCompile>
     <ClCompile Include="Entity.cpp">
       <Filter>Source Files\Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\SFML TmxLoader\src\tmx2box2d.cpp">
-      <Filter>Source Files\Libraries\Tmx</Filter>
     </ClCompile>
     <ClCompile Include="PlatformState.cpp">
       <Filter>Source Files\State</Filter>
@@ -167,9 +146,6 @@
     </ClCompile>
     <ClCompile Include="CallBack.cpp">
       <Filter>Source Files\Box2D</Filter>
-    </ClCompile>
-    <ClCompile Include="JumpingTest.cpp">
-      <Filter>Source Files\State</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files</Filter>
@@ -216,9 +192,6 @@
     <ClCompile Include="DialogueOverlay.cpp">
       <Filter>Source Files\Overlay</Filter>
     </ClCompile>
-    <ClCompile Include="ShaderTestState.cpp">
-      <Filter>Source Files\State</Filter>
-    </ClCompile>
     <ClCompile Include="Occluder.cpp">
       <Filter>Source Files\Light</Filter>
     </ClCompile>
@@ -243,6 +216,27 @@
     <ClCompile Include="Controls.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Libraries\SFML TmxLoader\src\DebugShape.cpp">
+      <Filter>Source Files\Libraries\Tmx</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\SFML TmxLoader\src\MapLayer.cpp">
+      <Filter>Source Files\Libraries\Tmx</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\SFML TmxLoader\src\MapLoaderPrivate.cpp">
+      <Filter>Source Files\Libraries\Tmx</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\SFML TmxLoader\src\MapLoaderPublic.cpp">
+      <Filter>Source Files\Libraries\Tmx</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\SFML TmxLoader\src\MapObject.cpp">
+      <Filter>Source Files\Libraries\Tmx</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\SFML TmxLoader\src\QuadTreeNode.cpp">
+      <Filter>Source Files\Libraries\Tmx</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\SFML TmxLoader\src\tmx2box2d.cpp">
+      <Filter>Source Files\Libraries\Tmx</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -259,18 +253,6 @@
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>Header Files\Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\SFML TmxLoader\include\tmx\MapLoader.h">
-      <Filter>Header Files\Libraries\Tmx</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\SFML TmxLoader\include\tmx\MapLayer.h">
-      <Filter>Header Files\Libraries\Tmx</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\SFML TmxLoader\include\tmx\MapObject.h">
-      <Filter>Header Files\Libraries\Tmx</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\SFML TmxLoader\include\tmx\QuadTreeNode.h">
-      <Filter>Header Files\Libraries\Tmx</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\SFML TmxLoader\include\pugixml\pugiconfig.hpp">
       <Filter>Header Files\Libraries\Pugi</Filter>
@@ -305,9 +287,6 @@
     <ClInclude Include="Libraries\SFML TmxLoader\include\Helpers.h">
       <Filter>Header Files\Libraries</Filter>
     </ClInclude>
-    <ClInclude Include="Libraries\SFML TmxLoader\include\tmx\tmx2box2d.h">
-      <Filter>Header Files\Libraries\Tmx</Filter>
-    </ClInclude>
     <ClInclude Include="PlatformState.h">
       <Filter>Header Files\State</Filter>
     </ClInclude>
@@ -334,9 +313,6 @@
     </ClInclude>
     <ClInclude Include="CallBack.h">
       <Filter>Header Files\Box2D</Filter>
-    </ClInclude>
-    <ClInclude Include="JumpingTest.h">
-      <Filter>Header Files\State</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Header Files</Filter>
@@ -383,9 +359,6 @@
     <ClInclude Include="DialogueOverlay.h">
       <Filter>Header Files\Overlay</Filter>
     </ClInclude>
-    <ClInclude Include="ShaderTestState.h">
-      <Filter>Header Files\State</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
     </ClInclude>
     <ClInclude Include="Occluder.h">
@@ -410,6 +383,21 @@
     </ClInclude>
     <ClInclude Include="PuzzleSelectMenu.h">
       <Filter>Header Files\Overlay\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\SFML TmxLoader\include\tmx\MapLayer.h">
+      <Filter>Header Files\Libraries\Tmx</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\SFML TmxLoader\include\tmx\MapLoader.h">
+      <Filter>Header Files\Libraries\Tmx</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\SFML TmxLoader\include\tmx\MapObject.h">
+      <Filter>Header Files\Libraries\Tmx</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\SFML TmxLoader\include\tmx\QuadTreeNode.h">
+      <Filter>Header Files\Libraries\Tmx</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\SFML TmxLoader\include\tmx\tmx2box2d.h">
+      <Filter>Header Files\Libraries\Tmx</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

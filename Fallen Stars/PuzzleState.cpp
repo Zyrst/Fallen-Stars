@@ -4,7 +4,6 @@
 #include <random>
 #include <chrono>
 
-#include "PuzzleRing.h"
 #include "BaseResolution.h"
 #include "MainMenuState.h"
 #include "Game.h"

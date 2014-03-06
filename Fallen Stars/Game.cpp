@@ -12,7 +12,6 @@
 #include "ControlMapping.h"
 #include "LoadingState.h"
 #include "LogoState.h"
-#include "JumpingTest.h"
 
 #include "BaseResolution.h"
 #include "PlatformState.h"

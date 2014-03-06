@@ -3,7 +3,6 @@
 #include "Button.h"
 #include "BaseResolution.h"
 #include "Game.h"
-#include "JumpingTest.h"
 #include "PuzzleState.h"
 #include "MainMenuState.h"
 #include "PlatformState.h"

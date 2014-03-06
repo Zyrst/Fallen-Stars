@@ -84,15 +84,17 @@ void PlatformState::update(const sf::Time& deltaTime)
 
 	mListener.setPosition(mPlayer->getPosition().x,mPlayer->getPosition().y,0);
 
+	//Positional sound and music
 	for (auto i = 0; i < mMusicVector.size(); i++)
 	{
 
 		auto x= (mMusicVector[i]->getPosition().x - mListener.getPosition().x) * (mMusicVector[i]->getPosition().x - mListener.getPosition().x);
 		auto y = (mMusicVector[i]->getPosition().y - mListener.getPosition().y) * (mMusicVector[i]->getPosition().y - mListener.getPosition().y);
 		auto distance = std::sqrtf(x + y);
-		std::cout << distance << std::endl;
 
-		if (distance > 1000 )
+	/*	auto volume = 1500 / (distance+100);
+		mMusicVector[i]->setVolume(volume);*/
+		if (distance > 1000)
 		{
 			mMusicVector[i]->setVolume(0);
 		}
@@ -156,6 +158,11 @@ void PlatformState::clear()
 	{
 		it = mEntityVector.erase(it);
 	}
+
+	//Stop and then erase the level music
+	mFirstSong->stop();
+	mFirstSong->setLoop(false);
+	delete mFirstSong;
 
 	for(unsigned int i = 0; i < mMusicVector.size(); i++)
 	{

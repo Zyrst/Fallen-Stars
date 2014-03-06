@@ -1,5 +1,4 @@
 #include "Player.h"
-#include <iostream>
 #include <Box2D\Box2D.h>
 #include <SFML\Graphics.hpp>
 #include "CallBack.h"
@@ -9,7 +8,6 @@
 #include "SpriteSheet.h"
 #include "ResourceCollection.h"
 #include "LightSolver.h"
-#include <iostream>
 
 static const float SPEED = 3;
 static sf::Texture* flipTexture(const sf::Texture* source)
@@ -155,6 +153,7 @@ Player::Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, Reso
 
 	mJumpSound = mResource.getSound("Assets/Sound/Jump.wav");
 	mWalkSound = mResource.getSound("Assets/Sound/Stella_Run_Loop_1.wav");
+	mWalkSound.setVolume(75);
 
 	setupSensors(position, size);
 	body->SetLinearDamping(1.0f);
@@ -369,48 +368,6 @@ void Player::render(sf::RenderTarget& renderTarget)
 {
 	anime.setRotation(body->GetAngle() * 180 / 3.14159265f);
 	Entity::render(renderTarget);
-
-	/*sf::FloatRect rect = anime.getGlobalBounds();
-
-	sf::RectangleShape sh = sf::RectangleShape(sf::Vector2f(rect.width, rect.height));
-	sh.setPosition(rect.left, rect.top);
-	sh.setFillColor(sf::Color::Transparent);
-	sh.setOutlineColor(sf::Color::Red);
-	sh.setOutlineThickness(1.0f);
-
-	renderTarget.draw(sh);
-
-	//Ugly debug code incoming to check for grabbed fixtures.
-	if (leftGrabCallBack->isColliding())
-	{
-		const sf::FloatRect& bounds = leftGrabCallBack->getGrabbedFixtureBounds();
-		sh.setSize(sf::Vector2f(bounds.width, bounds.height));
-		sh.setPosition(bounds.left, bounds.top);
-		sh.setFillColor(sf::Color(0, 0, 200, 200));
-
-		renderTarget.draw(sh);
-
-		sh.setFillColor(sf::Color(255, 0, 0, 255));
-		sh.setSize(sf::Vector2f(10, 10));
-		sh.setPosition(bounds.left + bounds.width - sh.getSize().x, bounds.top);
-
-		renderTarget.draw(sh);
-	}
-
-	if (rightGrabCallBack->isColliding())
-	{
-		const sf::FloatRect& bounds = rightGrabCallBack->getGrabbedFixtureBounds();
-		sh.setSize(sf::Vector2f(bounds.width, bounds.height));
-		sh.setPosition(bounds.left, bounds.top);
-		sh.setFillColor(sf::Color(0, 0, 200, 200));
-
-		renderTarget.draw(sh);
-
-		sh.setFillColor(sf::Color(255, 0, 0, 255));
-		sh.setSize(sf::Vector2f(10, 10));
-
-		renderTarget.draw(sh);
-	}*/
 }
 
 void Player::jump()
@@ -488,12 +445,6 @@ void Player::updateAnimation()
 	if(leftButton && rightButton || !leftButton && !rightButton)
 	{
 		currentAnimation = mIdle;
-		if(groundCallBack->isColliding())
-		{
-		/*This is to make so the Stella doesn't move while both buttons are down*/
-		/*But we can't jump while standing still so not working as intended*/
-		//body->SetLinearVelocity(b2Vec2(0, velocity.y));
-		}
 	}
 	/*Jump*/
 	if(!groundCallBack->isColliding())

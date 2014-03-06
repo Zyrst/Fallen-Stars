@@ -104,7 +104,6 @@
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityLiving.cpp" />
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="JumpingTest.cpp" />
     <ClCompile Include="LevelManager.cpp" />
     <ClCompile Include="LevelTracker.cpp" />
     <ClCompile Include="Libraries\SFML TmxLoader\src\DebugShape.cpp" />
@@ -133,7 +132,6 @@
     <ClCompile Include="PuzzleState.cpp" />
     <ClCompile Include="ResourceCollection.cpp" />
     <ClCompile Include="Shade.cpp" />
-    <ClCompile Include="ShaderTestState.cpp" />
     <ClCompile Include="LightSource.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="SpriteSheet.cpp" />
@@ -153,8 +151,11 @@
     <ClInclude Include="DialogueOverlay.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityLiving.h" />
-    <ClInclude Include="JumpingTest.h" />
     <ClInclude Include="LevelTracker.h" />
+    <ClInclude Include="Libraries\SFML TmxLoader\include\tmx\MapLayer.h" />
+    <ClInclude Include="Libraries\SFML TmxLoader\include\tmx\MapLoader.h" />
+    <ClInclude Include="Libraries\SFML TmxLoader\include\tmx\MapObject.h" />
+    <ClInclude Include="Libraries\SFML TmxLoader\include\tmx\QuadTreeNode.h" />
     <ClInclude Include="Libraries\SFML TmxLoader\include\tmx\tmx2box2d.h" />
     <ClInclude Include="LightSolver.h" />
     <ClInclude Include="LoadingState.h" />
@@ -168,10 +169,6 @@
     <ClInclude Include="Libraries\SFML TmxLoader\include\Helpers.h" />
     <ClInclude Include="Libraries\SFML TmxLoader\include\pugixml\pugiconfig.hpp" />
     <ClInclude Include="Libraries\SFML TmxLoader\include\pugixml\pugixml.hpp" />
-    <ClInclude Include="Libraries\SFML TmxLoader\include\tmx\MapLayer.h" />
-    <ClInclude Include="Libraries\SFML TmxLoader\include\tmx\MapLoader.h" />
-    <ClInclude Include="Libraries\SFML TmxLoader\include\tmx\MapObject.h" />
-    <ClInclude Include="Libraries\SFML TmxLoader\include\tmx\QuadTreeNode.h" />
     <ClInclude Include="Libraries\SFML TmxLoader\lib\zlib\include\zconf.h" />
     <ClInclude Include="Libraries\SFML TmxLoader\lib\zlib\include\zlib.h" />
     <ClInclude Include="Object.h" />
@@ -189,7 +186,6 @@
     <ClInclude Include="PuzzleState.h" />
     <ClInclude Include="ResourceCollection.h" />
     <ClInclude Include="Shade.h" />
-    <ClInclude Include="ShaderTestState.h" />
     <ClInclude Include="LightSource.h" />
     <ClInclude Include="SpriteSheet.h" />
     <ClInclude Include="State.h" />

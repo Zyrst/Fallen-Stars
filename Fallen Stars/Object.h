@@ -24,7 +24,7 @@ private:
 class Object: public Entity
 {
 	public:
-		enum TYPE {STAR, STARDUST};
+		enum TYPE {STAR, STARDUST,WINDOW};
 		Object(BoxWorld* world,sf::Vector2f& position, ResourceCollection& resource,TYPE type);
 		~Object();
 		void update(sf::Time deltaTime) override;
@@ -36,8 +36,7 @@ class Object: public Entity
 private:
 	TYPE mType;
 	ResourceCollection& mResource;
-	Animation* mStar;
-	Animation* mStarDust;
+	Animation* mStar, *mStarDust, *mWindow;
 	StarCallBack* starCallBack;
 	sf::Sound mStarDustSound;
 	sf::Sound mStarSound;
