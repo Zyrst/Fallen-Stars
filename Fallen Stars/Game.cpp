@@ -143,11 +143,14 @@ void Game::toggleFullscreen()
 	if(isFullscreenMode)
 	{
 		screenSize = window->getSize();
-		window->create(sf::VideoMode::getFullscreenModes().front(), title, sf::Style::Fullscreen);
+		sf::VideoMode fullscreenSize = sf::VideoMode::getFullscreenModes().front();
+		window->create(fullscreenSize, title, sf::Style::Fullscreen);
+		resize(fullscreenSize.width, fullscreenSize.height);
 	}
 	else
 	{
 		window->create(sf::VideoMode(screenSize.x, screenSize.y), title, sf::Style::Default);
+		resize((int)screenSize.x, (int)screenSize.y);
 	}
 }
 
