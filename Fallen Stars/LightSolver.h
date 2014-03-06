@@ -25,7 +25,7 @@ public:
 	~LightSolver();
 
 	//Creators
-	LightSource* createLight(int width, int height, int filterGroup = 255);
+	LightSource* createLight(int width, int height, float upScale = 1.0f, int filterGroup = 255);
 
 	//Removers/destroyers
 	void destroyLight(LightSource* light);

@@ -4,7 +4,7 @@
 
 StreetLight::StreetLight(BoxWorld* world, LightSolver* solver, sf::Vector2f& position, sf::Vector2f& size, sf::Texture* mask)
 : Entity(world, sf::Vector2f(0, 0), position, LEFT, false)
-, lightSource(solver->createLight(size.x, size.y))
+, lightSource(solver->createLight(size.x, size.y, 1.0f))
 { 
 	sf::Vector2f pos = position;
 	/*pos.x += size.x / 2.0f;

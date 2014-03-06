@@ -26,13 +26,14 @@ public:
 class LightSource : public sf::Drawable
 {
 public:
-	LightSource(LightShaderPair* shaders, int width = 512, int height = 512, int filterGroup = 255);
+	LightSource(LightShaderPair* shaders, int width = 512, int height = 512, float scale = 1.0f, int filterGroup = 255);
 	virtual ~LightSource();
 
 	const sf::Vector2f& getPosition() const;
 	const sf::Vector2f& getSize() const;
 	const sf::Color& getColor() const;
 	int getFilterGroup() const;
+	float getScale() const;
 	bool isEnabled() const;
 
 	void setPosition(const sf::Vector2f& pos);
@@ -66,5 +67,6 @@ private:
 	bool ownsMask;
 
 	int filterGroup;
+	float scale;
 };
 

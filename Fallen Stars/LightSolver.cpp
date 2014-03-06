@@ -69,9 +69,9 @@ LightSolver::~LightSolver()
 	}
 }
 
-LightSource* LightSolver::createLight(int width, int height, int filterGroup)
+LightSource* LightSolver::createLight(int width, int height, float upScale, int filterGroup)
 {
-	LightSource* light = new LightSource(&lightShaderPair, width, height, filterGroup);
+	LightSource* light = new LightSource(&lightShaderPair, width, height, upScale, filterGroup);
 	lights.push_back(light);
 	return light;
 }
@@ -200,8 +200,10 @@ void LightSolver::pass1()
 			sf::RenderTexture* tx = light->getOccluder();
 
 			//Set up the view of the light.
+			sf::View orig = tx->getView();
 			sf::View view = tx->getView();
 			view.setCenter(light->getPosition());
+			view.zoom(light->getScale());
 			tx->setView(view);
 
 			//Draw occluders
@@ -219,7 +221,10 @@ void LightSolver::pass1()
 			//Draw the light into the color buffer.
 			drawToColorFBO(light);
 
-			fullScreenBuffer.draw(*light, sf::BlendMode::BlendAdd);
+			sf::RenderStates states(sf::BlendAdd);
+			fullScreenBuffer.draw(*light, states);
+
+			tx->setView(orig);
 		}
 	}
 

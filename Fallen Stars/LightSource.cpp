@@ -36,7 +36,7 @@ namespace
 	}
 }
 
-LightSource::LightSource(LightShaderPair* shaders, int width, int height, int filter)
+LightSource::LightSource(LightShaderPair* shaders, int width, int height, float scale, int filter)
 : enabled(true)
 , mapShader(shaders->mapShader)
 , renderShader(shaders->renderShader)
@@ -49,6 +49,7 @@ LightSource::LightSource(LightShaderPair* shaders, int width, int height, int fi
 , mask(nullptr)
 , ownsMask(false)
 , filterGroup(filter)
+, scale(scale)
 { }
 
 
@@ -82,6 +83,11 @@ const sf::Color& LightSource::getColor() const
 int LightSource::getFilterGroup() const
 {
 	return filterGroup;
+}
+
+float LightSource::getScale() const
+{
+	return scale;
 }
 
 bool LightSource::isEnabled() const
@@ -144,11 +150,11 @@ void LightSource::calculateShadow()
 	occluderFBO->display();
 
 	//Get the size of the main buffers.
-	sf::Vector2u usize = occluderFBO->getSize();
-	sf::Vector2f size = sf::Vector2f((float) usize.x, (float) usize.y);
+	const sf::Vector2f& size = this->size;
 	mapShader->setParameter("resolution", size);
+	//mapShader->setParameter("upScale", scale);
 
-	renderShader->setParameter("resolution", size);
+	//renderShader->setParameter("resolution", size);
 
 	if (mask == nullptr)
 	{
@@ -161,8 +167,7 @@ void LightSource::calculateShadow()
 	}
 
 	//Create a shape which will render the shadowmap
-	sf::Vector2u usize2 = shadowMapFBO->getSize();
-	sf::Vector2f size2 = sf::Vector2f((float) usize2.x, (float) usize2.y);
+	sf::Vector2f size2 = (sf::Vector2f) shadowMapFBO->getSize();
 
 	//First pass, calculate the shadowmap.
 	renderPass(mapShader, shadowMapFBO, occluderFBO->getTexture(), size2);
@@ -193,7 +198,9 @@ const sf::Texture& LightSource::getDebugMap() const
 
 void LightSource::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
-	sf::Sprite sp = sf::Sprite(getResult());
+	sf::Vector2f size = this->size*(scale*scale);
+	sf::RectangleShape sp = sf::RectangleShape(size);
+	sp.setTexture(&getResult());
 	sp.setOrigin(size.x / 2.0f, size.y / 2.0f);
 	sp.setPosition(position);
 

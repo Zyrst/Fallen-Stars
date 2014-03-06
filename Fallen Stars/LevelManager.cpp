@@ -135,14 +135,15 @@ void LevelManager::getStreetlightLayer(ResourceCollection& resource, BoxWorld* w
 			std::cout << "====\n";
 			sf::Vector2f position(0.0f, 0.0f);
 			
-			int scale = std::atoi(l.properties["scale"].c_str());
-			sf::Vector2f size(scale, scale);
+			int width = std::atoi(l.properties["width"].c_str());
+			int height = std::atoi(l.properties["height"].c_str());
+			sf::Vector2f size(width, height);
 
 			auto& objects = l.objects;
 			
 			for (tmx::MapObject& o : objects)
 			{
-				if (o.GetName().compare("bounds") == 0)
+				if (o.GetName().compare("position") == 0)
 				{
 					sf::FloatRect aabb = o.GetAABB();
 					position = sf::Vector2f(aabb.left, aabb.top);
