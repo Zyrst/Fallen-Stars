@@ -21,16 +21,17 @@ void ChaseSensor::beginContact(b2Fixture* otherFixture)
 	if (otherFixture->GetBody()->GetType() == b2_dynamicBody && chaseVictim == nullptr)
 	{
 		setVictim(otherFixture, bounds);
+		chasing = true;
 		//std::cout<<"Contact Begun"<<std::endl;
 	}
 	
 }
 void ChaseSensor::endContact(b2Fixture* otherFixture)
 {
-	if (otherFixture->GetBody()->GetType() == b2_dynamicBody &&  chaseVictim != nullptr)
+	if (otherFixture->GetBody()->GetType() == b2_dynamicBody &&  chaseVictim != nullptr && chasing == true)
 	{
-		chasing = false;
 		chaseVictim = nullptr;
+		chasing = false;
 		//std::cout<<"Contact Begun Ended"<<std::endl;
 	}
 	
@@ -134,7 +135,8 @@ void AttackSensor::setVictim(b2Fixture* fix, const sf::FloatRect& bounds)
 #pragma region Shade
 Shade::Shade(ResourceCollection& resource, BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position)
 : EntityLiving(world,size,position),
-  mResource(resource)
+  mResource(resource),
+  collisionFixture(body->GetFixtureList())
 {
 	setMode(PATROL);
 	
@@ -169,16 +171,17 @@ Shade::Shade(ResourceCollection& resource, BoxWorld* world, sf::Vector2f& size, 
 	std::vector<sf::IntRect> chaseFrames = chaseSheet.getAllFrames();
 	mChase = new Animation(chaseFrames, chase);
 
-	chasingMultiplier = 3.5f;
+	chasingMultiplier = 3.0f;
+	speed = 0.5f;
+	chaseLength = 1.0f;
 	anime.setAnimation(*mWalking);
 	updateSpriteOrigin();
 	setupSensors(position,size);
 	setFacing(LEFT);
-	b2Filter filter = (body->GetFixtureList())->GetFilterData();
+	b2Filter filter = (collisionFixture->GetFilterData());
 	filter.categoryBits = ENEMY;
 	filter.groupIndex = ALL, PLAYER;
-	filter.maskBits = ALL, PLAYER;
-	body->GetFixtureList()->SetFilterData(filter);
+	collisionFixture->SetFilterData(filter);
 }
 Shade::~Shade()
 {
@@ -198,6 +201,7 @@ void Shade::render(sf::RenderTarget& renderTarget)
 }
 void Shade::update(sf::Time deltaTime)
 {
+	const b2Vec2& vel = body->GetLinearVelocity();
 	if((attackSensorLeft->isAttacking()&& attackSensorLeft->isActive())||(attackSensorRight->isAttacking() && attackSensorRight->isActive())){
 		setMode(ATTACK);
 	}
@@ -205,29 +209,15 @@ void Shade::update(sf::Time deltaTime)
 		setMode(CHASING);
 	}
 	else{setMode(PATROL);}
-	if(currentMode == PATROL|| currentMode == CHASING){
-		const b2Vec2& vel = body->GetLinearVelocity();
+	switch(currentMode){
+	case PATROL:
 		if(getFacing() == LEFT)
 		{
-			if(chaseSensorLeft->isChasing())
-			{
-				body->SetLinearVelocity(b2Vec2(-0.5f*chasingMultiplier, vel.y));
-			}
-			else
-			{
-				body->SetLinearVelocity(b2Vec2(-0.5f, vel.y));
-			}
+				body->SetLinearVelocity(b2Vec2(-speed, vel.y));
 		}
 		else if(getFacing() == RIGHT)
 		{
-			if(chaseSensorRight->isChasing())
-			{
-				body->SetLinearVelocity(b2Vec2(0.5f*chasingMultiplier, vel.y));
-			}
-			else 
-			{
-				body->SetLinearVelocity(b2Vec2(0.5f, vel.y));
-			}
+				body->SetLinearVelocity(b2Vec2(speed, vel.y));
 		}
 		if(!ledgeSensorLeft->isGrounded())
 		{
@@ -237,14 +227,37 @@ void Shade::update(sf::Time deltaTime)
 		{
 			setFacing(LEFT);
 		}
-	}
+	break;
 
-	else if(currentMode==ATTACK)
-	{
+	case CHASING:
+		if(getFacing() == LEFT)
+		{
+				body->SetLinearVelocity(b2Vec2(-speed*chasingMultiplier, vel.y));
+		}
+		else if(getFacing() == RIGHT)
+		{
+				body->SetLinearVelocity(b2Vec2(speed*chasingMultiplier, vel.y));
+		}
+		if(!ledgeSensorLeft->isGrounded())
+		{
+			setFacing(RIGHT);
+		}
+		else if(!ledgeSensorRight->isGrounded())
+		{
+			setFacing(LEFT);
+		}
+	break;
+
+	case ATTACK:
 		attack();
-	}
-	else if(currentMode==SPAWN)
-	{
+	break;
+
+	case SPAWN:
+	break;
+
+	default: 
+		setMode(PATROL);
+	break;
 	}
 	if(attackSensorRight->isAttacking()){std::cout<<"Lel"<<std::endl;}
 	anime.update(deltaTime);
@@ -290,19 +303,18 @@ void Shade::setupSensors(sf::Vector2f position, sf::Vector2f size)
 	groundPosRight.y = bodySize.y;
 	groundPosLeft.y = bodySize.y;
 	groundPosLeft.x = bodySize.x-(bodySize.x*2.0f);
-	bodyPosLeft.x = bodySize.x-(bodySize.x*3.0f);
+	bodyPosLeft.x = bodySize.x-((bodySize.x*3.0f) * chaseLength);
 	bodyPosLeft.y = bodySize.y/2;
 	bodyPosRight.y = bodySize.y/2;
-	bodyPosRight.x = bodySize.x+(bodySize.x*1.2f);
-	aBodyPosLeft.x = bodySize.x-(bodySize.x*2.4f);
+	bodyPosRight.x = bodySize.x+((bodySize.x*1.2f) * chaseLength);
+	aBodyPosLeft.x = bodySize.x-(bodySize.x*1.6f);
 	aBodyPosLeft.y = bodySize.y/2;
+	aBodyPosRight.x = bodySize.x+(bodySize.x*(-0.4f));
 	aBodyPosRight.y = bodySize.y/2;
-	aBodyPosRight.x = bodySize.x+(bodySize.x*0.4f);
-
 
 //Vänster ChaseSensor
 	b2PolygonShape shapeLeft;
-	shapeLeft.SetAsBox(-1.0f, 0.05f, bodyPosLeft, 0);
+	shapeLeft.SetAsBox(-1.0f * chaseLength, 0.05f, bodyPosLeft, 0);
 	b2FixtureDef defLeft;
 	defLeft.isSensor = true;
 	defLeft.shape = &shapeLeft;
@@ -312,7 +324,7 @@ void Shade::setupSensors(sf::Vector2f position, sf::Vector2f size)
 
 //Höger ChaseSensor
 	b2PolygonShape shapeRight;
-	shapeRight.SetAsBox(1.0f, 0.05f, bodyPosRight, 0);
+	shapeRight.SetAsBox(1.0f * chaseLength, 0.05f, bodyPosRight, 0);
 	b2FixtureDef defRight;
 	defRight.isSensor = true;
 	defRight.shape = &shapeRight;
@@ -343,7 +355,7 @@ void Shade::setupSensors(sf::Vector2f position, sf::Vector2f size)
 
 //Vänster AttackSensor
 	b2PolygonShape aShapeLeft;
-	aShapeLeft.SetAsBox(-0.1f, 0.6f, aBodyPosLeft, 0);
+	aShapeLeft.SetAsBox(-0.1f, 0.8f, aBodyPosLeft, 0);
 	b2FixtureDef aDefLeft;
 	aDefLeft.isSensor = true;
 	aDefLeft.shape = &aShapeLeft;
@@ -353,7 +365,7 @@ void Shade::setupSensors(sf::Vector2f position, sf::Vector2f size)
 
 //Höger AttackSensor
 	b2PolygonShape aShapeRight;
-	aShapeRight.SetAsBox(0.1f, 0.6f, aBodyPosRight, 0);
+	aShapeRight.SetAsBox(0.1f, 0.8f, aBodyPosRight, 0);
 	b2FixtureDef aDefRight;
 	aDefRight.isSensor = true;
 	aDefRight.shape = &aShapeRight;
@@ -382,9 +394,11 @@ void Shade::setupSensors(sf::Vector2f position, sf::Vector2f size)
 
 	filterChaseLeft.categoryBits = ENEMY_CHASE;
 	filterChaseLeft.maskBits = PLAYER;
+	filterChaseLeft.groupIndex = PLAYER;
 
 	filterChaseRight.categoryBits = ENEMY_CHASE;
 	filterChaseRight.maskBits = PLAYER;
+	filterChaseRight.groupIndex = PLAYER;
 
 	filterAttackLeft.categoryBits = ENEMY_ATTACK;
 	filterAttackLeft.maskBits = PLAYER;

@@ -85,5 +85,8 @@ private:
 	Animation* mChase;
 	Mode currentMode;
 	float chasingMultiplier;
+	float speed;
+	float chaseLength;
+	b2Fixture* collisionFixture;
 };
 

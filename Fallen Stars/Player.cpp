@@ -198,7 +198,11 @@ void Player::setupSensors(sf::Vector2f& pos, sf::Vector2f& size)
 
 	b2Fixture* fix = body->CreateFixture(&def);
 	groundCallBack = new CollisionCounterCallBack(fix);
+	b2Filter groundFilter;
+	groundFilter = fix->GetFilterData();
+	groundFilter.categoryBits = PLAYER_SENSOR;
 
+	fix->SetFilterData(groundFilter);
 	//Left and right side collision sensors (to not get stuck in next to walls anymore)
 	bpos = b2Vec2(-hw, 0);
 	bpos.y += hh;
@@ -249,9 +253,10 @@ void Player::setupSensors(sf::Vector2f& pos, sf::Vector2f& size)
 void Player::update(sf::Time deltaTime)
 {
 	const b2Vec2& vel = body->GetLinearVelocity();
-
-	if (state == PLAYER_STATE::NORMAL)
+	switch(state)
 	{
+	case NORMAL:
+	
 		if (leftButton)
 		{
 			if (!leftSideCollision->isColliding())
@@ -292,9 +297,9 @@ void Player::update(sf::Time deltaTime)
 			}
 		}
 		
-	}
-	else if (state == PLAYER_STATE::GRABBING)
-	{
+	break;
+	case GRABBING:
+	
 		//Check if we should just drop down
 		//Jumping while grabbing is handled in Player::jump() and not here.
 		if (downButton || (rightButton && getFacing() == Facing::LEFT) || (leftButton && getFacing() == Facing::RIGHT))
@@ -319,8 +324,10 @@ void Player::update(sf::Time deltaTime)
 
 			setState(PLAYER_STATE::NORMAL);
 		}
+	break;
+	default:
+		break;
 	}
-	
 	updateAnimation();
 	updateSound();
 	anime.update(deltaTime);

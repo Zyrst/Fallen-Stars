@@ -39,7 +39,7 @@ private:
 class Player : public EntityLiving
 {
 public:
-	enum PLAYER_STATE { NORMAL, GRABBING };
+	enum PLAYER_STATE { NORMAL, GRABBING, DAMAGED };
 	Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, ResourceCollection& resource, LightSolver* lightSolver);
 	~Player();
 	void render(sf::RenderTarget& renderSurface) override;
