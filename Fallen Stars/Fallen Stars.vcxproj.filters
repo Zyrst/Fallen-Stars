@@ -237,6 +237,9 @@
     <ClCompile Include="Libraries\SFML TmxLoader\src\tmx2box2d.cpp">
       <Filter>Source Files\Libraries\Tmx</Filter>
     </ClCompile>
+    <ClCompile Include="StatManager.cpp">
+      <Filter>Source Files\Managers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -398,6 +401,9 @@
     </ClInclude>
     <ClInclude Include="Libraries\SFML TmxLoader\include\tmx\tmx2box2d.h">
       <Filter>Header Files\Libraries\Tmx</Filter>
+    </ClInclude>
+    <ClInclude Include="StatManager.h">
+      <Filter>Header Files\Managers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
