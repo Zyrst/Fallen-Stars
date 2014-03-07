@@ -36,7 +36,7 @@ namespace
 	}
 }
 
-LightSource::LightSource(LightShaderPair* shaders, int width, int height, float scale, int filter)
+LightSource::LightSource(LightShaderPair* shaders, int width, int height, int filter)
 : enabled(true)
 , mapShader(shaders->mapShader)
 , renderShader(shaders->renderShader)
@@ -45,11 +45,11 @@ LightSource::LightSource(LightShaderPair* shaders, int width, int height, float 
 , shadowRenderFBO(createFBO(width, height))
 , position(0, 0)
 , size((float)width, (float)height)
+, offset(0, 0)
 , color(sf::Color::Transparent)
 , mask(nullptr)
 , ownsMask(false)
 , filterGroup(filter)
-, scale(scale)
 { }
 
 
@@ -75,6 +75,11 @@ const sf::Vector2f& LightSource::getSize() const
 	return size;
 }
 
+const sf::Vector2f& LightSource::getOffset() const
+{
+	return offset;
+}
+
 const sf::Color& LightSource::getColor() const
 {
 	return color;
@@ -85,11 +90,6 @@ int LightSource::getFilterGroup() const
 	return filterGroup;
 }
 
-float LightSource::getScale() const
-{
-	return scale;
-}
-
 bool LightSource::isEnabled() const
 {
 	return enabled;
@@ -98,6 +98,11 @@ bool LightSource::isEnabled() const
 void LightSource::setPosition(const sf::Vector2f& pos)
 {
 	this->position = pos;
+}
+
+void LightSource::setOffset(const sf::Vector2f& offset)
+{
+	this->offset = offset;
 }
 
 void LightSource::setColor(const sf::Color& color)
@@ -152,8 +157,9 @@ void LightSource::calculateShadow()
 	//Get the size of the main buffers.
 	const sf::Vector2f& size = this->size;
 	mapShader->setParameter("resolution", size);
-	//mapShader->setParameter("upScale", scale);
+	mapShader->setParameter("offset", offset);
 
+	renderShader->setParameter("offset", offset);
 	//renderShader->setParameter("resolution", size);
 
 	if (mask == nullptr)
@@ -198,7 +204,6 @@ const sf::Texture& LightSource::getDebugMap() const
 
 void LightSource::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
-	sf::Vector2f size = this->size*(scale*scale);
 	sf::RectangleShape sp = sf::RectangleShape(size);
 	sp.setTexture(&getResult());
 	sp.setOrigin(size.x / 2.0f, size.y / 2.0f);

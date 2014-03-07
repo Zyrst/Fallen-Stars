@@ -69,9 +69,9 @@ LightSolver::~LightSolver()
 	}
 }
 
-LightSource* LightSolver::createLight(int width, int height, float upScale, int filterGroup)
+LightSource* LightSolver::createLight(int width, int height, int filterGroup)
 {
-	LightSource* light = new LightSource(&lightShaderPair, width, height, upScale, filterGroup);
+	LightSource* light = new LightSource(&lightShaderPair, width, height, filterGroup);
 	lights.push_back(light);
 	return light;
 }
@@ -120,12 +120,14 @@ void LightSolver::addOccluder(const Occluder* occluder)
 
 void LightSolver::addCollisionOccluders(const std::vector<tmx::MapObject>& objects)
 {
+	//Filter with exclusion-bits 0 and 1 set.
+	const int filter = (1 << 1) << 8;
 	for (auto& o : objects)
 	{
 		auto& points = o.PolyPoints();
 		int size = points.size();
 		ConvexOccluder* shape = new ConvexOccluder(size);
-
+		shape->setFilterGroup(shape->getFilterGroup() | filter);
 		for (int i = 0; i < size; i++)
 		{
 			shape->setPoint(i, points[i]);
@@ -203,7 +205,6 @@ void LightSolver::pass1()
 			sf::View orig = tx->getView();
 			sf::View view = tx->getView();
 			view.setCenter(light->getPosition());
-			view.zoom(light->getScale());
 			tx->setView(view);
 
 			//Draw occluders

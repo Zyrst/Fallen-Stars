@@ -134,6 +134,7 @@ void LevelManager::getStreetlightLayer(ResourceCollection& resource, BoxWorld* w
 		{
 			std::cout << "====\n";
 			sf::Vector2f position(0.0f, 0.0f);
+			sf::FloatRect sensor(0.0f, 0.0f, 100.0f, 100.0f);
 			
 			int width = std::atoi(l.properties["width"].c_str());
 			int height = std::atoi(l.properties["height"].c_str());
@@ -146,11 +147,15 @@ void LevelManager::getStreetlightLayer(ResourceCollection& resource, BoxWorld* w
 				if (o.GetName().compare("position") == 0)
 				{
 					sf::FloatRect aabb = o.GetAABB();
-					position = sf::Vector2f(aabb.left, aabb.top);
+					position = sf::Vector2f(aabb.left + aabb.width/2.0f, aabb.top);
+				}
+				else if (o.GetName().compare("sensor") == 0)
+				{
+					sensor = o.GetAABB();
 				}
 			}
 
-			StreetLight* light = new StreetLight(world, solver, position, size, &resource.getTexture("Assets/Shader/streetlightmask.png"));
+			StreetLight* light = new StreetLight(world, solver, position, size, sensor, &resource.getTexture("Assets/Shader/streetlightmask.png"));
 			entity.push_back(light);
 
 			std::cout << "====\n";

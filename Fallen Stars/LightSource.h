@@ -26,21 +26,23 @@ public:
 class LightSource : public sf::Drawable
 {
 public:
-	LightSource(LightShaderPair* shaders, int width = 512, int height = 512, float scale = 1.0f, int filterGroup = 255);
+	LightSource(LightShaderPair* shaders, int width = 512, int height = 512, int filterGroup = 255);
 	virtual ~LightSource();
 
 	const sf::Vector2f& getPosition() const;
 	const sf::Vector2f& getSize() const;
+	const sf::Vector2f& getOffset() const;
 	const sf::Color& getColor() const;
 	int getFilterGroup() const;
-	float getScale() const;
 	bool isEnabled() const;
 
 	void setPosition(const sf::Vector2f& pos);
+	void setOffset(const sf::Vector2f& offset);
 	void setColor(const sf::Color& color);
 	void setMask(sf::Texture* texture, bool ownsMask = false);
 	void setFilterGroup(int filter);
 	void setEnabled(bool enabled);
+	
 
 	//Call this to clear the fbos.
 	void clear();
@@ -60,13 +62,12 @@ private:
 	bool enabled;
 	sf::Shader *mapShader, *renderShader;
 	sf::RenderTexture *occluderFBO, *shadowMapFBO, *shadowRenderFBO;
-	sf::Vector2f position, size;
+	sf::Vector2f position, size, offset;
 	sf::Color color;
 	sf::Texture* mask;
 
 	bool ownsMask;
 
 	int filterGroup;
-	float scale;
 };
 
