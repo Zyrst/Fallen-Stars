@@ -41,7 +41,7 @@ ShaderTestState::ShaderTestState()
 	light2->setPosition(sf::Vector2f(820, 200));
 	light2->setColor(Color(255, 0, 0, 50));
 
-	level = new LevelManager("Test");
+//	level = new LevelManager("Test");
 
 	world = new BoxWorld();
 	level->genCollision(world);

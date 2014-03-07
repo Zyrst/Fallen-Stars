@@ -10,20 +10,20 @@
 #include <tmx/MapObject.h>
 #include "StreetLight.h"
 
-LevelManager::LevelManager(std::string levelname):
+LevelManager::LevelManager(std::string levelname, ResourceCollection* resource):
 	mLevel(levelname),
 	mapLoader("Assets/Map/")
 {
-	LevelManager::Load();
+	LevelManager::Load(resource);
 }
 
 LevelManager::~LevelManager()
 {
 }
 
-void LevelManager::Load()
+void LevelManager::Load(ResourceCollection* resource)
 {
-	mapLoader.Load(mLevel + ".tmx");
+	mapLoader.Load(mLevel + ".tmx", resource);
 }
 
 void LevelManager::Render(sf::RenderTarget& rendertarget)
@@ -46,11 +46,11 @@ tmx::MapLoader& LevelManager::getMapLoader()
 sf::Vector2f LevelManager::getPlayerLayer()
 {
 	auto& layer = mapLoader.GetLayers();
-	for(auto i : layer )
+	for(auto& i : layer )
 	{
-		if (i.name.compare("Player") == 0)
+		if (i->name.compare("Player") == 0)
 		{
-			for (auto& k : i.objects)
+			for (auto& k : i->objects)
 			{
 				auto pos = k.GetPosition();
 				return pos;
@@ -62,11 +62,11 @@ sf::Vector2f LevelManager::getPlayerLayer()
 void LevelManager::getStarLayer(ResourceCollection& resource,BoxWorld* world,EntityVector& entity)
 {
 	auto& layer = mapLoader.GetLayers();
-	for (auto i : layer)
+	for (auto& i : layer)
 	{
-		if (i.name.compare("Star") == 0)
+		if (i->name.compare("Star") == 0)
 		{
-			for (auto& k : i.objects)
+			for (auto& k : i->objects)
 			{
 				auto pos = k.GetPosition();
 				entity.push_back(new Object(world,pos,resource, Object::TYPE::STAR));
@@ -78,11 +78,11 @@ void LevelManager::getStarLayer(ResourceCollection& resource,BoxWorld* world,Ent
 void LevelManager::getStarDustLayer(ResourceCollection& resource,BoxWorld* world,EntityVector& entity)
 {
 	auto& layer = mapLoader.GetLayers();
-	for (auto i : layer)
+	for (auto& i : layer)
 	{
-		if (i.name.compare("StarDust") == 0)
+		if (i->name.compare("StarDust") == 0)
 		{
-			for (auto& k : i.objects)
+			for (auto& k : i->objects)
 			{
 				auto pos = k.GetPosition();
 				entity.push_back(new Object(world,pos,resource,Object::TYPE::STARDUST));
@@ -94,11 +94,11 @@ void LevelManager::getStarDustLayer(ResourceCollection& resource,BoxWorld* world
 void LevelManager::getEnemyLayer(ResourceCollection& resource,BoxWorld* world,EntityVector& entity,sf::Vector2f size)
 {
 	auto& layer = mapLoader.GetLayers();
-	for (auto i : layer)
+	for (auto& i : layer)
 	{
-		if (i.name.compare("Enemy") == 0)
+		if (i->name.compare("Enemy") == 0)
 		{
-			for (auto& k : i.objects)
+			for (auto& k : i->objects)
 			{
 				auto pos = k.GetPosition();
 				entity.push_back(new Shade(resource,world,size,pos));
@@ -113,12 +113,12 @@ void LevelManager::genCollision(BoxWorld* world, LightSolver* solver)
 	auto& layers = mapLoader.GetLayers();
 	for (auto& l : layers)
 	{
-		if (l.name.compare("Collision") == 0)
+		if (l->name.compare("Collision") == 0)
 		{
-			world->createStaticBody(l.objects);
+			world->createStaticBody(l->objects);
 			if (solver != nullptr)
 			{
-				solver->addCollisionOccluders(l.objects);
+				solver->addCollisionOccluders(l->objects);
 			}
 			break;
 		}
@@ -128,19 +128,18 @@ void LevelManager::genCollision(BoxWorld* world, LightSolver* solver)
 void LevelManager::getStreetlightLayer(ResourceCollection& resource, BoxWorld* world, LightSolver* solver, EntityVector& entity)
 {
 	auto& layers = mapLoader.GetLayers();
-	for (tmx::MapLayer& l : layers)
+	for (tmx::MapLayer* l : layers)
 	{
-		if (l.name.compare("StreetLight") == 0)
+		if (l->name.compare("StreetLight") == 0)
 		{
-			std::cout << "====\n";
 			sf::Vector2f position(0.0f, 0.0f);
 			sf::FloatRect sensor(0.0f, 0.0f, 100.0f, 100.0f);
 			
-			int width = std::atoi(l.properties["width"].c_str());
-			int height = std::atoi(l.properties["height"].c_str());
+			int width = std::atoi(l->properties["width"].c_str());
+			int height = std::atoi(l->properties["height"].c_str());
 			sf::Vector2f size(width, height);
 
-			auto& objects = l.objects;
+			auto& objects = l->objects;
 			
 			for (tmx::MapObject& o : objects)
 			{
@@ -157,8 +156,6 @@ void LevelManager::getStreetlightLayer(ResourceCollection& resource, BoxWorld* w
 
 			StreetLight* light = new StreetLight(world, solver, position, size, sensor, &resource.getTexture("Assets/Shader/streetlightmask.png"));
 			entity.push_back(light);
-
-			std::cout << "====\n";
 		}
 	}
 }
@@ -169,9 +166,9 @@ void LevelManager::getSoundLayer(MusicVector& musicVec)
 	auto music = new sf::Music;
 	for (auto& l : layers)
 	{
-		if (l.name.compare("Sound") == 0)
+		if (l->name.compare("Sound") == 0)
 		{
-			for (auto &s : l.objects)
+			for (auto &s : l->objects)
 			{
 				std::cout << s.GetPosition().x << std::endl;
 				std::cout << s.GetPosition().y << std::endl;

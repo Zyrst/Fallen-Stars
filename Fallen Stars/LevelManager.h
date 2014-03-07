@@ -16,9 +16,9 @@ class LevelManager
 public:
 	typedef std::vector<Entity*> EntityVector;
 	typedef std::vector<sf::Music*> MusicVector;
-	LevelManager(std::string levelname);
+	LevelManager(std::string levelname, ResourceCollection* resource);
 	~LevelManager();
-	void Load();
+	void Load(ResourceCollection* resource);
 	void Render(sf::RenderTarget& rendertarget);
 	tmx::MapLoader& getMapLoader();
 	sf::Vector2f getPlayerLayer();

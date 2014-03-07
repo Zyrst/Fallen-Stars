@@ -27,7 +27,7 @@ namespace
 JumpingTest::JumpingTest()
 {
 	world = new BoxWorld(b2Vec2(0, 10));
-	level = new LevelManager("Test");
+//	level = new LevelManager("Test");
 
 	auto size = sf::Vector2f(70, 220);
 	//genCollision();

@@ -23,9 +23,11 @@ void PlatformState::load()
 {
 	mWorld = new BoxWorld(b2Vec2(0, 10));
 	
-	mLevel = new LevelManager(mLevelName);
+	mLevel = new LevelManager(mLevelName, &mResourceCollection);
 	mLevel->genCollision(mWorld, mLightSolver);
-	
+
+	/*StreetLight* light = new StreetLight(mWorld, mLightSolver, sf::Vector2f(8370, 508), sf::Vector2f(800, 1024), sf::FloatRect(8153, 436, 495, 969), &mResourceCollection.getTexture("Assets/Shader/streetlightmask.png"));
+	mEntityVector.push_back(light);*/
 
 	auto size = sf::Vector2f(70, 220);
 	
