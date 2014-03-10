@@ -3,6 +3,7 @@
 #include "Object.h"
 #include "Shade.h"
 #include "LightSolver.h"
+#include "SiriusOverlay.h"
 
 LevelManager::LevelManager(std::string levelname):
 	mLevel(levelname),
@@ -122,12 +123,38 @@ void LevelManager::getSoundLayer(MusicVector& musicVec,ResourceCollection& resou
 		{
 			for (auto &s : l.objects)
 			{
-				//Get the property from our map container that generates from the parser and use it to open the sound file
-				music->openFromFile(s.GetPropertyMap());
+				//Get the first property from our map container that generates from the parser and use it to open the sound file
+				music->openFromFile(s.GetFirstPropertyName());
 				music->setPosition(s.GetPosition().x, s.GetPosition().y,0);
 				music->setVolume(0);
 				music->setLoop(false);
 				musicVec.push_back(music);
+			}
+		}
+	}
+}
+
+void LevelManager::getSiriusLayer(State& state, ResourceCollection& resource)
+{
+	auto& layers = mapLoader.GetLayers();
+	for (auto& l : layers)
+	{
+		if (l.name.compare("Sirius") == 0)
+		{
+			int id = 0;
+			for (auto& object : l.objects)
+			{
+				sf::FloatRect bounds = object.GetAABB();
+				auto& messages = object.GetPropertyMap();
+				
+				std::vector<std::string> siriusMessages;
+				for(auto it = messages.begin(); it != messages.end(); it++)
+				{
+					siriusMessages.push_back(it->first);
+				}
+				
+				state.addOverlay(new SiriusOverlay(id, resource, bounds, siriusMessages));
+				id++;
 			}
 		}
 	}
