@@ -24,7 +24,7 @@ void PlatformState::load()
 {
 	mWorld = new BoxWorld(b2Vec2(0, 10));
 	
-	mLevel = new LevelManager(mLevelName);
+	mLevel = new LevelManager(mLevelName, &mResourceCollection);
 	mLevel->genCollision(mWorld, mLightSolver);
 	
 	mStats = new StatManager();
@@ -39,6 +39,7 @@ void PlatformState::load()
 	mLevel->getEnemyLayer(mResourceCollection,mWorld,mEntityVector,size);
 	mLevel->getSoundLayer(mMusicVector, mResourceCollection);
 	mLevel->getSiriusLayer(*this, mResourceCollection);
+	mLevel->getStreetlightLayer(mResourceCollection, mWorld, mLightSolver, mEntityVector);
 
 	for (Entity* e : mEntityVector)
 	{

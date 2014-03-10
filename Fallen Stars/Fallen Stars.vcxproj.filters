@@ -239,6 +239,9 @@
     </ClCompile>
     <ClCompile Include="SiriusOverlay.cpp">
       <Filter>Source Files\Overlay</Filter>
+     </ClCompile>
+    <ClCompile Include="StreetLight.cpp">
+      <Filter>Source Files\Entity</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -404,6 +407,9 @@
     </ClInclude>
     <ClInclude Include="SiriusOverlay.h">
       <Filter>Header Files\Overlay</Filter>
+      </ClInclude>
+    <ClInclude Include="StreetLight.h">
+      <Filter>Header Files\Entity</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

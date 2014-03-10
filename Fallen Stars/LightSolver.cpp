@@ -120,12 +120,14 @@ void LightSolver::addOccluder(const Occluder* occluder)
 
 void LightSolver::addCollisionOccluders(const std::vector<tmx::MapObject>& objects)
 {
+	//Filter with exclusion-bits 0 and 1 set.
+	const int filter = (1 << 1) << 8;
 	for (auto& o : objects)
 	{
 		auto& points = o.PolyPoints();
 		int size = points.size();
 		ConvexOccluder* shape = new ConvexOccluder(size);
-
+		shape->setFilterGroup(shape->getFilterGroup() | filter);
 		for (int i = 0; i < size; i++)
 		{
 			shape->setPoint(i, points[i]);
@@ -200,6 +202,7 @@ void LightSolver::pass1()
 			sf::RenderTexture* tx = light->getOccluder();
 
 			//Set up the view of the light.
+			sf::View orig = tx->getView();
 			sf::View view = tx->getView();
 			view.setCenter(light->getPosition());
 			tx->setView(view);
@@ -219,7 +222,10 @@ void LightSolver::pass1()
 			//Draw the light into the color buffer.
 			drawToColorFBO(light);
 
-			fullScreenBuffer.draw(*light, sf::BlendMode::BlendAdd);
+			sf::RenderStates states(sf::BlendAdd);
+			fullScreenBuffer.draw(*light, states);
+
+			tx->setView(orig);
 		}
 	}
 

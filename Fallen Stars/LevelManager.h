@@ -20,12 +20,14 @@ public:
 	typedef std::vector<Entity*> EntityVector;
 	typedef std::vector<sf::Music*> MusicVector;
 	typedef std::vector<Overlay*> OverlayVector;
-	LevelManager(std::string levelname);
+	void getObjectLayer(ResourceCollection& resource,BoxWorld* world,EntityVector& entity,StatManager* stats);
+	LevelManager(std::string levelname, ResourceCollection* resource);
 	~LevelManager();
-	void Load();
+	void Load(ResourceCollection* resource);
+	void Render(sf::RenderTarget& rendertarget);
 	tmx::MapLoader& getMapLoader();
 	sf::Vector2f getPlayerLayer();
-	void getObjectLayer(ResourceCollection& resource,BoxWorld* world,EntityVector& entity,StatManager* stats);
+	void getStreetlightLayer(ResourceCollection& resource, BoxWorld* world, LightSolver* solver, EntityVector& entity);
 	void getEnemyLayer(ResourceCollection& resource,BoxWorld* world,EntityVector& entity,sf::Vector2f size);
 	void genCollision(BoxWorld* world, LightSolver* solver = nullptr);
 	void getSoundLayer(MusicVector& music,ResourceCollection& resource);

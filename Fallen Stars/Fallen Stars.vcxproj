@@ -136,6 +136,7 @@
     <ClCompile Include="State.cpp" />
     <ClCompile Include="SpriteSheet.cpp" />
     <ClCompile Include="StatManager.cpp" />
+    <ClCompile Include="StreetLight.cpp" />
     <ClCompile Include="VecConverter.cpp" />
     <ClCompile Include="WaitState.cpp" />
   </ItemGroup>
@@ -191,6 +192,7 @@
     <ClInclude Include="SpriteSheet.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="StatManager.h" />
+    <ClInclude Include="StreetLight.h" />
     <ClInclude Include="VecConverter.h" />
     <ClInclude Include="WaitState.h" />
   </ItemGroup>

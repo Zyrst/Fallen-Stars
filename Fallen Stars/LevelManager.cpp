@@ -5,22 +5,22 @@
 #include "LightSolver.h"
 #include "SiriusOverlay.h"
 #include <tmx/MapObject.h>
+#include "StreetLight.h"
 
-
-LevelManager::LevelManager(std::string levelname):
+LevelManager::LevelManager(std::string levelname, ResourceCollection* resource):
 	mLevel(levelname),
 	mapLoader("Assets/Map/")
 {
-	LevelManager::Load();
+	LevelManager::Load(resource);
 }
 
 LevelManager::~LevelManager()
 {
 }
 
-void LevelManager::Load()
+void LevelManager::Load(ResourceCollection* resource)
 {
-	mapLoader.Load(mLevel + ".tmx");
+	mapLoader.Load(mLevel + ".tmx", resource);
 }
 
 //Return the mapLoader so we can use it outside of the class
@@ -33,11 +33,11 @@ tmx::MapLoader& LevelManager::getMapLoader()
 sf::Vector2f LevelManager::getPlayerLayer()
 {
 	auto& layer = mapLoader.GetLayers();
-	for(auto i : layer )
+	for(auto& i : layer )
 	{
-		if (i.name.compare("Player") == 0)
+		if (i->name.compare("Player") == 0)
 		{
-			for (auto& k : i.objects)
+			for (auto& k : i->objects)
 			{
 				auto pos = k.GetPosition();
 				return pos;
@@ -50,11 +50,11 @@ sf::Vector2f LevelManager::getPlayerLayer()
 void LevelManager::getObjectLayer(ResourceCollection& resource,BoxWorld* world,EntityVector& entity, StatManager* stats)
 {
 	auto& layer = mapLoader.GetLayers();
-	for (auto i : layer)
+	for (auto& i : layer)
 	{
-		if (i.name.compare("Star") == 0)
+		if (i->name.compare("Star") == 0)
 		{
-			for (auto& k : i.objects)
+			for (auto& k : i->objects)
 			{
 				auto pos = k.GetPosition();
 				entity.push_back(new Object(world,pos,resource, Object::TYPE::STAR,stats));
@@ -62,7 +62,7 @@ void LevelManager::getObjectLayer(ResourceCollection& resource,BoxWorld* world,E
 		}
 		if (i.name.compare("StarDust") == 0)
 		{
-			for (auto& k : i.objects)
+			for (auto& k : i->objects)
 			{
 				auto pos = k.GetPosition();
 				entity.push_back(new Object(world,pos,resource,Object::TYPE::STARDUST,stats));
@@ -83,11 +83,11 @@ void LevelManager::getObjectLayer(ResourceCollection& resource,BoxWorld* world,E
 void LevelManager::getEnemyLayer(ResourceCollection& resource,BoxWorld* world,EntityVector& entity,sf::Vector2f size)
 {
 	auto& layer = mapLoader.GetLayers();
-	for (auto i : layer)
+	for (auto& i : layer)
 	{
-		if (i.name.compare("Enemy") == 0)
+		if (i->name.compare("Enemy") == 0)
 		{
-			for (auto& k : i.objects)
+			for (auto& k : i->objects)
 			{
 				auto pos = k.GetPosition();
 				entity.push_back(new Shade(resource,world,size,pos));
@@ -102,14 +102,49 @@ void LevelManager::genCollision(BoxWorld* world, LightSolver* solver)
 	auto& layers = mapLoader.GetLayers();
 	for (auto& l : layers)
 	{
-		if (l.name.compare("Collision") == 0)
+		if (l->name.compare("Collision") == 0)
 		{
-			world->createStaticBody(l.objects);
+			world->createStaticBody(l->objects);
 			if (solver != nullptr)
 			{
-				solver->addCollisionOccluders(l.objects);
+				solver->addCollisionOccluders(l->objects);
 			}
 			break;
+		}
+	}
+}
+
+void LevelManager::getStreetlightLayer(ResourceCollection& resource, BoxWorld* world, LightSolver* solver, EntityVector& entity)
+{
+	auto& layers = mapLoader.GetLayers();
+	for (tmx::MapLayer* l : layers)
+	{
+		if (l->name.compare("StreetLight") == 0)
+		{
+			sf::Vector2f position(0.0f, 0.0f);
+			sf::FloatRect sensor(0.0f, 0.0f, 100.0f, 100.0f);
+			
+			int width = std::atoi(l->properties["width"].c_str());
+			int height = std::atoi(l->properties["height"].c_str());
+			sf::Vector2f size(width, height);
+
+			auto& objects = l->objects;
+			
+			for (tmx::MapObject& o : objects)
+			{
+				if (o.GetName().compare("position") == 0)
+				{
+					sf::FloatRect aabb = o.GetAABB();
+					position = sf::Vector2f(aabb.left + aabb.width/2.0f, aabb.top);
+				}
+				else if (o.GetName().compare("sensor") == 0)
+				{
+					sensor = o.GetAABB();
+				}
+			}
+
+			StreetLight* light = new StreetLight(world, solver, position, size, sensor, &resource.getTexture("Assets/Shader/streetlightmask.png"));
+			entity.push_back(light);
 		}
 	}
 }
@@ -121,9 +156,9 @@ void LevelManager::getSoundLayer(MusicVector& musicVec,ResourceCollection& resou
 	auto music = new sf::Music;
 	for (auto& l : layers)
 	{
-		if (l.name.compare("Sound") == 0)
+		if (l->name.compare("Sound") == 0)
 		{
-			for (auto &s : l.objects)
+			for (auto &s : l->objects)
 			{
 				//Get the first property from our map container that generates from the parser and use it to open the sound file
 				music->openFromFile(s.GetFirstPropertyName());
