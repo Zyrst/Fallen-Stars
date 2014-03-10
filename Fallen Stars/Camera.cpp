@@ -1,8 +1,6 @@
 #include "Camera.h"
-#include "Player.h"
 #include <SFML\Window.hpp>
 #include <SFML/Graphics/Rect.hpp>
-#include "LevelManager.h"
 
 
 Camera::Camera(Player* player, sf::Vector2u bounds):

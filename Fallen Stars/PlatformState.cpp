@@ -26,6 +26,7 @@ void PlatformState::load()
 	mLevel = new LevelManager(mLevelName);
 	mLevel->genCollision(mWorld, mLightSolver);
 	
+	mStats = new StatManager();
 
 	auto size = sf::Vector2f(70, 220);
 	
@@ -33,9 +34,7 @@ void PlatformState::load()
 	auto playerPos = mLevel->getPlayerLayer();
 	mPlayer = new Player(mWorld, size, playerPos, mResourceCollection, mLightSolver);
 	mEntityVector.push_back(mPlayer);
-	
-	mLevel->getStarLayer(mResourceCollection,mWorld,mEntityVector);
-	mLevel->getStarDustLayer(mResourceCollection,mWorld,mEntityVector);
+	mLevel->getObjectLayer(mResourceCollection,mWorld,mEntityVector,mStats);
 	mLevel->getEnemyLayer(mResourceCollection,mWorld,mEntityVector,size);
 	mLevel->getSoundLayer(mMusicVector, mResourceCollection);
 	

@@ -5,6 +5,7 @@
 #include "Entity.h"
 #include "ResourceCollection.h"
 #include <SFML/Audio/Music.hpp>
+#include "StatManager.h"
 
 class LightSolver;
 
@@ -21,13 +22,12 @@ public:
 	void Load();
 	tmx::MapLoader& getMapLoader();
 	sf::Vector2f getPlayerLayer();
-	void getStarLayer(ResourceCollection& resource,BoxWorld* world,EntityVector& entity);
-	void getStarDustLayer(ResourceCollection& resource,BoxWorld* world,EntityVector& entity);
+	void getObjectLayer(ResourceCollection& resource,BoxWorld* world,EntityVector& entity,StatManager* stats);
 	void getEnemyLayer(ResourceCollection& resource,BoxWorld* world,EntityVector& entity,sf::Vector2f size);
 	void genCollision(BoxWorld* world, LightSolver* solver = nullptr);
 	void getSoundLayer(MusicVector& music,ResourceCollection& resource);
 
 private:
 	std::string mLevel;
-	tmx::MapLoader mapLoader;	
+	tmx::MapLoader mapLoader;
 };

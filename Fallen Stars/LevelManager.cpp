@@ -1,10 +1,8 @@
 #include "LevelManager.h"
 #include "Player.h"
-#include <Box2D\Box2D.h>
 #include "Object.h"
 #include "Shade.h"
 #include "LightSolver.h"
-#include <tmx/MapObject.h>
 
 LevelManager::LevelManager(std::string levelname):
 	mLevel(levelname),
@@ -45,8 +43,8 @@ sf::Vector2f LevelManager::getPlayerLayer()
 	}
 }
 
-//adds stars to the level
-void LevelManager::getStarLayer(ResourceCollection& resource,BoxWorld* world,EntityVector& entity)
+//Adds objects to the level, stars/stardust etc
+void LevelManager::getObjectLayer(ResourceCollection& resource,BoxWorld* world,EntityVector& entity, StatManager* stats)
 {
 	auto& layer = mapLoader.GetLayers();
 	for (auto i : layer)
@@ -56,24 +54,23 @@ void LevelManager::getStarLayer(ResourceCollection& resource,BoxWorld* world,Ent
 			for (auto& k : i.objects)
 			{
 				auto pos = k.GetPosition();
-				entity.push_back(new Object(world,pos,resource, Object::TYPE::STAR));
+				entity.push_back(new Object(world,pos,resource, Object::TYPE::STAR,stats));
 			}
-		} 
-	}
-}
-
-//Adds stardust to level
-void LevelManager::getStarDustLayer(ResourceCollection& resource,BoxWorld* world,EntityVector& entity)
-{
-	auto& layer = mapLoader.GetLayers();
-	for (auto i : layer)
-	{
+		}
 		if (i.name.compare("StarDust") == 0)
 		{
 			for (auto& k : i.objects)
 			{
 				auto pos = k.GetPosition();
-				entity.push_back(new Object(world,pos,resource,Object::TYPE::STARDUST));
+				entity.push_back(new Object(world,pos,resource,Object::TYPE::STARDUST,stats));
+			}
+		}
+		if (i.name.compare("Window") == 0)
+		{
+			for (auto& k : i.objects)
+			{
+				auto pos = k.GetPosition();
+				entity.push_back(new Object(world,pos,resource,Object::TYPE::WINDOW,stats));
 			}
 		}
 	}
@@ -91,7 +88,6 @@ void LevelManager::getEnemyLayer(ResourceCollection& resource,BoxWorld* world,En
 			{
 				auto pos = k.GetPosition();
 				entity.push_back(new Shade(resource,world,size,pos));
-				
 			}
 		}
 	}

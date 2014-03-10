@@ -4,8 +4,6 @@
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/Joystick.hpp>
 
-#include <iostream>
-
 namespace Keys
 {
 	enum KeyMap

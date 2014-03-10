@@ -483,4 +483,9 @@ void Player::updateSound()
 		mWalkSound.setLoop(false);
 	}
 }
+
+b2Body* Player::getBody()
+{
+	return body;
+}
 #pragma endregion

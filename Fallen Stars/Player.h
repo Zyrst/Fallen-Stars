@@ -49,6 +49,7 @@ public:
 	void updateAnimation();
 	void updateSound();
 	void setState(PLAYER_STATE state);
+	b2Body* getBody();
 private:
 	void setupSensors(sf::Vector2f& pos, sf::Vector2f& size);
 	void updateFlashlightPosition();
