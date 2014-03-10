@@ -3,6 +3,9 @@
 #include <Box2D\Box2D.h>
 #include "BoxWorld.h"
 #include "VecConverter.h"
+#include <iostream>
+#include <time.h>
+#include "StatManager.h"
 
 
 StarCallBack::StarCallBack(b2Fixture* owner)
@@ -43,16 +46,18 @@ Player* StarCallBack::getPlayer()
 	return player;
 }
 
-Object::Object(BoxWorld* world, sf::Vector2f& position, ResourceCollection& resource, TYPE type) :
+Object::Object(BoxWorld* world, sf::Vector2f& position, ResourceCollection& resource, TYPE type, StatManager* stats) :
 	Entity(world,sf::Vector2f(100, 100),position),
 	mResource(resource),
 	mType(type),
-	starCallBack(new StarCallBack(body->GetFixtureList()))
+	starCallBack(new StarCallBack(body->GetFixtureList())),
+	mStats(stats)
 {
 
 	mStarDustSound = mResource.getSound("Assets/Sound/PickUp.wav");
 	mStarSound = mResource.getSound("Assets/Sound/StarPickUp.wav");
 
+	
 	if(mType == TYPE::STAR)
 	{
 
@@ -105,15 +110,21 @@ Object::Object(BoxWorld* world, sf::Vector2f& position, ResourceCollection& reso
 
 	if(mType == TYPE::WINDOW)
 	{
-		/*Window animation, windowanime.png is placeholdername*/
-		auto &window = mResource.getTexture("Assets/Characters/WindowAnime.png");
+		/*Window animation, window anime.png is placeholdername*/
+		auto &window = mResource.getTexture("Assets/Prop/Window anime.png");
+
+		setupSensor(position);
+		body->SetGravityScale(0.0f);
+		body->SetFixedRotation(true);
+		//body->GetFixtureList()->SetSensor(true);
 
 		sf::Vector2i windowSize = static_cast<sf::Vector2i>(window.getSize());
-		sf::Vector2i frameSize(400, 207); /*Alter to right size if doesn't work*/
+		sf::Vector2i frameSize(400, 287); /*Alter to right size if doesn't work*/
 		SpriteSheet windowSheet (frameSize, windowSize);
 		std::vector<sf::IntRect> windowFrames = windowSheet.getAllFrames();
 
 		mWindow = new Animation(windowFrames, window);
+		anime.setLooped(false);
 		anime.setAnimation(*mWindow);
 		updateSpriteOrigin(SpriteOrigin::ORIGIN_CENTER, SpriteOrigin::ORIGIN_CENTER);
 	}
@@ -123,6 +134,7 @@ Object::~Object()
 {
 	delete mStar;
 	delete mStarDust;
+	delete mWindow;
 }
 	
 void Object::update(sf::Time deltaTime)
@@ -133,12 +145,37 @@ void Object::update(sf::Time deltaTime)
 	{
 		playSound(STARDUST);
 		mAlive = false;
+		mStats->stardust +=1;
+		std::cout << "Current amount of StarDust: " << mStats->stardust << std::endl;
 	}
 	if (isAlive() && starCallBack->isColliding() && getType() == STAR)
 	{
 		playSound(STAR);
 		mAlive = false;
+		mStats->stars +=1;
+		std::cout << "Current amounts of stars:" << mStats->stars << std::endl;
 	}
+
+	/*Random Window opening, 'cuz why not*/
+	/*std::srand(time(NULL));
+	int result = std::rand() % 20 +1;*/
+	//std::cout << mClock.getElapsedTime().asSeconds() << std::endl;
+	if (mClock.getElapsedTime().asSeconds() > 5.0f /*result % 4 == 0*/)
+	{
+		anime.play();
+		mClock.restart();
+		//Tanken är att window ska spela bara var 5;e sekund, beror på designers
+		if (getType() == WINDOW && starCallBack->isColliding())
+		{
+		 auto player = starCallBack->getPlayer();
+		 auto distance = player->getPosition().x - getPosition().x;
+		 std::cout << distance << std::endl;
+		 if (distance > 1)
+		{
+		}
+	}
+	
+}
 }
 
 Object::TYPE Object::getType()
@@ -166,4 +203,35 @@ void Object::playSound(TYPE type)
 	{
 		mStarSound.play();
 	}
+}
+
+void Object::setupSensor(sf::Vector2f position)
+{
+	b2Vec2 bodySize = Convert::sfmlToB2(sf::Vector2f(400.0f, 287.0f));
+
+	b2Vec2 bodyPosRight;
+	b2Vec2 bodyPosLeft;
+
+	bodyPosLeft.x = position.x;
+	bodyPosLeft.y = position.y;
+	
+	bodyPosRight.x = position.x;
+	bodyPosRight.y = position.y;
+
+	//Left shape
+	b2PolygonShape shapeLeft;
+	shapeLeft.SetAsBox(-0.2f, 0.2f, bodyPosLeft, 0);
+	b2FixtureDef defLeft;
+	defLeft.isSensor = true;
+	defLeft.shape = &shapeLeft;
+	b2Fixture* fixLeft = body->CreateFixture(&defLeft);
+
+	//Right shape
+	b2PolygonShape shapeRight;
+	shapeRight.SetAsBox(0.2f, 0.2f, bodyPosRight, 0);
+	b2FixtureDef defRight;
+	defRight.isSensor = true;
+	defRight.shape = &shapeRight;
+	b2Fixture* fixRight = body->CreateFixture(&defRight);
+	
 }
