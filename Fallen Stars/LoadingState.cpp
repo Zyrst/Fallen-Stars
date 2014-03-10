@@ -18,6 +18,8 @@ LoadingState::LoadingState(State* nextState):
 void LoadingState::load()
 {
 	// TODO Load loading background
+	sf::Texture& texture = mPermanentResources.getTexture("Assets/Menu/Loading.png");
+	sprite.setTexture(texture);
 }
 
 void loadStateResources(LoadingState* loadingState)
@@ -58,14 +60,8 @@ void LoadingState::update(const sf::Time& deltaTime)
 void LoadingState::render(sf::RenderWindow& window)
 {
 	// Display loading screen
-
-	// TODO Replace this!
-	/*float animationTime = 2;
-	float sineWave = (float) sin(mTime.asSeconds() / animationTime * (2.0*3.141592));
-	int brightness = (int) (127.5 + sineWave * 127.5);
-	*/
-
 	window.clear(sf::Color(0, 0, 255, 255));
+	window.draw(sprite);
 }
 
 void LoadingState::handleAction(Controls::Action action, Controls::KeyState) 
@@ -81,3 +77,5 @@ State* LoadingState::getNextState()
 {
 	return mState;
 }
+
+ResourceCollection LoadingState::mPermanentResources = ResourceCollection();

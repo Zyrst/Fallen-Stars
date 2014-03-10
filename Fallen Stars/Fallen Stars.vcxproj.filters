@@ -189,9 +189,6 @@
     <ClCompile Include="Button.cpp">
       <Filter>Source Files\Overlay\Menu</Filter>
     </ClCompile>
-    <ClCompile Include="DialogueOverlay.cpp">
-      <Filter>Source Files\Overlay</Filter>
-    </ClCompile>
     <ClCompile Include="Occluder.cpp">
       <Filter>Source Files\Light</Filter>
     </ClCompile>
@@ -239,6 +236,9 @@
     </ClCompile>
     <ClCompile Include="StatManager.cpp">
       <Filter>Source Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="SiriusOverlay.cpp">
+      <Filter>Source Files\Overlay</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -359,9 +359,6 @@
     <ClInclude Include="Button.h">
       <Filter>Header Files\Overlay\Menu</Filter>
     </ClInclude>
-    <ClInclude Include="DialogueOverlay.h">
-      <Filter>Header Files\Overlay</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
     </ClInclude>
     <ClInclude Include="Occluder.h">
@@ -404,6 +401,9 @@
     </ClInclude>
     <ClInclude Include="StatManager.h">
       <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="SiriusOverlay.h">
+      <Filter>Header Files\Overlay</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

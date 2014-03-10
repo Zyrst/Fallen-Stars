@@ -24,7 +24,7 @@ PuzzleState::~PuzzleState()
 
 void PuzzleState::load()
 {
-	mBackground.setTexture(mResourceCollection.getTexture("Assets/Puzzle/Background.png"));
+	mBackground.setTexture(mResourceCollection.getTexture("Assets/Puzzle/" + mLevel + "Background.png"));
 
 	std::random_device randomDevice;
 	std::mt19937 twisterEngine(randomDevice());

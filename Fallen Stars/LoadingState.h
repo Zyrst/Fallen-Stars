@@ -25,4 +25,6 @@ private:
 
 	sf::Sprite sprite;
 	sf::Time mTime;
+
+	static ResourceCollection mPermanentResources;
 };

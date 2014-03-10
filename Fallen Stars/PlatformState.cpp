@@ -5,8 +5,9 @@
 #include "MainMenuState.h"
 
 PlatformState::PlatformState(std::string levelname)
-: mLevelName(levelname)
-, mLightSolver(new LightSolver())
+:	mLevelName(levelname)
+,	mLightSolver(new LightSolver())
+,	drawDebugShapes(true)
 {
 }
 
@@ -37,7 +38,7 @@ void PlatformState::load()
 	mLevel->getObjectLayer(mResourceCollection,mWorld,mEntityVector,mStats);
 	mLevel->getEnemyLayer(mResourceCollection,mWorld,mEntityVector,size);
 	mLevel->getSoundLayer(mMusicVector, mResourceCollection);
-	
+	mLevel->getSiriusLayer(*this, mResourceCollection);
 
 	for (Entity* e : mEntityVector)
 	{
@@ -81,13 +82,12 @@ void PlatformState::update(const sf::Time& deltaTime)
 		mFirstSong->setLoop(true);
 	}
 
-	mListener.setPosition(mPlayer->getPosition().x,mPlayer->getPosition().y,0);
+	mListener.setPosition(mPlayer->getPosition().x, mPlayer->getPosition().y,0);
 
 	//Positional sound and music
 	for (auto i = 0; i < mMusicVector.size(); i++)
 	{
-
-		auto x= (mMusicVector[i]->getPosition().x - mListener.getPosition().x) * (mMusicVector[i]->getPosition().x - mListener.getPosition().x);
+		auto x = (mMusicVector[i]->getPosition().x - mListener.getPosition().x) * (mMusicVector[i]->getPosition().x - mListener.getPosition().x);
 		auto y = (mMusicVector[i]->getPosition().y - mListener.getPosition().y) * (mMusicVector[i]->getPosition().y - mListener.getPosition().y);
 		auto distance = std::sqrtf(x + y);
 
@@ -126,7 +126,7 @@ void PlatformState::render(sf::RenderWindow& window)
 	mLevel->getMapLoader().Draw(window, tmx::MapLayer::Foreground);
 
 	/*Remove this to remove the outdrawn collision boxes and other box2d stuff*/
-	mWorld->drawDebug(window);
+	if(drawDebugShapes) mWorld->drawDebug(window);
 }
 
 void PlatformState::handleAction(Controls::Action action, Controls::KeyState keystate)

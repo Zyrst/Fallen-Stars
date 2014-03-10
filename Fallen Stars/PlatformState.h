@@ -36,4 +36,6 @@ private:
 	sf::Music* mFirstSong;
 	sf::Listener mListener;
 	StatManager* mStats;
+
+	bool drawDebugShapes;
 };

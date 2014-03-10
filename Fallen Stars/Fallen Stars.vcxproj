@@ -47,7 +47,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(ProjectDir)\Libraries\SFML-2.1\include;$(ProjectDir)/Libraries/SFML TmxLoader/include;$(ProjectDir)/Libraries/SFML TmxLoader/src;$(ProjectDir)\Libraries\SFML TmxLoader\lib\zlib\include;$(ProjectDir)/Libraries/Box2D;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)\Libraries\SFML-2.1\lib;$(ProjectDir)\Libraries\SFML TmxLoader\lib\zlib\lib</LibraryPath>
+    <LibraryPath>$(ProjectDir)\Libraries\SFML-2.1\lib;C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\lib\;$(ProjectDir)\Libraries\SFML TmxLoader\lib\zlib\lib</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -100,7 +100,7 @@
     <ClCompile Include="Controls.cpp" />
     <ClCompile Include="ConvexOccluder.cpp" />
     <ClCompile Include="debugdraw.cpp" />
-    <ClCompile Include="DialogueOverlay.cpp" />
+    <ClCompile Include="SiriusOverlay.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityLiving.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -149,7 +149,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ConvexOccluder.h" />
     <ClInclude Include="debugdraw.h" />
-    <ClInclude Include="DialogueOverlay.h" />
+    <ClInclude Include="SiriusOverlay.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityLiving.h" />
     <ClInclude Include="LevelTracker.h" />
