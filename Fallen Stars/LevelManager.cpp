@@ -4,6 +4,8 @@
 #include "Shade.h"
 #include "LightSolver.h"
 #include "SiriusOverlay.h"
+#include <tmx/MapObject.h>
+
 
 LevelManager::LevelManager(std::string levelname):
 	mLevel(levelname),

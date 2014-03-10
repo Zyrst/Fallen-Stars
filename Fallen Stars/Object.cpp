@@ -116,7 +116,7 @@ Object::Object(BoxWorld* world, sf::Vector2f& position, ResourceCollection& reso
 		setupSensor(position);
 		body->SetGravityScale(0.0f);
 		body->SetFixedRotation(true);
-		//body->GetFixtureList()->SetSensor(true);
+		body->GetFixtureList()->SetSensor(true);
 
 		sf::Vector2i windowSize = static_cast<sf::Vector2i>(window.getSize());
 		sf::Vector2i frameSize(400, 287); /*Alter to right size if doesn't work*/

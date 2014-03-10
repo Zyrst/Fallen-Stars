@@ -68,9 +68,8 @@ Ankh.NoLoad
 
 # Libraries #
 #############
-Libraries/
 SFML-2.1/
-SFML-TmxLoader/
+Box2D/
 
 # Assets #
 ##########
