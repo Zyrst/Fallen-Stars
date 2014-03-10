@@ -48,7 +48,7 @@ MapLoader::MapLoader(const std::string& mapDirectory)
 	AddSearchPath(mapDirectory);
 }
 
-bool MapLoader::Load(const std::string& map)
+bool MapLoader::Load(const std::string& map, ResourceCollection* resource)
 {
 	std::string mapPath = m_searchPaths[0] + m_FileFromPath(map);
 	m_Unload(); //clear any old data first
@@ -72,7 +72,7 @@ bool MapLoader::Load(const std::string& map)
 	}
 	if(!(m_mapLoaded = m_ParseMapNode(mapNode))) return false;
 	//load map textures / tilesets
-	if(!(m_mapLoaded = m_ParseTileSets(mapNode))) return false;
+	if(!(m_mapLoaded = m_ParseTileSets(mapNode, resource))) return false;
 
 	//actually we need to traverse map node children and parse each layer as found
 	pugi::xml_node currentNode = mapNode.first_child();
@@ -132,7 +132,7 @@ void MapLoader::UpdateQuadTree(const sf::FloatRect& rootArea)
 	m_rootNode.Clear(rootArea);
 	for(const auto& layer : m_layers)
 	{
-		for(const auto& object : layer.objects)
+		for(const auto& object : layer->objects)
 		{
 			m_rootNode.Insert(object);
 		}
@@ -147,12 +147,12 @@ std::vector<MapObject*> MapLoader::QueryQuadTree(const sf::FloatRect& testArea)
 	return m_rootNode.Retrieve(testArea);
 }
 
-std::vector<MapLayer>& MapLoader::GetLayers()
+std::vector<MapLayer*>& MapLoader::GetLayers()
 {
 	return m_layers;
 }
 
-const std::vector<MapLayer>& MapLoader::GetLayers() const
+const std::vector<MapLayer*>& MapLoader::GetLayers() const
 {
 	return m_layers;
 }
@@ -165,27 +165,27 @@ void MapLoader::Draw(sf::RenderTarget& rt, MapLayer::DrawType type, bool debug)
 	default:
 	case MapLayer::All:
 		for(const auto& l : m_layers)
-			rt.draw(l);
+			rt.draw(*l);
 		break;
 	case MapLayer::Back:
 		{
 		//remember front of vector actually draws furthest back
-		const MapLayer& layer = m_layers.front();
-		m_DrawLayer(rt, layer, debug);
+		const MapLayer* layer = m_layers.front();
+		m_DrawLayer(rt, *layer, debug);
 		}
 		break;
 	case MapLayer::Front:
 		{
-		const MapLayer& layer = m_layers.back();
-		m_DrawLayer(rt, layer, debug);
+		const MapLayer* layer = m_layers.back();
+		m_DrawLayer(rt, *layer, debug);
 		}
 		break;
 	case MapLayer::Debug:
 		for(auto layer : m_layers)
 		{
-			if(layer.type == ObjectGroup)
+			if(layer->type == ObjectGroup)
 			{
-				for(const auto& object : layer.objects)
+				for(const auto& object : layer->objects)
 					if (m_bounds.intersects(object.GetAABB()))
 						object.DrawDebugShape(rt);
 			}
@@ -194,34 +194,24 @@ void MapLoader::Draw(sf::RenderTarget& rt, MapLayer::DrawType type, bool debug)
 		rt.draw(m_rootNode);
 		break;
 	case MapLayer::Background:
-		for (auto layer : m_layers)
+		for (MapLayer* l : m_backgroundLayers)
 		{
-			if (layer.type == Layer)
-			{
-				if (layer.name == "Background") 
-					{
-						m_DrawLayer(rt, layer, debug);
-					}
-			}
+			m_DrawLayer(rt, *l, debug);
 		}
 		break;
 	case MapLayer::Foreground:
-		for (auto layer : m_layers)
+		for (MapLayer* l : m_foregroundLayers)
 		{
-			if(layer.type == Layer)
-			{
-				if (layer.name == "Foreground")
-					m_DrawLayer(rt, layer, debug);
-			}
+			m_DrawLayer(rt, *l, debug);
 		}
 		break;
 	case MapLayer::Object:
-		for (auto layer : m_layers)
+		for (auto& layer : m_layers)
 		{
-			if (layer.type == ObjectGroup)
+			if (layer->type == ObjectGroup)
 			{
-				if (layer.name == "Object")
-					m_DrawLayer(rt, layer, debug);
+				if (layer->name == "Object")
+					m_DrawLayer(rt, *layer, debug);
 			}
 		}
 		break;
@@ -231,7 +221,7 @@ void MapLoader::Draw(sf::RenderTarget& rt, MapLayer::DrawType type, bool debug)
 void MapLoader::Draw(sf::RenderTarget& rt, sf::Uint16 index, bool debug)
 {
 	m_SetDrawingBounds(rt.getView());
-	m_DrawLayer(rt, m_layers[index], debug);
+	m_DrawLayer(rt, *m_layers[index], debug);
 }
 
 sf::Vector2f MapLoader::IsometricToOrthogonal(const sf::Vector2f& projectedCoords)
@@ -263,7 +253,7 @@ std::string MapLoader::GetPropertyString(const std::string& name)
 
 void MapLoader::SetLayerShader(sf::Uint16 layerId, const sf::Shader& shader)
 {
-	m_layers[layerId].SetShader(shader);
+	m_layers[layerId]->SetShader(shader);
 }
 
 bool MapLoader::QuadTreeAvailable() const

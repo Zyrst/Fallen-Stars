@@ -32,18 +32,22 @@ it freely, subject to the following restrictions:
 #include <zlib.h>
 #include <cstring>
 
+//Sorry for ugly include :(((
+#include "../../../ResourceCollection.h"
 
 using namespace tmx;
 
 void MapLoader::m_Unload()
 {
-	for (sf::Texture* txt : m_tilesetTextures)
+	for (MapLayer* l : m_layers)
 	{
-		delete txt;
+		delete l;
 	}
 
 	m_tilesetTextures.clear();
 	m_layers.clear();
+	m_backgroundLayers.clear();
+	m_foregroundLayers.clear();
 	m_imageLayerTextures.clear();
 	m_mapLoaded = false;
 	m_quadTreeAvailable = false;
@@ -117,7 +121,7 @@ bool MapLoader::m_ParseMapNode(const pugi::xml_node& mapNode)
 	return true;
 }
 
-bool MapLoader::m_ParseTileSets(const pugi::xml_node& mapNode)
+bool MapLoader::m_ParseTileSets(const pugi::xml_node& mapNode, ResourceCollection* resource)
 {
 	pugi::xml_node tileset;
 	if(!(tileset = mapNode.child("tileset")))
@@ -160,11 +164,11 @@ bool MapLoader::m_ParseTileSets(const pugi::xml_node& mapNode)
 			//try parsing tileset node
 			pugi::xml_node ts = tsxDoc.child("tileset");
 
-			if(!m_ProcessTiles(ts)) return false;
+			if(!m_ProcessTiles(ts, resource)) return false;
 		}
 		else //try for tmx map file data
 		{
-			if(!m_ProcessTiles(tileset)) return false;
+			if(!m_ProcessTiles(tileset, resource)) return false;
 		}
 
 		//move on to next tileset node
@@ -174,7 +178,7 @@ bool MapLoader::m_ParseTileSets(const pugi::xml_node& mapNode)
 	return true;
 }
 
-bool MapLoader::m_ProcessTiles(const pugi::xml_node& tilesetNode)
+bool MapLoader::m_ProcessTiles(const pugi::xml_node& tilesetNode, ResourceCollection* resource)
 {
 	sf::Uint16 tileWidth, tileHeight, spacing, margin;
 
@@ -200,6 +204,7 @@ bool MapLoader::m_ProcessTiles(const pugi::xml_node& tilesetNode)
 
 	//process image from disk
 	std::string imageName = m_FileFromPath(imageNode.attribute("source").as_string());
+
 	/*sf::Image sourceImage = m_LoadImage(imageName);
 	if(m_failedImage)
 	{
@@ -213,8 +218,8 @@ bool MapLoader::m_ProcessTiles(const pugi::xml_node& tilesetNode)
 		sourceImage.createMaskFromColor(m_ColourFromHex(imageNode.attribute("trans").as_string()));*/
 
 	//store image as a texture for drawing with vertex array
-	sf::Texture* tileset = new sf::Texture();
-	tileset->loadFromFile(std::string("Assets/map/") + imageName);
+	sf::Texture* tileset = &resource->getTexture(std::string("Assets/map/") + imageName);
+
 	m_tilesetTextures.push_back(tileset);
 
 	//parse offset node if it exists - TODO store somewhere tileset info can be referenced
@@ -257,25 +262,25 @@ bool MapLoader::m_ParseLayer(const pugi::xml_node& layerNode)
 {
 	std::cerr << "Found standard map layer " << layerNode.attribute("name").as_string() << std::endl;
 
-	MapLayer layer(Layer);
-	if(layerNode.attribute("name")) layer.name = layerNode.attribute("name").as_string();
-	if(layerNode.attribute("opacity")) layer.opacity = layerNode.attribute("opacity").as_float();
-	if(layerNode.attribute("visible")) layer.visible = layerNode.attribute("visible").as_bool();
+	MapLayer* layer = new MapLayer(Layer);
+	if (layerNode.attribute("name")) layer->name = layerNode.attribute("name").as_string();
+	if (layerNode.attribute("opacity")) layer->opacity = layerNode.attribute("opacity").as_float();
+	if (layerNode.attribute("visible")) layer->visible = layerNode.attribute("visible").as_bool();
 
 	pugi::xml_node dataNode;
-	if(!(dataNode = layerNode.child("data")))
+	if (!(dataNode = layerNode.child("data")))
 	{
 		std::cerr << "Layer data missing or corrupt. Map not loaded." << std::endl;
 		return false;
 	}
 	//decode and decompress data first if necessary. See https://github.com/bjorn/tiled/wiki/TMX-Map-Format#data
 	//for explanation of bytestream retrieved when using compression
-	if(dataNode.attribute("encoding"))
+	if (dataNode.attribute("encoding"))
 	{
 		std::string encoding = dataNode.attribute("encoding").as_string();
 		std::string data = dataNode.text().as_string();
 
-		if(encoding == "base64")
+		if (encoding == "base64")
 		{
 			std::cerr << "Found Base64 encoded layer data, decoding..." << std::endl;
 			//remove any newlines or white space created by tab spaces in document
@@ -290,14 +295,14 @@ bool MapLoader::m_ParseLayer(const pugi::xml_node& layerNode)
 			byteArray.reserve(expectedSize);
 
 			//check for compression (only used with base64 encoded data)
-			if(dataNode.attribute("compression"))
+			if (dataNode.attribute("compression"))
 			{
-				std::string compression	= dataNode.attribute("compression").as_string();
+				std::string compression = dataNode.attribute("compression").as_string();
 				std::cerr << "Found " << compression << " compressed layer data, decompressing..." << std::endl;
 
 				//decompress with zlib
 				int dataSize = data.length() * sizeof(unsigned char);
-				if(!m_Decompress(data.c_str(), byteArray, dataSize, expectedSize))
+				if (!m_Decompress(data.c_str(), byteArray, dataSize, expectedSize))
 				{
 					std::cerr << "Failed to decompress map data. Map not loaded." << std::endl;
 					return false;
@@ -311,20 +316,20 @@ bool MapLoader::m_ParseLayer(const pugi::xml_node& layerNode)
 			//extract tile GIDs using bitshift (See https://github.com/bjorn/tiled/wiki/TMX-Map-Format#data) and add the tiles to layer
 			sf::Uint16 x, y;
 			x = y = 0;
-			for(int i = 0; i < expectedSize - 3; i +=4)
+			for (int i = 0; i < expectedSize - 3; i += 4)
 			{
 				int tileGID = byteArray[i] | byteArray[i + 1] << 8 | byteArray[i + 2] << 16 | byteArray[i + 3] << 24;
-				m_AddTileToLayer(layer, x, y, tileGID);
+				m_AddTileToLayer(*layer, x, y, tileGID);
 
 				x++;
-				if(x == m_width)
+				if (x == m_width)
 				{
 					x = 0;
 					y++;
 				}
 			}
 		}
-		else if(encoding == "csv")
+		else if (encoding == "csv")
 		{
 			std::cerr << "CSV encoded layer data found." << std::endl;
 
@@ -336,18 +341,18 @@ bool MapLoader::m_ParseLayer(const pugi::xml_node& layerNode)
 			while (datastream >> i)
 			{
 				tileGIDs.push_back(i);
-				if(datastream.peek() == ',')
+				if (datastream.peek() == ',')
 					datastream.ignore();
 			}
 
 			//create tiles from IDs
 			sf::Uint16 x, y;
 			x = y = 0;
-			for(unsigned int i = 0; i < tileGIDs.size(); i++)
+			for (unsigned int i = 0; i < tileGIDs.size(); i++)
 			{
-				m_AddTileToLayer(layer, x, y, tileGIDs[i]);
+				m_AddTileToLayer(*layer, x, y, tileGIDs[i]);
 				x++;
-				if(x == m_width)
+				if (x == m_width)
 				{
 					x = 0;
 					y++;
@@ -364,7 +369,7 @@ bool MapLoader::m_ParseLayer(const pugi::xml_node& layerNode)
 	{
 		std::cerr << "Found unencoded data." << std::endl;
 		pugi::xml_node tileNode;
-		if(!(tileNode = dataNode.child("tile")))
+		if (!(tileNode = dataNode.child("tile")))
 		{
 			std::cerr << "No tile data found. Map not loaded." << std::endl;
 			return false;
@@ -372,13 +377,13 @@ bool MapLoader::m_ParseLayer(const pugi::xml_node& layerNode)
 
 		sf::Uint16 x, y;
 		x = y = 0;
-		while(tileNode)
+		while (tileNode)
 		{
 			sf::Uint16 gid = tileNode.attribute("gid").as_int();
-			m_AddTileToLayer(layer, x, y, gid);
+			m_AddTileToLayer(*layer, x, y, gid);
 			tileNode = tileNode.next_sibling("tile");
 			x++;
-			if(x == m_width)
+			if (x == m_width)
 			{
 				x = 0;
 				y++;
@@ -387,13 +392,23 @@ bool MapLoader::m_ParseLayer(const pugi::xml_node& layerNode)
 	}
 
 	//parse any layer properties
-	if(pugi::xml_node propertiesNode = layerNode.child("properties"))
-		m_ParseLayerProperties(propertiesNode, layer);
+	if (pugi::xml_node propertiesNode = layerNode.child("properties"))
+		m_ParseLayerProperties(propertiesNode, *layer);
 
 	//convert layer tile coords to isometric if needed
-	if(m_orientation == Isometric) m_SetIsometricCoords(layer);
+	if (m_orientation == Isometric) m_SetIsometricCoords(*layer);
 
 	m_layers.push_back(layer);
+
+	if (layer->name.compare("Background") == 0)
+	{
+		m_backgroundLayers.push_back(layer);
+	}
+	else if (layer->name.compare("Foreground") == 0)
+	{
+		m_foregroundLayers.push_back(layer);
+	}
+
 	return true;
 }
 
@@ -468,26 +483,26 @@ bool MapLoader::m_ParseObjectgroup(const pugi::xml_node& groupNode)
 	std::cerr << "Found object layer " << groupNode.attribute("name").as_string() << std::endl;
 
 	pugi::xml_node objectNode;
-	if(!(objectNode = groupNode.child("object")))
+	if (!(objectNode = groupNode.child("object")))
 	{
 		std::cerr << "Object group contains no objects" << std::endl;
 		return true;
 	}
 
 	//add layer to map layers
-	MapLayer layer(ObjectGroup);
+	MapLayer* layer = new MapLayer(ObjectGroup);
 
-	layer.name = groupNode.attribute("name").as_string();
-	if(groupNode.attribute("opacity")) layer.opacity = groupNode.attribute("opacity").as_float();
-	if(pugi::xml_node propertiesNode = groupNode.child("properties"))
-		m_ParseLayerProperties(propertiesNode, layer);
+	layer->name = groupNode.attribute("name").as_string();
+	if (groupNode.attribute("opacity")) layer->opacity = groupNode.attribute("opacity").as_float();
+	if (pugi::xml_node propertiesNode = groupNode.child("properties"))
+		m_ParseLayerProperties(propertiesNode, *layer);
 	//NOTE we push the layer onto the vector at the end of the function in case we add any objects
 	//with tile data to the layer's tiles property
 
 	//parse all object nodes into MapObjects
-	while(objectNode)
+	while (objectNode)
 	{
-		if(!objectNode.attribute("x") || !objectNode.attribute("y"))
+		if (!objectNode.attribute("x") || !objectNode.attribute("y"))
 		{
 			std::cerr << "Object missing position data. Map not loaded." << std::endl;
 			m_Unload();
@@ -497,23 +512,23 @@ bool MapLoader::m_ParseObjectgroup(const pugi::xml_node& groupNode)
 
 		//set position
 		sf::Vector2f position(objectNode.attribute("x").as_float(),
-											objectNode.attribute("y").as_float());
+			objectNode.attribute("y").as_float());
 		position = IsometricToOrthogonal(position);
 		object.SetPosition(position);
 
 		//set size if specified
-		if(objectNode.attribute("width") && objectNode.attribute("height"))
+		if (objectNode.attribute("width") && objectNode.attribute("height"))
 		{
 			sf::Vector2f size(objectNode.attribute("width").as_float(),
-							objectNode.attribute("height").as_float());
-			if(objectNode.child("ellipse"))
+				objectNode.attribute("height").as_float());
+			if (objectNode.child("ellipse"))
 			{
 				//add points to make ellipse
 				const float x = size.x / 2.f;
 				const float y = size.y / 2.f;
 				const float tau = 6.283185f;
 				const float step = tau / 16.f; //number of points to make up ellipse
-				for(float angle = 0.f; angle < tau; angle += step)
+				for (float angle = 0.f; angle < tau; angle += step)
 				{
 					sf::Vector2f point(x + x * cos(angle), y + y * sin(angle));
 					object.AddPoint(IsometricToOrthogonal(point));
@@ -532,25 +547,25 @@ bool MapLoader::m_ParseObjectgroup(const pugi::xml_node& groupNode)
 			object.SetSize(size);
 		}
 		//else parse poly points
-		else if(objectNode.child("polygon") || objectNode.child("polyline"))
+		else if (objectNode.child("polygon") || objectNode.child("polyline"))
 		{
-			if(objectNode.child("polygon"))
+			if (objectNode.child("polygon"))
 				object.SetShapeType(Polygon);
 			else object.SetShapeType(Polyline);
 
 			//split coords into pairs
-			if(objectNode.first_child().attribute("points"))
+			if (objectNode.first_child().attribute("points"))
 			{
 				std::cerr << "Processing poly shape points..." << std::endl;
 				std::string pointlist = objectNode.first_child().attribute("points").as_string();
 				std::stringstream stream(pointlist);
 				std::vector<std::string> points;
 				std::string pointstring;
-				while(std::getline(stream, pointstring, ' '))
+				while (std::getline(stream, pointstring, ' '))
 					points.push_back(pointstring);
 
 				//parse each pair into sf::vector2i
-				for(unsigned int i = 0; i < points.size(); i++)
+				for (unsigned int i = 0; i < points.size(); i++)
 				{
 					std::vector<float> coords;
 					std::stringstream coordstream(points[i]);
@@ -559,7 +574,7 @@ bool MapLoader::m_ParseObjectgroup(const pugi::xml_node& groupNode)
 					while (coordstream >> j)
 					{
 						coords.push_back(j);
-						if(coordstream.peek() == ',')
+						if (coordstream.peek() == ',')
 							coordstream.ignore();
 					}
 					object.AddPoint(IsometricToOrthogonal(sf::Vector2f(coords[0], coords[1])));
@@ -570,7 +585,7 @@ bool MapLoader::m_ParseObjectgroup(const pugi::xml_node& groupNode)
 				std::cerr << "Points for polygon or polyline object are missing" << std::endl;
 			}
 		}
-		else if(!objectNode.attribute("gid")) //invalid  attributes
+		else if (!objectNode.attribute("gid")) //invalid  attributes
 		{
 			std::cerr << "Objects with no parameters found, skipping.." << std::endl;
 			objectNode = objectNode.next_sibling("object");
@@ -578,10 +593,10 @@ bool MapLoader::m_ParseObjectgroup(const pugi::xml_node& groupNode)
 		}
 
 		//parse object node property values
-		if(pugi::xml_node propertiesNode = objectNode.child("properties"))
+		if (pugi::xml_node propertiesNode = objectNode.child("properties"))
 		{
 			pugi::xml_node propertyNode = propertiesNode.child("property");
-			while(propertyNode)
+			while (propertyNode)
 			{
 				std::string name = propertyNode.attribute("name").as_string();
 				std::string value = propertyNode.attribute("value").as_string();
@@ -593,12 +608,12 @@ bool MapLoader::m_ParseObjectgroup(const pugi::xml_node& groupNode)
 		}
 
 		//set object properties
-		if(objectNode.attribute("name")) object.SetName(objectNode.attribute("name").as_string());
-		if(objectNode.attribute("type")) object.SetType(objectNode.attribute("type").as_string());
+		if (objectNode.attribute("name")) object.SetName(objectNode.attribute("name").as_string());
+		if (objectNode.attribute("type")) object.SetType(objectNode.attribute("type").as_string());
 		//if(objectNode.attribute("rotation")) {} //TODO handle rotation attribute
-		if(objectNode.attribute("visible")) object.SetVisible(objectNode.attribute("visible").as_bool());
-		if(objectNode.attribute("gid"))
-		{		
+		if (objectNode.attribute("visible")) object.SetVisible(objectNode.attribute("visible").as_bool());
+		if (objectNode.attribute("gid"))
+		{
 			sf::Uint32 gid = objectNode.attribute("gid").as_int();
 
 			std::cerr << "Found object with tile GID " << gid << std::endl;
@@ -606,9 +621,9 @@ bool MapLoader::m_ParseObjectgroup(const pugi::xml_node& groupNode)
 			object.Move(0.f, static_cast<float>(-m_tileHeight)); //offset for tile origins being at the bottom in Tiled
 			const sf::Uint16 x = static_cast<sf::Uint16>(object.GetPosition().x / m_tileWidth);
 			const sf::Uint16 y = static_cast<sf::Uint16>(object.GetPosition().y / m_tileHeight);
-			
+
 			sf::Vector2f offset(object.GetPosition().x - (x * m_tileWidth), (object.GetPosition().y - (y * m_tileHeight)));
-			object.SetQuad(m_AddTileToLayer(layer, x, y, gid, offset));
+			object.SetQuad(m_AddTileToLayer(*layer, x, y, gid, offset));
 			object.SetShapeType(Tile);
 
 			TileInfo info = m_tileInfo[gid];
@@ -623,14 +638,14 @@ bool MapLoader::m_ParseObjectgroup(const pugi::xml_node& groupNode)
 			object.SetSize(sf::Vector2f(width, height));
 
 			//move object if tile not map tile size
-			if(info.Size.y != m_tileHeight)
+			if (info.Size.y != m_tileHeight)
 				object.Move(0.f, static_cast<float>(m_tileHeight - info.Size.y) / 2.f);
 		}
-		object.SetParent(layer.name);
+		object.SetParent(layer->name);
 
 		//call objects create debug shape function with colour / opacity
 		sf::Color debugColour;
-		if(groupNode.attribute("color"))
+		if (groupNode.attribute("color"))
 		{
 			std::string colour = groupNode.attribute("color").as_string();
 			//crop leading hash and pop the last (duplicated) char
@@ -639,19 +654,19 @@ bool MapLoader::m_ParseObjectgroup(const pugi::xml_node& groupNode)
 			debugColour = m_ColourFromHex(colour.c_str());
 		}
 		else debugColour = sf::Color(127u, 127u, 127u);
-		debugColour.a = static_cast<sf::Uint8>(255.f * layer.opacity);
+		debugColour.a = static_cast<sf::Uint8>(255.f * layer->opacity);
 		object.CreateDebugShape(debugColour);
 
 		//creates line segments from any available points
 		object.CreateSegments();
 
 		//add objects to vector
-		layer.objects.push_back(object);
+		layer->objects.push_back(object);
 		objectNode = objectNode.next_sibling("object");
 	}
 
 	m_layers.push_back(layer); //do this last
-	std::cerr << "Processed " << layer.objects.size() << " objects" << std::endl;
+	std::cerr << "Processed " << layer->objects.size() << " objects" << std::endl;
 	return true;
 }
 
@@ -661,7 +676,7 @@ bool MapLoader::m_ParseImageLayer(const pugi::xml_node& imageLayerNode)
 
 	pugi::xml_node imageNode;
 	//load image
-	if(!(imageNode = imageLayerNode.child("image")) || !imageNode.attribute("source"))
+	if (!(imageNode = imageLayerNode.child("image")) || !imageNode.attribute("source"))
 	{
 		std::cerr << "Image layer " << imageLayerNode.attribute("name").as_string() << " missing image source property. Map not loaded." << std::endl;
 		return false;
@@ -669,7 +684,7 @@ bool MapLoader::m_ParseImageLayer(const pugi::xml_node& imageLayerNode)
 
 	std::string imageName = imageNode.attribute("source").as_string();
 	sf::Image image = m_LoadImage(imageName);
-	if(m_failedImage)
+	if (m_failedImage)
 	{
 		std::cerr << "Failed to load image at " << imageName << std::endl;
 		std::cerr << "Please check image exists and add any external paths with AddSearchPath()" << std::endl;
@@ -677,7 +692,7 @@ bool MapLoader::m_ParseImageLayer(const pugi::xml_node& imageLayerNode)
 	}
 
 	//set transparency if required
-	if(imageNode.attribute("trans"))
+	if (imageNode.attribute("trans"))
 	{
 		image.createMaskFromColor(m_ColourFromHex(imageNode.attribute("trans").as_string()));
 	}
@@ -690,19 +705,19 @@ bool MapLoader::m_ParseImageLayer(const pugi::xml_node& imageLayerNode)
 	//add texture to layer as sprite, set layer properties
 	MapTile tile;
 	tile.sprite.setTexture(m_imageLayerTextures.back());
-	MapLayer layer(ImageLayer);
-	layer.name = imageLayerNode.attribute("name").as_string();
-	if(imageLayerNode.attribute("opacity"))
+	MapLayer* layer = new MapLayer(ImageLayer);
+	layer->name = imageLayerNode.attribute("name").as_string();
+	if (imageLayerNode.attribute("opacity"))
 	{
-		layer.opacity = imageLayerNode.attribute("opacity").as_float();
-		sf::Uint8 opacity = static_cast<sf::Uint8>(255.f * layer.opacity);
+		layer->opacity = imageLayerNode.attribute("opacity").as_float();
+		sf::Uint8 opacity = static_cast<sf::Uint8>(255.f * layer->opacity);
 		tile.sprite.setColor(sf::Color(255u, 255u, 255u, opacity));
 	}
-	layer.tiles.push_back(tile);
+	layer->tiles.push_back(tile);
 
 	//parse layer properties
-	if(pugi::xml_node propertiesNode = imageLayerNode.child("properties"))
-		m_ParseLayerProperties(propertiesNode, layer);
+	if (pugi::xml_node propertiesNode = imageLayerNode.child("properties"))
+		m_ParseLayerProperties(propertiesNode, *layer);
 
 	//push back layer
 	m_layers.push_back(layer);
@@ -813,7 +828,7 @@ void MapLoader::draw(sf::RenderTarget& rt, sf::RenderStates states) const
 	m_lastViewPos = view.getCenter();
 
 	for(auto& layer : m_layers)
-		rt.draw(layer);
+		rt.draw(*layer);
 }
 
 //decoding and utility functions

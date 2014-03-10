@@ -60,7 +60,7 @@ void LevelManager::getObjectLayer(ResourceCollection& resource,BoxWorld* world,E
 				entity.push_back(new Object(world,pos,resource, Object::TYPE::STAR,stats));
 			}
 		}
-		if (i.name.compare("StarDust") == 0)
+		if (i->name.compare("StarDust") == 0)
 		{
 			for (auto& k : i->objects)
 			{
@@ -68,9 +68,9 @@ void LevelManager::getObjectLayer(ResourceCollection& resource,BoxWorld* world,E
 				entity.push_back(new Object(world,pos,resource,Object::TYPE::STARDUST,stats));
 			}
 		}
-		if (i.name.compare("Window") == 0)
+		if (i->name.compare("Window") == 0)
 		{
-			for (auto& k : i.objects)
+			for (auto& k : i->objects)
 			{
 				auto pos = k.GetPosition();
 				entity.push_back(new Object(world,pos,resource,Object::TYPE::WINDOW,stats));
@@ -176,10 +176,10 @@ void LevelManager::getSiriusLayer(State& state, ResourceCollection& resource)
 	auto& layers = mapLoader.GetLayers();
 	for (auto& l : layers)
 	{
-		if (l.name.compare("Sirius") == 0)
+		if (l->name.compare("Sirius") == 0)
 		{
 			int id = 0;
-			for (auto& object : l.objects)
+			for (auto& object : l->objects)
 			{
 				sf::FloatRect bounds = object.GetAABB();
 				auto& messages = object.GetPropertyMap();

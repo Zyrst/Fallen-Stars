@@ -39,6 +39,8 @@ it freely, subject to the following restrictions:
 #include <array>
 #include <cassert>
 
+class ResourceCollection;
+
 namespace tmx
 {
 	enum MapOrientation
@@ -53,7 +55,7 @@ namespace tmx
 	public:
 		MapLoader(const std::string& mapDirectory);
 		//loads a given tmx file, returns false on failure
-		bool Load(const std::string& mapFile);
+		bool Load(const std::string& mapFile, ResourceCollection* resource);
 		//adds give path to list of directories to search for assets, such as tile sets
 		void AddSearchPath(const std::string& path);
 		//updates the map's quad tree. Not necessary when not querying the quad tree
@@ -63,8 +65,8 @@ namespace tmx
 		//or intersecting testArea
 		std::vector<MapObject*> QueryQuadTree(const sf::FloatRect& testArea);
 		//returns a vector of map layers
-		std::vector<MapLayer>& GetLayers();
-		const std::vector<MapLayer>& GetLayers() const;
+		std::vector<MapLayer*>& GetLayers();
+		const std::vector<MapLayer*>& GetLayers() const;
 		//draws visible tiles to given target, optionally draw outline of objects for debugging
 		void Draw(sf::RenderTarget& rt, MapLayer::DrawType type, bool debug = false);
 		//overload for drawing layer by index
@@ -95,7 +97,9 @@ namespace tmx
 		mutable sf::Vector2f m_lastViewPos; //save recalc bounds if view not moved
 		std::vector<std::string> m_searchPaths; //additional paths to search for tileset files
 
-		std::vector<MapLayer> m_layers; //layers of map, including image and object layers
+		std::vector<MapLayer*> m_layers; //layers of map, including image and object layers
+		std::vector<MapLayer*> m_backgroundLayers; //Background layers.
+		std::vector<MapLayer*> m_foregroundLayers; //Foreground layers.
 		std::vector<sf::Texture> m_imageLayerTextures;
 		std::vector<sf::Texture*> m_tilesetTextures; //textures created from complete sets used when drawing vertex arrays
 		struct TileInfo //holds texture coords and tileset id of a tile
@@ -120,8 +124,8 @@ namespace tmx
 
 		//utility functions for parsing map data
 		bool m_ParseMapNode(const pugi::xml_node& mapNode);
-		bool m_ParseTileSets(const pugi::xml_node& mapNode);
-		bool m_ProcessTiles(const pugi::xml_node& tilesetNode);
+		bool m_ParseTileSets(const pugi::xml_node& mapNode, ResourceCollection* resource);
+		bool m_ProcessTiles(const pugi::xml_node& tilesetNode, ResourceCollection* resource);
 		bool m_ParseLayer(const pugi::xml_node& layerNode);
 		TileQuad::Ptr m_AddTileToLayer(MapLayer& layer, sf::Uint16 x, sf::Uint16 y, sf::Uint16 gid, const sf::Vector2f& offset = sf::Vector2f());
 		bool m_ParseObjectgroup(const pugi::xml_node& groupNode);
