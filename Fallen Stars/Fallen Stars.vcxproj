@@ -46,7 +46,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(ProjectDir)/Libraries/SFML TmxLoader/include;$(ProjectDir)\Libraries\SFML-2.1\include;$(ProjectDir)\Libraries\SFML TmxLoader\lib\zlib\include;$(ProjectDir)/Libraries/Box2D;D:\Fallen Stars\Fallen Stars\Libraries\Box2D\Build\vs2012\obj\x32\Release\Box2D;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)/Libraries/SFML TmxLoader/include;$(ProjectDir)\Libraries\SFML-2.1\include;$(ProjectDir)\Libraries\SFML TmxLoader\lib\zlib\include;$(ProjectDir)/Libraries/Box2D;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)\Libraries\SFML-2.1\lib;$(ProjectDir)\Libraries\SFML TmxLoader\lib\zlib\lib;$(WindowsSdkDir)\lib;$(VCInstallDir)lib</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
