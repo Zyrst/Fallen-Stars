@@ -240,6 +240,9 @@
     <ClCompile Include="SiriusOverlay.cpp">
       <Filter>Source Files\Overlay</Filter>
     </ClCompile>
+    <ClCompile Include="SiriusMessage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -404,6 +407,9 @@
     </ClInclude>
     <ClInclude Include="SiriusOverlay.h">
       <Filter>Header Files\Overlay</Filter>
+    </ClInclude>
+    <ClInclude Include="SiriusMessage.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
