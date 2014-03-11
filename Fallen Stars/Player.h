@@ -4,6 +4,7 @@
 #include "Animation.h"
 #include "ResourceCollection.h"
 #include "LightSource.h"
+#include "StreetLight.h"
 
 class LightSolver;
 
@@ -49,6 +50,7 @@ public:
 	void updateAnimation();
 	void updateSound();
 	void setState(PLAYER_STATE state);
+	void setActiveStreetLight(StreetLight* light);
 	b2Body* getBody();
 private:
 	void setupSensors(sf::Vector2f& pos, sf::Vector2f& size);
@@ -70,6 +72,8 @@ private:
 
 	LightSource* flashLight;
 	sf::Texture *maskRight, *maskLeft;
+
+	StreetLight* activeStreetLight;
 
 	b2Fixture* collisionFixture;
 };

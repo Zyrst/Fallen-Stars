@@ -9,6 +9,8 @@
 #include "ResourceCollection.h"
 #include "LightSolver.h"
 
+#include <iostream>
+
 static const float SPEED = 3;
 static sf::Texture* flipTexture(const sf::Texture* source)
 {
@@ -101,6 +103,7 @@ Player::Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, Reso
 , flashLight(lightSolver->createLight(2048, 512))
 , maskRight(&resource.getTexture("Assets/Shader/mask.png"))
 , maskLeft(flipTexture(maskRight))
+, activeStreetLight(nullptr)
 , collisionFixture(body->GetFixtureList())
 {
 	flashLight->setColor(sf::Color(255, 255, 0, 10));
@@ -277,6 +280,11 @@ void Player::update(sf::Time deltaTime)
 		else
 		{
 			body->SetLinearVelocity(b2Vec2(0, vel.y));
+		}
+
+		if (downButton && activeStreetLight != nullptr && activeStreetLight->getState() == StreetLight::UNLIT)
+		{
+			activeStreetLight->setState(StreetLight::LIT);
 		}
 
 		//Check for grabbing if we are not flying upwards.
@@ -482,6 +490,11 @@ void Player::updateSound()
 		mWalkSound.stop();
 		mWalkSound.setLoop(false);
 	}
+}
+
+void Player::setActiveStreetLight(StreetLight* light)
+{
+	this->activeStreetLight = light;
 }
 
 b2Body* Player::getBody()
