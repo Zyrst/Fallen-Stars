@@ -35,7 +35,7 @@ void PlatformState::load()
 	auto playerPos = mLevel->getPlayerLayer();
 	mPlayer = new Player(mWorld, size, playerPos, mResourceCollection, mLightSolver);
 	mEntityVector.push_back(mPlayer);
-	mLevel->getObjectLayer(mResourceCollection,mWorld,mEntityVector,mStats);
+	mLevel->getObjectLayer(&mResourceCollection,mWorld,mEntityVector,mStats);
 	mLevel->getEnemyLayer(mResourceCollection,mWorld,mEntityVector,size);
 	mLevel->getSoundLayer(mMusicVector, mResourceCollection);
 	mLevel->getSiriusLayer(*this, mResourceCollection);
@@ -88,9 +88,9 @@ void PlatformState::update(const sf::Time& deltaTime)
 	//Positional sound and music
 	for (auto i = 0; i < mMusicVector.size(); i++)
 	{
-		auto x = (mMusicVector[i]->getPosition().x - mListener.getPosition().x) * (mMusicVector[i]->getPosition().x - mListener.getPosition().x);
-		auto y = (mMusicVector[i]->getPosition().y - mListener.getPosition().y) * (mMusicVector[i]->getPosition().y - mListener.getPosition().y);
-		auto distance = std::sqrtf(x + y);
+		float x = (mMusicVector[i]->getPosition().x - mListener.getPosition().x) * (mMusicVector[i]->getPosition().x - mListener.getPosition().x);
+		float y = (mMusicVector[i]->getPosition().y - mListener.getPosition().y) * (mMusicVector[i]->getPosition().y - mListener.getPosition().y);
+		float distance = std::sqrtf(x + y);
 
 	/*	auto volume = 1500 / (distance+100);
 		mMusicVector[i]->setVolume(volume);*/

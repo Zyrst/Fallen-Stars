@@ -5,6 +5,7 @@
 #include "ResourceCollection.h"
 #include "LightSource.h"
 #include "StreetLight.h"
+#include <SFML/Audio/Sound.hpp>
 
 class LightSolver;
 
@@ -66,8 +67,8 @@ private:
 	Animation* mJump;
 	Animation* mGrab;
 	Animation* mFall;
-	sf::Sound mJumpSound;
-	sf::Sound mWalkSound;
+	sf::Sound* mJumpSound;
+	sf::Sound* mWalkSound;
 	ResourceCollection& mResource;
 
 	LightSource* flashLight;

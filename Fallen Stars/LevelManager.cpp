@@ -47,7 +47,7 @@ sf::Vector2f LevelManager::getPlayerLayer()
 }
 
 //Adds objects to the level, stars/stardust etc
-void LevelManager::getObjectLayer(ResourceCollection& resource,BoxWorld* world,EntityVector& entity, StatManager* stats)
+void LevelManager::getObjectLayer(ResourceCollection* resource,BoxWorld* world,EntityVector& entity, StatManager* stats)
 {
 	auto& layer = mapLoader.GetLayers();
 	for (auto& i : layer)
@@ -153,13 +153,13 @@ void LevelManager::getStreetlightLayer(ResourceCollection& resource, BoxWorld* w
 void LevelManager::getSoundLayer(MusicVector& musicVec,ResourceCollection& resource)
 {
 	auto& layers = mapLoader.GetLayers();
-	auto music = new sf::Music;
 	for (auto& l : layers)
 	{
 		if (l->name.compare("Sound") == 0)
 		{
 			for (auto &s : l->objects)
 			{
+				auto music = new sf::Music;
 				//Get the first property from our map container that generates from the parser and use it to open the sound file
 				music->openFromFile(s.GetFirstPropertyName());
 				music->setPosition(s.GetPosition().x, s.GetPosition().y,0);

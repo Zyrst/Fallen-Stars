@@ -3,6 +3,7 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <thread>
+#include <SFML/System/Time.hpp>
 
 class LoadingState : public State
 {
@@ -13,7 +14,6 @@ public:
 	void update(const sf::Time& deltaTime) override;
 	void render(sf::RenderWindow& window) override;
 	void handleAction(Controls::Action, Controls::KeyState) override;
-
 	State* getNextState();
 	enum LoadProgress {NOT_LOADED, LOADING, DONE_LOADING};
 	void setProgress(LoadProgress progress);

@@ -69,10 +69,10 @@ void ResourceCollection::loadSound(std::string filename)
 	}
 }
 
-sf::Sound ResourceCollection::getSound(std::string filename)
+sf::SoundBuffer* ResourceCollection::getSound(std::string filename)
 {
 	loadSound(filename);
-	return sf::Sound(*mSoundBuffers[filename]);
+	return mSoundBuffers[filename];
 }
 
 

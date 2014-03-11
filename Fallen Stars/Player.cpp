@@ -8,6 +8,7 @@
 #include "SpriteSheet.h"
 #include "ResourceCollection.h"
 #include "LightSolver.h"
+#include <SFML/Audio/SoundBuffer.hpp>
 
 #include <iostream>
 
@@ -154,9 +155,13 @@ Player::Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, Reso
 	
 	updateSpriteOrigin();
 
-	mJumpSound = mResource.getSound("Assets/Sound/Jump.wav");
-	mWalkSound = mResource.getSound("Assets/Sound/Stella_Run_Loop_1.wav");
-	mWalkSound.setVolume(75);
+	mJumpSound = new sf::Sound;
+	mJumpSound->setBuffer(*mResource.getSound("Assets/Sound/Jump.wav"));
+
+	mWalkSound = new sf::Sound;
+	mWalkSound->setBuffer(*mResource.getSound("Assets/Sound/Stella_Run_Loop_1.wav"));
+	mWalkSound->setVolume(75);
+
 
 	setupSensors(position, size);
 	body->SetLinearDamping(1.0f);
@@ -176,6 +181,8 @@ Player::~Player()
 	delete mJump;
 	delete mGrab;
 	delete mFall;
+	delete mJumpSound;
+	delete mWalkSound;
 }
 
 void Player::setupSensors(sf::Vector2f& pos, sf::Vector2f& size)
@@ -387,7 +394,7 @@ void Player::jump()
 			const b2Vec2& vel = body->GetLinearVelocity();
 			//body->ApplyLinearImpulse(b2Vec2(0, -7), b2Vec2(0, 0), true);
 			body->SetLinearVelocity(b2Vec2(vel.x, -6));
-			mJumpSound.play();
+			mJumpSound->play();
 		}
 
 	}
@@ -479,16 +486,16 @@ void Player::updateSound()
 {
 	if (leftButton && groundCallBack->isColliding() || rightButton && groundCallBack->isColliding())
 	{
-		if(mWalkSound.getLoop() == false)
+		if(mWalkSound->getLoop() == false)
 		{
-		mWalkSound.play();
-		mWalkSound.setLoop(true);
+		mWalkSound->play();
+		mWalkSound->setLoop(true);
 		}
 	}
 	else
 	{
-		mWalkSound.stop();
-		mWalkSound.setLoop(false);
+		mWalkSound->stop();
+		mWalkSound->setLoop(false);
 	}
 }
 

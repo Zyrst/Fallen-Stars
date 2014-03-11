@@ -20,11 +20,16 @@ PuzzleState::PuzzleState(std::string level, int ringCount, int steps):
 
 PuzzleState::~PuzzleState()
 {
+	mMusic.setLoop(false);
+	mMusic.stop();
 }
 
 void PuzzleState::load()
 {
 	mBackground.setTexture(mResourceCollection.getTexture("Assets/Puzzle/" + mLevel + "Background.png"));
+
+	mMusic.openFromFile("Assets/Sound/" + mLevel + "_Puzzle_Music.ogg");
+	mMusic.setLoop(false);
 
 	std::random_device randomDevice;
 	std::mt19937 twisterEngine(randomDevice());
@@ -41,6 +46,12 @@ void PuzzleState::load()
 
 void PuzzleState::update(const sf::Time& deltaTime)
 {
+	if (mMusic.getLoop() == false)
+	{
+		mMusic.play();
+		mMusic.setLoop(true);
+	}
+
 	for(PuzzleRing& ring : mRings)
 	{
 		ring.update(deltaTime);
@@ -52,6 +63,7 @@ void PuzzleState::update(const sf::Time& deltaTime)
 		if(!ring.isCorrect()) correct = false;
 	}
 	if(correct) Game::instance()->loadNewState(new MainMenuState());
+
 }
 
 void PuzzleState::render(sf::RenderWindow& window)

@@ -4,6 +4,7 @@
 #include <SFML/Graphics/Texture.hpp>
 
 #include "ResourceCollection.h"
+#include <SFML/System/Time.hpp>
 
 bool leftPressed = false;
 bool rightPressed = false;

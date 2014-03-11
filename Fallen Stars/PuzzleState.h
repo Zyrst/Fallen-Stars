@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "PuzzleRing.h"
+#include <SFML/Audio/Music.hpp>
 
 class PuzzleState : public State
 {
@@ -24,6 +25,7 @@ private:
 
 	std::vector<PuzzleRing> mRings;
 	sf::Sprite mBackground;
+	sf::Music mMusic;
 
 	void swapRing(int indexOffset);
 };

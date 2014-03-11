@@ -1,6 +1,5 @@
 #pragma once
 
-#include <SFML/Audio/Sound.hpp>
 #include <SFML/Graphics/Shader.hpp>
 #include <thread>
 #include <map>
@@ -25,7 +24,7 @@ class ResourceCollection
 
 		// Sounds
 		void loadSound(std::string filename);
-		sf::Sound getSound(std::string filename);
+		sf::SoundBuffer* getSound(std::string filename);
 
 		// Fonts
 		void loadFont(std::string filename);
