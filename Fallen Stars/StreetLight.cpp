@@ -131,13 +131,14 @@ void StreetLight::update(sf::Time deltaTime)
 		break;
 
 	case BLINKING:
-		//You can't explain this.
+		//You can't explain this shit.
 		lightSource->setEnabled((time.asMilliseconds() % (BLINK_INTERVAL_MILLISECONDS * 2)) < BLINK_INTERVAL_MILLISECONDS);
 
 		if (time.asSeconds() >= BLINK_DURATION_SECONDS)
 		{
 			setState(UNLIT);
 		}
+		break;
 	default:
 		break;
 	}
