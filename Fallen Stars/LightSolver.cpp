@@ -3,7 +3,6 @@
 #include <tmx\MapObject.h>
 #include <iostream>
 #include <SFML\Graphics\RectangleShape.hpp>
-#include <SFML\Graphics\ConvexShape.hpp>
 #include <SFML\Graphics\Sprite.hpp>
 #include <SFML\Graphics\Shader.hpp>
 #include "ConvexOccluder.h"
@@ -82,14 +81,11 @@ void LightSolver::destroyLight(LightSource* light)
 	{
 		if (*i == light)
 		{
-			std::cout << "Found light: " << light << "\n";
 			lights.erase(i);
 			delete light;
 			return;
 		}
 	}
-
-	std::cout << "Light was not found: " << light << "\n";
 }
 
 void LightSolver::removeOccluder(const Occluder* occluder)
@@ -98,13 +94,10 @@ void LightSolver::removeOccluder(const Occluder* occluder)
 	{
 		if (*i == occluder)
 		{
-			std::cout << "Found occluder: " << occluder << "\n";
 			occluders.erase(i);
 			return;
 		}
 	}
-
-	std::cout << "Occluder was not found: " << occluder << "\n";
 }
 
 //Setters

@@ -15,7 +15,7 @@ Entity::Entity(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& pos, Facing fa
 }
 Entity::~Entity() 
 {
-	body->GetWorld()->DestroyBody(body);
+	BoxWorld::destroyBody(body);
 }
 bool Entity::isAlive()
 {

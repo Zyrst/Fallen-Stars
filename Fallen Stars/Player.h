@@ -43,7 +43,7 @@ class Player : public EntityLiving
 public:
 	enum PLAYER_STATE { NORMAL, GRABBING, DAMAGED };
 	Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, ResourceCollection& resource, LightSolver* lightSolver);
-	~Player();
+	virtual ~Player();
 	void render(sf::RenderTarget& renderSurface) override;
 	void update(sf::Time deltaTime) override;
 	void jump();

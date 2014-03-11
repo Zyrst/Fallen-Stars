@@ -42,6 +42,9 @@ public:
 	//Draws all shapes of this BoxWorld.
 	void drawDebug(sf::RenderWindow&);
 
+	//Destroys the body and deletes all user data on fixtures.
+	static void destroyBody(b2Body* body);
+
 private:
 	b2World* world;
 	DebugDraw* debugDraw;

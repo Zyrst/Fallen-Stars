@@ -13,11 +13,12 @@ PlatformState::PlatformState(std::string levelname)
 
 PlatformState::~PlatformState()
 {
+	clear();
 	delete mWorld;
 	delete mLevel;
 	delete mCamera;
 	delete mLightSolver;
-	clear();
+	delete mStats;
 }
 
 void PlatformState::load()
@@ -154,10 +155,11 @@ void PlatformState::killDeadEntities()
 
 void PlatformState::clear()
 {
-	for (auto it = mEntityVector.begin(); it != mEntityVector.end();)
+	for (Entity* e : mEntityVector)
 	{
-		it = mEntityVector.erase(it);
+		delete e;
 	}
+	mEntityVector.clear();
 
 	//Stop and then erase the level music
 	mFirstSong->stop();
@@ -171,8 +173,9 @@ void PlatformState::clear()
 		mMusicVector[i]->setLoop(false);
 	}
 
-	for (auto it = mMusicVector.begin(); it != mMusicVector.end();)
+	for (sf::Music* m : mMusicVector)
 	{
-		it = mMusicVector.erase(it);
+		delete m;
 	}
+	mMusicVector.clear();
 }

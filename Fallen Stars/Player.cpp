@@ -175,7 +175,6 @@ Player::Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, Reso
 
 Player::~Player()
 {
-	delete groundCallBack;
 	delete mIdle;
 	delete mWalking;
 	delete mJump;

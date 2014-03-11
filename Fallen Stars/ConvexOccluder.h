@@ -8,13 +8,7 @@ class ConvexOccluder : 	public sf::ConvexShape, public Occluder
 public:
 	ConvexOccluder(int size);
 	virtual ~ConvexOccluder();
-
-	//void setPoint(int index, const sf::Vector2f& point);
-	//void setPosition()
-
 private:
 	void draw(sf::RenderTarget &target, sf::RenderStates states) const;
-
-	//sf::ConvexShape shape;
 };
 

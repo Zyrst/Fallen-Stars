@@ -34,7 +34,7 @@ StreetLightSensorCallBack::StreetLightSensorCallBack(b2Fixture* owner)
 
 }
 
-StreetLightSensorCallBack::~StreetLightSensorCallBack() {}
+StreetLightSensorCallBack::~StreetLightSensorCallBack() { }
 
 void StreetLightSensorCallBack::beginContact(b2Fixture* otherFixture)
 {
@@ -98,8 +98,8 @@ StreetLight::StreetLight(BoxWorld* world, LightSolver* solver, sf::Vector2f& pos
 
 
 StreetLight::~StreetLight()
-{ 
-	delete sensorCallBack;
+{
+	BoxWorld::destroyBody(sensorBody);
 }
 
 void StreetLight::render(sf::RenderTarget& target)

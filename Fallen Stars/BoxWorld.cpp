@@ -200,3 +200,15 @@ void BoxWorld::createStaticBody(const std::vector<tmx::MapObject>& objects)
 		body->CreateFixture(&shape, 1.0f);
 	}
 }
+
+void BoxWorld::destroyBody(b2Body* body)
+{
+	for (b2Fixture* fix = body->GetFixtureList(); fix; fix = fix->GetNext())
+	{
+		CallBack* data = static_cast<CallBack*>(fix->GetUserData());
+		fix->SetUserData(nullptr);
+		delete data;
+	}
+
+	body->GetWorld()->DestroyBody(body);
+}

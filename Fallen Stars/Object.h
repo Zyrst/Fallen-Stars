@@ -28,7 +28,7 @@ class Object: public Entity
 	public:
 		enum TYPE {STAR, STARDUST,WINDOW};
 		Object(BoxWorld* world,sf::Vector2f& position, ResourceCollection* resource,TYPE type,StatManager* stats);
-		~Object();
+		virtual ~Object();
 		void update(sf::Time deltaTime) override;
 		TYPE getType();
 		void handleAction(Controls::Action action, Controls::KeyState);
