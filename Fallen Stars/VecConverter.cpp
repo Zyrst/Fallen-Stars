@@ -1,5 +1,7 @@
 #include "VecConverter.h"
 
+static const float DEFAULT_RATIO = 150.0f;
+
 namespace Convert
 {
 	b2Vec2 sfmlToB2(const sf::Vector2f& vector)
@@ -11,9 +13,19 @@ namespace Convert
 	{
 		return VecConverter::getInstance().b2ToSfml(vector);
 	}
+
+	float sfmlToB2(float f)
+	{
+		return (f / DEFAULT_RATIO);
+	}
+
+	float b2ToSfml(float f)
+	{
+		return (f * DEFAULT_RATIO);
+	}
 }
 
-VecConverter::VecConverter(const float ratio)
+VecConverter::VecConverter(float ratio)
 : ratio(ratio)
 { }
 
@@ -33,12 +45,12 @@ sf::Vector2f VecConverter::b2ToSfml(const b2Vec2& vector) const
 
 const VecConverter& VecConverter::getInstance()
 {
-	static const VecConverter cv(150.0f);
+	static const VecConverter cv(DEFAULT_RATIO);
 
 	return cv;
 }
 
-const float VecConverter::getRatio() const
+float VecConverter::getRatio() const
 {
 	return this->ratio;
 }

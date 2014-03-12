@@ -122,7 +122,7 @@ void LightSolver::addOccluder(const Occluder* occluder)
 
 void LightSolver::addCollisionOccluders(const std::vector<tmx::MapObject>& objects)
 {
-	//Filter with exclusion-bits 0 and 1 set.
+	//Filter with exclusion-bit 1 set.
 	const int filter = (1 << 1) << 8;
 	for (auto& o : objects)
 	{
