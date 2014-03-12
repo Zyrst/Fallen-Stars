@@ -1,6 +1,7 @@
 #include "State.h"
 
 #include <cassert>
+#include "SoundManager.h"
 
 State::~State()
 {
@@ -8,6 +9,7 @@ State::~State()
 	{
 		delete *it;
 	}
+	SoundManager::clear();
 }
 
 void State::addOverlay(Overlay* overlay)

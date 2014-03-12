@@ -1,6 +1,8 @@
 #pragma once
 #include "overlay.h"
 
+#include <SFML/System/Time.hpp>
+
 #include "ResourceCollection.h"
 class DeathOverlay : public Overlay
 {
@@ -10,7 +12,6 @@ public:
 	void update(const sf::Time& deltaTime) override;
 	void render(sf::RenderTarget& renderSurface) override;
 
-
-	// sf::Time elapsedTime;
+	sf::Time elapsedTime;
 };
 

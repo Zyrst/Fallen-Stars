@@ -13,7 +13,7 @@ public:
 
 	virtual void update(const sf::Time& deltaTime) {};
 	virtual void render(sf::RenderTarget& renderSurface) = 0;
-	virtual void handleAction(Controls::Action action, Controls::KeyState keystate) = 0;
+	virtual void handleAction(Controls::Action action, Controls::KeyState keystate) {};
 	virtual void mousePressed(int x, int y, int state) {}; // In case we implement mouse input
 
 	void setEnabledState(bool enabled);

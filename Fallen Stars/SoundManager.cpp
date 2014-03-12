@@ -4,6 +4,7 @@ using namespace sf;
 
 void SoundManager::playSound(sf::Sound sound)
 {
+	// Get a reference to the singleton instance
 	SoundManager& soundManager = instance();
 
 	// Take over the ownership of the sound and set it playing

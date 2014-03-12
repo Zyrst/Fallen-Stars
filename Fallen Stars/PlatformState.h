@@ -15,6 +15,8 @@ class LightSolver;
 class PlatformState: public State
 {
 public:
+	enum Overlays { DEATH_SCREEN };
+
 	PlatformState(std::string);
 	~PlatformState();
 	void update(const sf::Time& deltaTime) override;

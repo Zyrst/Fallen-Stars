@@ -16,7 +16,8 @@ namespace Keys
 		INTERACT = sf::Keyboard::Key::E,
 		MENU	 = sf::Keyboard::Key::Escape,
 		CONFIRM	 = sf::Keyboard::Key::Return,
-		SIRIUS	 = sf::Keyboard::Key::H
+		SIRIUS	 = sf::Keyboard::Key::H,
+		DEBUG	 = sf::Keyboard::Key::F8
 	};
 }
 
@@ -45,6 +46,7 @@ Controls::Action ControlMapping::getAction(sf::Event::KeyEvent key)
 		case Keys::KeyMap::MENU:	 return Controls::Action::MENU;
 		case Keys::KeyMap::CONFIRM:  return Controls::Action::CONFIRM;
 		case Keys::KeyMap::SIRIUS:	 return Controls::Action::SIRIUS;
+		case Keys::KeyMap::DEBUG:	 return Controls::Action::DEBUG;
 
 		case AlternativeKeys::KeyMap::UP:	 return Controls::Action::UP;
 		case AlternativeKeys::KeyMap::DOWN:  return Controls::Action::DOWN;
@@ -72,15 +74,16 @@ sf::Keyboard::Key ControlMapping::getKey(Controls::Action action)
 {
 	switch(action)
 	{
-		case Controls::Action::UP:		 return static_cast<sf::Keyboard::Key>( Keys::KeyMap::UP );
-		case Controls::Action::DOWN:	 return static_cast<sf::Keyboard::Key>( Keys::KeyMap::DOWN );
-		case Controls::Action::LEFT:	 return static_cast<sf::Keyboard::Key>( Keys::KeyMap::LEFT );
-		case Controls::Action::RIGHT:	 return static_cast<sf::Keyboard::Key>( Keys::KeyMap::RIGHT );
-		case Controls::Action::JUMP:	 return static_cast<sf::Keyboard::Key>( Keys::KeyMap::JUMP );
-		case Controls::Action::INTERACT: return static_cast<sf::Keyboard::Key>( Keys::KeyMap::INTERACT );
-		case Controls::Action::MENU:	 return static_cast<sf::Keyboard::Key>( Keys::KeyMap::MENU );
-		case Controls::Action::CONFIRM:  return static_cast<sf::Keyboard::Key>( Keys::KeyMap::CONFIRM );
-		case Controls::Action::SIRIUS:	 return static_cast<sf::Keyboard::Key>( Keys::KeyMap::SIRIUS );
+		case Controls::Action::UP:		 return static_cast <sf::Keyboard::Key> ( Keys::KeyMap::UP );
+		case Controls::Action::DOWN:	 return static_cast <sf::Keyboard::Key> ( Keys::KeyMap::DOWN );
+		case Controls::Action::LEFT:	 return static_cast <sf::Keyboard::Key> ( Keys::KeyMap::LEFT );
+		case Controls::Action::RIGHT:	 return static_cast <sf::Keyboard::Key> ( Keys::KeyMap::RIGHT );
+		case Controls::Action::JUMP:	 return static_cast <sf::Keyboard::Key> ( Keys::KeyMap::JUMP );
+		case Controls::Action::INTERACT: return static_cast <sf::Keyboard::Key> ( Keys::KeyMap::INTERACT );
+		case Controls::Action::MENU:	 return static_cast <sf::Keyboard::Key> ( Keys::KeyMap::MENU );
+		case Controls::Action::CONFIRM:  return static_cast <sf::Keyboard::Key> ( Keys::KeyMap::CONFIRM );
+		case Controls::Action::SIRIUS:	 return static_cast <sf::Keyboard::Key> ( Keys::KeyMap::SIRIUS );
+		case Controls::Action::DEBUG:	 return static_cast <sf::Keyboard::Key> ( Keys::KeyMap::DEBUG );
 		
 		default: return sf::Keyboard::Key::Unknown;
 	}
@@ -90,11 +93,11 @@ sf::Keyboard::Key ControlMapping::getAlternativeKey(Controls::Action action)
 {
 	switch(action)
 	{
-		case Controls::Action::UP:	  return static_cast<sf::Keyboard::Key>( AlternativeKeys::KeyMap::UP );
-		case Controls::Action::DOWN:  return static_cast<sf::Keyboard::Key>( AlternativeKeys::KeyMap::DOWN );
-		case Controls::Action::LEFT:  return static_cast<sf::Keyboard::Key>( AlternativeKeys::KeyMap::LEFT );
-		case Controls::Action::RIGHT: return static_cast<sf::Keyboard::Key>( AlternativeKeys::KeyMap::RIGHT );
-		case Controls::Action::MENU:  return static_cast<sf::Keyboard::Key>( AlternativeKeys::KeyMap::MENU );
+		case Controls::Action::UP:	  return static_cast <sf::Keyboard::Key> ( AlternativeKeys::KeyMap::UP );
+		case Controls::Action::DOWN:  return static_cast <sf::Keyboard::Key> ( AlternativeKeys::KeyMap::DOWN );
+		case Controls::Action::LEFT:  return static_cast <sf::Keyboard::Key> ( AlternativeKeys::KeyMap::LEFT );
+		case Controls::Action::RIGHT: return static_cast <sf::Keyboard::Key> ( AlternativeKeys::KeyMap::RIGHT );
+		case Controls::Action::MENU:  return static_cast <sf::Keyboard::Key> ( AlternativeKeys::KeyMap::MENU );
 		
 		default: return sf::Keyboard::Key::Unknown;
 	}

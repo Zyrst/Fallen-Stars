@@ -244,7 +244,7 @@
       <Filter>Source Files\Overlay</Filter>
     </ClCompile>
     <ClCompile Include="SoundManager.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Managers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -415,7 +415,7 @@
       <Filter>Header Files\Overlay</Filter>
     </ClInclude>
     <ClInclude Include="SoundManager.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Managers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

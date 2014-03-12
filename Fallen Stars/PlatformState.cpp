@@ -3,6 +3,7 @@
 
 #include "Game.h"
 #include "MainMenuState.h"
+#include "DeathOverlay.h"
 
 PlatformState::PlatformState(std::string levelname)
 :	mLevelName(levelname)
@@ -57,6 +58,8 @@ void PlatformState::load()
 
 	sf::Vector2u mapSize =  mLevel->getMapLoader().GetMapSize();
 	mCamera = new Camera(mPlayer, mapSize);
+
+	addOverlay(new DeathOverlay(DEATH_SCREEN, mResourceCollection));
 }
 
 void PlatformState::update(const sf::Time& deltaTime)
@@ -134,7 +137,11 @@ void PlatformState::render(sf::RenderWindow& window)
 void PlatformState::handleAction(Controls::Action action, Controls::KeyState keystate)
 {
 	mPlayer->handleAction(action, keystate);
-	if(keystate == Controls::RELEASED && action == Controls::MENU) Game::instance()->loadNewState(new MainMenuState());
+	if(keystate == Controls::RELEASED)
+	{
+		if(action == Controls::MENU) Game::instance()->loadNewState(new MainMenuState());		
+		if(action == Controls::DEBUG) drawDebugShapes = !drawDebugShapes;
+	}
 }
 
 void PlatformState::killDeadEntities()
