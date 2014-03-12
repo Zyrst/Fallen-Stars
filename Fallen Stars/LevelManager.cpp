@@ -174,20 +174,29 @@ void LevelManager::getSoundLayer(MusicVector& musicVec,ResourceCollection& resou
 void LevelManager::getSiriusLayer(State& state, ResourceCollection& resource)
 {
 	auto& layers = mapLoader.GetLayers();
-	for (auto& l : layers)
+	for (tmx::MapLayer* l : layers)
 	{
-		if (l->name.compare("Sirius") == 0)
+		if (l->name.compare("Text") == 0)
 		{
 			int id = 0;
-			for (auto& object : l->objects)
+			for (tmx::MapObject& object : l->objects)
 			{
 				sf::FloatRect bounds = object.GetAABB();
-				auto& messages = object.GetPropertyMap();
+				std::map<std::string, std::string>& messages = object.GetPropertyMap();
 				
-				std::vector<std::string> siriusMessages;
+				std::vector<SiriusOverlay::Message> siriusMessages;
 				for(auto it = messages.begin(); it != messages.end(); it++)
 				{
-					siriusMessages.push_back(it->first);
+					SiriusOverlay::Character speaker;
+					std::string name = it->first;
+					
+					if		(name == "Stella") speaker = SiriusOverlay::Character::STELLA;
+					else if (name == "Erebos") speaker = SiriusOverlay::Character::EREBOS;
+					else if (name == "Sirius") speaker = SiriusOverlay::Character::SIRIUS;
+					else if (name == "Asteria") speaker = SiriusOverlay::Character::ASTERIA;
+					else	continue; // If the name doesn't match any character, skip this message
+					
+					siriusMessages.push_back(SiriusOverlay::Message(speaker, it->second));
 				}
 				
 				state.addOverlay(new SiriusOverlay(id, resource, bounds, siriusMessages));
