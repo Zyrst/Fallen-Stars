@@ -8,7 +8,7 @@ DeathOverlay::DeathOverlay(int id, ResourceCollection& resources):
 
 void DeathOverlay::update(const sf::Time& deltaTime)
 {
-	elapsedTime += deltaTime;
+	//elapsedTime += deltaTime;
 }
 
 void DeathOverlay::render(sf::RenderTarget& renderSurface)
