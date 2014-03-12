@@ -21,7 +21,7 @@ namespace
 		return nullptr;
 	}
 
-	const float LIT_DURATION_SECONDS = 2.0f;
+	const float LIT_DURATION_SECONDS = 200.0f;
 	const float BLINK_DURATION_SECONDS = 1.5f;
 	const int BLINK_INTERVAL_MILLISECONDS = 100;
 }
@@ -78,7 +78,7 @@ StreetLight::StreetLight(BoxWorld* world, LightSolver* solver, sf::Vector2f& pos
 	pos.y += size.y / 2.0f;
 	lightSource->setPosition(pos);
 	lightSource->setMask(mask);
-	lightSource->setColor(sf::Color(255, 0, 0, 100));
+	lightSource->setColor(sf::Color(255, 0, 0, 150));
 	lightSource->setOffset(sf::Vector2f(0.0f, 1.0f));
 
 	int filter = lightSource->getFilterGroup();
@@ -93,7 +93,7 @@ StreetLight::StreetLight(BoxWorld* world, LightSolver* solver, sf::Vector2f& pos
 	body->SetGravityScale(0.0f);
 	body->SetAwake(false);
 
-	setState(UNLIT);
+	setState(LIT);
 }
 
 
