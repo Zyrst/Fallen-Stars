@@ -32,6 +32,7 @@ static sf::Texture* flipTexture(const sf::Texture* source)
 CollisionCounterCallBack::CollisionCounterCallBack(b2Fixture* owner)
 	: CallBack(owner)
 	, collisions(0)
+	, hitCollisions(0)
 { }
 
 void CollisionCounterCallBack::beginContact(b2Fixture* otherFixture)
@@ -40,6 +41,10 @@ void CollisionCounterCallBack::beginContact(b2Fixture* otherFixture)
 	{
 		collisions++;
 	}
+	if (otherFixture->GetBody()->GetType() == b2_dynamicBody)
+	{
+		hitCollisions++;
+	}
 }
 void CollisionCounterCallBack::endContact(b2Fixture* otherFixture)
 {
@@ -47,11 +52,19 @@ void CollisionCounterCallBack::endContact(b2Fixture* otherFixture)
 	{
 		collisions--;
 	}
+	if (otherFixture->GetBody()->GetType() == b2_dynamicBody)
+	{
+		hitCollisions--;
+	}
 }
 
 bool CollisionCounterCallBack::isColliding() const
 {
 	return (collisions > 0);
+}
+bool CollisionCounterCallBack::isHitColliding() const
+{
+	return (hitCollisions > 0);
 }
 #pragma endregion
 #pragma region GrabCallBack
@@ -94,7 +107,7 @@ void GrabCallBack::setCandidate(b2Fixture* fix, const sf::FloatRect& bounds)
 }
 #pragma endregion
 #pragma region Player
-Player::Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, ResourceCollection& resource, LightSolver* lightSolver)
+Player::Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, ResourceCollection& resource, LightSolver* lightSolver, StatManager& stats)
 : EntityLiving(world, size, position)
 , groundCallBack(nullptr)
 , leftButton(false)
@@ -151,6 +164,13 @@ Player::Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, Reso
 	std::vector<sf::IntRect> fallFrames = jumpSheet.getAllFrames();
 	mFall = new Animation(fallFrames,fall);
 
+	/* Hit Animation*/
+	auto &hit = mResource.getTexture("Assets/Characters/Stella hit.png");
+	sf::Vector2i hitSize = static_cast<sf::Vector2i>(hit.getSize());
+	SpriteSheet hitSheet(frameSize, hitSize);
+	std::vector<sf::IntRect> hitFrames = hitSheet.getAllFrames();
+	mHit = new Animation(hitFrames,hit);
+
 	anime.setAnimation(*mIdle);
 	
 	updateSpriteOrigin();
@@ -166,11 +186,11 @@ Player::Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, Reso
 	setupSensors(position, size);
 	body->SetLinearDamping(1.0f);
 	/* Set filter for collisions */
-	b2Filter filter = (body->GetFixtureList())->GetFilterData();
+	b2Filter filter = collisionFixture->GetFilterData();
 	filter.categoryBits = PLAYER;
-	filter.maskBits = ENEMY_CHASE, ENEMY_ATTACK;
-	//filter.groupIndex = ALL, ENEMY_CHASE;
-	body->GetFixtureList()->SetFilterData(filter);
+	//filter.maskBits =ALL, ENEMY_CHASE, ENEMY_ATTACK;
+	filter.groupIndex = ALL, ENEMY_CHASE, ENEMY_ATTACK;
+	collisionFixture->SetFilterData(filter);
 }
 
 Player::~Player()
@@ -204,27 +224,58 @@ void Player::setupSensors(sf::Vector2f& pos, sf::Vector2f& size)
 	def.isSensor = true;
 	def.shape = &sh;
 
-	b2Fixture* fix = body->CreateFixture(&def);
-	groundCallBack = new CollisionCounterCallBack(fix);
+	b2Fixture* groundFix = body->CreateFixture(&def);
+	groundCallBack = new CollisionCounterCallBack(groundFix);
 	b2Filter groundFilter;
-	groundFilter = fix->GetFilterData();
+	groundFilter = groundFix->GetFilterData();
 	groundFilter.categoryBits = PLAYER_SENSOR;
-
-	fix->SetFilterData(groundFilter);
+	groundFilter.groupIndex = ALL;
+	groundFix->SetFilterData(groundFilter);
 	//Left and right side collision sensors (to not get stuck in next to walls anymore)
+
 	bpos = b2Vec2(-hw, 0);
 	bpos.y += hh;
 
 	sh.SetAsBox(0.01f, hh*0.99f, bpos, 0);
 
-	fix = body->CreateFixture(&def);
-	leftSideCollision = new CollisionCounterCallBack(fix);
+	b2Fixture* leftFix = body->CreateFixture(&def);
+	leftSideCollision = new CollisionCounterCallBack(leftFix);
+
+	b2Filter leftFilter;
+	leftFilter = leftFix->GetFilterData();
+	leftFilter.categoryBits = PLAYER_SENSOR;
+	leftFix->SetFilterData(leftFilter);
+
+	
+	b2Fixture* leftHitFix = body->CreateFixture(&def);
+	leftHitCollision = new CollisionCounterCallBack(leftHitFix);
+
+	b2Filter leftHitFilter;
+	leftHitFilter = leftHitFix->GetFilterData();
+	leftHitFilter.categoryBits = PLAYER_SENSOR;
+	leftHitFilter.groupIndex = ENEMY_ATTACK;
+	leftHitFix->SetFilterData(leftHitFilter);
 
 	bpos.x += bsize.x;
 	sh.SetAsBox(0.01f, hh*0.99f, bpos, 0);
 
-	fix = body->CreateFixture(&def);
-	rightSideCollision = new CollisionCounterCallBack(fix);
+	b2Fixture* rightFix = body->CreateFixture(&def);
+	rightSideCollision = new CollisionCounterCallBack(rightFix);
+	
+	b2Filter rightFilter;
+	rightFilter = rightFix->GetFilterData();
+	rightFilter.categoryBits = PLAYER_SENSOR;
+	rightFix->SetFilterData(rightFilter);
+
+	b2Fixture* rightHitFix = body->CreateFixture(&def);
+	rightHitCollision = new CollisionCounterCallBack(rightHitFix);
+
+	b2Filter rightHitFilter;
+	rightHitFilter = leftHitFix->GetFilterData();
+	rightHitFilter.categoryBits = PLAYER_SENSOR;
+	rightHitFilter.groupIndex = ENEMY_ATTACK;
+	rightHitFix->SetFilterData(rightHitFilter);
+	
 
 	//Left and right side grab detectors.
 	const float grabYPos = 0.12f;
@@ -234,7 +285,7 @@ void Player::setupSensors(sf::Vector2f& pos, sf::Vector2f& size)
 
 	sh.SetAsBox(grabW, grabH, bpos, 0);
 
-	fix = body->CreateFixture(&def);
+	b2Fixture* fix = body->CreateFixture(&def);
 	leftGrabCallBack = new GrabCallBack(fix);
 
 	bpos.x += bsize.x+grabW*2;
@@ -261,6 +312,8 @@ void Player::setupSensors(sf::Vector2f& pos, sf::Vector2f& size)
 void Player::update(sf::Time deltaTime)
 {
 	const b2Vec2& vel = body->GetLinearVelocity();
+	if(rightHitCollision->isHitColliding()){damaged();std::cout<<"Damaged!"<<std::endl;}
+	if(leftHitCollision->isHitColliding()){damaged();std::cout<<"Damaged!"<<std::endl;}
 	switch(state)
 	{
 	case NORMAL:
@@ -327,7 +380,7 @@ void Player::update(sf::Time deltaTime)
 				setFacing(Entity::LEFT);
 			}
 			//Else just push the player a bit right.
-			else
+			else if (getFacing() == Facing::LEFT)
 			{
 				sf::Vector2f pos = Convert::b2ToSfml(body->GetPosition());
 				pos.x += pushDistance;
@@ -338,6 +391,9 @@ void Player::update(sf::Time deltaTime)
 			setState(PLAYER_STATE::NORMAL);
 		}
 	break;
+	case DAMAGED:
+		std::cout<<"Loop dat dmg"<<std::endl;
+		break;
 	default:
 		break;
 	}
@@ -444,6 +500,9 @@ void Player::setState(Player::PLAYER_STATE state)
 		collisionFixture->SetSensor(true);
 		body->SetAwake(false);
 		break;
+	case PLAYER_STATE::DAMAGED:
+		body->SetLinearVelocity(b2Vec2(0, 0));
+		break;
 	}
 	this->state = state;
 }
@@ -476,7 +535,10 @@ void Player::updateAnimation()
 	{
 		currentAnimation = mGrab;
 	}
-	
+	if(state == PLAYER_STATE::DAMAGED)
+	{
+		currentAnimation = mHit;
+	}
 	if(currentAnimation != NULL) anime.play(*currentAnimation);
 	anime.setPosition(Convert::b2ToSfml(body->GetPosition()));
 }
@@ -506,5 +568,22 @@ void Player::setActiveStreetLight(StreetLight* light)
 b2Body* Player::getBody()
 {
 	return body;
+}
+void Player::damaged()
+{
+	hitTimer.restart();
+	bool loop = true;
+	setState(DAMAGED);
+	while (loop)
+	{
+		if(float time = hitTimer.getElapsedTime().asSeconds() <=3.0f)
+		{
+			loop = false;
+		}
+		
+	}
+	std::cout<<time<<std::endl;
+	updateAnimation();
+	setState(NORMAL);
 }
 #pragma endregion

@@ -6,6 +6,8 @@
 #include "LightSource.h"
 #include "StreetLight.h"
 #include <SFML/Audio/Sound.hpp>
+#include "StatManager.h"
+#include <SFML\System\Clock.hpp>
 
 class LightSolver;
 
@@ -18,9 +20,11 @@ public:
 	virtual void endContact(b2Fixture* otherFixture) override;
 
 	bool isColliding() const;
+	bool isHitColliding() const;
 
 private:
 	int collisions;
+	int hitCollisions;
 };
 class GrabCallBack : public CallBack
 {
@@ -42,7 +46,7 @@ class Player : public EntityLiving
 {
 public:
 	enum PLAYER_STATE { NORMAL, GRABBING, DAMAGED };
-	Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, ResourceCollection& resource, LightSolver* lightSolver);
+	Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, ResourceCollection& resource, LightSolver* lightSolver, StatManager& stats);
 	virtual ~Player();
 	void render(sf::RenderTarget& renderSurface) override;
 	void update(sf::Time deltaTime) override;
@@ -52,14 +56,15 @@ public:
 	void updateSound();
 	void setState(PLAYER_STATE state);
 	void setActiveStreetLight(StreetLight* light);
+	void damaged();
 	b2Body* getBody();
 private:
 	void setupSensors(sf::Vector2f& pos, sf::Vector2f& size);
 	void updateFlashlightPosition();
-
+	sf::Clock hitTimer;
 	sf::Vector2f velocity;
 	PLAYER_STATE state;
-	CollisionCounterCallBack *groundCallBack, *rightSideCollision, *leftSideCollision, *leftAntiGrabCallBack, *rightAntiGrabCallBack;
+	CollisionCounterCallBack *groundCallBack, *rightSideCollision, *leftSideCollision, *leftAntiGrabCallBack, *rightAntiGrabCallBack, *rightHitCollision, *leftHitCollision;
 	GrabCallBack *leftGrabCallBack, *rightGrabCallBack;
 	bool leftButton, rightButton, downButton;
 	Animation* mWalking;
@@ -69,8 +74,8 @@ private:
 	Animation* mFall;
 	sf::Sound* mJumpSound;
 	sf::Sound* mWalkSound;
+	Animation* mHit;
 	ResourceCollection& mResource;
-
 	LightSource* flashLight;
 	sf::Texture *maskRight, *maskLeft;
 

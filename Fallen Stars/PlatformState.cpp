@@ -34,7 +34,7 @@ void PlatformState::load()
 	
 	/*Adds player and objects to the Level*/
 	auto playerPos = mLevel->getPlayerLayer();
-	mPlayer = new Player(mWorld, size, playerPos, mResourceCollection, mLightSolver);
+	mPlayer = new Player(mWorld, size, playerPos, mResourceCollection, mLightSolver, *mStats);
 	mEntityVector.push_back(mPlayer);
 	mLevel->getObjectLayer(&mResourceCollection,mWorld,mEntityVector,mStats);
 	mLevel->getEnemyLayer(mResourceCollection,mWorld,mEntityVector,size);
