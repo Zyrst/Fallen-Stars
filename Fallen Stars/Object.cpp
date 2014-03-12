@@ -5,6 +5,7 @@
 #include "VecConverter.h"
 #include "StatManager.h"
 #include <SFML/Audio/SoundBuffer.hpp>
+#include "SoundManager.h"
 #include <iostream>
 StarCallBack::StarCallBack(b2Fixture* owner)
 	: CallBack(owner)
@@ -55,6 +56,7 @@ Object::Object(BoxWorld* world, sf::Vector2f& position, ResourceCollection* reso
 	mStarDustSound->setBuffer(*mResource->getSound("Assets/Sound/PickUp.wav"));
 	mStarSound = new sf::Sound;
 	mStarSound->setBuffer(*mResource->getSound("Assets/Sound/StarPickUp.wav"));
+	mStarSound->setLoop(false);
 	
 	if(mType == TYPE::STAR)
 	{
@@ -131,25 +133,25 @@ Object::~Object()
 	delete mStar;
 	delete mStarDust;
 	delete mWindow;
-	//delete mStarDustSound;
-	//delete mStarSound;
+	delete mStarDustSound;
+	delete mStarSound;
 }
 	
 void Object::update(sf::Time deltaTime)
 {
-	
+
 	anime.setPosition(Convert::b2ToSfml(body->GetPosition()));
 	anime.update(deltaTime);
 	if (isAlive() && starCallBack->isColliding() && getType() == STARDUST)
 	{
-		mStarDustSound->play();
+		SoundManager::playSound(*mStarDustSound);	
 		mAlive = false;
 		mStats->stardust +=1;
 		std::cout << "Current amount of StarDust: " << mStats->stardust << std::endl;
 	}
 	if (isAlive() && starCallBack->isColliding() && getType() == STAR)
 	{
-		mStarSound->play();
+		SoundManager::playSound(*mStarSound);
 		mAlive = false;
 		mStats->stars +=1;
 		std::cout << "Current amounts of stars:" << mStats->stars << std::endl;
