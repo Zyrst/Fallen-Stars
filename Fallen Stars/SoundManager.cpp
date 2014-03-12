@@ -7,11 +7,11 @@ void SoundManager::playSound(sf::Sound sound)
 	// Get a reference to the singleton instance
 	SoundManager& soundManager = instance();
 
-	// Take over the ownership of the sound and set it playing
-	soundManager.internalPlaySound(sound);
-
 	// Whenever we're adding a new sound, perform some cleanup so old sounds don't stay in the list forever.
 	soundManager.cleanup();
+
+	// Take over the ownership of the sound and set it playing
+	soundManager.internalPlaySound(sound);
 }
 
 void SoundManager::clear()
