@@ -30,6 +30,7 @@ public:
 	//Removers/destroyers
 	void destroyLight(LightSource* light);
 	void removeOccluder(const Occluder* occluder);
+	void clear();
 
 	//Setters
 	void setVoidColor(const sf::Color& color);

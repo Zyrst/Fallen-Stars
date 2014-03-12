@@ -57,15 +57,7 @@ LightSolver::LightSolver()
 
 LightSolver::~LightSolver()
 {
-	for (LightSource* src : lights)
-	{
-		delete src;
-	}
-
-	for (sf::Drawable* draw : disposeableOccluders)
-	{
-		delete draw;
-	}
+	clear();
 }
 
 LightSource* LightSolver::createLight(int width, int height, int filterGroup)
@@ -98,6 +90,23 @@ void LightSolver::removeOccluder(const Occluder* occluder)
 			return;
 		}
 	}
+}
+
+void LightSolver::clear()
+{
+	for (LightSource* src : lights)
+	{
+		delete src;
+	}
+	lights.clear();
+
+	for (sf::Drawable* draw : disposeableOccluders)
+	{
+		delete draw;
+	}
+	disposeableOccluders.clear();
+
+	occluders.clear();
 }
 
 //Setters
