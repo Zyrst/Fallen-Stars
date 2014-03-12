@@ -100,6 +100,7 @@
     <ClCompile Include="ControlMapping.cpp" />
     <ClCompile Include="Controls.cpp" />
     <ClCompile Include="ConvexOccluder.cpp" />
+    <ClCompile Include="DeathOverlay.cpp" />
     <ClCompile Include="debugdraw.cpp" />
     <ClCompile Include="SiriusOverlay.cpp" />
     <ClCompile Include="Entity.cpp" />
@@ -133,6 +134,7 @@
     <ClCompile Include="ResourceCollection.cpp" />
     <ClCompile Include="Shade.cpp" />
     <ClCompile Include="LightSource.cpp" />
+    <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="SpriteSheet.cpp" />
     <ClCompile Include="StatManager.cpp" />
@@ -149,6 +151,7 @@
     <ClInclude Include="CallBack.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ConvexOccluder.h" />
+    <ClInclude Include="DeathOverlay.h" />
     <ClInclude Include="debugdraw.h" />
     <ClInclude Include="SiriusOverlay.h" />
     <ClInclude Include="Entity.h" />
@@ -188,6 +191,7 @@
     <ClInclude Include="ResourceCollection.h" />
     <ClInclude Include="Shade.h" />
     <ClInclude Include="LightSource.h" />
+    <ClInclude Include="SoundManager.h" />
     <ClInclude Include="SpriteSheet.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="StatManager.h" />
