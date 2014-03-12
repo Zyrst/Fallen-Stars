@@ -447,7 +447,7 @@ void Shade::setMode(Mode mode)
 }
 void Shade::attack()
 {
-	std::cout<<"Watch out!"<<std::endl;
+	
 }
 /* Animationer , dö */
 #pragma endregion
