@@ -254,7 +254,7 @@ void Player::setupSensors(sf::Vector2f& pos, sf::Vector2f& size)
 	b2Filter leftHitFilter;
 	leftHitFilter = leftHitFix->GetFilterData();
 	leftHitFilter.categoryBits = PLAYER_SENSOR;
-	leftHitFilter.groupIndex = ENEMY_ATTACK;
+	leftHitFilter.maskBits = ENEMY_ATTACK;
 	leftHitFix->SetFilterData(leftHitFilter);
 
 	bpos.x += bsize.x;
@@ -274,7 +274,7 @@ void Player::setupSensors(sf::Vector2f& pos, sf::Vector2f& size)
 	b2Filter rightHitFilter;
 	rightHitFilter = leftHitFix->GetFilterData();
 	rightHitFilter.categoryBits = PLAYER_SENSOR;
-	rightHitFilter.groupIndex = ENEMY_ATTACK;
+	rightHitFilter.maskBits = ENEMY_ATTACK;
 	rightHitFix->SetFilterData(rightHitFilter);
 	
 

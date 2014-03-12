@@ -89,6 +89,10 @@ StreetLight::StreetLight(BoxWorld* world, LightSolver* solver, sf::Vector2f& pos
 	sensorCallBack = new StreetLightSensorCallBack(sensorBody->GetFixtureList());
 	sensorBody->SetGravityScale(0.0f);
 	sensorBody->SetAwake(false);
+	b2Filter fuck = sensorBody->GetFixtureList()->GetFilterData();
+	fuck.categoryBits = Entity::STREET_LIGHT;
+	fuck.groupIndex = PLAYER;
+	sensorBody->GetFixtureList()->SetFilterData(fuck);
 
 	body->SetGravityScale(0.0f);
 	body->SetAwake(false);
