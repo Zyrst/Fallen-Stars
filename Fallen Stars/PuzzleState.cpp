@@ -26,7 +26,7 @@ PuzzleState::~PuzzleState()
 
 void PuzzleState::load()
 {
-	mBackground.setTexture(mResourceCollection.getTexture("Assets/Puzzle/" + mLevel + "Background.png"));
+	mBackground.setTexture(mResourceCollection.getTexture("Assets/Puzzle/" + mLevel + "/Background.png"));
 
 	mMusic.openFromFile("Assets/Sound/" + mLevel + "_Puzzle_Music.ogg");
 	mMusic.setLoop(false);

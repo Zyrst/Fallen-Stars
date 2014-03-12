@@ -16,7 +16,7 @@ PuzzleRing::PuzzleRing(ResourceCollection& resources, std::string level, int rin
 	mSteps(steps),
 	mSelectedStep(initialStep),
 	mRotationSpeed(0.25),
-	mStepsPerMove(2),
+	mStepsPerMove(3),
 	mHighlighted(false),
 	mHighlightShader(resources.getShader("Assets/Shader/highlight.frag", sf::Shader::Type::Fragment))
 {
