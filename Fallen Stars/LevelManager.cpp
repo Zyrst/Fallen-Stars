@@ -126,7 +126,7 @@ void LevelManager::getStreetlightLayer(ResourceCollection& resource, BoxWorld* w
 			
 			int width = std::atoi(l->properties["width"].c_str());
 			int height = std::atoi(l->properties["height"].c_str());
-			sf::Vector2f size(width, height);
+			sf::Vector2f size((float) width, (float) height);
 
 			auto& objects = l->objects;
 			

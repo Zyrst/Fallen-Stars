@@ -90,7 +90,7 @@ void PlatformState::update(const sf::Time& deltaTime)
 	mListener.setPosition(mPlayer->getPosition().x, mPlayer->getPosition().y,0);
 
 	//Positional sound and music
-	for (auto i = 0; i < mMusicVector.size(); i++)
+	for (auto i = 0; i < (int) mMusicVector.size(); i++)
 	{
 		float x = (mMusicVector[i]->getPosition().x - mListener.getPosition().x) * (mMusicVector[i]->getPosition().x - mListener.getPosition().x);
 		float y = (mMusicVector[i]->getPosition().y - mListener.getPosition().y) * (mMusicVector[i]->getPosition().y - mListener.getPosition().y);

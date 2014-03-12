@@ -55,6 +55,7 @@ public:
     sf::FloatRect getGlobalBounds() const;
     bool isLooped() const;
     bool isPlaying() const;
+	bool isFinished() const;
     sf::Time getFrameTime() const;
     void setFrame(int frameIndex, bool resetTime = true);
 
