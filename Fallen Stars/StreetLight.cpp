@@ -21,7 +21,7 @@ namespace
 		return nullptr;
 	}
 
-	const float LIT_DURATION_SECONDS = 200.0f;
+	const float LIT_DURATION_SECONDS = 2.0f;
 	const float BLINK_DURATION_SECONDS = 1.5f;
 	const int BLINK_INTERVAL_MILLISECONDS = 100;
 }
@@ -93,7 +93,7 @@ StreetLight::StreetLight(BoxWorld* world, LightSolver* solver, sf::Vector2f& pos
 	body->SetGravityScale(0.0f);
 	body->SetAwake(false);
 
-	setState(LIT);
+	setState(UNLIT);
 }
 
 
