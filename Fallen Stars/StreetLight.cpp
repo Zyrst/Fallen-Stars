@@ -109,17 +109,17 @@ StreetLight::~StreetLight()
 void StreetLight::render(sf::RenderTarget& target)
 {
 	//There is nothing to render in this class, everything should be done by the light solver.
-	sf::RectangleShape rect(lightSource->getSize());
-	sf::Vector2f pos = lightSource->getPosition();
-	pos.x -= lightSource->getSize().x / 2.0f;
-	pos.y -= lightSource->getSize().y / 2.0f;
-	rect.setPosition(pos);
+	//sf::RectangleShape rect(lightSource->getSize());
+	//sf::Vector2f pos = lightSource->getPosition();
+	//pos.x -= lightSource->getSize().x / 2.0f;
+	//pos.y -= lightSource->getSize().y / 2.0f;
+	//rect.setPosition(pos);
 
-	rect.setFillColor(sf::Color::Transparent);
-	rect.setOutlineColor(sf::Color::Red);
-	rect.setOutlineThickness(2.0f);
+	//rect.setFillColor(sf::Color::Transparent);
+	//rect.setOutlineColor(sf::Color::Red);
+	//rect.setOutlineThickness(2.0f);
 
-	target.draw(rect);
+	//target.draw(rect);
 }
 
 void StreetLight::update(sf::Time deltaTime)
