@@ -119,6 +119,7 @@ Player::Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, Reso
 , maskLeft(flipTexture(maskRight))
 , activeStreetLight(nullptr)
 , collisionFixture(body->GetFixtureList())
+, mStats(stats)
 {
 	flashLight->setColor(sf::Color(255, 255, 0, 150));
 	int group = flashLight->getFilterGroup();
@@ -582,7 +583,10 @@ void Player::damaged()
 		}
 		
 	}
+	mStats.health -= 1;
 	std::cout<<time<<std::endl;
+	std::cout<<mStats.health<<std::endl;
+	
 	updateAnimation();
 	setState(NORMAL);
 }

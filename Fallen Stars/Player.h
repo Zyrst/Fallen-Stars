@@ -78,7 +78,7 @@ private:
 	ResourceCollection& mResource;
 	LightSource* flashLight;
 	sf::Texture *maskRight, *maskLeft;
-
+	StatManager& mStats;
 	StreetLight* activeStreetLight;
 
 	b2Fixture* collisionFixture;
