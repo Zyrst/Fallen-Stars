@@ -62,10 +62,12 @@ public:
 	void setFacing(Facing Face);
 	void handleAction(Controls::Action action, Controls::KeyState);
 	void updateAnimation();
-	enum Mode{PATROL, SPAWN, ATTACK, CHASING, IDLE};
+	enum Mode{PATROL, SPAWN, ATTACK, CHASING, IDLE, DYING};
 	void attack();
 	Mode getMode();
 	void setMode(Mode mode);
+
+	void increaseTimeInFlashLight(float delta);
 private:
 	Player* player;
 	sf::Vector2f velocity;
@@ -88,5 +90,8 @@ private:
 	float speed;
 	float chaseLength;
 	b2Fixture* collisionFixture;
+
+	//Amount of time spent in flashlight
+	float timeInFlashLight;
 };
 

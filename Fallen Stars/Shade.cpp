@@ -7,6 +7,10 @@
 #include "BoxWorld.h"
 #include "ControlMapping.h"
 #include "SpriteSheet.h"
+#include "ResourceCollection.h"
+
+static const float TIME_UNTIL_FLASHLIGHT_DEATH = 3.0f;
+
 #pragma region Chase
 ChaseSensor::ChaseSensor(b2Fixture* owner)
 	: CallBack(owner)
@@ -134,9 +138,10 @@ void AttackSensor::setVictim(b2Fixture* fix, const sf::FloatRect& bounds)
 #pragma endregion
 #pragma region Shade
 Shade::Shade(ResourceCollection& resource, BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position)
-: EntityLiving(world,size,position),
-  mResource(resource),
-  collisionFixture(body->GetFixtureList())
+: EntityLiving(world, size, position)
+, mResource(resource)
+, collisionFixture(body->GetFixtureList())
+, timeInFlashLight(0.0f)
 {
 	setMode(PATROL);
 	
@@ -201,6 +206,11 @@ void Shade::render(sf::RenderTarget& renderTarget)
 }
 void Shade::update(sf::Time deltaTime)
 {
+	if (timeInFlashLight >= TIME_UNTIL_FLASHLIGHT_DEATH)
+	{
+		setMode(DYING);
+	}
+
 	const b2Vec2& vel = body->GetLinearVelocity();
 	if((attackSensorLeft->isAttacking()&& attackSensorLeft->isActive())||(attackSensorRight->isAttacking() && attackSensorRight->isActive())){
 		setMode(ATTACK);
@@ -255,6 +265,9 @@ void Shade::update(sf::Time deltaTime)
 	case SPAWN:
 	break;
 
+	case DYING:
+		mAlive = false;
+		break;
 	default: 
 		setMode(PATROL);
 	break;
@@ -437,6 +450,12 @@ void Shade::updateAnimation()
 	//anime.setPosition(Convert::b2ToSfml(body->GetPosition()));
 
 }
+
+void Shade::increaseTimeInFlashLight(float delta)
+{
+	timeInFlashLight += delta;
+}
+
 Shade::Mode Shade::getMode()
 {
 	return currentMode;

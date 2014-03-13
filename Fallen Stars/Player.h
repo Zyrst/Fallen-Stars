@@ -1,47 +1,18 @@
 #pragma once
 #include "EntityLiving.h"
 #include "CallBack.h"
-#include "Animation.h"
-#include "ResourceCollection.h"
 #include "LightSource.h"
 #include "StreetLight.h"
 #include <SFML/Audio/Sound.hpp>
-#include "StatManager.h"
 #include <SFML\System\Clock.hpp>
+#include "CollisionCounterCallBack.h"
+#include "GrabCallBack.h"
 
 class LightSolver;
+class Animation;
+class ResourceCollection;
+struct StatManager;
 
-class CollisionCounterCallBack : public CallBack
-{
-public:
-	CollisionCounterCallBack(b2Fixture* owner);
-
-	virtual void beginContact(b2Fixture* otherFixture) override;
-	virtual void endContact(b2Fixture* otherFixture) override;
-
-	bool isColliding() const;
-	bool isHitColliding() const;
-
-private:
-	int collisions;
-	int hitCollisions;
-};
-class GrabCallBack : public CallBack
-{
-public:
-	GrabCallBack(b2Fixture* owner);
-
-	virtual void beginContact(b2Fixture* otherFixture) override;
-	virtual void endContact(b2Fixture* otherFixture) override;
-
-	bool isColliding() const;
-	const sf::FloatRect& getGrabbedFixtureBounds() const;
-private:
-	void setCandidate(b2Fixture* fix, const sf::FloatRect& bounds);
-
-	b2Fixture* grabCandidate;
-	sf::FloatRect candidateBounds;
-};
 class Player : public EntityLiving
 {
 public:
@@ -82,4 +53,5 @@ private:
 	StreetLight* activeStreetLight;
 
 	b2Fixture* collisionFixture;
+	b2Body* flashLightBody;
 };

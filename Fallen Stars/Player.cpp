@@ -9,10 +9,15 @@
 #include "ResourceCollection.h"
 #include "LightSolver.h"
 #include <SFML/Audio/SoundBuffer.hpp>
+#include "Animation.h"
+#include "ResourceCollection.h"
+#include "StatManager.h"
 
 #include <iostream>
 
 static const float SPEED = 3;
+static const sf::Vector2i FLASHLIGHT_SIZE(2048, 512);
+
 static sf::Texture* flipTexture(const sf::Texture* source)
 {
 	sf::RenderTexture fbo;
@@ -28,84 +33,6 @@ static sf::Texture* flipTexture(const sf::Texture* source)
 	return new sf::Texture(fbo.getTexture());
 }
 
-#pragma region CollisionCounterCallBack
-CollisionCounterCallBack::CollisionCounterCallBack(b2Fixture* owner)
-	: CallBack(owner)
-	, collisions(0)
-	, hitCollisions(0)
-{ }
-
-void CollisionCounterCallBack::beginContact(b2Fixture* otherFixture)
-{
-	if (otherFixture->GetBody()->GetType() == b2_staticBody)
-	{
-		collisions++;
-	}
-	if (otherFixture->GetBody()->GetType() == b2_dynamicBody)
-	{
-		hitCollisions++;
-	}
-}
-void CollisionCounterCallBack::endContact(b2Fixture* otherFixture)
-{
-	if (otherFixture->GetBody()->GetType() == b2_staticBody)
-	{
-		collisions--;
-	}
-	if (otherFixture->GetBody()->GetType() == b2_dynamicBody)
-	{
-		hitCollisions--;
-	}
-}
-
-bool CollisionCounterCallBack::isColliding() const
-{
-	return (collisions > 0);
-}
-bool CollisionCounterCallBack::isHitColliding() const
-{
-	return (hitCollisions > 0);
-}
-#pragma endregion
-#pragma region GrabCallBack
-GrabCallBack::GrabCallBack(b2Fixture* owner)
-	: CallBack(owner)
-	, grabCandidate(nullptr)
-{ }
-
-void GrabCallBack::beginContact(b2Fixture* otherFixture)
-{
-	sf::FloatRect bounds = BoxBounds::boundsOfFixture(otherFixture);
-	if (otherFixture->GetBody()->GetType() == b2_staticBody && (grabCandidate == nullptr || bounds.top < candidateBounds.top))
-	{
-		setCandidate(otherFixture, bounds);
-	}
-}
-
-void GrabCallBack::endContact(b2Fixture* otherFixture)
-{
-	if (otherFixture->GetBody()->GetType() == b2_staticBody && grabCandidate != nullptr && otherFixture == grabCandidate)
-	{
-		grabCandidate = nullptr;
-	}
-}
-
-bool GrabCallBack::isColliding() const
-{
-	return (grabCandidate != nullptr);
-}
-
-const sf::FloatRect& GrabCallBack::getGrabbedFixtureBounds() const
-{
-	return candidateBounds;
-}
-
-void GrabCallBack::setCandidate(b2Fixture* fix, const sf::FloatRect& bounds)
-{
-	grabCandidate = fix;
-	candidateBounds = sf::FloatRect(bounds);
-}
-#pragma endregion
 #pragma region Player
 Player::Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, ResourceCollection& resource, LightSolver* lightSolver, StatManager& stats)
 : EntityLiving(world, size, position)
@@ -114,12 +41,13 @@ Player::Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, Reso
 , rightButton(false)
 , downButton(false)
 , mResource(resource)
-, flashLight(lightSolver->createLight(2048, 512))
+, flashLight(lightSolver->createLight(FLASHLIGHT_SIZE.x, FLASHLIGHT_SIZE.y))
 , maskRight(&resource.getTexture("Assets/Shader/mask.png"))
 , maskLeft(flipTexture(maskRight))
 , activeStreetLight(nullptr)
 , collisionFixture(body->GetFixtureList())
 , mStats(stats)
+, flashLightBody(world->createEntityBody(sf::Vector2f(0.0f, 0.0f), static_cast<sf::Vector2f>(FLASHLIGHT_SIZE), false))
 {
 	flashLight->setColor(sf::Color(255, 255, 0, 150));
 	int group = flashLight->getFilterGroup();
@@ -203,6 +131,7 @@ Player::~Player()
 	delete mFall;
 	delete mJumpSound;
 	delete mWalkSound;
+	BoxWorld::destroyBody(flashLightBody);
 }
 
 void Player::setupSensors(sf::Vector2f& pos, sf::Vector2f& size)
@@ -212,102 +141,122 @@ void Player::setupSensors(sf::Vector2f& pos, sf::Vector2f& size)
 	//Half width and size.
 	const float hw = bsize.x / 2.0f, hh = bsize.y / 2.0f;
 
-	b2Vec2 bpos = b2Vec2(-hw, 0);
+	{
+		b2Vec2 bpos = b2Vec2(-hw, 0);
 
-	//Setup ground sensor.
-	bpos.x += hw;
-	bpos.y += bsize.y;
+		//Setup ground sensor.
+		bpos.x += hw;
+		bpos.y += bsize.y;
 
-	b2PolygonShape sh;
-	sh.SetAsBox(0.2f, 0.01f, bpos, 0);
+		b2PolygonShape sh;
+		sh.SetAsBox(0.2f, 0.01f, bpos, 0);
 
-	b2FixtureDef def;
-	def.isSensor = true;
-	def.shape = &sh;
+		b2FixtureDef def;
+		def.isSensor = true;
+		def.shape = &sh;
 
-	b2Fixture* groundFix = body->CreateFixture(&def);
-	groundCallBack = new CollisionCounterCallBack(groundFix);
-	b2Filter groundFilter;
-	groundFilter = groundFix->GetFilterData();
-	groundFilter.categoryBits = PLAYER_SENSOR;
-	groundFilter.groupIndex = ALL;
-	groundFix->SetFilterData(groundFilter);
-	//Left and right side collision sensors (to not get stuck in next to walls anymore)
+		b2Fixture* groundFix = body->CreateFixture(&def);
+		groundCallBack = new CollisionCounterCallBack(groundFix);
+		b2Filter groundFilter;
+		groundFilter = groundFix->GetFilterData();
+		groundFilter.categoryBits = PLAYER_SENSOR;
+		groundFilter.groupIndex = ALL;
+		groundFix->SetFilterData(groundFilter);
+		//Left and right side collision sensors (to not get stuck in next to walls anymore)
 
-	bpos = b2Vec2(-hw, 0);
-	bpos.y += hh;
+		bpos = b2Vec2(-hw, 0);
+		bpos.y += hh;
 
-	sh.SetAsBox(0.01f, hh*0.99f, bpos, 0);
+		sh.SetAsBox(0.01f, hh*0.99f, bpos, 0);
 
-	b2Fixture* leftFix = body->CreateFixture(&def);
-	leftSideCollision = new CollisionCounterCallBack(leftFix);
+		b2Fixture* leftFix = body->CreateFixture(&def);
+		leftSideCollision = new CollisionCounterCallBack(leftFix);
 
-	b2Filter leftFilter;
-	leftFilter = leftFix->GetFilterData();
-	leftFilter.categoryBits = PLAYER_SENSOR;
-	leftFix->SetFilterData(leftFilter);
+		b2Filter leftFilter;
+		leftFilter = leftFix->GetFilterData();
+		leftFilter.categoryBits = PLAYER_SENSOR;
+		leftFix->SetFilterData(leftFilter);
 
-	
-	b2Fixture* leftHitFix = body->CreateFixture(&def);
-	leftHitCollision = new CollisionCounterCallBack(leftHitFix);
 
-	b2Filter leftHitFilter;
-	leftHitFilter = leftHitFix->GetFilterData();
-	leftHitFilter.categoryBits = PLAYER_SENSOR;
-	leftHitFilter.groupIndex = ENEMY_ATTACK;
-	leftHitFix->SetFilterData(leftHitFilter);
+		b2Fixture* leftHitFix = body->CreateFixture(&def);
+		leftHitCollision = new CollisionCounterCallBack(leftHitFix);
 
-	bpos.x += bsize.x;
-	sh.SetAsBox(0.01f, hh*0.99f, bpos, 0);
+		b2Filter leftHitFilter;
+		leftHitFilter = leftHitFix->GetFilterData();
+		leftHitFilter.categoryBits = PLAYER_SENSOR;
+		leftHitFilter.groupIndex = ENEMY_ATTACK;
+		leftHitFix->SetFilterData(leftHitFilter);
 
-	b2Fixture* rightFix = body->CreateFixture(&def);
-	rightSideCollision = new CollisionCounterCallBack(rightFix);
-	
-	b2Filter rightFilter;
-	rightFilter = rightFix->GetFilterData();
-	rightFilter.categoryBits = PLAYER_SENSOR;
-	rightFix->SetFilterData(rightFilter);
+		bpos.x += bsize.x;
+		sh.SetAsBox(0.01f, hh*0.99f, bpos, 0);
 
-	b2Fixture* rightHitFix = body->CreateFixture(&def);
-	rightHitCollision = new CollisionCounterCallBack(rightHitFix);
+		b2Fixture* rightFix = body->CreateFixture(&def);
+		rightSideCollision = new CollisionCounterCallBack(rightFix);
 
-	b2Filter rightHitFilter;
-	rightHitFilter = leftHitFix->GetFilterData();
-	rightHitFilter.categoryBits = PLAYER_SENSOR;
-	rightHitFilter.groupIndex = ENEMY_ATTACK;
-	rightHitFix->SetFilterData(rightHitFilter);
-	
+		b2Filter rightFilter;
+		rightFilter = rightFix->GetFilterData();
+		rightFilter.categoryBits = PLAYER_SENSOR;
+		rightFix->SetFilterData(rightFilter);
 
-	//Left and right side grab detectors.
-	const float grabYPos = 0.12f;
-	const float grabW = 0.05f;
-	const float grabH = 0.12f;
-	bpos = b2Vec2(-hw-grabW, grabYPos);
+		b2Fixture* rightHitFix = body->CreateFixture(&def);
+		rightHitCollision = new CollisionCounterCallBack(rightHitFix);
 
-	sh.SetAsBox(grabW, grabH, bpos, 0);
+		b2Filter rightHitFilter;
+		rightHitFilter = leftHitFix->GetFilterData();
+		rightHitFilter.categoryBits = PLAYER_SENSOR;
+		rightHitFilter.groupIndex = ENEMY_ATTACK;
+		rightHitFix->SetFilterData(rightHitFilter);
 
-	b2Fixture* fix = body->CreateFixture(&def);
-	leftGrabCallBack = new GrabCallBack(fix);
 
-	bpos.x += bsize.x+grabW*2;
+		//Left and right side grab detectors.
+		const float grabYPos = 0.12f;
+		const float grabW = 0.05f;
+		const float grabH = 0.12f;
+		bpos = b2Vec2(-hw - grabW, grabYPos);
 
-	sh.SetAsBox(grabW, grabH, bpos, 0);
+		sh.SetAsBox(grabW, grabH, bpos, 0);
 
-	fix = body->CreateFixture(&def);
-	rightGrabCallBack = new GrabCallBack(fix);
+		b2Fixture* fix = body->CreateFixture(&def);
+		leftGrabCallBack = new GrabCallBack(fix);
 
-	//Left and right side anti-grab detectors.
-	bpos = b2Vec2(-hw-grabW, grabYPos - grabH-0.05f);
-	sh.SetAsBox(grabW, 0.05f, bpos, 0);
+		bpos.x += bsize.x + grabW * 2;
 
-	fix = body->CreateFixture(&def);
-	leftAntiGrabCallBack = new CollisionCounterCallBack(fix);
+		sh.SetAsBox(grabW, grabH, bpos, 0);
 
-	bpos.x += bsize.x + grabW*2;
-	sh.SetAsBox(grabW, 0.05f, bpos, 0);
+		fix = body->CreateFixture(&def);
+		rightGrabCallBack = new GrabCallBack(fix);
 
-	fix = body->CreateFixture(&def);
-	rightAntiGrabCallBack = new CollisionCounterCallBack(fix);
+		//Left and right side anti-grab detectors.
+		bpos = b2Vec2(-hw - grabW, grabYPos - grabH - 0.05f);
+		sh.SetAsBox(grabW, 0.05f, bpos, 0);
+
+		fix = body->CreateFixture(&def);
+		leftAntiGrabCallBack = new CollisionCounterCallBack(fix);
+
+		bpos.x += bsize.x + grabW * 2;
+		sh.SetAsBox(grabW, 0.05f, bpos, 0);
+
+		fix = body->CreateFixture(&def);
+		rightAntiGrabCallBack = new CollisionCounterCallBack(fix);
+	}
+
+	//Flashlight sensors :D
+	{
+		b2Vec2 size = Convert::sfmlToB2(static_cast<sf::Vector2f>(FLASHLIGHT_SIZE));
+		b2PolygonShape shape;
+		shape.SetAsBox(size.x/4.0f, size.y/2.0f);
+
+		b2FixtureDef def;
+		def.isSensor = true;
+		def.shape = &shape;
+		def.density = 0.0f;
+
+		b2Filter& filter = def.filter;
+		
+
+		b2Fixture* fix = flashLightBody->CreateFixture(&def);
+
+	}
 }
 
 void Player::update(sf::Time deltaTime)
@@ -420,19 +369,24 @@ void Player::updateFlashlightPosition()
 	sf::Texture* mask = nullptr;
 	pos.y += offsetY;
 
-	if (getFacing() == Facing::LEFT)
+
+	switch (getFacing())
 	{
+	case LEFT:
 		pos.x -= offsetX;
 		mask = maskLeft;
-	}
-	else
-	{
+		break;
+	case RIGHT:
+	default:
 		pos.x += offsetX;
 		mask = maskRight;
+		break;
 	}
 
 	flashLight->setPosition(pos);
 	flashLight->setMask(mask);
+
+	flashLightBody->SetTransform(Convert::sfmlToB2(pos), 0.0f);
 }
 
 void Player::render(sf::RenderTarget& renderTarget)

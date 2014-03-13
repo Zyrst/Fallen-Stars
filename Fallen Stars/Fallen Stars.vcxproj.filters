@@ -88,6 +88,12 @@
     <Filter Include="Source Files\Light">
       <UniqueIdentifier>{cbf53261-1ff1-4e60-a299-8108f0bc8699}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Box2D\CallBack">
+      <UniqueIdentifier>{10baa32a-ea3a-41f6-b2d7-372f926e6f47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Box2D\CallBack">
+      <UniqueIdentifier>{a49b7749-1b34-40e9-8e6a-36a02cb53d6c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -142,9 +148,6 @@
       <Filter>Source Files\Box2D</Filter>
     </ClCompile>
     <ClCompile Include="debugdraw.cpp">
-      <Filter>Source Files\Box2D</Filter>
-    </ClCompile>
-    <ClCompile Include="CallBack.cpp">
       <Filter>Source Files\Box2D</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
@@ -246,6 +249,15 @@
     <ClCompile Include="SoundManager.cpp">
       <Filter>Source Files\Managers</Filter>
     </ClCompile>
+    <ClCompile Include="CallBack.cpp">
+      <Filter>Source Files\Box2D\CallBack</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionCounterCallBack.cpp">
+      <Filter>Source Files\Box2D\CallBack</Filter>
+    </ClCompile>
+    <ClCompile Include="GrabCallBack.cpp">
+      <Filter>Source Files\Box2D\CallBack</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -318,9 +330,6 @@
       <Filter>Header Files\Box2D</Filter>
     </ClInclude>
     <ClInclude Include="VecConverter.h">
-      <Filter>Header Files\Box2D</Filter>
-    </ClInclude>
-    <ClInclude Include="CallBack.h">
       <Filter>Header Files\Box2D</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
@@ -416,6 +425,15 @@
     </ClInclude>
     <ClInclude Include="SoundManager.h">
       <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="CallBack.h">
+      <Filter>Header Files\Box2D\CallBack</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionCounterCallBack.h">
+      <Filter>Header Files\Box2D\CallBack</Filter>
+    </ClInclude>
+    <ClInclude Include="GrabCallBack.h">
+      <Filter>Header Files\Box2D\CallBack</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

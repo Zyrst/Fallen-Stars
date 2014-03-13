@@ -8,7 +8,7 @@ namespace Convert
 	sf::Vector2f b2ToSfml(const b2Vec2& vector);
 
 	float sfmlToB2(float f);
-	float b2Tosfml(float f);
+	float b2ToSfml(float f);
 }
 
 class VecConverter

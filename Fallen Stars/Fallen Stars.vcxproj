@@ -97,11 +97,13 @@
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="CallBack.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CollisionCounterCallBack.cpp" />
     <ClCompile Include="ControlMapping.cpp" />
     <ClCompile Include="Controls.cpp" />
     <ClCompile Include="ConvexOccluder.cpp" />
     <ClCompile Include="DeathOverlay.cpp" />
     <ClCompile Include="debugdraw.cpp" />
+    <ClCompile Include="GrabCallBack.cpp" />
     <ClCompile Include="SiriusOverlay.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityLiving.cpp" />
@@ -150,9 +152,11 @@
     <ClInclude Include="BoxWorld.h" />
     <ClInclude Include="CallBack.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CollisionCounterCallBack.h" />
     <ClInclude Include="ConvexOccluder.h" />
     <ClInclude Include="DeathOverlay.h" />
     <ClInclude Include="debugdraw.h" />
+    <ClInclude Include="GrabCallBack.h" />
     <ClInclude Include="SiriusOverlay.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityLiving.h" />
