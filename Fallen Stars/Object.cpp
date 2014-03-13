@@ -45,8 +45,8 @@ Player* StarCallBack::getPlayer()
 	return player;
 }
 
-Object::Object(BoxWorld* world, sf::Vector2f& position, ResourceCollection* resource, TYPE type, StatManager* stats) :
-	Entity(world,sf::Vector2f(100, 100),position),
+Object::Object(BoxWorld* world, sf::Vector2f size , sf::Vector2f& position, ResourceCollection* resource, TYPE type, StatManager* stats) :
+	Entity(world,size,position),
 	mResource(resource),
 	mType(type),
 	starCallBack(new StarCallBack(body->GetFixtureList())),
@@ -117,10 +117,15 @@ Object::Object(BoxWorld* world, sf::Vector2f& position, ResourceCollection* reso
 		SpriteSheet windowSheet (frameSize, windowSize);
 		std::vector<sf::IntRect> windowFrames = windowSheet.getAllFrames();
 
+		b2Filter objectFilter = body->GetFixtureList()->GetFilterData();
+		objectFilter.categoryBits = OBJECT;
+		objectFilter.maskBits = PLAYER;
+		body->GetFixtureList()->SetFilterData(objectFilter);
+
 		mWindow = new Animation(windowFrames, window);
 		anime.setLooped(false);
 		anime.setAnimation(*mWindow);
-		//setupSensor(position);
+		setupSensor(position);
 		body->GetFixtureList()->SetSensor(true);
 		body->SetGravityScale(0.0f);
 		body->SetFixedRotation(true);
@@ -144,10 +149,13 @@ void Object::update(sf::Time deltaTime)
 	anime.update(deltaTime);
 	if (isAlive() && starCallBack->isColliding() && getType() == STARDUST)
 	{
+		if (mStats->stardust == false)
+		{
 		SoundManager::playSound(*mStarDustSound);	
-		mAlive = false;
-		mStats->stardust +=1;
-		std::cout << "Current amount of StarDust: " << mStats->stardust << std::endl;
+		mStats->stardust = true;
+		std::cout << " BITCH YOU GOT STARDUST" << std::endl;
+		}
+		
 	}
 	if (isAlive() && starCallBack->isColliding() && getType() == STAR)
 	{
@@ -166,8 +174,14 @@ void Object::update(sf::Time deltaTime)
 			auto player = starCallBack->getPlayer();
 			auto distance = player->getPosition().x - getPosition().x;
 			std::cout << distance << std::endl;
-			if (distance > 1)
+			if (distance > 37)
 			{
+				//Åk åt höger
+				player->setPosition(player->getPosition().x + 300, player->getPosition().y);
+			}
+			if (distance < 37)
+			{
+				//Åt vänster
 			}
 		}
 	
