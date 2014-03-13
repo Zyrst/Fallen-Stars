@@ -15,6 +15,7 @@ CollisionCounterCallBack::CollisionCounterCallBack(b2Fixture* owner)
 : CallBack(owner)
 , collisions(0)
 , hitCollisions(0)
+, active(true)
 { }
 
 void CollisionCounterCallBack::beginContact(b2Fixture* otherFixture)
@@ -47,4 +48,12 @@ bool CollisionCounterCallBack::isColliding() const
 bool CollisionCounterCallBack::isHitColliding() const
 {
 	return (hitCollisions > 0);
+}
+bool CollisionCounterCallBack::isActive() const
+{
+	return active;
+}
+void CollisionCounterCallBack::setActive(bool mActive)
+{
+	active = mActive;
 }

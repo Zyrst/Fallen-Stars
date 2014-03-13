@@ -43,6 +43,7 @@ private:
 	Animation* mJump;
 	Animation* mGrab;
 	Animation* mFall;
+	Animation* currentAnimation;
 	sf::Sound* mJumpSound;
 	sf::Sound* mWalkSound;
 	Animation* mHit;
@@ -51,7 +52,6 @@ private:
 	sf::Texture *maskRight, *maskLeft;
 	StatManager& mStats;
 	StreetLight* activeStreetLight;
-
 	b2Fixture* collisionFixture;
 	b2Body* flashLightBody;
 };

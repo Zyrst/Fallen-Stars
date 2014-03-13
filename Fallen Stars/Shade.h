@@ -90,6 +90,7 @@ private:
 	float speed;
 	float chaseLength;
 	b2Fixture* collisionFixture;
+	sf::Clock hitTimer;
 
 	//Amount of time spent in flashlight
 	float timeInFlashLight;

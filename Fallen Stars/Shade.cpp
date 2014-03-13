@@ -187,6 +187,7 @@ Shade::Shade(ResourceCollection& resource, BoxWorld* world, sf::Vector2f& size, 
 	filter.categoryBits = ENEMY;
 	filter.groupIndex = ALL, PLAYER;
 	collisionFixture->SetFilterData(filter);
+	hitTimer.restart();
 }
 Shade::~Shade()
 {
@@ -210,15 +211,40 @@ void Shade::update(sf::Time deltaTime)
 	{
 		setMode(DYING);
 	}
+	if(hitTimer.getElapsedTime().asSeconds() <= 2.0f)
+	{
+		attackSensorLeft->setActive(false);
+		attackSensorRight->setActive(false);
+	}
+	else
+	{
+		attackSensorLeft->setActive(true);
+		attackSensorRight->setActive(true);
+	}
 
 	const b2Vec2& vel = body->GetLinearVelocity();
-	if((attackSensorLeft->isAttacking()&& attackSensorLeft->isActive())||(attackSensorRight->isAttacking() && attackSensorRight->isActive())){
-		setMode(ATTACK);
+	if(attackSensorLeft->isAttacking())
+	{
+		setFacing(LEFT);
+		if(attackSensorLeft->isActive())
+		{
+		attack();
+		}
+		
+	}
+	else if(attackSensorRight->isAttacking()){
+		setFacing(RIGHT);
+		if(attackSensorRight->isActive())
+		{
+		attack();
+		}
+		
 	}
 	else if((chaseSensorLeft->isChasing()&&chaseSensorLeft->isActive())||(chaseSensorRight->isChasing()&&chaseSensorRight->isActive())){
 		setMode(CHASING);
 	}
 	else{setMode(PATROL);}
+
 	switch(currentMode){
 	case PATROL:
 		if(getFacing() == LEFT)
@@ -259,7 +285,19 @@ void Shade::update(sf::Time deltaTime)
 	break;
 
 	case ATTACK:
-		attack();
+		body->SetLinearVelocity(b2Vec2(0, 0));
+		anime.setLooped(false);
+	if(!anime.isFinished())
+	{
+		body->SetLinearVelocity(b2Vec2(0,0));
+	}
+	if(anime.isFinished())
+	{
+	hitTimer.restart();
+		setMode(CHASING);
+		anime.setLooped(true);
+		
+	}
 	break;
 
 	case SPAWN:
@@ -272,7 +310,6 @@ void Shade::update(sf::Time deltaTime)
 		setMode(PATROL);
 	break;
 	}
-	if(attackSensorRight->isAttacking()){std::cout<<"Lel"<<std::endl;}
 	anime.update(deltaTime);
 	updateAnimation();
 }
@@ -289,16 +326,16 @@ void Shade::setFacing(Facing face)
 	{
 		chaseSensorLeft->setActive(true);
 		chaseSensorRight->setActive(false);
-		attackSensorLeft->setActive(true);
-		attackSensorRight->setActive(false);
+		//attackSensorLeft->setActive(true);
+		//attackSensorRight->setActive(false);
 		std::cout << "LEFT" << std::endl;
 	}
 	else if(face == RIGHT)
 	{ 
 		chaseSensorLeft->setActive(false);
 		chaseSensorRight->setActive(true);
-		attackSensorLeft->setActive(false);
-		attackSensorRight->setActive(true);
+		//attackSensorLeft->setActive(false);
+		//attackSensorRight->setActive(true);
 		std::cout << "RIGHT" << std::endl;
 	}
 }
@@ -463,10 +500,11 @@ Shade::Mode Shade::getMode()
 void Shade::setMode(Mode mode)
 {
 	currentMode = mode;
+
 }
 void Shade::attack()
 {
-	
+	setMode(ATTACK);
 }
 /* Animationer , dö */
 #pragma endregion

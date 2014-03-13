@@ -11,8 +11,10 @@ public:
 
 	bool isColliding() const;
 	bool isHitColliding() const;
-
+	bool isActive() const;
+	void setActive(bool mActive);
 private:
 	int collisions;
 	int hitCollisions;
+	bool active;
 };

@@ -252,18 +252,40 @@ void Player::setupSensors(sf::Vector2f& pos, sf::Vector2f& size)
 		def.density = 0.0f;
 
 		b2Filter& filter = def.filter;
-		
-
+		def.filter.categoryBits = FLASHLIGHT;
+		def.filter.groupIndex = ENEMY;
 		b2Fixture* fix = flashLightBody->CreateFixture(&def);
-
+		fix->SetFilterData(def.filter);
 	}
 }
 
 void Player::update(sf::Time deltaTime)
 {
 	const b2Vec2& vel = body->GetLinearVelocity();
-	if(rightHitCollision->isHitColliding()){damaged();std::cout<<"Damaged!"<<std::endl;}
-	if(leftHitCollision->isHitColliding()){damaged();std::cout<<"Damaged!"<<std::endl;}
+	if(hitTimer.getElapsedTime().asSeconds() <= 2.0f)
+	{
+		leftHitCollision->setActive(false);
+		rightHitCollision->setActive(false);
+	}
+	else
+	{
+		leftHitCollision->setActive(true);
+		rightHitCollision->setActive(true);
+	}
+
+	if(rightHitCollision->isHitColliding() && rightHitCollision->isActive())
+	{
+		setFacing(RIGHT);
+		hitTimer.restart();
+		damaged();
+	}
+	if(leftHitCollision->isHitColliding()&& leftHitCollision->isActive())
+	{
+		setFacing(LEFT);
+		hitTimer.restart();
+		damaged();
+	}
+
 	switch(state)
 	{
 	case NORMAL:
@@ -342,16 +364,24 @@ void Player::update(sf::Time deltaTime)
 		}
 	break;
 	case DAMAGED:
-		std::cout<<"Loop dat dmg"<<std::endl;
+	anime.setLooped(false);
+	if(!anime.isFinished())
+	{
+		body->SetLinearVelocity(b2Vec2(0,0));
+	}
+	if(anime.isFinished())
+	{
+		setState(NORMAL);
+		anime.setLooped(true);
+	}
 		break;
+
 	default:
 		break;
 	}
 	updateAnimation();
 	updateSound();
 	anime.update(deltaTime);
-	//anime.setPosition(Convert::b2ToSfml(body->GetPosition()));
-
 	updateFlashlightPosition();
 }
 
@@ -464,7 +494,7 @@ void Player::setState(Player::PLAYER_STATE state)
 
 void Player::updateAnimation()
 {
-	Animation* currentAnimation = NULL;
+	currentAnimation = NULL;
 	if (leftButton || rightButton)
 	{
 		currentAnimation = mWalking;
@@ -524,24 +554,11 @@ b2Body* Player::getBody()
 {
 	return body;
 }
+
 void Player::damaged()
 {
-	hitTimer.restart();
-	bool loop = true;
 	setState(DAMAGED);
-	while (loop)
-	{
-		if(float time = hitTimer.getElapsedTime().asSeconds() <=3.0f)
-		{
-			loop = false;
-		}
-		
-	}
 	mStats.health -= 1;
-	std::cout<<time<<std::endl;
-	std::cout<<mStats.health<<std::endl;
-	
-	updateAnimation();
-	setState(NORMAL);
+	std::cout<<"HP: "<<mStats.health<<std::endl;
 }
 #pragma endregion
