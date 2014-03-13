@@ -1,7 +1,10 @@
 #pragma once
 #include "CallBack.h"
-#include "ResourceCollection.h"
-#include "Player.h"
+#include <SFML\System\Vector2.hpp>
+#include <set>
+
+class Entity;
+class Shade;
 
 class FlashLightCallBack : public CallBack
 {
@@ -12,8 +15,9 @@ public:
 	virtual void beginContact(b2Fixture* otherFixture) override;
 	virtual void endContact(b2Fixture* otherFixture) override;
 
+	Shade* getClosestShade(const sf::Vector2f& position);
+
 private:
-//	Shade* closestShade;
-	Player* player;
+	std::set<Shade*> shades;
 };
 

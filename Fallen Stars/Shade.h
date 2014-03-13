@@ -1,37 +1,13 @@
 #pragma once
 #include "EntityLiving.h"
-#include "Player.h"
+#include "CallBack.h"
 
-class ChaseSensor : public CallBack
-{
-public:
-	ChaseSensor(b2Fixture* owner);
-	virtual void beginContact(b2Fixture* otherFixture) override;
-	virtual void endContact(b2Fixture* otherFixture) override;
+class Player;
+class ResourceCollection;
+class b2Fixture;
+class ChaseSensor;
 
-	bool isChasing() const;
-	bool isActive() const;
-	void setActive(bool active);
-private:
-	void setVictim(b2Fixture* fix, const sf::FloatRect& bounds);
-	bool chasing;
-	bool mActive;
-	b2Fixture* chaseVictim;
-	sf::FloatRect victimBounds; 
-};
-
-class LedgeSensor : public CallBack
-{
-public:
-	LedgeSensor(b2Fixture* owner);
-	virtual void beginContact(b2Fixture* otherFixture) override;
-	virtual void endContact(b2Fixture* otherFixture) override;
-	bool isGrounded() const;
-private:
-	void setFinder(b2Fixture* fix, const sf::FloatRect& bounds);
-	b2Fixture* groundFinder;
-	sf::FloatRect finderBounds;
-};
+class LedgeSensor;
 
 class AttackSensor : public CallBack
 {

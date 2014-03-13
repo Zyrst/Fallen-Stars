@@ -8,88 +8,11 @@
 #include "ControlMapping.h"
 #include "SpriteSheet.h"
 #include "ResourceCollection.h"
+#include "ChaseSensor.h"
+#include "LedgeSensor.h"
 
-static const float TIME_UNTIL_FLASHLIGHT_DEATH = 3.0f;
+static const float TIME_UNTIL_FLASHLIGHT_DEATH = 1.5f;
 
-#pragma region Chase
-ChaseSensor::ChaseSensor(b2Fixture* owner)
-	: CallBack(owner)
-	, chasing(false)
-	, mActive(false)
-	, chaseVictim(nullptr)
-
-{ }
-void ChaseSensor::beginContact(b2Fixture* otherFixture)
-{
-	sf::FloatRect bounds = BoxBounds::boundsOfFixture(otherFixture);
-	if (otherFixture->GetBody()->GetType() == b2_dynamicBody && chaseVictim == nullptr)
-	{
-		setVictim(otherFixture, bounds);
-		chasing = true;
-		//std::cout<<"Contact Begun"<<std::endl;
-	}
-	
-}
-void ChaseSensor::endContact(b2Fixture* otherFixture)
-{
-	if (otherFixture->GetBody()->GetType() == b2_dynamicBody &&  chaseVictim != nullptr && chasing == true)
-	{
-		chaseVictim = nullptr;
-		chasing = false;
-		//std::cout<<"Contact Begun Ended"<<std::endl;
-	}
-	
-}
-bool ChaseSensor::isChasing() const
-{
-	return (chaseVictim !=nullptr);
-}
-bool ChaseSensor::isActive() const
-{
-	return mActive;
-}
-void ChaseSensor::setActive(bool active)
-{
-	mActive = active;
-}
-void ChaseSensor::setVictim(b2Fixture* fix, const sf::FloatRect& bounds)
-{
-	chaseVictim = fix;
-	victimBounds = sf::FloatRect(bounds);
-}
-#pragma endregion
-#pragma region Ledge
-LedgeSensor::LedgeSensor(b2Fixture* owner)
-	: CallBack(owner)
-	, groundFinder(nullptr)
-{}
-void LedgeSensor::beginContact(b2Fixture* otherFixture)
-{
-	sf::FloatRect bounds = BoxBounds::boundsOfFixture(otherFixture);
-	if (otherFixture->GetBody()->GetType() == b2_staticBody && groundFinder == nullptr)
-	{
-		setFinder(otherFixture, bounds);
-		//std::cout<<"G";
-	}
-}
-void LedgeSensor::endContact(b2Fixture* otherFixture)
-{
-	if (otherFixture->GetBody()->GetType() == b2_staticBody && groundFinder != nullptr)
-	{
-		groundFinder = nullptr;
-		//std::cout<<"420 ground not found lel"<<std::endl;
-	}
-}
-bool LedgeSensor::isGrounded() const
-{
-	return (groundFinder != nullptr);
-}
-void LedgeSensor::setFinder(b2Fixture* fix, const sf::FloatRect& bounds)
-{
-	groundFinder = fix;
-	finderBounds = sf::FloatRect(bounds);
-}
-#pragma endregion
 #pragma region Attack
 AttackSensor::AttackSensor(b2Fixture* owner)
 	: CallBack(owner)
@@ -207,10 +130,6 @@ void Shade::render(sf::RenderTarget& renderTarget)
 }
 void Shade::update(sf::Time deltaTime)
 {
-	if (timeInFlashLight >= TIME_UNTIL_FLASHLIGHT_DEATH)
-	{
-		setMode(DYING);
-	}
 	if(hitTimer.getElapsedTime().asSeconds() <= 2.0f)
 	{
 		attackSensorLeft->setActive(false);
@@ -243,7 +162,13 @@ void Shade::update(sf::Time deltaTime)
 	else if((chaseSensorLeft->isChasing()&&chaseSensorLeft->isActive())||(chaseSensorRight->isChasing()&&chaseSensorRight->isActive())){
 		setMode(CHASING);
 	}
-	else{setMode(PATROL);}
+	else {setMode(PATROL);}
+
+	//This should have priority
+	if (timeInFlashLight >= TIME_UNTIL_FLASHLIGHT_DEATH)
+	{
+		setMode(DYING);
+	}
 
 	switch(currentMode){
 	case PATROL:
@@ -295,7 +220,7 @@ void Shade::update(sf::Time deltaTime)
 	{
 	hitTimer.restart();
 		setMode(CHASING);
-		anime.setLooped(true);
+		attack();
 		
 	}
 	break;

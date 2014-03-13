@@ -12,7 +12,10 @@
 #include "Animation.h"
 #include "ResourceCollection.h"
 #include "StatManager.h"
+#include "CollisionCounterCallBack.h"
 #include "FlashLightCallBack.h"
+#include "GrabCallBack.h"
+#include "Shade.h"
 
 #include <iostream>
 
@@ -301,6 +304,12 @@ void Player::update(sf::Time deltaTime)
 		setFacing(LEFT);
 		hitTimer.restart();
 		damaged();
+	}
+
+	Shade* shade = flashLightCallBack->getClosestShade(flashLight->getPosition());
+	if (shade)
+	{
+		shade->increaseTimeInFlashLight(deltaTime.asSeconds());
 	}
 
 	switch(state)

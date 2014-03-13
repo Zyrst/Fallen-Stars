@@ -261,6 +261,12 @@
     <ClCompile Include="FlashLightCallBack.cpp">
       <Filter>Source Files\Box2D\CallBack</Filter>
     </ClCompile>
+    <ClCompile Include="ChaseSensor.cpp">
+      <Filter>Source Files\Box2D\CallBack</Filter>
+    </ClCompile>
+    <ClCompile Include="LedgeSensor.cpp">
+      <Filter>Source Files\Box2D\CallBack</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -439,6 +445,12 @@
       <Filter>Header Files\Box2D\CallBack</Filter>
     </ClInclude>
     <ClInclude Include="FlashLightCallBack.h">
+      <Filter>Header Files\Box2D\CallBack</Filter>
+    </ClInclude>
+    <ClInclude Include="ChaseSensor.h">
+      <Filter>Header Files\Box2D\CallBack</Filter>
+    </ClInclude>
+    <ClInclude Include="LedgeSensor.h">
       <Filter>Header Files\Box2D\CallBack</Filter>
     </ClInclude>
   </ItemGroup>

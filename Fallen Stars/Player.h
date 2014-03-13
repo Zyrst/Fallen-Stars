@@ -5,14 +5,14 @@
 #include "StreetLight.h"
 #include <SFML/Audio/Sound.hpp>
 #include <SFML\System\Clock.hpp>
-#include "CollisionCounterCallBack.h"
-#include "GrabCallBack.h"
 
 class LightSolver;
 class Animation;
 class ResourceCollection;
 struct StatManager;
+class CollisionCounterCallBack;
 class FlashLightCallBack;
+class GrabCallBack;
 
 class Player : public EntityLiving
 {
