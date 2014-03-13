@@ -258,6 +258,9 @@
     <ClCompile Include="GrabCallBack.cpp">
       <Filter>Source Files\Box2D\CallBack</Filter>
     </ClCompile>
+    <ClCompile Include="FlashLightCallBack.cpp">
+      <Filter>Source Files\Box2D\CallBack</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -433,6 +436,9 @@
       <Filter>Header Files\Box2D\CallBack</Filter>
     </ClInclude>
     <ClInclude Include="GrabCallBack.h">
+      <Filter>Header Files\Box2D\CallBack</Filter>
+    </ClInclude>
+    <ClInclude Include="FlashLightCallBack.h">
       <Filter>Header Files\Box2D\CallBack</Filter>
     </ClInclude>
   </ItemGroup>

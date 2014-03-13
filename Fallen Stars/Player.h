@@ -12,6 +12,7 @@ class LightSolver;
 class Animation;
 class ResourceCollection;
 struct StatManager;
+class FlashLightCallBack;
 
 class Player : public EntityLiving
 {
@@ -37,6 +38,7 @@ private:
 	PLAYER_STATE state;
 	CollisionCounterCallBack *groundCallBack, *rightSideCollision, *leftSideCollision, *leftAntiGrabCallBack, *rightAntiGrabCallBack, *rightHitCollision, *leftHitCollision;
 	GrabCallBack *leftGrabCallBack, *rightGrabCallBack;
+	FlashLightCallBack* flashLightCallBack;
 	bool leftButton, rightButton, downButton;
 	Animation* mWalking;
 	Animation* mIdle;

@@ -12,6 +12,7 @@
 #include "Animation.h"
 #include "ResourceCollection.h"
 #include "StatManager.h"
+#include "FlashLightCallBack.h"
 
 #include <iostream>
 
@@ -243,19 +244,35 @@ void Player::setupSensors(sf::Vector2f& pos, sf::Vector2f& size)
 	//Flashlight sensors :D
 	{
 		b2Vec2 size = Convert::sfmlToB2(static_cast<sf::Vector2f>(FLASHLIGHT_SIZE));
+		size.x /= 2.0f;
+		size.y /= 2.0f;
+
+		size.x *= 0.5;
+		float hh = size.y / 2.0f;
+
 		b2PolygonShape shape;
-		shape.SetAsBox(size.x/4.0f, size.y/2.0f);
+		/*shape.SetAsBox(size.x/4.0f, size.y/2.0f);*/
+		
+		b2Vec2 points[4];
+		points[0] = b2Vec2(0.0f, -hh);
+		points[1] = b2Vec2(size.x, -hh);
+		points[2] = b2Vec2(size.x, size.y - hh);
+		points[3] = b2Vec2(0.0f, size.y - hh);
+
+		shape.Set(points, 4);
 
 		b2FixtureDef def;
 		def.isSensor = true;
 		def.shape = &shape;
 		def.density = 0.0f;
 
-		b2Filter& filter = def.filter;
 		def.filter.categoryBits = FLASHLIGHT;
 		def.filter.groupIndex = ENEMY;
+		
 		b2Fixture* fix = flashLightBody->CreateFixture(&def);
 		fix->SetFilterData(def.filter);
+		flashLightBody->SetGravityScale(0.0f);
+		flashLightCallBack = new FlashLightCallBack(fix);
 	}
 }
 
@@ -389,6 +406,7 @@ void Player::updateFlashlightPosition()
 {
 	const float offsetX = 50.0f;
 	float offsetY = 95.0f;
+	float bodyOffsetX = 0.0f;
 
 	if (anime.getAnimation() == mWalking)
 	{
@@ -404,6 +422,7 @@ void Player::updateFlashlightPosition()
 	{
 	case LEFT:
 		pos.x -= offsetX;
+		bodyOffsetX += FLASHLIGHT_SIZE.x / 4.0f;
 		mask = maskLeft;
 		break;
 	case RIGHT:
@@ -416,6 +435,7 @@ void Player::updateFlashlightPosition()
 	flashLight->setPosition(pos);
 	flashLight->setMask(mask);
 
+	pos.x -= bodyOffsetX;
 	flashLightBody->SetTransform(Convert::sfmlToB2(pos), 0.0f);
 }
 

@@ -103,6 +103,7 @@
     <ClCompile Include="ConvexOccluder.cpp" />
     <ClCompile Include="DeathOverlay.cpp" />
     <ClCompile Include="debugdraw.cpp" />
+    <ClCompile Include="FlashLightCallBack.cpp" />
     <ClCompile Include="GrabCallBack.cpp" />
     <ClCompile Include="SiriusOverlay.cpp" />
     <ClCompile Include="Entity.cpp" />
@@ -156,6 +157,7 @@
     <ClInclude Include="ConvexOccluder.h" />
     <ClInclude Include="DeathOverlay.h" />
     <ClInclude Include="debugdraw.h" />
+    <ClInclude Include="FlashLightCallBack.h" />
     <ClInclude Include="GrabCallBack.h" />
     <ClInclude Include="SiriusOverlay.h" />
     <ClInclude Include="Entity.h" />
