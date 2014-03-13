@@ -7,7 +7,6 @@
 #include "Camera.h"
 #include "LevelManager.h"
 #include <SFML/Audio/Music.hpp>
-#include <SFML/Audio/Listener.hpp>
 #include "StatManager.h"
 
 class LightSolver;
@@ -25,6 +24,7 @@ public:
 	void clear();
 	void killDeadEntities();
 	void load();
+	void reset();
 
 private:
 	std::vector <Entity*> mEntityVector;
@@ -36,7 +36,6 @@ private:
 	LightSolver* mLightSolver;
 	std::string mLevelName;
 	sf::Music* mFirstSong;
-	sf::Listener mListener;
 	StatManager* mStats;
 
 	bool drawDebugShapes;

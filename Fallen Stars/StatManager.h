@@ -5,7 +5,7 @@ struct StatManager
 	StatManager();
 	int health;
 	int stars;
-	int stardust;
+	bool stardust;
 
 };
 

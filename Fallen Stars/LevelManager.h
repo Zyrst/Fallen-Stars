@@ -33,6 +33,7 @@ public:
 	void getSoundLayer(MusicVector& music,ResourceCollection& resource);
 	void getSiriusLayer(State& state,ResourceCollection& resource);
 
+
 private:
 	std::string mLevel;
 	tmx::MapLoader mapLoader;

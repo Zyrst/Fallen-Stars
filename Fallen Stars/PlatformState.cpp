@@ -7,19 +7,34 @@
 
 PlatformState::PlatformState(std::string levelname)
 :	mLevelName(levelname)
-,	mLightSolver(new LightSolver())
 ,	drawDebugShapes(true)
+,	mLightSolver(new LightSolver)
 {
+	mEntityVector.push_back(NULL);
 }
 
 PlatformState::~PlatformState()
 {
+	//Stop and then erase the level music
+	mFirstSong->stop();
+	mFirstSong->setLoop(false);
+	for(unsigned int i = 0; i < mMusicVector.size(); i++)
+	{
+		//Stop the music before we erase it from the vector
+		mMusicVector[i]->stop();
+		mMusicVector[i]->setLoop(false);
+	}
+	for (sf::Music* m : mMusicVector)
+	{
+		delete m;
+	}
+	mMusicVector.clear();
 	clear();
+	delete mFirstSong;
 	delete mWorld;
 	delete mLevel;
 	delete mCamera;
 	delete mLightSolver;
-	delete mStats;
 }
 
 void PlatformState::load()
@@ -29,24 +44,8 @@ void PlatformState::load()
 	mLevel = new LevelManager(mLevelName, &mResourceCollection);
 	mLevel->genCollision(mWorld, mLightSolver);
 	
-	mStats = new StatManager();
-
-	auto size = sf::Vector2f(70, 220);
-	
-	/*Adds player and objects to the Level*/
-	auto playerPos = mLevel->getPlayerLayer();
-	mPlayer = new Player(mWorld, size, playerPos, mResourceCollection, mLightSolver, *mStats);
-	mEntityVector.push_back(mPlayer);
-	mLevel->getObjectLayer(&mResourceCollection,mWorld,mEntityVector,mStats);
-	mLevel->getEnemyLayer(mResourceCollection,mWorld,mEntityVector,size);
+	reset();
 	mLevel->getSoundLayer(mMusicVector, mResourceCollection);
-	mLevel->getSiriusLayer(*this, mResourceCollection);
-	mLevel->getStreetlightLayer(mResourceCollection, mWorld, mLightSolver, mEntityVector);
-
-	for (Entity* e : mEntityVector)
-	{
-		mLightSolver->addOccluder(e);
-	}
 
 	/*Level 'theme' music*/
 	mFirstSong = new sf::Music;
@@ -54,8 +53,6 @@ void PlatformState::load()
 	mFirstSong->setLoop(false);
 	mFirstSong->setVolume(100);
 	
-	mListener.setPosition(mPlayer->getPosition().x,mPlayer->getPosition().y,0);
-
 	sf::Vector2u mapSize =  mLevel->getMapLoader().GetMapSize();
 	mCamera = new Camera(mPlayer, mapSize);
 
@@ -87,13 +84,12 @@ void PlatformState::update(const sf::Time& deltaTime)
 		mFirstSong->setLoop(true);
 	}
 
-	mListener.setPosition(mPlayer->getPosition().x, mPlayer->getPosition().y,0);
 
 	//Positional sound and music
 	for (auto i = 0; i < (int) mMusicVector.size(); i++)
 	{
-		float x = (mMusicVector[i]->getPosition().x - mListener.getPosition().x) * (mMusicVector[i]->getPosition().x - mListener.getPosition().x);
-		float y = (mMusicVector[i]->getPosition().y - mListener.getPosition().y) * (mMusicVector[i]->getPosition().y - mListener.getPosition().y);
+		float x = (mMusicVector[i]->getPosition().x - mPlayer->getPosition().x) * (mMusicVector[i]->getPosition().x - mPlayer->getPosition().x);
+		float y = (mMusicVector[i]->getPosition().y - mPlayer->getPosition().y) * (mMusicVector[i]->getPosition().y - mPlayer->getPosition().y);
 		float distance = std::sqrtf(x + y);
 
 	/*	auto volume = 1500 / (distance+100);
@@ -102,15 +98,15 @@ void PlatformState::update(const sf::Time& deltaTime)
 		{
 			mMusicVector[i]->setVolume(0);
 		}
-		if (distance <= 200)
+		if (distance <= 400)
 		{
 			mMusicVector[i]->setVolume(20);
 		}
-		if (distance >200 && distance <= 500 )
+		if (distance >401 && distance <= 700 )
 		{
 			mMusicVector[i]->setVolume(15);
 		}
-		if (distance > 501 && distance <=1000)
+		if (distance > 701 && distance <=1000)
 		{
 			mMusicVector[i]->setVolume(5);
 		}
@@ -167,22 +163,29 @@ void PlatformState::clear()
 		delete e;
 	}
 	mEntityVector.clear();
+	mLightSolver->clear();	
+	delete mStats;
+}
 
-	//Stop and then erase the level music
-	mFirstSong->stop();
-	mFirstSong->setLoop(false);
-	delete mFirstSong;
+void PlatformState::reset()
+{
+	/*Clears out vectors so we can add new elements*/
+	clear();
+	mStats = new StatManager();
 
-	for(unsigned int i = 0; i < mMusicVector.size(); i++)
+	/*Add Player and the other elements to the level*/
+	auto size = sf::Vector2f(70, 220);
+	auto playerPos = mLevel->getPlayerLayer();
+	mPlayer = new Player(mWorld, size, playerPos, mResourceCollection, mLightSolver,*mStats);
+	mEntityVector.push_back(mPlayer);
+	mLevel->getObjectLayer(&mResourceCollection,mWorld,mEntityVector,mStats);
+	mLevel->getEnemyLayer(mResourceCollection,mWorld,mEntityVector,size);
+	mLevel->getSiriusLayer(*this, mResourceCollection);
+	mLevel->getStreetlightLayer(mResourceCollection, mWorld, mLightSolver, mEntityVector);
+
+	for (Entity* e : mEntityVector)
 	{
-		//Stop the music before we erase it from the vector
-		mMusicVector[i]->stop();
-		mMusicVector[i]->setLoop(false);
+		mLightSolver->addOccluder(e);
 	}
 
-	for (sf::Music* m : mMusicVector)
-	{
-		delete m;
-	}
-	mMusicVector.clear();
 }

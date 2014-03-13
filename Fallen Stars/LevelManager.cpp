@@ -57,7 +57,7 @@ void LevelManager::getObjectLayer(ResourceCollection* resource,BoxWorld* world,E
 			for (auto& k : i->objects)
 			{
 				auto pos = k.GetPosition();
-				entity.push_back(new Object(world,pos,resource, Object::TYPE::STAR,stats));
+				entity.push_back(new Object(world,sf::Vector2f(100,100),pos,resource, Object::TYPE::STAR,stats));
 			}
 		}
 		if (i->name.compare("StarDust") == 0)
@@ -65,7 +65,7 @@ void LevelManager::getObjectLayer(ResourceCollection* resource,BoxWorld* world,E
 			for (auto& k : i->objects)
 			{
 				auto pos = k.GetPosition();
-				entity.push_back(new Object(world,pos,resource,Object::TYPE::STARDUST,stats));
+				entity.push_back(new Object(world,sf::Vector2f(100,100),pos,resource,Object::TYPE::STARDUST,stats));
 			}
 		}
 		if (i->name.compare("Window") == 0)
@@ -73,7 +73,7 @@ void LevelManager::getObjectLayer(ResourceCollection* resource,BoxWorld* world,E
 			for (auto& k : i->objects)
 			{
 				auto pos = k.GetPosition();
-				entity.push_back(new Object(world,pos,resource,Object::TYPE::WINDOW,stats));
+				entity.push_back(new Object(world,sf::Vector2f(300, 287),pos,resource,Object::TYPE::WINDOW,stats));
 			}
 		}
 	}
