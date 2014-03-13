@@ -3,7 +3,6 @@
 #include <SFML\System\Vector2.hpp>
 #include <set>
 
-class Entity;
 class Shade;
 
 class FlashLightCallBack : public CallBack

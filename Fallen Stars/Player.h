@@ -1,8 +1,5 @@
 #pragma once
 #include "EntityLiving.h"
-#include "CallBack.h"
-#include "LightSource.h"
-#include "StreetLight.h"
 #include <SFML/Audio/Sound.hpp>
 #include <SFML\System\Clock.hpp>
 
@@ -13,6 +10,9 @@ struct StatManager;
 class CollisionCounterCallBack;
 class FlashLightCallBack;
 class GrabCallBack;
+class LightSource;
+class StreetLight;
+class b2Fixture;
 
 class Player : public EntityLiving
 {

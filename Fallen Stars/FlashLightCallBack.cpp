@@ -1,6 +1,5 @@
 #include "FlashLightCallBack.h"
 #include <Box2D\Dynamics\b2Fixture.h>
-#include <iostream>
 #include "Shade.h"
 
 namespace

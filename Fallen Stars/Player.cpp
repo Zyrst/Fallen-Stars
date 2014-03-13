@@ -16,6 +16,8 @@
 #include "FlashLightCallBack.h"
 #include "GrabCallBack.h"
 #include "Shade.h"
+#include "LightSource.h"
+#include "StreetLight.h"
 
 #include <iostream>
 

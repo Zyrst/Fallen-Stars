@@ -6,6 +6,8 @@
 #include <SFML\Graphics\Sprite.hpp>
 #include <SFML\Graphics\Shader.hpp>
 #include "ConvexOccluder.h"
+#include "Occluder.h"
+#include "LightSource.h"
 
 namespace
 {

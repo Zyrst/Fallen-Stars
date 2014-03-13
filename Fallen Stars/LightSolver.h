@@ -1,10 +1,11 @@
 #pragma once
 
+#include "LightSource.h"
 #include <SFML\Graphics\Color.hpp>
 #include <SFML\Graphics\RenderTexture.hpp>
-#include "LightSource.h"
 #include <vector>
-#include "Occluder.h"
+
+class Occluder;
 
 namespace tmx
 {
