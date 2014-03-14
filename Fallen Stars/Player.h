@@ -17,7 +17,7 @@ class b2Fixture;
 class Player : public Entity
 {
 public:
-	enum PLAYER_STATE { NORMAL, GRABBING, DAMAGED, KNOCKEDBACKED };
+	enum PLAYER_STATE { NORMAL, GRABBING, DAMAGED, KNOCKEDBACKED, DYING };
 	Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, ResourceCollection& resource, LightSolver* lightSolver, StatManager& stats);
 	virtual ~Player();
 	void render(sf::RenderTarget& renderSurface, sf::RenderStates states) override;

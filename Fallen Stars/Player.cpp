@@ -401,6 +401,10 @@ void Player::update(sf::Time deltaTime)
 		setState(NORMAL);
 		anime.setLooped(true);
 	}
+	if(mStats.health <=0)
+	{
+		setState(DYING);
+	}
 	break;
 	case KNOCKEDBACKED:
 		
@@ -409,7 +413,11 @@ void Player::update(sf::Time deltaTime)
 			setState(NORMAL);
 		}
 		break;
-	
+	case DYING:
+		//todo add death and restart
+		std::cout<<"Waaaaaaaaaaaah"<<std::endl;
+		std::cout<<"---------Player Dead----------"<<std::endl;
+		break;
 	default:
 		break;
 	}
