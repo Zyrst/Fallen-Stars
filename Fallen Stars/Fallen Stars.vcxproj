@@ -59,6 +59,8 @@
       </PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
+      <MinimalRebuild>false</MinimalRebuild>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -93,6 +95,7 @@
     <ClCompile Include="AnimatedBackgroundImage.cpp" />
     <ClCompile Include="AnimatedSprite.cpp" />
     <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="BaseResolution.cpp" />
     <ClCompile Include="BoxWorld.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="CallBack.cpp" />
@@ -104,10 +107,13 @@
     <ClCompile Include="ConvexOccluder.cpp" />
     <ClCompile Include="DeathOverlay.cpp" />
     <ClCompile Include="debugdraw.cpp" />
+    <ClCompile Include="DialogueCallback.cpp" />
     <ClCompile Include="FlashLightCallBack.cpp" />
     <ClCompile Include="GrabCallBack.cpp" />
     <ClCompile Include="LedgeSensor.cpp" />
-    <ClCompile Include="SiriusOverlay.cpp" />
+    <ClCompile Include="HUDOverlay.cpp" />
+    <ClCompile Include="MainMenu.cpp" />
+    <ClCompile Include="DialogueOverlay.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="LevelManager.cpp" />
@@ -123,7 +129,7 @@
     <ClCompile Include="LoadingState.cpp" />
     <ClCompile Include="LogoState.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="MainMenu.cpp" />
+    <ClCompile Include="MainMenuDebug.cpp" />
     <ClCompile Include="MainMenuState.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Object.cpp" />
@@ -160,10 +166,13 @@
     <ClInclude Include="ConvexOccluder.h" />
     <ClInclude Include="DeathOverlay.h" />
     <ClInclude Include="debugdraw.h" />
+    <ClInclude Include="DialogueCallback.h" />
     <ClInclude Include="FlashLightCallBack.h" />
     <ClInclude Include="GrabCallBack.h" />
     <ClInclude Include="LedgeSensor.h" />
-    <ClInclude Include="SiriusOverlay.h" />
+    <ClInclude Include="HUDOverlay.h" />
+    <ClInclude Include="MainMenu.h" />
+    <ClInclude Include="DialogueOverlay.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="LevelTracker.h" />
     <ClInclude Include="Libraries\SFML TmxLoader\include\tmx\MapLayer.h" />
@@ -173,7 +182,7 @@
     <ClInclude Include="LightSolver.h" />
     <ClInclude Include="LoadingState.h" />
     <ClInclude Include="LogoState.h" />
-    <ClInclude Include="MainMenu.h" />
+    <ClInclude Include="MainMenuDebug.h" />
     <ClInclude Include="MainMenuState.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Button.h" />
