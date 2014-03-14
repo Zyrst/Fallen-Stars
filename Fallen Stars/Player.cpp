@@ -308,10 +308,13 @@ void Player::update(sf::Time deltaTime)
 		damaged();
 	}
 
-	Shade* shade = flashLightCallBack->getClosestShade(flashLight->getPosition());
-	if (shade)
+	if (flashLight->isEnabled())
 	{
-		shade->increaseTimeInFlashLight(deltaTime.asSeconds());
+		Shade* shade = flashLightCallBack->getClosestShade(flashLight->getPosition());
+		if (shade)
+		{
+			shade->increaseTimeInFlashLight(deltaTime.asSeconds());
+		}
 	}
 
 	switch(state)
@@ -537,18 +540,22 @@ void Player::setState(Player::PLAYER_STATE state)
 		body->SetGravityScale(1.0f);
 		collisionFixture->SetSensor(false);
 		body->SetAwake(true);
+		flashLight->setEnabled(true);
 		break;
 	case PLAYER_STATE::GRABBING:
 		body->SetGravityScale(0.0f);
 		body->SetLinearVelocity(b2Vec2(0, 0));
 		collisionFixture->SetSensor(true);
 		body->SetAwake(false);
+		flashLight->setEnabled(false);
 		break;
 	case PLAYER_STATE::DAMAGED:
 		body->SetLinearVelocity(b2Vec2(0, 0));
+		flashLight->setEnabled(false);
 		break;
 	case PLAYER_STATE::KNOCKEDBACKED:
 		knockedbackClock.restart();
+		flashLight->setEnabled(true);
 		break;
 	}
 	this->state = state;
