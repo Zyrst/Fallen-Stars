@@ -9,7 +9,7 @@
 
 #include <iostream> // TODO Remove!
 
-MainMenu::MainMenu(int id, ResourceCollection& resources, const MainMenuState* state):
+MainMenu::MainMenu(int id, ResourceCollection& resources, const MainMenuState* state) :
 	Menu(id),
 	mState(const_cast<MainMenuState*>(state))
 {
@@ -19,31 +19,34 @@ MainMenu::MainMenu(int id, ResourceCollection& resources, const MainMenuState* s
 	sf::Texture& buttonTexture = resources.getTexture("Assets/Menu/Button.png");
 	sf::Font& font = resources.getFont("Assets/Menu/24Janvier.otf");
 	
-	sf::Text start("PlatformState", font, 30U);
-	addButton(Button(START, width / 2.0f + height / 4.0f, buttonTexture, resources, start));
+	sf::Text textContinue("Continue", font, 30U);
+	addButton(Button(CONTINUE, width / 2.0f + height / 4.0f, buttonTexture, resources, textContinue, false));
 	
-	sf::Text puzzle("PuzzleState", font, 30U);
-	addButton(Button(PUZZLE, width / 2.0f + height * (1/4.0f + 1/6.0f), buttonTexture, resources, puzzle));
+	sf::Text textNewGame("New Game", font, 30U);
+	addButton(Button(NEW_GAME, width / 2.0f + height * (1/4.0f + 1/6.0f), buttonTexture, resources, textNewGame));
 	
-	sf::Text settings("Toggle Fullscreen", font, 30U);
-	addButton(Button(FULLSCREEN, width / 2.0f + height * (1/4.0f + 2/6.0f), buttonTexture, resources, settings));
+	sf::Text textFullscreen("Toggle Fullscreen", font, 30U);
+	addButton(Button(FULLSCREEN, width / 2.0f + height * (1/4.0f + 2/6.0f), buttonTexture, resources, textFullscreen));
 		
-	sf::Text exit("Exit", font, 30U);
-	addButton(Button(EXIT, width / 2.0f + height * (1/4.0f + 3/6.0f), buttonTexture, resources, exit));
+	sf::Text textExit("Exit", font, 30U);
+	addButton(Button(EXIT, width / 2.0f + height * (1/4.0f + 3/6.0f), buttonTexture, resources, textExit));
+
 }
 
 
 void MainMenu::buttonPressed(int id)
 {
-	if(id == Buttons::START)
+	if(id == Buttons::CONTINUE)
 	{
-		setEnabledState(false);
-		mState->getOverlay(MainMenuState::PLATFORM_SELECT).setEnabledState(true);
+		// TODO Load last save and start from where it left off
+		std::cout << "WTF?! HOW IS THIS HAPPENING?! D: THE DEAD BUTTONS ARE INVADING, RUN FOR YOUR LIVES!" << std::endl;
 	}
-	if(id == Buttons::PUZZLE)
+	if(id == Buttons::NEW_GAME) 
 	{
-		setEnabledState(false);
-		mState->getOverlay(MainMenuState::PUZZLE_SELECT).setEnabledState(true);
+		// TODO Clear any previous progress and load level 1
+		// setEnabledState(false);
+		// mState->getOverlay(MainMenuState::PLATFORM_SELECT).setEnabledState(true);
+		Game::instance()->loadNewState(new PlatformState("level_1_optim"));
 	}
 	if(id == Buttons::FULLSCREEN)
 	{
@@ -52,5 +55,15 @@ void MainMenu::buttonPressed(int id)
 	if(id == Buttons::EXIT)
 	{
 		Game::instance()->exit();
+	}
+}
+
+void MainMenu::handleAction(Controls::Action action, Controls::KeyState keystate)
+{
+	Menu::handleAction(action, keystate);
+	if(action == Controls::Action::DEBUG && keystate == Controls::KeyState::RELEASED)
+	{
+		setEnabledState(false);
+		mState->getOverlay(MainMenuState::MAIN_MENU_DEBUG).setEnabledState(true);
 	}
 }

@@ -3,7 +3,7 @@
 
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Audio/Music.hpp>
-#include "MainMenu.h"
+#include "MainMenuDebug.h"
 
 class MainMenuState : public State
 {
@@ -13,7 +13,7 @@ public:
 	void render(sf::RenderWindow& window) override;
 	void handleAction(Controls::Action, Controls::KeyState) override;
 	
-	enum Overlays {MAIN_MENU, PLATFORM_SELECT, PUZZLE_SELECT};
+	enum Overlays {MAIN_MENU, MAIN_MENU_DEBUG, PLATFORM_SELECT, PUZZLE_SELECT};
 
 private:
 	sf::Music mMusic;

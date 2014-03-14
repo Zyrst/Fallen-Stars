@@ -9,9 +9,11 @@ class MainMenu : public Menu
 {
 public:
 	MainMenu(int id, ResourceCollection& resources, const MainMenuState* state);
-	void buttonPressed(int id);
+	void buttonPressed(int id) override;
+	void handleAction(Controls::Action action, Controls::KeyState keystate) override;
 
 private:
-	enum Buttons {START, PUZZLE, FULLSCREEN, EXIT};
+	enum Buttons {CONTINUE, NEW_GAME, FULLSCREEN, EXIT};
 	MainMenuState* mState;
 };
+

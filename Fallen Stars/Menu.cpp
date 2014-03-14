@@ -22,7 +22,17 @@ void Menu::renderButtons(sf::RenderTarget& renderSurface)
 void Menu::addButton(const Button&  button)
 {	
 	buttonList.push_back(button);	
+
+	// Always set the first button as highlighted
 	if(buttonList.size() == 1) buttonList[0].setHighlighted(true);
+	
+	// If the selected button is disabled, swap to the new button
+	if(!buttonList[selectedButton].isEnabled())
+	{
+		buttonList[selectedButton].setHighlighted(false);
+		selectedButton = buttonList.size() - 1; // the new button
+		buttonList[selectedButton].setHighlighted(true);
+	}
 }
 
 void Menu::cycleForward()
@@ -30,7 +40,11 @@ void Menu::cycleForward()
 	if(buttonList.empty()) return;
 	buttonList[selectedButton].setHighlighted(false);
 
-	selectedButton = (selectedButton + 1) % buttonList.size();
+	// Cycle the button, but make sure that it's enabled
+	int initialButton = selectedButton;
+	do selectedButton = (selectedButton + 1) % buttonList.size();
+	while(!buttonList[selectedButton].isEnabled() && selectedButton != initialButton);
+
 	buttonList[selectedButton].setHighlighted(true);
 }
 
@@ -39,7 +53,11 @@ void Menu::cycleBackwards()
 	if(buttonList.empty()) return;
 	buttonList[selectedButton].setHighlighted(false);
 
-	selectedButton = (selectedButton + buttonList.size() - 1) % buttonList.size();
+	// Cycle the button, but make sure that it's enabled
+	int initialButton = selectedButton;
+	do selectedButton = (selectedButton + buttonList.size() - 1) % buttonList.size();
+	while(!buttonList[selectedButton].isEnabled() && selectedButton != initialButton);
+
 	buttonList[selectedButton].setHighlighted(true);
 }
 
@@ -55,7 +73,14 @@ void Menu::handleAction(Controls::Action action, Controls::KeyState keystate)
 
 	if(keystate == Controls::KeyState::RELEASED)
 	{
-		if(action == Controls::Action::CONFIRM) buttonPressed(buttonList[selectedButton].getID());
+		if(action == Controls::Action::CONFIRM)
+		{
+			Button& activeButton = buttonList[selectedButton];
+			if(activeButton.isEnabled()) 
+			{
+				buttonPressed(activeButton.getID());
+			}
+		}
 	}
 }
 

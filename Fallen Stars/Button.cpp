@@ -3,12 +3,13 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 #include "ResourceCollection.h"
 
-Button::Button(int id, sf::Vector2f position, sf::Texture& texture, ResourceCollection& resources, sf::Text text, float textOffset, sf::IntRect textureRect):
+Button::Button(int id, sf::Vector2f position, sf::Texture& texture, ResourceCollection& resources, sf::Text text, bool enabled, float textOffset, sf::IntRect textureRect):
 	mText(text),
 	mPosition(position),
 	mSprite(texture),
 	mHighlightShader(resources.getShader("Assets/Shader/Highlight.frag", sf::Shader::Type::Fragment)),
 	mHighlighted(false),
+	mEnabled(enabled),
 	mID(id)
 {
 	if(textureRect != sf::IntRect()) mSprite.setTextureRect(textureRect);
@@ -26,7 +27,8 @@ Button::~Button()
 
 void Button::render(sf::RenderTarget& renderSurface)
 {
-	mHighlightShader.setParameter("highlightStrength", mHighlighted ? 1.2f : 1.0f);
+	float highlightStrength = mHighlighted ? 1.2f : 1.0f;
+	mHighlightShader.setParameter("highlightStrength", mEnabled ? highlightStrength : 0.6);
 	mHighlightShader.setParameter("texture", sf::Shader::CurrentTexture);
 	renderSurface.draw(mSprite, &mHighlightShader);
 	renderSurface.draw(mText);
@@ -35,6 +37,11 @@ void Button::render(sf::RenderTarget& renderSurface)
 void Button::setHighlighted(bool state)
 {
 	mHighlighted = state;
+}
+
+bool Button::isEnabled()
+{
+	return mEnabled;
 }
 
 int Button::getID()
