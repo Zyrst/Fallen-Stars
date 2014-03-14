@@ -267,6 +267,9 @@
     <ClCompile Include="LedgeSensor.cpp">
       <Filter>Source Files\Box2D\CallBack</Filter>
     </ClCompile>
+    <ClCompile Include="StreetLightSensorCallBack.cpp">
+      <Filter>Source Files\Box2D\CallBack</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -451,6 +454,9 @@
       <Filter>Header Files\Box2D\CallBack</Filter>
     </ClInclude>
     <ClInclude Include="LedgeSensor.h">
+      <Filter>Header Files\Box2D\CallBack</Filter>
+    </ClInclude>
+    <ClInclude Include="StreetLightSensorCallBack.h">
       <Filter>Header Files\Box2D\CallBack</Filter>
     </ClInclude>
   </ItemGroup>

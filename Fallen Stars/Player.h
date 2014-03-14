@@ -30,6 +30,7 @@ public:
 	void setActiveStreetLight(StreetLight* light);
 	void damaged();
 	b2Body* getBody();
+	void activateStreetLight();
 private:
 	void setupSensors(sf::Vector2f& pos, sf::Vector2f& size);
 	void updateFlashlightPosition();

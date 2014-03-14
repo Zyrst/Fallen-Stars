@@ -50,12 +50,12 @@ void Entity::setFacing(Facing facing)
 	currentFacing = facing;
 }
 
-void Entity::render(sf::RenderTarget& target)
+void Entity::render(sf::RenderTarget& target, sf::RenderStates states)
 {
 	if (isAlive())
 	{
 		anime.setPosition(Convert::b2ToSfml(body->GetPosition()));
-		target.draw(anime);
+		target.draw(anime, states);
 	}
 	
 }

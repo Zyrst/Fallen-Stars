@@ -6,65 +6,14 @@
 #include "BoxWorld.h"
 #include "CallBack.h"
 #include "Player.h"
+#include "StreetLightSensorCallBack.h"
 
 namespace
 {
-	Player* getPlayer(b2Fixture* otherFixture)
-	{
-		Entity* ent = (Entity*)otherFixture->GetBody()->GetUserData();
-
-		if (ent != nullptr && !otherFixture->IsSensor())
-		{
-			return dynamic_cast<Player*>(ent);
-		}
-
-		return nullptr;
-	}
-
 	const float LIT_DURATION_SECONDS = 2.0f;
 	const float BLINK_DURATION_SECONDS = 1.5f;
 	const int BLINK_INTERVAL_MILLISECONDS = 100;
 }
-
-#pragma region StreetLightSensorCallBack
-StreetLightSensorCallBack::StreetLightSensorCallBack(b2Fixture* owner)
-: CallBack(owner)
-, counter(0)
-{
-
-}
-
-StreetLightSensorCallBack::~StreetLightSensorCallBack() { }
-
-void StreetLightSensorCallBack::beginContact(b2Fixture* otherFixture)
-{
-	Player* p = getPlayer(otherFixture);
-	if (p != nullptr)
-	{
-		counter++;
-		p->setActiveStreetLight((StreetLight*) owner->GetBody()->GetUserData());
-	}
-}
-
-void StreetLightSensorCallBack::endContact(b2Fixture* otherFixture)
-{
-	Player* p = getPlayer(otherFixture);
-	if (p != nullptr)
-	{
-		counter--;
-
-		if (!isActive())
-		{
-			p->setActiveStreetLight(nullptr);
-		}
-	}
-}
-
-bool StreetLightSensorCallBack::isActive() const
-{
-	return (counter > 0);
-}
-#pragma endregion
 
 StreetLight::StreetLight(BoxWorld* world, LightSolver* solver, sf::Vector2f& position, sf::Vector2f& size, const sf::FloatRect& sensor, sf::Texture* mask)
 : Entity(world, sf::Vector2f(100, 100), position, LEFT, false)
@@ -106,7 +55,7 @@ StreetLight::~StreetLight()
 	BoxWorld::destroyBody(sensorBody);
 }
 
-void StreetLight::render(sf::RenderTarget& target)
+void StreetLight::render(sf::RenderTarget& target, sf::RenderStates states)
 {
 	//There is nothing to render in this class, everything should be done by the light solver.
 	//sf::RectangleShape rect(lightSource->getSize());

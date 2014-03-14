@@ -341,11 +341,6 @@ void Player::update(sf::Time deltaTime)
 			body->SetLinearVelocity(b2Vec2(0, vel.y));
 		}
 
-		if (downButton && activeStreetLight != nullptr && activeStreetLight->getState() == StreetLight::UNLIT)
-		{
-			activeStreetLight->setState(StreetLight::LIT);
-		}
-
 		//Check for grabbing if we are not flying upwards.
 		if (!groundCallBack->isColliding() && vel.y >= 0)
 		{
@@ -453,7 +448,15 @@ void Player::updateFlashlightPosition()
 void Player::render(sf::RenderTarget& renderTarget)
 {
 	anime.setRotation(body->GetAngle() * 180 / 3.14159265f);
-	Entity::render(renderTarget);
+
+	sf::RenderStates states = sf::RenderStates::Default;
+
+	if (state == PLAYER_STATE::GRABBING)
+	{
+		states.transform.translate(30.0f, 22.0f);
+	}
+
+	Entity::render(renderTarget, states);
 }
 
 void Player::jump()
@@ -497,6 +500,12 @@ void Player::handleAction(Controls::Action action, Controls::KeyState state)
 		{
 			jump();
 		}	
+		break;
+	case Controls::Action::INTERACT:
+		if (state == Controls::KeyState::RELEASED)
+		{
+			activateStreetLight();
+		}
 		break;
 	}
 }
@@ -591,5 +600,14 @@ void Player::damaged()
 	setState(DAMAGED);
 	mStats.health -= 1;
 	std::cout<<"HP: "<<mStats.health<<std::endl;
+}
+
+void Player::activateStreetLight()
+{
+	if (activeStreetLight && mStats.stardust && (activeStreetLight->getState() == StreetLight::UNLIT))
+	{
+		mStats.stardust = false;
+		activeStreetLight->setState(StreetLight::LIT);
+	}
 }
 #pragma endregion

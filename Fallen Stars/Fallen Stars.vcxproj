@@ -144,6 +144,7 @@
     <ClCompile Include="SpriteSheet.cpp" />
     <ClCompile Include="StatManager.cpp" />
     <ClCompile Include="StreetLight.cpp" />
+    <ClCompile Include="StreetLightSensorCallBack.cpp" />
     <ClCompile Include="VecConverter.cpp" />
     <ClCompile Include="WaitState.cpp" />
   </ItemGroup>
@@ -206,6 +207,7 @@
     <ClInclude Include="State.h" />
     <ClInclude Include="StatManager.h" />
     <ClInclude Include="StreetLight.h" />
+    <ClInclude Include="StreetLightSensorCallBack.h" />
     <ClInclude Include="VecConverter.h" />
     <ClInclude Include="WaitState.h" />
   </ItemGroup>
