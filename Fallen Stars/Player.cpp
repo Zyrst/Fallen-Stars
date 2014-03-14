@@ -441,6 +441,10 @@ void Player::updateFlashlightPosition()
 	{
 		offsetY = 106.0f;
 	}
+	if (anime.getAnimation() == mJump)
+	{
+		offsetY = 83.0f;
+	}
 
 	sf::Vector2f pos = Convert::b2ToSfml(body->GetPosition());
 	sf::Texture* mask = nullptr;

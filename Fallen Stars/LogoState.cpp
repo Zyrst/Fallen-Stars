@@ -34,7 +34,7 @@ void LogoState::update(const sf::Time& deltaTime)
 {
 	mTime += deltaTime;
 
-	const float animationTime = 4; // seconds
+	const float animationTime = 5.0f; // seconds
 	float sineWave = (float) sin(mTime.asSeconds() / animationTime * 3.141592);
 	int brightness = (int) (255.0 * sineWave);
 	if ( brightness < 0 ) brightness = 0;
