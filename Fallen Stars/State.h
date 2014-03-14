@@ -25,6 +25,8 @@ class State
 		virtual void update(const sf::Time& deltaTime) = 0;
 		virtual void render(sf::RenderWindow& window) = 0;
 		virtual void handleAction(Controls::Action, Controls::KeyState) = 0;
+		
+		virtual void handleResize(int width, int height) {};
 
 		void addOverlay(Overlay* overlay);
 		Overlay& getOverlay(int id);

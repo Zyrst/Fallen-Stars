@@ -133,6 +133,8 @@ void Game::resize(int width, int height)
 	sf::View view(sf::FloatRect(baseWidth * cropMargin, 0.0f, baseWidth * widthMultiplier, (float)baseHeight));
 
 	window->setView(view);
+	if(currentState != NULL) currentState->handleResize((int) (baseWidth * widthMultiplier), baseHeight);
+	Resolution::currentSimulatedResolution = sf::Vector2f((float) baseWidth * widthMultiplier, (float) baseHeight);
 }
 
 void Game::toggleFullscreen()
