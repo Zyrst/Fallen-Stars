@@ -4,11 +4,16 @@
 #include "Game.h"
 #include "MainMenuState.h"
 #include "DeathOverlay.h"
+#include "DialogueOverlay.h"
+#include "HUDOverlay.h"
 
 PlatformState::PlatformState(std::string levelname)
 :	mLevelName(levelname)
-,	drawDebugShapes(true)
 ,	mLightSolver(new LightSolver)
+,	mDrawDebugShapes(true)
+,	mPaused(false)
+,	mStats(NULL)
+,	mCamera(NULL)
 {
 }
 
@@ -34,6 +39,7 @@ PlatformState::~PlatformState()
 	delete mLevel;
 	delete mCamera;
 	delete mLightSolver;
+	delete mStats;
 }
 
 void PlatformState::load()
@@ -43,6 +49,8 @@ void PlatformState::load()
 	mLevel = new LevelManager(mLevelName, &mResourceCollection);
 	mLevel->genCollision(mWorld, mLightSolver);
 	
+	mStats = new StatManager;
+
 	reset();
 	mLevel->getSoundLayer(mMusicVector, mResourceCollection);
 
@@ -51,21 +59,26 @@ void PlatformState::load()
 	mFirstSong->openFromFile("Assets/Sound/" + mLevelName + ".ogg");
 	mFirstSong->setLoop(false);
 	mFirstSong->setVolume(100);
-	
-	sf::Vector2u mapSize =  mLevel->getMapLoader().GetMapSize();
-	mCamera = new Camera(mPlayer, mapSize);
 
-	addOverlay(new DeathOverlay(DEATH_SCREEN, mResourceCollection));
+	addOverlay(new DeathOverlay(DEATH_SCREEN, mResourceCollection, *this));
+	addOverlay(new HUDOverlay(HUD, *mStats, mResourceCollection));
+	addOverlay(new DialogueOverlay(DIALOGUE, mResourceCollection, *mWorld, *this));
 }
 
 void PlatformState::update(const sf::Time& deltaTime)
 {
+	updateOverlays(deltaTime);
+
+	if(mPaused) return;
+
 	mWorld->step(deltaTime.asSeconds());
 	for(unsigned int i = 0; i < mEntityVector.size(); i++)
 	{
 		mEntityVector[i]->update(deltaTime);
 	}
 	killDeadEntities();
+
+	if(mPlayer->getPosition().y > 4000) getOverlay(DEATH_SCREEN).setEnabledState(true);
 
 	//Background sounds/music
 	for(unsigned int i = 0; i < mMusicVector.size(); i++)
@@ -126,16 +139,28 @@ void PlatformState::render(sf::RenderWindow& window)
 	mLevel->getMapLoader().Draw(window, tmx::MapLayer::Foreground);
 
 	/*Remove this to remove the outdrawn collision boxes and other box2d stuff*/
-	if(drawDebugShapes) mWorld->drawDebug(window);
+	if(mDrawDebugShapes) mWorld->drawDebug(window);
+
+	renderOverlays(window);
 }
 
 void PlatformState::handleAction(Controls::Action action, Controls::KeyState keystate)
 {
+	if(mPaused)
+	{
+		handleOverlayAction(action, keystate);
+		return;
+	}
+
 	mPlayer->handleAction(action, keystate);
 	if(keystate == Controls::RELEASED)
 	{
 		if(action == Controls::MENU) Game::instance()->loadNewState(new MainMenuState());		
-		if(action == Controls::DEBUG) drawDebugShapes = !drawDebugShapes;
+		if(action == Controls::DEBUG) 
+		{
+			mDrawDebugShapes = !mDrawDebugShapes; 
+			getOverlay(DEATH_SCREEN).setEnabledState(true);
+		}
 	}
 }
 
@@ -164,14 +189,14 @@ void PlatformState::clear()
 	}
 	mEntityVector.clear();
 	mLightSolver->clear();	
-	delete mStats;
+	if(mCamera != NULL) delete mCamera;
 }
 
 void PlatformState::reset()
 {
 	/*Clears out vectors so we can add new elements*/
 	clear();
-	mStats = new StatManager();
+	*mStats = StatManager();
 
 	/*Add Player and the other elements to the level*/
 	auto size = sf::Vector2f(70, 220);
@@ -181,11 +206,23 @@ void PlatformState::reset()
 	mLevel->getStreetlightLayer(mResourceCollection, mWorld, mLightSolver, mEntityVector);
 	mPlayer = new Player(mWorld, size, playerPos, mResourceCollection, mLightSolver,*mStats);
 	mEntityVector.push_back(mPlayer);
-	mLevel->getSiriusLayer(*this, mResourceCollection);
+	mLevel->getDialogueLayer(*this, mResourceCollection);
 
 	for (Entity* e : mEntityVector)
 	{
 		mLightSolver->addOccluder(e);
 	}
 
+	sf::Vector2u mapSize = mLevel->getMapLoader().GetMapSize();
+	mCamera = new Camera(mPlayer, mapSize);
+}
+
+void PlatformState::pauseGame()
+{
+	mPaused = true;
+}
+
+void PlatformState::resumeGame()
+{
+	mPaused = false;
 }

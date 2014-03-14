@@ -14,7 +14,7 @@ class LightSolver;
 class PlatformState: public State
 {
 public:
-	enum Overlays { DEATH_SCREEN };
+	enum Overlays { DEATH_SCREEN, HUD, DIALOGUE };
 
 	PlatformState(std::string);
 	~PlatformState();
@@ -25,6 +25,8 @@ public:
 	void killDeadEntities();
 	void load();
 	void reset();
+	void pauseGame();
+	void resumeGame();
 
 private:
 	std::vector <Entity*> mEntityVector;
@@ -38,5 +40,6 @@ private:
 	sf::Music* mFirstSong;
 	StatManager* mStats;
 
-	bool drawDebugShapes;
+	bool mDrawDebugShapes;
+	bool mPaused;
 };
