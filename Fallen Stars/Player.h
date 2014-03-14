@@ -1,5 +1,5 @@
 #pragma once
-#include "EntityLiving.h"
+#include "Entity.h"
 #include <SFML/Audio/Sound.hpp>
 #include <SFML\System\Clock.hpp>
 
@@ -14,13 +14,13 @@ class LightSource;
 class StreetLight;
 class b2Fixture;
 
-class Player : public EntityLiving
+class Player : public Entity
 {
 public:
 	enum PLAYER_STATE { NORMAL, GRABBING, DAMAGED };
 	Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, ResourceCollection& resource, LightSolver* lightSolver, StatManager& stats);
 	virtual ~Player();
-	void render(sf::RenderTarget& renderSurface) override;
+	void render(sf::RenderTarget& renderSurface, sf::RenderStates states) override;
 	void update(sf::Time deltaTime) override;
 	void jump();
 	virtual void handleAction(Controls::Action action, Controls::KeyState);

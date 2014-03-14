@@ -41,7 +41,7 @@ static sf::Texture* flipTexture(const sf::Texture* source)
 
 #pragma region Player
 Player::Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, ResourceCollection& resource, LightSolver* lightSolver, StatManager& stats)
-: EntityLiving(world, size, position)
+: Entity(world, size, position)
 , groundCallBack(nullptr)
 , leftButton(false)
 , rightButton(false)
@@ -445,15 +445,13 @@ void Player::updateFlashlightPosition()
 	flashLightBody->SetTransform(Convert::sfmlToB2(pos), 0.0f);
 }
 
-void Player::render(sf::RenderTarget& renderTarget)
+void Player::render(sf::RenderTarget& renderTarget, sf::RenderStates states)
 {
 	anime.setRotation(body->GetAngle() * 180 / 3.14159265f);
 
-	sf::RenderStates states = sf::RenderStates::Default;
-
 	if (state == PLAYER_STATE::GRABBING)
 	{
-		states.transform.translate(30.0f, 22.0f);
+		states.transform.translate(0.0f, 22.0f);
 	}
 
 	Entity::render(renderTarget, states);

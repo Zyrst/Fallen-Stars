@@ -61,7 +61,7 @@ void AttackSensor::setVictim(b2Fixture* fix, const sf::FloatRect& bounds)
 #pragma endregion
 #pragma region Shade
 Shade::Shade(ResourceCollection& resource, BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position)
-: EntityLiving(world, size, position)
+: Entity(world, size, position)
 , mResource(resource)
 , collisionFixture(body->GetFixtureList())
 , timeInFlashLight(0.0f)
@@ -124,7 +124,7 @@ Shade::~Shade()
 	delete mWalking;
 	delete mSpawn;
 }
-void Shade::render(sf::RenderTarget& renderTarget)
+void Shade::render(sf::RenderTarget& renderTarget, sf::RenderStates states)
 {
 	sf::FloatRect rect = anime.getGlobalBounds();
 	sf::RectangleShape sh = sf::RectangleShape(sf::Vector2f(rect.width, rect.height));

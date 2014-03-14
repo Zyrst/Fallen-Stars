@@ -1,5 +1,5 @@
 #pragma once
-#include "EntityLiving.h"
+#include "Entity.h"
 #include "CallBack.h"
 
 class Player;
@@ -27,12 +27,12 @@ private:
 	sf::FloatRect victimBounds; 
 };
 
-class Shade: public EntityLiving
+class Shade: public Entity
 {
 public:
 	Shade(ResourceCollection& resource, BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position);
 	~Shade();
-	void render(sf::RenderTarget& renderSurface)override;
+	void render(sf::RenderTarget& renderSurface, sf::RenderStates states)override;
 	void update(sf::Time deltaTime)override;
 	void setVelocityX(float x);
 	void setFacing(Facing Face);

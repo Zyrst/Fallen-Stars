@@ -108,9 +108,6 @@
     <ClCompile Include="Object.cpp">
       <Filter>Source Files\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="EntityLiving.cpp">
-      <Filter>Source Files\Entity</Filter>
-    </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Source Files\Entity</Filter>
     </ClCompile>
@@ -304,9 +301,6 @@
     </ClInclude>
     <ClInclude Include="State.h">
       <Filter>Header Files\State</Filter>
-    </ClInclude>
-    <ClInclude Include="EntityLiving.h">
-      <Filter>Header Files\Entity</Filter>
     </ClInclude>
     <ClInclude Include="Entity.h">
       <Filter>Header Files\Entity</Filter>

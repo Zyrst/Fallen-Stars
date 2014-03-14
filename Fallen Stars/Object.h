@@ -4,7 +4,6 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include "ResourceCollection.h"
 #include "CallBack.h"
-#include "EntityLiving.h"
 #include "Player.h"
 #include "StatManager.h"
 #include <SFML/Audio/Sound.hpp>
