@@ -10,6 +10,7 @@
 
 class LightSolver;
 class Overlay;
+class PlayformState;
 
 /*A class for managing Levels
 *Contains the tmx parser
@@ -19,7 +20,6 @@ class LevelManager
 public:
 	typedef std::vector<Entity*> EntityVector;
 	typedef std::vector<sf::Music*> MusicVector;
-	typedef std::vector<Overlay*> OverlayVector;
 	LevelManager(std::string levelname, ResourceCollection* resource);
 	~LevelManager();
 	void Load(ResourceCollection* resource);
@@ -31,7 +31,7 @@ public:
 	void getEnemyLayer(ResourceCollection& resource,BoxWorld* world,EntityVector& entity,sf::Vector2f size);
 	void genCollision(BoxWorld* world, LightSolver* solver = nullptr);
 	void getSoundLayer(MusicVector& music,ResourceCollection& resource);
-	void getSiriusLayer(State& state,ResourceCollection& resource);
+	void getDialogueLayer(State& state,ResourceCollection& resource);
 
 
 private:

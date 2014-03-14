@@ -8,20 +8,29 @@
 #include <utility>
 
 class ResourceCollection;
+class PlatformState;
+class BoxWorld;
 
-class SiriusOverlay : public Overlay
+class DialogueOverlay : public Overlay
 {
 public:
 	enum Character { SIRIUS, STELLA, EREBOS, ASTERIA, NONE };
 	typedef std::pair<Character, std::string> Message;
+	typedef std::pair<sf::FloatRect, std::vector<Message>> Conversation;
 
-	SiriusOverlay(int id, ResourceCollection& resources, sf::FloatRect bounds, std::vector<Message> messages);
+	DialogueOverlay(int id, ResourceCollection& resources, BoxWorld& world, PlatformState& mState);
 	void render(sf::RenderTarget& renderSurface) override;
 	void handleAction(Controls::Action action, Controls::KeyState keystate) override;
 
+	void addConversation(const Conversation& conversation);
+	void setActiveConversation(Conversation* conversation);
+
 private:
-	sf::FloatRect mBounds;
-	std::vector<Message> mMessages;
+	PlatformState& mPlatformState;
+	BoxWorld& mWorld;
+
+	std::vector<Conversation> mConversations; 
+	Conversation* mActiveConversation;
 
 	sf::Sprite mDialogueBoxLeft;
 	sf::Sprite mDialogueBoxRight;

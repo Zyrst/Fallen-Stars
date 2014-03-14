@@ -3,9 +3,11 @@
 #include "Object.h"
 #include "Shade.h"
 #include "LightSolver.h"
-#include "SiriusOverlay.h"
+#include "DialogueOverlay.h"
 #include <tmx/MapObject.h>
 #include "StreetLight.h"
+#include "PlatformState.h"
+#include "DialogueOverlay.h"
 
 LevelManager::LevelManager(std::string levelname, ResourceCollection* resource):
 	mLevel(levelname),
@@ -171,36 +173,37 @@ void LevelManager::getSoundLayer(MusicVector& musicVec,ResourceCollection& resou
 	}
 }
 
-void LevelManager::getSiriusLayer(State& state, ResourceCollection& resource)
+void LevelManager::getDialogueLayer(State& state, ResourceCollection& resource)
 {
 	auto& layers = mapLoader.GetLayers();
 	for (tmx::MapLayer* l : layers)
 	{
 		if (l->name.compare("Text") == 0)
 		{
-			int id = 0;
+			DialogueOverlay* dialogueOverlay = &dynamic_cast<DialogueOverlay&> (state.getOverlay(PlatformState::DIALOGUE));
+			assert(dialogueOverlay != NULL);
+
 			for (tmx::MapObject& object : l->objects)
 			{
 				sf::FloatRect bounds = object.GetAABB();
 				std::map<std::string, std::string>& messages = object.GetPropertyMap();
 				
-				std::vector<SiriusOverlay::Message> siriusMessages;
+				std::vector<DialogueOverlay::Message> siriusMessages;
 				for(auto it = messages.begin(); it != messages.end(); it++)
 				{
-					SiriusOverlay::Character speaker;
+					DialogueOverlay::Character speaker;
 					std::string name = it->first;
 					
-					if		(name == "Stella") speaker = SiriusOverlay::Character::STELLA;
-					else if (name == "Erebos") speaker = SiriusOverlay::Character::EREBOS;
-					else if (name == "Sirius") speaker = SiriusOverlay::Character::SIRIUS;
-					else if (name == "Asteria") speaker = SiriusOverlay::Character::ASTERIA;
+					if		(name == "Stella") speaker = DialogueOverlay::Character::STELLA;
+					else if (name == "Erebos") speaker = DialogueOverlay::Character::EREBOS;
+					else if (name == "Sirius") speaker = DialogueOverlay::Character::SIRIUS;
+					else if (name == "Asteria") speaker = DialogueOverlay::Character::ASTERIA;
 					else	continue; // If the name doesn't match any character, skip this message
 					
-					siriusMessages.push_back(SiriusOverlay::Message(speaker, it->second));
+					siriusMessages.push_back(DialogueOverlay::Message(speaker, it->second));
 				}
 				
-				state.addOverlay(new SiriusOverlay(id, resource, bounds, siriusMessages));
-				id++;
+				dialogueOverlay->addConversation(DialogueOverlay::Conversation(bounds, siriusMessages));
 			}
 		}
 	}
