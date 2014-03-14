@@ -10,7 +10,6 @@ PlatformState::PlatformState(std::string levelname)
 ,	drawDebugShapes(true)
 ,	mLightSolver(new LightSolver)
 {
-	mEntityVector.push_back(NULL);
 }
 
 PlatformState::~PlatformState()
@@ -177,12 +176,12 @@ void PlatformState::reset()
 	/*Add Player and the other elements to the level*/
 	auto size = sf::Vector2f(70, 220);
 	auto playerPos = mLevel->getPlayerLayer();
-	mPlayer = new Player(mWorld, size, playerPos, mResourceCollection, mLightSolver,*mStats);
-	mEntityVector.push_back(mPlayer);
 	mLevel->getObjectLayer(&mResourceCollection,mWorld,mEntityVector,mStats);
 	mLevel->getEnemyLayer(mResourceCollection,mWorld,mEntityVector,size);
-	mLevel->getSiriusLayer(*this, mResourceCollection);
 	mLevel->getStreetlightLayer(mResourceCollection, mWorld, mLightSolver, mEntityVector);
+	mPlayer = new Player(mWorld, size, playerPos, mResourceCollection, mLightSolver,*mStats);
+	mEntityVector.push_back(mPlayer);
+	mLevel->getSiriusLayer(*this, mResourceCollection);
 
 	for (Entity* e : mEntityVector)
 	{

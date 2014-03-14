@@ -32,15 +32,13 @@ class Object: public Entity
 		TYPE getType();
 		void handleAction(Controls::Action action, Controls::KeyState);
 		void render(sf::RenderTarget& target);
-		void setupSensor(sf::Vector2f position);
 
 private:
 	TYPE mType;
 	ResourceCollection* mResource;
 	Animation* mStar, *mStarDust, *mWindow;
 	StarCallBack* starCallBack;
-	sf::Sound* mStarDustSound;
-	sf::Sound* mStarSound;
+	sf::Sound* mStarDustSound, *mStarSound;
 	sf::Clock mClock;
 	sf::Time mCounter;
 	StatManager* mStats;

@@ -17,7 +17,7 @@ class b2Fixture;
 class Player : public Entity
 {
 public:
-	enum PLAYER_STATE { NORMAL, GRABBING, DAMAGED };
+	enum PLAYER_STATE { NORMAL, GRABBING, DAMAGED, KNOCKEDBACKED };
 	Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, ResourceCollection& resource, LightSolver* lightSolver, StatManager& stats);
 	virtual ~Player();
 	void render(sf::RenderTarget& renderSurface, sf::RenderStates states) override;
@@ -34,22 +34,15 @@ public:
 private:
 	void setupSensors(sf::Vector2f& pos, sf::Vector2f& size);
 	void updateFlashlightPosition();
-	sf::Clock hitTimer;
+	sf::Clock hitTimer, knockedbackClock;
 	sf::Vector2f velocity;
 	PLAYER_STATE state;
 	CollisionCounterCallBack *groundCallBack, *rightSideCollision, *leftSideCollision, *leftAntiGrabCallBack, *rightAntiGrabCallBack, *rightHitCollision, *leftHitCollision;
 	GrabCallBack *leftGrabCallBack, *rightGrabCallBack;
 	FlashLightCallBack* flashLightCallBack;
 	bool leftButton, rightButton, downButton;
-	Animation* mWalking;
-	Animation* mIdle;
-	Animation* mJump;
-	Animation* mGrab;
-	Animation* mFall;
-	Animation* currentAnimation;
-	sf::Sound* mJumpSound;
-	sf::Sound* mWalkSound;
-	Animation* mHit;
+	Animation* mWalking, *mIdle, *mJump, *mGrab, *mFall, *currentAnimation, *mHit;
+	sf::Sound* mJumpSound, *mWalkSound;
 	ResourceCollection& mResource;
 	LightSource* flashLight;
 	sf::Texture *maskRight, *maskLeft;

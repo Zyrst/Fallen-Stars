@@ -6,7 +6,6 @@
 #include "BoxWorld.h"
 #include "ControlMapping.h"
 #include "SpriteSheet.h"
-#include "ResourceCollection.h"
 #include "LightSolver.h"
 #include <SFML/Audio/SoundBuffer.hpp>
 #include "Animation.h"
@@ -283,6 +282,7 @@ void Player::setupSensors(sf::Vector2f& pos, sf::Vector2f& size)
 
 void Player::update(sf::Time deltaTime)
 {
+	float maxVel = 3.0f;
 	const b2Vec2& vel = body->GetLinearVelocity();
 	if(hitTimer.getElapsedTime().asSeconds() <= 3.0f)
 	{
@@ -320,26 +320,30 @@ void Player::update(sf::Time deltaTime)
 	
 		if (leftButton)
 		{
-			if (!leftSideCollision->isColliding())
+			if (!leftSideCollision->isColliding() && vel.x > -maxVel)
 			{
-				body->SetLinearVelocity(b2Vec2(-SPEED, vel.y));
+				//body->SetLinearVelocity(b2Vec2(-SPEED, vel.y));
+				 body->ApplyLinearImpulse(b2Vec2(-0.8,0.0),b2Vec2(body->GetWorldCenter()),true);
 			}
 
 			setFacing(Entity::LEFT);
 		}
 		else if (rightButton)
 		{
-			if (!rightSideCollision->isColliding())
+			if (!rightSideCollision->isColliding() && vel.x < maxVel)
 			{
-				body->SetLinearVelocity(b2Vec2(SPEED, vel.y));
+				//body->SetLinearVelocity(b2Vec2(SPEED, vel.y));
+				body->ApplyLinearImpulse(b2Vec2(0.8,0.0),b2Vec2(body->GetWorldCenter()),true);
 			}
 			
 			setFacing(Entity::RIGHT);
 		}
-		else
+
+		if (!rightButton && !leftButton)
 		{
-			body->SetLinearVelocity(b2Vec2(0, vel.y));
+			body->SetLinearVelocity(b2Vec2(0,vel.y));
 		}
+		
 
 		//Check for grabbing if we are not flying upwards.
 		if (!groundCallBack->isColliding() && vel.y >= 0)
@@ -397,11 +401,19 @@ void Player::update(sf::Time deltaTime)
 		setState(NORMAL);
 		anime.setLooped(true);
 	}
+	break;
+	case KNOCKEDBACKED:
+		
+		if (knockedbackClock.getElapsedTime().asSeconds() > 1)
+		{
+			setState(NORMAL);
+		}
 		break;
-
+	
 	default:
 		break;
 	}
+
 	updateAnimation();
 	updateSound();
 	anime.update(deltaTime);
@@ -506,6 +518,7 @@ void Player::handleAction(Controls::Action action, Controls::KeyState state)
 		}
 		break;
 	}
+	
 }
 
 void Player::setState(Player::PLAYER_STATE state)
@@ -525,6 +538,9 @@ void Player::setState(Player::PLAYER_STATE state)
 		break;
 	case PLAYER_STATE::DAMAGED:
 		body->SetLinearVelocity(b2Vec2(0, 0));
+		break;
+	case PLAYER_STATE::KNOCKEDBACKED:
+		knockedbackClock.restart();
 		break;
 	}
 	this->state = state;

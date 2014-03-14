@@ -73,7 +73,7 @@ void LevelManager::getObjectLayer(ResourceCollection* resource,BoxWorld* world,E
 			for (auto& k : i->objects)
 			{
 				auto pos = k.GetPosition();
-				entity.push_back(new Object(world,sf::Vector2f(300, 287),pos,resource,Object::TYPE::WINDOW,stats));
+				entity.push_back(new Object(world,sf::Vector2f(300, 350),pos,resource,Object::TYPE::WINDOW,stats));
 			}
 		}
 	}
