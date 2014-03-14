@@ -156,11 +156,7 @@ void PlatformState::handleAction(Controls::Action action, Controls::KeyState key
 	if(keystate == Controls::RELEASED)
 	{
 		if(action == Controls::MENU) Game::instance()->loadNewState(new MainMenuState());		
-		if(action == Controls::DEBUG) 
-		{
-			mDrawDebugShapes = !mDrawDebugShapes; 
-			getOverlay(DEATH_SCREEN).setEnabledState(true);
-		}
+		if(action == Controls::DEBUG) mDrawDebugShapes = !mDrawDebugShapes; 
 	}
 }
 
@@ -204,7 +200,7 @@ void PlatformState::reset()
 	mLevel->getObjectLayer(&mResourceCollection,mWorld,mEntityVector,mStats);
 	mLevel->getEnemyLayer(mResourceCollection,mWorld,mEntityVector,size);
 	mLevel->getStreetlightLayer(mResourceCollection, mWorld, mLightSolver, mEntityVector);
-	mPlayer = new Player(mWorld, size, playerPos, mResourceCollection, mLightSolver,*mStats);
+	mPlayer = new Player(*this, mWorld, size, playerPos, mResourceCollection, mLightSolver,*mStats);
 	mEntityVector.push_back(mPlayer);
 	mLevel->getDialogueLayer(*this, mResourceCollection);
 

@@ -13,12 +13,13 @@ class GrabCallBack;
 class LightSource;
 class StreetLight;
 class b2Fixture;
+class PlatformState;
 
 class Player : public Entity
 {
 public:
 	enum PLAYER_STATE { NORMAL, GRABBING, DAMAGED, KNOCKEDBACKED, DYING };
-	Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, ResourceCollection& resource, LightSolver* lightSolver, StatManager& stats);
+	Player(PlatformState& platformState, BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, ResourceCollection& resource, LightSolver* lightSolver, StatManager& stats);
 	virtual ~Player();
 	void render(sf::RenderTarget& renderSurface, sf::RenderStates states) override;
 	void update(sf::Time deltaTime) override;
@@ -34,6 +35,7 @@ public:
 private:
 	void setupSensors(sf::Vector2f& pos, sf::Vector2f& size);
 	void updateFlashlightPosition();
+
 	sf::Clock hitTimer, knockedbackClock;
 	sf::Vector2f velocity;
 	PLAYER_STATE state;
@@ -50,4 +52,6 @@ private:
 	StreetLight* activeStreetLight;
 	b2Fixture* collisionFixture;
 	b2Body* flashLightBody;
+
+	PlatformState& mPlatformState;
 };

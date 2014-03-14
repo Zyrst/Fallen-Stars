@@ -17,6 +17,7 @@
 #include "Shade.h"
 #include "LightSource.h"
 #include "StreetLight.h"
+#include "PlatformState.h"
 
 #include <iostream>
 
@@ -39,8 +40,9 @@ static sf::Texture* flipTexture(const sf::Texture* source)
 }
 
 #pragma region Player
-Player::Player(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, ResourceCollection& resource, LightSolver* lightSolver, StatManager& stats)
+Player::Player(PlatformState& platformState, BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, ResourceCollection& resource, LightSolver* lightSolver, StatManager& stats)
 : Entity(world, size, position)
+, mPlatformState(platformState)
 , groundCallBack(nullptr)
 , leftButton(false)
 , rightButton(false)
@@ -417,7 +419,7 @@ void Player::update(sf::Time deltaTime)
 		}
 		break;
 	case DYING:
-		//todo add death and restart
+		mPlatformState.getOverlay(PlatformState::DEATH_SCREEN).setEnabledState(true);
 		std::cout<<"Waaaaaaaaaaaah"<<std::endl;
 		std::cout<<"---------Player Dead----------"<<std::endl;
 		break;
