@@ -15,7 +15,7 @@ Entity::Entity(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& pos, Facing fa
 }
 Entity::~Entity() 
 {
-	BoxWorld::destroyBody(body);
+	destroyBody();
 }
 bool Entity::isAlive()
 {
@@ -99,4 +99,10 @@ void Entity::updateSpriteOrigin(SpriteOrigin hor, SpriteOrigin vert)
 void Entity::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
 	target.draw(anime, states);
+}
+
+void Entity::destroyBody()
+{
+	BoxWorld::destroyBody(body);
+	body = nullptr;
 }

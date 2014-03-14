@@ -147,6 +147,7 @@ void PlatformState::killDeadEntities()
 		if(!(*i)->isAlive())
 		{
 			mLightSolver->removeOccluder(*i);
+			(*i)->destroyBody();
 			delete *i;
 			i = mEntityVector.erase(i);
 		}

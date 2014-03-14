@@ -99,6 +99,12 @@ Shade::Shade(ResourceCollection& resource, BoxWorld* world, sf::Vector2f& size, 
 	std::vector<sf::IntRect> chaseFrames = chaseSheet.getAllFrames();
 	mChase = new Animation(chaseFrames, chase);
 
+	auto &dying = mResource.getTexture("Assets/Characters/Shade_dying.png");
+	sf::Vector2i dyingSize = static_cast<sf::Vector2i>(dying.getSize());
+	SpriteSheet dyingSheet(frameSize,dyingSize);
+	std::vector<sf::IntRect> dyingFrames = dyingSheet.getAllFrames();
+	mDying = new Animation(dyingFrames, dying);
+
 	chasingMultiplier = 3.0f;
 	speed = 0.5f;
 	chaseLength = 1.0f;
@@ -130,7 +136,7 @@ void Shade::render(sf::RenderTarget& renderTarget)
 }
 void Shade::update(sf::Time deltaTime)
 {
-	if(hitTimer.getElapsedTime().asSeconds() <= 2.0f)
+	if(hitTimer.getElapsedTime().asSeconds() <= 3.0f)
 	{
 		attackSensorLeft->setActive(false);
 		attackSensorRight->setActive(false);
@@ -229,7 +235,19 @@ void Shade::update(sf::Time deltaTime)
 	break;
 
 	case DYING:
+	body->SetLinearVelocity(b2Vec2(0, 0));
+	anime.setLooped(false);
+	if(!anime.isFinished())
+	{
+		body->SetLinearVelocity(b2Vec2(0,0));
+	}
+	if(anime.isFinished())
+	{
+	hitTimer.restart();
+	anime.setLooped(true);
 		mAlive = false;
+	}
+		
 		break;
 	default: 
 		setMode(PATROL);
@@ -395,22 +413,27 @@ void Shade::handleAction(Controls::Action action, Controls::KeyState)
 void Shade::updateAnimation()
 {
 	Animation* currentAnimation = NULL;
-	if(currentMode == PATROL)
-	{
+	switch(currentMode){
+	case PATROL:
+	
 		currentAnimation = mWalking;
-	}
-	else if(currentMode == CHASING)
-	{
+	break;
+	case CHASING:
+	
 		currentAnimation = mChase;
-	}
-	else if(currentMode == ATTACK)
-	{
+	break;
+	case ATTACK:
+	
 		currentAnimation = mAttack;
+	break;
+	case DYING:
+		currentAnimation = mDying;
+	break;
+	default: 
+		currentAnimation = mIdle;
+	break;
 	}
-	else{currentAnimation = mIdle;}
 	if (currentAnimation != NULL) anime.play(*currentAnimation);
-	//anime.setPosition(Convert::b2ToSfml(body->GetPosition()));
-
 }
 
 void Shade::increaseTimeInFlashLight(float delta)
@@ -431,5 +454,4 @@ void Shade::attack()
 {
 	setMode(ATTACK);
 }
-/* Animationer , dö */
 #pragma endregion

@@ -47,6 +47,7 @@ class Entity : public Occluder
 		Facing getFacing();
 		void setFacing(Facing facing);
 		EntityCategory getCategory();
+		void destroyBody();
 	protected:
 		virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 		Entity(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& position, Facing facing = LEFT, bool createCollisionBody = true);

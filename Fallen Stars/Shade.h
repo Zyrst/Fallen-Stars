@@ -61,13 +61,14 @@ private:
 	Animation* mSpawn;
 	Animation* mAttack;
 	Animation* mChase;
+	Animation* mDying;
 	Mode currentMode;
 	float chasingMultiplier;
 	float speed;
 	float chaseLength;
 	b2Fixture* collisionFixture;
 	sf::Clock hitTimer;
-
+	sf::Clock deathTimer;
 	//Amount of time spent in flashlight
 	float timeInFlashLight;
 };

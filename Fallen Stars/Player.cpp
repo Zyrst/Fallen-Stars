@@ -284,7 +284,7 @@ void Player::setupSensors(sf::Vector2f& pos, sf::Vector2f& size)
 void Player::update(sf::Time deltaTime)
 {
 	const b2Vec2& vel = body->GetLinearVelocity();
-	if(hitTimer.getElapsedTime().asSeconds() <= 2.0f)
+	if(hitTimer.getElapsedTime().asSeconds() <= 3.0f)
 	{
 		leftHitCollision->setActive(false);
 		rightHitCollision->setActive(false);
