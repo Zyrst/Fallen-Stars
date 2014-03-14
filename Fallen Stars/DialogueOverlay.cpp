@@ -51,6 +51,14 @@ DialogueOverlay::DialogueOverlay(int id, ResourceCollection& resources, BoxWorld
 	mErebosPortrait.setPosition(baseWidth - (mErebosPortrait.getLocalBounds().width + 20), 20);
 }
 
+DialogueOverlay::~DialogueOverlay()
+{
+	for(DialogueCallback* callback : mCallbacks)
+	{
+		delete callback;
+	}
+}
+
 void DialogueOverlay::render(sf::RenderTarget& renderSurface)
 {
 	// Draw portraits
@@ -116,7 +124,9 @@ void DialogueOverlay::addConversation(const Conversation& conversation)
 		b2Body* sensorBody = mWorld.createEntityBody(sf::Vector2f(sensorBounds.left + sensorBounds.width / 2.0f, sensorBounds.top), sf::Vector2f(sensorBounds.width, sensorBounds.height));
 
 		sensorBody->GetFixtureList()->SetSensor(true);
-		DialogueCallback* sensorCallBack = new DialogueCallback(sensorBody->GetFixtureList(), *this);
+		DialogueCallback* callback = new DialogueCallback(sensorBody->GetFixtureList(), *this);
+		mCallbacks.push_back(callback);
+
 		sensorBody->SetGravityScale(0.0f);
 		sensorBody->SetAwake(false);
 
