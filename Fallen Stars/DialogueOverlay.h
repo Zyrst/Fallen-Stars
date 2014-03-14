@@ -10,6 +10,7 @@
 class ResourceCollection;
 class PlatformState;
 class BoxWorld;
+class DialogueCallback;
 
 class DialogueOverlay : public Overlay
 {
