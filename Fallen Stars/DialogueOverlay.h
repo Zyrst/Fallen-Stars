@@ -10,6 +10,7 @@
 class ResourceCollection;
 class PlatformState;
 class BoxWorld;
+class DialogueCallback;
 
 class DialogueOverlay : public Overlay
 {
@@ -19,6 +20,7 @@ public:
 	typedef std::pair<sf::FloatRect, std::vector<Message>> Conversation;
 
 	DialogueOverlay(int id, ResourceCollection& resources, BoxWorld& world, PlatformState& mState);
+	~DialogueOverlay();
 	void render(sf::RenderTarget& renderSurface) override;
 	void handleAction(Controls::Action action, Controls::KeyState keystate) override;
 
@@ -29,7 +31,8 @@ private:
 	PlatformState& mPlatformState;
 	BoxWorld& mWorld;
 
-	std::vector<Conversation> mConversations; 
+	std::vector<Conversation> mConversations;
+	std::vector<DialogueCallback*> mCallbacks;
 	Conversation* mActiveConversation;
 
 	sf::Sprite mDialogueBoxLeft;

@@ -6,6 +6,7 @@
 
 #include "BaseResolution.h"
 #include "MainMenuState.h"
+#include "ConstellationOverlay.h"
 #include "Game.h"
 
 PuzzleState::PuzzleState(std::string level, int ringCount, int steps):
@@ -13,6 +14,7 @@ PuzzleState::PuzzleState(std::string level, int ringCount, int steps):
 	mRingCount(ringCount),
 	mSteps(steps),
 	mSelectedRing(0),
+	completed(false),
 	mBackground()
 {
 }
@@ -26,6 +28,8 @@ PuzzleState::~PuzzleState()
 
 void PuzzleState::load()
 {
+	addOverlay(new ConstellationOverlay(CONSTELLATION, mResourceCollection, mLevel));
+
 	mBackground.setTexture(mResourceCollection.getTexture("Assets/Puzzle/" + mLevel + "/Background.png"));
 
 	mMusic.openFromFile("Assets/Sound/" + mLevel + "_Puzzle_Music.ogg");
@@ -46,6 +50,8 @@ void PuzzleState::load()
 
 void PuzzleState::update(const sf::Time& deltaTime)
 {
+	updateOverlays(deltaTime);
+
 	if (mMusic.getLoop() == false)
 	{
 		mMusic.play();
@@ -62,7 +68,11 @@ void PuzzleState::update(const sf::Time& deltaTime)
 	{
 		if(!ring.isCorrect()) correct = false;
 	}
-	if(correct) Game::instance()->loadNewState(new MainMenuState());
+	if(correct)
+	{
+		completed = true;
+		getOverlay(CONSTELLATION).setEnabledState(true);
+	}
 
 }
 
@@ -73,10 +83,14 @@ void PuzzleState::render(sf::RenderWindow& window)
 	{
 		ring.render(window);
 	}
+
+	renderOverlays(window);
 }
 
 void PuzzleState::handleAction(Controls::Action action, Controls::KeyState keystate)
 {
+	if(completed) return;
+
 	if(keystate == Controls::KeyState::RELEASED)
 	{
 		if(action == Controls::Action::DOWN)

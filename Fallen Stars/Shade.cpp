@@ -11,7 +11,7 @@
 #include "ChaseSensor.h"
 #include "LedgeSensor.h"
 
-static const float TIME_UNTIL_FLASHLIGHT_DEATH = 1.5f;
+static const float TIME_UNTIL_FLASHLIGHT_DEATH = 3.0f;
 
 #pragma region Attack
 AttackSensor::AttackSensor(b2Fixture* owner)

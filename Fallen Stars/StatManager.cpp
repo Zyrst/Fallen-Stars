@@ -5,6 +5,6 @@ StatManager::StatManager()
 {
 	health = 3;
 	stars = 0;
-	totalStars = 10;
+	totalStars = 0;
 	stardust = false;
 }

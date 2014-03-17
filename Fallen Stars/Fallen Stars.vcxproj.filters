@@ -55,6 +55,9 @@
     <Filter Include="Source Files\Box2D">
       <UniqueIdentifier>{2892aeee-dd2c-46b9-8a4f-bf1bf06b00cd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\shaders">
+      <UniqueIdentifier>{334801f9-eb16-4350-83ca-d34264645594}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source Files\Overlay">
       <UniqueIdentifier>{c53a5c78-b725-4752-8b4b-5f95b4e6ed97}</UniqueIdentifier>
     </Filter>
@@ -162,6 +165,9 @@
     <ClCompile Include="PuzzleState.cpp">
       <Filter>Source Files\State</Filter>
     </ClCompile>
+    <ClCompile Include="MainMenu.cpp">
+      <Filter>Source Files\Overlay\Menu</Filter>
+    </ClCompile>
     <ClCompile Include="Menu.cpp">
       <Filter>Source Files\Overlay\Menu</Filter>
     </ClCompile>
@@ -256,25 +262,25 @@
       <Filter>Source Files\Box2D\CallBack</Filter>
     </ClCompile>
     <ClCompile Include="StreetLightSensorCallBack.cpp">
- 	   <Filter>Source Files\Box2D\CallBack</Filter>
+      <Filter>Source Files\Box2D\CallBack</Filter>
     </ClCompile>
-    <ClCompile Include="BaseResolution.cpp">
-      <Filter>Source Files\State</Filter>
-    </ClCompile>
-    <ClCompile Include="MainMenuDebug.cpp">
-      <Filter>Source Files\Overlay\Menu</Filter>
-    </ClCompile>
-    <ClCompile Include="MainMenu.cpp">
-      <Filter>Source Files\Overlay\Menu</Filter>
+    <ClCompile Include="DialogueCallback.cpp">
+      <Filter>Source Files\Box2D\CallBack</Filter>
     </ClCompile>
     <ClCompile Include="DialogueOverlay.cpp">
       <Filter>Source Files\Overlay</Filter>
     </ClCompile>
+    <ClCompile Include="BaseResolution.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenuDebug.cpp">
+      <Filter>Source Files\Overlay\Menu</Filter>
+    </ClCompile>
     <ClCompile Include="HUDOverlay.cpp">
       <Filter>Source Files\Overlay</Filter>
     </ClCompile>
-    <ClCompile Include="DialogueCallback.cpp">
-      <Filter>Source Files\Box2D\CallBack</Filter>
+    <ClCompile Include="ConstellationOverlay.cpp">
+      <Filter>Source Files\Overlay</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -364,6 +370,9 @@
     </ClInclude>
     <ClInclude Include="PuzzleState.h">
       <Filter>Header Files\State</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenu.h">
+      <Filter>Header Files\Overlay\Menu</Filter>
     </ClInclude>
     <ClInclude Include="Menu.h">
       <Filter>Header Files\Overlay\Menu</Filter>
@@ -456,20 +465,20 @@
     <ClInclude Include="StreetLightSensorCallBack.h">
       <Filter>Header Files\Box2D\CallBack</Filter>
     </ClInclude>
-    <ClInclude Include="MainMenuDebug.h">
-      <Filter>Header Files\Overlay\Menu</Filter>
-    </ClInclude>
-    <ClInclude Include="MainMenu.h">
-      <Filter>Header Files\Overlay\Menu</Filter>
+    <ClInclude Include="DialogueCallback.h">
+      <Filter>Header Files\Box2D\CallBack</Filter>
     </ClInclude>
     <ClInclude Include="DialogueOverlay.h">
       <Filter>Header Files\Overlay</Filter>
     </ClInclude>
-    <ClInclude Include="HUDOverlay.h">
-      <Filter>Header Files\Overlay</Filter>
+    <ClInclude Include="MainMenuDebug.h">
+      <Filter>Header Files\Overlay\Menu</Filter>
     </ClInclude>
-    <ClInclude Include="DialogueCallback.h">
-      <Filter>Header Files\Box2D\CallBack</Filter>
+    <ClInclude Include="HUDOverlay.h">
+      <Filter>Header Files\Overlay\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstellationOverlay.h">
+      <Filter>Header Files\Overlay</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

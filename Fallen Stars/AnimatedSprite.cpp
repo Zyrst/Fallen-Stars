@@ -108,7 +108,7 @@ bool AnimatedSprite::isPlaying() const
 
 bool AnimatedSprite::isFinished() const
 {
-	return !m_isLooped && m_currentFrame + 1 == m_animation->getSize() && m_isPaused;
+	return !m_isLooped && m_currentFrame + 1 == m_animation->getSize();
 }
 
 sf::Time AnimatedSprite::getFrameTime() const

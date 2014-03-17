@@ -60,7 +60,7 @@ void LoadingState::update(const sf::Time& deltaTime)
 void LoadingState::render(sf::RenderWindow& window)
 {
 	// Display loading screen
-	window.clear(sf::Color(0, 0, 255, 255));
+	window.clear(sf::Color(0, 0, 0, 255));
 	window.draw(sprite);
 }
 

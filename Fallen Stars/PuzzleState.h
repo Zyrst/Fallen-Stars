@@ -8,6 +8,8 @@
 class PuzzleState : public State
 {
 public:
+	enum Ovelays { CONSTELLATION };
+
 	PuzzleState(std::string level, int ringCount, int steps);
 	~PuzzleState();
 
@@ -22,6 +24,7 @@ private:
 	int mSteps;
 
 	int mSelectedRing;
+	bool completed;
 
 	std::vector<PuzzleRing> mRings;
 	sf::Sprite mBackground;

@@ -10,7 +10,7 @@
 PlatformState::PlatformState(std::string levelname)
 :	mLevelName(levelname)
 ,	mLightSolver(new LightSolver)
-,	mDrawDebugShapes(true)
+,	mDrawDebugShapes(false)
 ,	mPaused(false)
 ,	mStats(NULL)
 ,	mCamera(NULL)
@@ -142,6 +142,11 @@ void PlatformState::render(sf::RenderWindow& window)
 
 	renderOverlays(window);
 }
+
+void handleResize(int width, int height) 
+{
+
+};
 
 void PlatformState::handleAction(Controls::Action action, Controls::KeyState keystate)
 {
