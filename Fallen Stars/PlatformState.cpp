@@ -32,7 +32,6 @@ PlatformState::~PlatformState()
 	delete mFirstSong;
 	delete mWorld;
 	delete mLevel;
-	delete mCamera;
 	delete mLightSolver;
 }
 

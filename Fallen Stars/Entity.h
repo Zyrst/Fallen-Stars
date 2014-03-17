@@ -28,7 +28,8 @@ class Entity : public Occluder
 			 ENEMY_ATTACK = 1 << 6,
 			 PLAYER_SENSOR =1 << 7,
 			 STREET_LIGHT  =1 << 8,
-			 FLASHLIGHT	   =1 << 9
+			 FLASHLIGHT	   =1 << 9,
+			 DISABLED	   =1 << 10
 		};
 		enum SpriteOrigin
 		{
