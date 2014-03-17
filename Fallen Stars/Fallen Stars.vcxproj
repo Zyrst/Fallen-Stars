@@ -115,6 +115,8 @@
     <ClCompile Include="LedgeSensor.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="LevelFadeOut.cpp" />
+    <ClCompile Include="LevelFadeIn.cpp" />
     <ClCompile Include="LevelManager.cpp" />
     <ClCompile Include="LevelTracker.cpp" />
     <ClCompile Include="Libraries\SFML TmxLoader\src\DebugShape.cpp" />
@@ -174,6 +176,8 @@
     <ClInclude Include="HUDOverlay.h" />
     <ClInclude Include="LedgeSensor.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="LevelFadeOut.h" />
+    <ClInclude Include="LevelFadeIn.h" />
     <ClInclude Include="LevelTracker.h" />
     <ClInclude Include="Libraries\SFML TmxLoader\include\tmx\MapLayer.h" />
     <ClInclude Include="Libraries\SFML TmxLoader\include\tmx\MapLoader.h" />

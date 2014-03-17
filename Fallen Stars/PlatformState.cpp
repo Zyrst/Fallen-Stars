@@ -6,6 +6,8 @@
 #include "DeathOverlay.h"
 #include "DialogueOverlay.h"
 #include "HUDOverlay.h"
+#include "LevelFadeOut.h"
+#include "LevelFadeIn.h"
 
 PlatformState::PlatformState(std::string levelname)
 :	mLevelName(levelname)
@@ -62,6 +64,8 @@ void PlatformState::load()
 	addOverlay(new DeathOverlay(DEATH_SCREEN, mResourceCollection, *this));
 	addOverlay(new HUDOverlay(HUD, *mStats, mResourceCollection));
 	addOverlay(new DialogueOverlay(DIALOGUE, mResourceCollection, *mWorld, *this));
+	addOverlay(new LevelFadeIn(FADE_IN));
+	addOverlay(new LevelFadeOut(FADE_OUT));
 }
 
 void PlatformState::update(const sf::Time& deltaTime)
@@ -122,6 +126,9 @@ void PlatformState::update(const sf::Time& deltaTime)
 			mMusicVector[i]->setVolume(5);
 		}
 	}
+
+	// Swap level when all stars are collected
+	if(mStats->stars == mStats->totalStars) getOverlay(FADE_OUT).setEnabledState(true);
 }
 void PlatformState::render(sf::RenderWindow& window)
 {

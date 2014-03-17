@@ -282,6 +282,12 @@
     <ClCompile Include="ConstellationOverlay.cpp">
       <Filter>Source Files\Overlay</Filter>
     </ClCompile>
+    <ClCompile Include="LevelFadeOut.cpp">
+      <Filter>Source Files\Overlay</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelFadeIn.cpp">
+      <Filter>Source Files\Overlay</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -478,6 +484,12 @@
       <Filter>Header Files\Overlay\Menu</Filter>
     </ClInclude>
     <ClInclude Include="ConstellationOverlay.h">
+      <Filter>Header Files\Overlay</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelFadeOut.h">
+      <Filter>Header Files\Overlay</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelFadeIn.h">
       <Filter>Header Files\Overlay</Filter>
     </ClInclude>
   </ItemGroup>

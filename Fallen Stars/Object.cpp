@@ -7,7 +7,6 @@
 #include "SoundManager.h"
 #include <iostream>
 #include "Game.h"
-#include "PuzzleState.h"
 
 StarCallBack::StarCallBack(b2Fixture* owner)
 	: CallBack(owner)
@@ -160,7 +159,6 @@ void Object::update(sf::Time deltaTime)
 		SoundManager::playSound(*mStarSound);
 		mAlive = false;
 		mStats->stars +=1;
-		if(mStats->stars == mStats->totalStars) Game::instance()->loadNewState(new PuzzleState("Level1", 4, 17));
 	}
 
 	if (mClock.getElapsedTime().asSeconds() > 5.0f)

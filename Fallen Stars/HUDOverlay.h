@@ -16,6 +16,7 @@ public:
 private:
 	StatManager& mStats;
 	sf::Text mStarText;
+	sf::Text mHPText;
 	sf::Sprite mStarSprite;
 	sf::Sprite mStarDustSprite;
 

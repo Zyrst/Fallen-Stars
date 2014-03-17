@@ -14,7 +14,7 @@ class LightSolver;
 class PlatformState: public State
 {
 public:
-	enum Overlays { DEATH_SCREEN, HUD, DIALOGUE };
+	enum Overlays { DEATH_SCREEN, HUD, DIALOGUE, FADE_IN, FADE_OUT };
 
 	PlatformState(std::string);
 	~PlatformState();
