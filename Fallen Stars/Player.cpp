@@ -315,7 +315,9 @@ void Player::update(sf::Time deltaTime)
 		Shade* shade = flashLightCallBack->getClosestShade(flashLight->getPosition());
 		if (shade)
 		{
+			Facing dir = (getFacing() == Facing::LEFT) ? RIGHT : LEFT;
 			shade->increaseTimeInFlashLight(deltaTime.asSeconds());
+			shade->setFacing(dir);
 		}
 	}
 
