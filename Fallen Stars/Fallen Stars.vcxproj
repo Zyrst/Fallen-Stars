@@ -59,6 +59,7 @@
       </PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MinimalRebuild>false</MinimalRebuild>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -100,6 +101,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ChaseSensor.cpp" />
     <ClCompile Include="CollisionCounterCallBack.cpp" />
+    <ClCompile Include="ConstellationOverlay.cpp" />
     <ClCompile Include="ControlMapping.cpp" />
     <ClCompile Include="Controls.cpp" />
     <ClCompile Include="ConvexOccluder.cpp" />
@@ -161,6 +163,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ChaseSensor.h" />
     <ClInclude Include="CollisionCounterCallBack.h" />
+    <ClInclude Include="ConstellationOverlay.h" />
     <ClInclude Include="ConvexOccluder.h" />
     <ClInclude Include="DeathOverlay.h" />
     <ClInclude Include="debugdraw.h" />

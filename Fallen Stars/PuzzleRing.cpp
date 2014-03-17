@@ -9,6 +9,8 @@
 bool leftPressed = false;
 bool rightPressed = false;
 
+const sf::Vector2f tempCenter(986.0f, 508.0f);
+
 PuzzleRing::PuzzleRing(ResourceCollection& resources, std::string level, int ringNum, sf::Vector2f position, int initialStep, int steps):
 	mCurrentDirection(NONE),
 	mNextDirection(NONE),
@@ -23,9 +25,9 @@ PuzzleRing::PuzzleRing(ResourceCollection& resources, std::string level, int rin
 	sf::Texture& texture = resources.getTexture("Assets/Puzzle/" + level + "/Ring" + std::to_string(ringNum) + ".png");
 
 	mSprite.setTexture(texture);
-	mSprite.setPosition(position);
+	mSprite.setPosition(tempCenter/*position*/);
 	sf::Vector2f size = static_cast<sf::Vector2f>(texture.getSize());
-	mSprite.setOrigin(size / 2.0f);
+	mSprite.setOrigin(tempCenter/*size / 2.0f*/);
 
 	mTargetRotation = mCurrentRotation;
 }

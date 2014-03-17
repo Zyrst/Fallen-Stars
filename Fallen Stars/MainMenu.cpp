@@ -20,16 +20,16 @@ MainMenu::MainMenu(int id, ResourceCollection& resources, const MainMenuState* s
 	sf::Font& font = resources.getFont("Assets/Menu/24Janvier.otf");
 	
 	sf::Text textContinue("Continue", font, 30U);
-	addButton(Button(CONTINUE, width / 2.0f + height / 4.0f, buttonTexture, resources, textContinue, false));
+	addButton(Button(CONTINUE, width / 2.0f + height / 6.0f, buttonTexture, resources, textContinue, false));
 	
 	sf::Text textNewGame("New Game", font, 30U);
-	addButton(Button(NEW_GAME, width / 2.0f + height * (1/4.0f + 1/6.0f), buttonTexture, resources, textNewGame));
+	addButton(Button(NEW_GAME, width / 2.0f + height * (1/6.0f + 1/6.0f), buttonTexture, resources, textNewGame));
 	
 	sf::Text textFullscreen("Toggle Fullscreen", font, 30U);
-	addButton(Button(FULLSCREEN, width / 2.0f + height * (1/4.0f + 2/6.0f), buttonTexture, resources, textFullscreen));
+	addButton(Button(FULLSCREEN, width / 2.0f + height * (1/6.0f + 2/6.0f), buttonTexture, resources, textFullscreen));
 		
 	sf::Text textExit("Exit", font, 30U);
-	addButton(Button(EXIT, width / 2.0f + height * (1/4.0f + 3/6.0f), buttonTexture, resources, textExit));
+	addButton(Button(EXIT, width / 2.0f + height * (1/6.0f + 3/6.0f), buttonTexture, resources, textExit));
 
 }
 

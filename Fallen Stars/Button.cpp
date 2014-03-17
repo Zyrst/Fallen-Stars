@@ -28,7 +28,7 @@ Button::~Button()
 void Button::render(sf::RenderTarget& renderSurface)
 {
 	float highlightStrength = mHighlighted ? 1.2f : 1.0f;
-	mHighlightShader.setParameter("highlightStrength", mEnabled ? highlightStrength : 0.6);
+	mHighlightShader.setParameter("highlightStrength", mEnabled ? highlightStrength : 0.6f);
 	mHighlightShader.setParameter("texture", sf::Shader::CurrentTexture);
 	renderSurface.draw(mSprite, &mHighlightShader);
 	renderSurface.draw(mText);

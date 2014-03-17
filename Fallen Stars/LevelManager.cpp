@@ -60,6 +60,7 @@ void LevelManager::getObjectLayer(ResourceCollection* resource,BoxWorld* world,E
 			{
 				auto pos = k.GetPosition();
 				entity.push_back(new Object(world,sf::Vector2f(100,100),pos,resource, Object::TYPE::STAR,stats));
+				stats->totalStars++;
 			}
 		}
 		if (i->name.compare("StarDust") == 0)

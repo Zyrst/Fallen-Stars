@@ -279,6 +279,9 @@
     <ClCompile Include="HUDOverlay.cpp">
       <Filter>Source Files\Overlay</Filter>
     </ClCompile>
+    <ClCompile Include="ConstellationOverlay.cpp">
+      <Filter>Source Files\Overlay</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -473,6 +476,9 @@
     </ClInclude>
     <ClInclude Include="HUDOverlay.h">
       <Filter>Header Files\Overlay\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstellationOverlay.h">
+      <Filter>Header Files\Overlay</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
