@@ -42,7 +42,7 @@ public:
 	void attack();
 	Mode getMode();
 	void setMode(Mode mode);
-
+	void disableSensors();
 	void increaseTimeInFlashLight(float delta);
 private:
 	Player* player;
@@ -69,7 +69,12 @@ private:
 	b2Fixture* collisionFixture;
 	sf::Clock hitTimer;
 	sf::Clock deathTimer;
+	sf::Clock turnTimer;
 	//Amount of time spent in flashlight
 	float timeInFlashLight;
+	b2Fixture* aFixLeft;
+	b2Fixture* aFixRight;
+	b2Fixture* groundFixRight;
+	b2Fixture* groundFixLeft;
 };
 

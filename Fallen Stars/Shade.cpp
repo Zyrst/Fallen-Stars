@@ -106,8 +106,8 @@ Shade::Shade(ResourceCollection& resource, BoxWorld* world, sf::Vector2f& size, 
 	mDying = new Animation(dyingFrames, dying);
 
 	chasingMultiplier = 3.0f;
-	speed = 0.5f;
-	chaseLength = 1.0f;
+	speed = 0.6f;
+	chaseLength = 2.5f;
 	anime.setAnimation(*mWalking);
 	updateSpriteOrigin();
 	setupSensors(position,size);
@@ -117,6 +117,7 @@ Shade::Shade(ResourceCollection& resource, BoxWorld* world, sf::Vector2f& size, 
 	filter.groupIndex = ALL, PLAYER;
 	collisionFixture->SetFilterData(filter);
 	hitTimer.restart();
+	turnTimer.restart();
 }
 Shade::~Shade()
 {
@@ -136,6 +137,8 @@ void Shade::render(sf::RenderTarget& renderTarget, sf::RenderStates states)
 }
 void Shade::update(sf::Time deltaTime)
 {
+	const b2Vec2& vel = body->GetLinearVelocity();
+	if(currentMode != DYING){
 	if(hitTimer.getElapsedTime().asSeconds() <= 3.0f)
 	{
 		attackSensorLeft->setActive(false);
@@ -146,8 +149,16 @@ void Shade::update(sf::Time deltaTime)
 		attackSensorLeft->setActive(true);
 		attackSensorRight->setActive(true);
 	}
-
-	const b2Vec2& vel = body->GetLinearVelocity();
+	if(turnTimer.getElapsedTime().asSeconds() >= 4.0f)
+	{
+		if(getFacing() == LEFT){
+		setFacing(RIGHT);
+		}
+		else if(getFacing() == RIGHT){
+		setFacing(LEFT);
+		}
+	}
+	
 	if(attackSensorLeft->isAttacking())
 	{
 		setFacing(LEFT);
@@ -168,14 +179,15 @@ void Shade::update(sf::Time deltaTime)
 	else if((chaseSensorLeft->isChasing()&&chaseSensorLeft->isActive())||(chaseSensorRight->isChasing()&&chaseSensorRight->isActive())){
 		setMode(CHASING);
 	}
-	else {setMode(PATROL);}
+	else if(currentMode != DYING) {setMode(PATROL);}
 
 	//This should have priority
-	if (timeInFlashLight >= TIME_UNTIL_FLASHLIGHT_DEATH)
+	if (timeInFlashLight >= TIME_UNTIL_FLASHLIGHT_DEATH )
 	{
 		setMode(DYING);
+		disableSensors();
 	}
-
+	}
 	switch(currentMode){
 	case PATROL:
 		if(getFacing() == LEFT)
@@ -189,10 +201,12 @@ void Shade::update(sf::Time deltaTime)
 		if(!ledgeSensorLeft->isGrounded())
 		{
 			setFacing(RIGHT);
+			
 		}
 		else if(!ledgeSensorRight->isGrounded())
 		{
 			setFacing(LEFT);
+			
 		}
 	break;
 
@@ -218,17 +232,17 @@ void Shade::update(sf::Time deltaTime)
 	case ATTACK:
 		body->SetLinearVelocity(b2Vec2(0, 0));
 		anime.setLooped(false);
-	if(!anime.isFinished())
-	{
-		body->SetLinearVelocity(b2Vec2(0,0));
-	}
-	if(anime.isFinished())
-	{
-	hitTimer.restart();
-		setMode(CHASING);
-		attack();
-		
-	}
+		if(!anime.isFinished())
+		{
+			body->SetLinearVelocity(b2Vec2(0,0));
+		}
+		if(anime.isFinished())
+		{
+			hitTimer.restart();
+			setMode(CHASING);
+			attack();
+			
+		}
 	break;
 
 	case SPAWN:
@@ -240,6 +254,7 @@ void Shade::update(sf::Time deltaTime)
 	if(!anime.isFinished())
 	{
 		body->SetLinearVelocity(b2Vec2(0,0));
+		body->GetFixtureList()->SetSensor(true);
 	}
 	if(anime.isFinished())
 	{
@@ -272,6 +287,7 @@ void Shade::setFacing(Facing face)
 		//attackSensorLeft->setActive(true);
 		//attackSensorRight->setActive(false);
 		std::cout << "LEFT" << std::endl;
+		turnTimer.restart();
 	}
 	else if(face == RIGHT)
 	{ 
@@ -280,6 +296,7 @@ void Shade::setFacing(Facing face)
 		//attackSensorLeft->setActive(false);
 		//attackSensorRight->setActive(true);
 		std::cout << "RIGHT" << std::endl;
+		turnTimer.restart();
 	}
 }
 void Shade::setupSensors(sf::Vector2f position, sf::Vector2f size)
@@ -332,7 +349,7 @@ void Shade::setupSensors(sf::Vector2f position, sf::Vector2f size)
 	b2FixtureDef defGroundLeft;
 	defGroundLeft.isSensor = true;
 	defGroundLeft.shape = &shapeGroundLeft;
-	b2Fixture* groundFixLeft = body->CreateFixture(&defGroundLeft);
+	groundFixLeft = body->CreateFixture(&defGroundLeft);
 	ledgeSensorLeft = new LedgeSensor(groundFixLeft);
 	groundFixLeft->SetUserData(ledgeSensorLeft);
 	
@@ -342,7 +359,7 @@ void Shade::setupSensors(sf::Vector2f position, sf::Vector2f size)
 	b2FixtureDef defGroundRight;
 	defGroundRight.isSensor = true;
 	defGroundRight.shape = &shapeGroundRight;
-	b2Fixture* groundFixRight = body->CreateFixture(&defGroundRight);
+	groundFixRight = body->CreateFixture(&defGroundRight);
 	ledgeSensorRight = new LedgeSensor(groundFixRight);
 	groundFixRight->SetUserData(ledgeSensorRight);
 
@@ -352,7 +369,7 @@ void Shade::setupSensors(sf::Vector2f position, sf::Vector2f size)
 	b2FixtureDef aDefLeft;
 	aDefLeft.isSensor = true;
 	aDefLeft.shape = &aShapeLeft;
-	b2Fixture* aFixLeft = body->CreateFixture(&aDefLeft);
+	aFixLeft = body->CreateFixture(&aDefLeft);
 	attackSensorLeft = new AttackSensor(aFixLeft);
 	aFixLeft->SetUserData(attackSensorLeft);
 
@@ -362,7 +379,7 @@ void Shade::setupSensors(sf::Vector2f position, sf::Vector2f size)
 	b2FixtureDef aDefRight;
 	aDefRight.isSensor = true;
 	aDefRight.shape = &aShapeRight;
-	b2Fixture* aFixRight = body->CreateFixture(&aDefRight);
+	aFixRight = body->CreateFixture(&aDefRight);
 	attackSensorRight = new AttackSensor(aFixRight);
 	aFixRight->SetUserData(attackSensorRight);
 
@@ -387,11 +404,11 @@ void Shade::setupSensors(sf::Vector2f position, sf::Vector2f size)
 
 	filterChaseLeft.categoryBits = ENEMY_CHASE;
 	filterChaseLeft.maskBits = PLAYER;
-	filterChaseLeft.groupIndex = PLAYER;
+	//filterChaseLeft.groupIndex = PLAYER;
 
 	filterChaseRight.categoryBits = ENEMY_CHASE;
 	filterChaseRight.maskBits = PLAYER;
-	filterChaseRight.groupIndex = PLAYER;
+	//filterChaseRight.groupIndex = PLAYER;
 
 	filterAttackLeft.categoryBits = ENEMY_ATTACK;
 	filterAttackLeft.maskBits = PLAYER;
@@ -453,5 +470,14 @@ void Shade::setMode(Mode mode)
 void Shade::attack()
 {
 	setMode(ATTACK);
+}
+void Shade::disableSensors()
+{
+
+	body->DestroyFixture(aFixLeft);
+	body->DestroyFixture(aFixRight);
+	body->DestroyFixture(groundFixRight);
+	body->DestroyFixture(groundFixLeft);
+	body->DestroyFixture(collisionFixture);
 }
 #pragma endregion
