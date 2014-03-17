@@ -323,15 +323,9 @@ void Player::update(sf::Time deltaTime)
 	{
 	case NORMAL:
 	
-		if (leftButton)
+		if ((!rightButton && !leftButton) || (rightButton && leftButton))
 		{
-			if (!leftSideCollision->isColliding() && vel.x > -maxVel)
-			{
-				//body->SetLinearVelocity(b2Vec2(-SPEED, vel.y));
-				 body->ApplyLinearImpulse(b2Vec2(-0.8,0.0),b2Vec2(body->GetWorldCenter()),true);
-			}
-
-			setFacing(Entity::LEFT);
+			body->SetLinearVelocity(b2Vec2(0,vel.y));
 		}
 		else if (rightButton)
 		{
@@ -343,10 +337,15 @@ void Player::update(sf::Time deltaTime)
 			
 			setFacing(Entity::RIGHT);
 		}
-
-		if (!rightButton && !leftButton)
+		else if (leftButton)
 		{
-			body->SetLinearVelocity(b2Vec2(0,vel.y));
+			if (!leftSideCollision->isColliding() && vel.x > -maxVel)
+			{
+				//body->SetLinearVelocity(b2Vec2(-SPEED, vel.y));
+				 body->ApplyLinearImpulse(b2Vec2(-0.8,0.0),b2Vec2(body->GetWorldCenter()),true);
+			}
+
+			setFacing(Entity::LEFT);
 		}
 		
 
