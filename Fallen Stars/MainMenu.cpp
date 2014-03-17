@@ -46,7 +46,7 @@ void MainMenu::buttonPressed(int id)
 		// TODO Clear any previous progress and load level 1
 		// setEnabledState(false);
 		// mState->getOverlay(MainMenuState::PLATFORM_SELECT).setEnabledState(true);
-		Game::instance()->loadNewState(new PlatformState("level_1_optim"));
+		Game::instance()->loadNewState(new PlatformState("Level1"));
 	}
 	if(id == Buttons::FULLSCREEN)
 	{
