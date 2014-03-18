@@ -85,7 +85,7 @@ Player::Player(PlatformState& platformState, BoxWorld* world, sf::Vector2f& size
 	mJump = new Animation(jumpFrames,jump);
 
 	/* Grab animation */
-	auto &grab = mResource.getTexture("Assets/Characters/Stella_grabLeft.png");
+	auto &grab = mResource.getTexture("Assets/Characters/Stella grab.png");
 	sf::Vector2i grabSize = static_cast<sf::Vector2i>(grab.getSize());
 	SpriteSheet grabSheet (frameSize, grabSize);
 	std::vector<sf::IntRect> grabFrames = grabSheet.getAllFrames();
