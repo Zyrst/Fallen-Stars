@@ -2,6 +2,8 @@
 #include "Entity.h"
 #include <SFML/Audio/Sound.hpp>
 #include <SFML\System\Clock.hpp>
+#include "CallBack.h"
+#include <SFML\Graphics.hpp>
 
 class LightSolver;
 class Animation;

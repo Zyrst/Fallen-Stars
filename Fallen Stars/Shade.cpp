@@ -10,7 +10,7 @@
 #include "ChaseSensor.h"
 #include "LedgeSensor.h"
 
-static const float TIME_UNTIL_FLASHLIGHT_DEATH = 3.0f;
+static const float TIME_UNTIL_FLASHLIGHT_DEATH = 2.0f;
 
 #pragma region Attack
 AttackSensor::AttackSensor(b2Fixture* owner)
@@ -26,7 +26,6 @@ void AttackSensor::beginContact(b2Fixture* otherFixture)
 	if (otherFixture->GetBody()->GetType() == b2_dynamicBody && attackVictim == nullptr)
 	{
 		setVictim(otherFixture, bounds);
-		//std::cout<<"Contact Begun"<<std::endl;
 	}
 	
 }
@@ -36,9 +35,7 @@ void AttackSensor::endContact(b2Fixture* otherFixture)
 	{
 		attacking = false;
 		attackVictim = nullptr;
-		//std::cout<<"Contact Begun Ended"<<std::endl;
 	}
-	
 }
 bool AttackSensor::isAttacking() const
 {
@@ -107,6 +104,8 @@ Shade::Shade(ResourceCollection& resource, BoxWorld* world, sf::Vector2f& size, 
 	chasingMultiplier = 3.0f;
 	speed = 0.6f;
 	chaseLength = 2.5f;
+	chaseIncreaseX = 1.6f;
+	chaseIncreaseY = 48.8f;
 	anime.setAnimation(*mWalking);
 	updateSpriteOrigin();
 	setupSensors(position,size);
@@ -148,7 +147,7 @@ void Shade::update(sf::Time deltaTime)
 		attackSensorLeft->setActive(true);
 		attackSensorRight->setActive(true);
 	}
-	if(turnTimer.getElapsedTime().asSeconds() >= 4.0f)
+	if(turnTimer.getElapsedTime().asSeconds() >= 4.0f&&((longChaseSensorLeft->isChasing() == false ) && (longChaseSensorRight->isChasing() == false)))
 	{
 		if(getFacing() == LEFT){
 		setFacing(RIGHT);
@@ -175,12 +174,12 @@ void Shade::update(sf::Time deltaTime)
 		}
 		
 	}
-	else if((chaseSensorLeft->isChasing()&&chaseSensorLeft->isActive())||(chaseSensorRight->isChasing()&&chaseSensorRight->isActive())){
+	else if(((chaseSensorLeft->isChasing()&&chaseSensorLeft->isActive())||(chaseSensorRight->isChasing()&&chaseSensorRight->isActive()))
+		|| ((longChaseSensorLeft->isChasing()&&longChaseSensorLeft->isActive())||(longChaseSensorRight->isChasing()&&longChaseSensorRight->isActive()))){
 		setMode(CHASING);
 	}
 	else if(currentMode != DYING) {setMode(PATROL);}
 
-	//This should have priority
 	if (timeInFlashLight >= TIME_UNTIL_FLASHLIGHT_DEATH )
 	{
 		setMode(DYING);
@@ -189,6 +188,8 @@ void Shade::update(sf::Time deltaTime)
 	}
 	switch(currentMode){
 	case PATROL:
+		longChaseSensorLeft->setActive(false);
+		longChaseSensorRight->setActive(false);
 		if(getFacing() == LEFT)
 		{
 				body->SetLinearVelocity(b2Vec2(-speed, vel.y));
@@ -200,16 +201,17 @@ void Shade::update(sf::Time deltaTime)
 		if(!ledgeSensorLeft->isGrounded())
 		{
 			setFacing(RIGHT);
-			
 		}
 		else if(!ledgeSensorRight->isGrounded())
 		{
 			setFacing(LEFT);
-			
 		}
+
 	break;
 
 	case CHASING:
+		longChaseSensorLeft->setActive(true);
+		longChaseSensorRight->setActive(true);
 		if(getFacing() == LEFT)
 		{
 				body->SetLinearVelocity(b2Vec2(-speed*chasingMultiplier, vel.y));
@@ -240,7 +242,6 @@ void Shade::update(sf::Time deltaTime)
 			hitTimer.restart();
 			setMode(CHASING);
 			attack();
-			
 		}
 	break;
 
@@ -260,9 +261,9 @@ void Shade::update(sf::Time deltaTime)
 	hitTimer.restart();
 	anime.setLooped(true);
 		mAlive = false;
-	}
-		
-		break;
+	}	
+	break;
+
 	default: 
 		setMode(PATROL);
 	break;
@@ -277,14 +278,13 @@ void Shade::setVelocityX(float x)
 void Shade::setFacing(Facing face)
 {
 	if(face == getFacing()) return;
-
 	Entity::setFacing(face);
 	if(face == LEFT)
 	{
 		chaseSensorLeft->setActive(true);
 		chaseSensorRight->setActive(false);
-		//attackSensorLeft->setActive(true);
-		//attackSensorRight->setActive(false);
+		longChaseSensorLeft->setActive(true);
+		longChaseSensorRight->setActive(false);
 		std::cout << "LEFT" << std::endl;
 		turnTimer.restart();
 	}
@@ -292,8 +292,8 @@ void Shade::setFacing(Facing face)
 	{ 
 		chaseSensorLeft->setActive(false);
 		chaseSensorRight->setActive(true);
-		//attackSensorLeft->setActive(false);
-		//attackSensorRight->setActive(true);
+		longChaseSensorLeft->setActive(false);
+		longChaseSensorRight->setActive(true);
 		std::cout << "RIGHT" << std::endl;
 		turnTimer.restart();
 	}
@@ -307,19 +307,26 @@ void Shade::setupSensors(sf::Vector2f position, sf::Vector2f size)
 	b2Vec2 groundPosRight;
 	b2Vec2 aBodyPosLeft;
 	b2Vec2 aBodyPosRight;
-
+	b2Vec2 lBodyPosLeft;
+	b2Vec2 lBodyPosRight;
+	
 	groundPosRight.x = bodySize.x;
 	groundPosRight.y = bodySize.y;
 	groundPosLeft.y = bodySize.y;
 	groundPosLeft.x = bodySize.x-(bodySize.x*2.0f);
-	bodyPosLeft.x = bodySize.x-((bodySize.x*3.0f) * chaseLength);
+	bodyPosLeft.x = bodySize.x-((bodySize.x*2.8f) * chaseLength);
 	bodyPosLeft.y = bodySize.y/2;
+	lBodyPosLeft.x = bodySize.x-((bodySize.x*3.1f) * chaseLength);
+	lBodyPosLeft.y = bodySize.y/2;
 	bodyPosRight.y = bodySize.y/2;
-	bodyPosRight.x = bodySize.x+((bodySize.x*1.2f) * chaseLength);
+	bodyPosRight.x = bodySize.x+((bodySize.x*0.7f) * chaseLength*chasingMultiplier);
+	lBodyPosRight.x = bodySize.x+((bodySize.x*1.0f) * chaseLength*chasingMultiplier);
+	lBodyPosRight.y = bodySize.y/2;
 	aBodyPosLeft.x = bodySize.x-(bodySize.x*1.6f);
 	aBodyPosLeft.y = bodySize.y/2;
 	aBodyPosRight.x = bodySize.x+(bodySize.x*(-0.4f));
 	aBodyPosRight.y = bodySize.y/2;
+
 
 //Vänster ChaseSensor
 	b2PolygonShape shapeLeft;
@@ -327,7 +334,7 @@ void Shade::setupSensors(sf::Vector2f position, sf::Vector2f size)
 	b2FixtureDef defLeft;
 	defLeft.isSensor = true;
 	defLeft.shape = &shapeLeft;
-	b2Fixture* fixLeft = body->CreateFixture(&defLeft);
+	fixLeft = body->CreateFixture(&defLeft);
 	chaseSensorLeft = new ChaseSensor(fixLeft);
 	fixLeft->SetUserData(chaseSensorLeft);
 
@@ -337,10 +344,29 @@ void Shade::setupSensors(sf::Vector2f position, sf::Vector2f size)
 	b2FixtureDef defRight;
 	defRight.isSensor = true;
 	defRight.shape = &shapeRight;
-	b2Fixture* fixRight = body->CreateFixture(&defRight);
+	fixRight = body->CreateFixture(&defRight);
 	chaseSensorRight = new ChaseSensor(fixRight);
 	fixRight->SetUserData(chaseSensorRight);
 
+//Vänster lång ChaseSensor
+	b2PolygonShape lShapeLeft;
+	lShapeLeft.SetAsBox(-1.0f * chaseLength* chaseIncreaseX, 0.05f*chaseIncreaseY, lBodyPosLeft, 0);
+	b2FixtureDef lDefLeft;
+	lDefLeft.isSensor = true;
+	lDefLeft.shape = &lShapeLeft;
+	longFixLeft = body->CreateFixture(&lDefLeft);
+	longChaseSensorLeft = new ChaseSensor(longFixLeft);
+	longFixLeft->SetUserData(longChaseSensorLeft);
+
+//Höger lång ChaseSensor
+	b2PolygonShape lShapeRight;
+	lShapeRight.SetAsBox(1.0f * chaseLength*chaseIncreaseX, 0.05f*chaseIncreaseY, lBodyPosRight, 0);
+	b2FixtureDef lDefRight;
+	lDefRight.isSensor = true;
+	lDefRight.shape = &lShapeRight;
+	longFixRight = body->CreateFixture(&lDefRight);
+	longChaseSensorRight = new ChaseSensor(longFixRight);
+	longFixRight->SetUserData(longChaseSensorRight);
 
 //Vänster Ground sensor
 	b2PolygonShape shapeGroundLeft;
@@ -394,20 +420,24 @@ void Shade::setupSensors(sf::Vector2f position, sf::Vector2f size)
 	b2Filter filterChaseRight = fixRight->GetFilterData();
 	b2Filter filterAttackLeft = aFixLeft->GetFilterData();
 	b2Filter filterAttackRight = aFixRight->GetFilterData();
+	b2Filter filterLongChaseLeft = longFixLeft->GetFilterData();
+	b2Filter filterLongChaseRight = longFixRight->GetFilterData();
 
 	filterGroundLeft.categoryBits = ENEMY_GROUND;
-	//filterGroundLeft.maskBits = ALL;
 
 	filterGroundRight.categoryBits = ENEMY_GROUND;
-	//filterGroundRight.maskBits = ALL;
 
 	filterChaseLeft.categoryBits = ENEMY_CHASE;
 	filterChaseLeft.maskBits = PLAYER;
-	//filterChaseLeft.groupIndex = PLAYER;
 
 	filterChaseRight.categoryBits = ENEMY_CHASE;
 	filterChaseRight.maskBits = PLAYER;
-	//filterChaseRight.groupIndex = PLAYER;
+
+	filterLongChaseLeft.categoryBits = ENEMY_CHASE;
+	filterLongChaseLeft.maskBits = PLAYER;
+
+	filterLongChaseRight.categoryBits = ENEMY_CHASE;
+	filterLongChaseRight.maskBits = PLAYER;
 
 	filterAttackLeft.categoryBits = ENEMY_ATTACK;
 	filterAttackLeft.maskBits = PLAYER;
@@ -419,6 +449,8 @@ void Shade::setupSensors(sf::Vector2f position, sf::Vector2f size)
 	groundFixRight->SetFilterData(filterGroundRight);
 	fixLeft->SetFilterData(filterChaseLeft);
 	fixRight->SetFilterData(filterChaseRight);
+	longFixLeft->SetFilterData(filterChaseLeft);
+	longFixRight->SetFilterData(filterChaseRight);
 	aFixLeft->SetFilterData(filterAttackLeft);
 	aFixRight->SetFilterData(filterAttackRight);
 }
@@ -472,7 +504,6 @@ void Shade::attack()
 }
 void Shade::disableSensors()
 {
-
 	body->DestroyFixture(aFixLeft);
 	body->DestroyFixture(aFixRight);
 	body->DestroyFixture(groundFixRight);

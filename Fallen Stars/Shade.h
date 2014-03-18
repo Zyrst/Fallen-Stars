@@ -50,6 +50,8 @@ private:
 	void setupSensors(sf::Vector2f position ,sf::Vector2f size);
 	ChaseSensor* chaseSensorLeft;
 	ChaseSensor* chaseSensorRight;
+	ChaseSensor* longChaseSensorLeft;
+	ChaseSensor* longChaseSensorRight;
 	LedgeSensor* ledgeSensorLeft;
 	LedgeSensor* ledgeSensorRight;
 	AttackSensor* attackSensorLeft;
@@ -66,15 +68,20 @@ private:
 	float chasingMultiplier;
 	float speed;
 	float chaseLength;
+	float chaseIncreaseX;
+	float chaseIncreaseY;
 	b2Fixture* collisionFixture;
 	sf::Clock hitTimer;
 	sf::Clock deathTimer;
 	sf::Clock turnTimer;
-	//Amount of time spent in flashlight
 	float timeInFlashLight;
 	b2Fixture* aFixLeft;
 	b2Fixture* aFixRight;
 	b2Fixture* groundFixRight;
 	b2Fixture* groundFixLeft;
+	b2Fixture* fixRight;
+	b2Fixture* fixLeft;
+	b2Fixture* longFixRight;
+	b2Fixture* longFixLeft;
 };
 
