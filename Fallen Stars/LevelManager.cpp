@@ -1,4 +1,5 @@
 #include "LevelManager.h"
+#include "Entity.h"
 #include "Player.h"
 #include "Object.h"
 #include "Shade.h"
@@ -8,6 +9,12 @@
 #include "StreetLight.h"
 #include "PlatformState.h"
 #include "DialogueOverlay.h"
+#include "StatManager.h"
+#include "ResourceCollection.h"
+#include "State.h"
+#include "BoxWorld.h"
+
+
 
 LevelManager::LevelManager(std::string levelname, ResourceCollection* resource):
 	mLevel(levelname),

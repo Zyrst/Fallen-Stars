@@ -2,9 +2,9 @@
 
 #include "Menu.h"
 #include "LevelTracker.h"
-#include "Game.h"
 
 class MainMenuState;
+class Game;
 
 class PuzzleSelectMenu : public Menu
 {

@@ -3,8 +3,9 @@
 
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
-#include "ResourceCollection.h"
-#include "StatManager.h"
+
+class ResourceCollection;
+struct StatManager;
 
 class HUDOverlay : public Overlay
 {

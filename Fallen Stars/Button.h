@@ -5,9 +5,9 @@
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/Rect.hpp>
 
-namespace sf { class Shader; }
-namespace sf { class Texture; }
-namespace sf { class RenderTarget; }
+namespace sf {class Shader;
+			  class Texture;
+			  class RenderTarget;}
 
 class ResourceCollection;
 

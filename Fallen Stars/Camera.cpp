@@ -1,5 +1,7 @@
 #include "Camera.h"
 #include <SFML/Graphics/Rect.hpp>
+#include "Player.h"
+
 
 
 Camera::Camera(Player* player, sf::Vector2u bounds):

@@ -8,6 +8,9 @@
 #include "BaseResolution.h"
 #include "PlatformState.h"
 #include "DialogueCallback.h"
+#include "BoxWorld.h"
+
+#include "Entity.h"
 
 DialogueOverlay::DialogueOverlay(int id, ResourceCollection& resources, BoxWorld& world, PlatformState& platformState):
 	Overlay(id, false),

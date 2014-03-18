@@ -5,6 +5,7 @@
 #include "ResourceCollection.h"
 
 class PlatformState;
+namespace sf { class RenderTarget; }
 
 class DeathOverlay : public Overlay
 {

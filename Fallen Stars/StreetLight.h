@@ -2,11 +2,11 @@
 #include "Entity.h"
 #include <SFML\System\Vector2.hpp>
 #include <SFML\System\Clock.hpp>
-#include "LightSource.h"
-#include "CallBack.h"
 
 class LightSolver;
 class StreetLightSensorCallBack;
+class LightSource;
+class CallBack;
 
 class StreetLight : public Entity
 {

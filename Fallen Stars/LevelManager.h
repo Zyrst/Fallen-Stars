@@ -1,16 +1,16 @@
 #pragma once
 #include <string>
 #include "tmx\MapLoader.h"
-#include "BoxWorld.h"
-#include "Entity.h"
-#include "ResourceCollection.h"
-#include "State.h"
 #include <SFML/Audio/Music.hpp>
-#include "StatManager.h"
 
 class LightSolver;
 class Overlay;
 class PlayformState;
+struct StatManager;
+class Entity;
+class ResourceCollection;
+class State;
+class BoxWorld;
 
 /*A class for managing Levels
 *Contains the tmx parser

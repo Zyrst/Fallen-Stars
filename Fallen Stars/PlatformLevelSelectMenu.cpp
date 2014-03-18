@@ -4,6 +4,8 @@
 #include "BaseResolution.h"
 #include "MainMenuState.h"
 #include "PlatformState.h"
+#include "Game.h"
+
 
 PlatformLevelSelectMenu::PlatformLevelSelectMenu(int id, ResourceCollection& resources, const MainMenuState* state):
 	Menu(id, false),

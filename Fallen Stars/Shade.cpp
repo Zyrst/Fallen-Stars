@@ -63,13 +63,7 @@ Shade::Shade(ResourceCollection& resource, BoxWorld* world, sf::Vector2f& size, 
 , timeInFlashLight(0.0f)
 {
 	setMode(PATROL);
-	
-	auto &idle = mResource.getTexture("Assets/Characters/Shade_idle.png");
-	sf::Vector2i idleSize = static_cast<sf::Vector2i>(idle.getSize());
 	sf::Vector2i frameSize(256,256);
-	SpriteSheet idleSheet(frameSize,idleSize);
-	std::vector<sf::IntRect> idleFrames = idleSheet.getAllFrames();
-	mIdle = new Animation(idleFrames, idle);
 
 	auto &walking = mResource.getTexture("Assets/Characters/Shade_walking.png");
 	sf::Vector2i walkSize = static_cast<sf::Vector2i>(walking.getSize());

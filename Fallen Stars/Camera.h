@@ -1,8 +1,10 @@
 #pragma once
-#include <SFML\Window.hpp>
 #include <SFML\System\Vector2.hpp>
-#include "Player.h"
 
+//#include "Player.h"
+
+class Player;
+namespace sf { class RenderTarget; }
 class Camera
 {
 public:

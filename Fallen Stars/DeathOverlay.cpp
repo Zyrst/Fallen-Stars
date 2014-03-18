@@ -1,5 +1,8 @@
 #include "DeathOverlay.h"
 
+#include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
+
 #include "BaseResolution.h"
 #include "PlatformState.h"
 

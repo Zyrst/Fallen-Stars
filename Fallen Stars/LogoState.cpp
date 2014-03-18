@@ -2,10 +2,13 @@
 
 #include <cassert>
 #include <cmath>
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <iostream>
 
 #include "Game.h"
 #include "MainMenuState.h"
 #include "PlatformState.h"
+
 
 LogoState::LogoState():
 	mSprite(),

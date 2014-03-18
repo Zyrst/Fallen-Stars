@@ -5,6 +5,8 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/System/Clock.hpp>
 
+namespace sf { class RenderWindow; }
+
 class LogoState : public State
 {
 public:

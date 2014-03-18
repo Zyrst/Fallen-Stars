@@ -114,7 +114,7 @@ Player::Player(PlatformState& platformState, BoxWorld* world, sf::Vector2f& size
 
 	mWalkSound = new sf::Sound;
 	mWalkSound->setBuffer(*mResource.getSound("Assets/Sound/Stella_Run_Loop_1.wav"));
-	mWalkSound->setVolume(75);
+	mWalkSound->setVolume(40);
 
 	mHurtSound = new sf::Sound;
 	mHurtSound->setBuffer(*mResource.getSound("Assets/Sound/Stella get hurt.wav"));

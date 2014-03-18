@@ -8,6 +8,17 @@
 #include "HUDOverlay.h"
 #include "LevelFadeOut.h"
 #include "LevelFadeIn.h"
+#include "Entity.h"
+#include "Player.h"
+#include "LevelManager.h"
+#include "StatManager.h"
+#include "ControlMapping.h"
+#include "BoxWorld.h"
+#include "Camera.h"
+#include "LevelManager.h"
+
+
+
 
 PlatformState::PlatformState(std::string levelname)
 :	mLevelName(levelname)

@@ -7,6 +7,9 @@
 #include "CallBack.h"
 #include "Player.h"
 #include "StreetLightSensorCallBack.h"
+#include "LightSource.h"
+#include "CallBack.h"
+
 
 namespace
 {

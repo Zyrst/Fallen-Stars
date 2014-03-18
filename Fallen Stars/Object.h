@@ -2,11 +2,12 @@
 
 #include "Entity.h"
 #include <SFML/Graphics/Sprite.hpp>
-#include "ResourceCollection.h"
 #include "CallBack.h"
-#include "Player.h"
-#include "StatManager.h"
 #include <SFML/Audio/Sound.hpp>
+
+class Player;
+class ResourceCollection;
+struct StatManager;
 
 class StarCallBack : public CallBack {
 public:

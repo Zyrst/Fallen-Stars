@@ -9,6 +9,7 @@
 #include "ConstellationOverlay.h"
 #include "Game.h"
 
+
 PuzzleState::PuzzleState(std::string level, int ringCount, int steps):
 	mLevel(level),
 	mRingCount(ringCount),

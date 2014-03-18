@@ -3,6 +3,7 @@
 #include "Box2D/Box2D.h"
 #include "VecConverter.h"
 
+
 Entity::Entity(BoxWorld* world, sf::Vector2f& size, sf::Vector2f& pos, Facing facing, bool createCollisionBody) :
 	Occluder(),
 	mAlive(true),

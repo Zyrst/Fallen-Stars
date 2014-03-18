@@ -1,15 +1,16 @@
 #pragma once
-#include "ControlMapping.h"
-#include "Entity.h"
-#include "Player.h"
 #include <vector>
 #include "State.h"
-#include "Camera.h"
-#include "LevelManager.h"
 #include <SFML/Audio/Music.hpp>
-#include "StatManager.h"
 
 class LightSolver;
+class Player;
+class Entity;
+struct StatManager;
+class ControlMapping;
+class BoxWorld;
+class Camera;
+class LevelManager;
 
 class PlatformState: public State
 {

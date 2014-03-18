@@ -10,6 +10,7 @@
 
 class b2Body;
 class BoxWorld;
+
 /*
  * Entity is a baseclass for all living and non grid-based objecets
  */

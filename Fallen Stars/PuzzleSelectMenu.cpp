@@ -4,6 +4,8 @@
 #include "BaseResolution.h"
 #include "MainMenuState.h"
 #include "PuzzleState.h"
+#include "Game.h"
+
 
 PuzzleSelectMenu::PuzzleSelectMenu(int id, ResourceCollection& resources, const MainMenuState* state):
 	Menu(id, false),

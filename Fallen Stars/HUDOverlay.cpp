@@ -2,6 +2,8 @@
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include "BaseResolution.h"
+#include "ResourceCollection.h"
+#include "StatManager.h"
 
 #include <iostream>
 

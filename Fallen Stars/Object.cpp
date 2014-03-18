@@ -5,6 +5,10 @@
 #include "VecConverter.h"
 #include "SoundManager.h"
 #include "Game.h"
+#include "Player.h"
+#include "StatManager.h"
+#include "ResourceCollection.h"
+
 
 StarCallBack::StarCallBack(b2Fixture* owner)
 	: CallBack(owner)
