@@ -158,7 +158,7 @@ void AnimatedSprite::update(sf::Time deltaTime)
             m_currentTime = sf::microseconds(m_currentTime.asMicroseconds() % m_frameTime.asMicroseconds());
 
             // get next Frame index
-            if (m_currentFrame + 1 < m_animation->getSize())
+            if ((int)m_currentFrame + 1 < m_animation->getSize())
                 m_currentFrame++;
             else
             {

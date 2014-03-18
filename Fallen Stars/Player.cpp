@@ -370,7 +370,7 @@ void Player::update(sf::Time deltaTime)
 			if (!rightSideCollision->isColliding() && vel.x < maxVel)
 			{
 				//body->SetLinearVelocity(b2Vec2(SPEED, vel.y));
-				body->ApplyLinearImpulse(b2Vec2(0.8,0.0),b2Vec2(body->GetWorldCenter()),true);
+				body->ApplyLinearImpulse(b2Vec2(0.8f,0.0f),b2Vec2(body->GetWorldCenter()),true);
 			}
 			
 			setFacing(Entity::RIGHT);
@@ -380,7 +380,7 @@ void Player::update(sf::Time deltaTime)
 			if (!leftSideCollision->isColliding() && vel.x > -maxVel)
 			{
 				//body->SetLinearVelocity(b2Vec2(-SPEED, vel.y));
-				 body->ApplyLinearImpulse(b2Vec2(-0.8,0.0),b2Vec2(body->GetWorldCenter()),true);
+				 body->ApplyLinearImpulse(b2Vec2(-0.8f,0.0f),b2Vec2(body->GetWorldCenter()),true);
 			}
 
 			setFacing(Entity::LEFT);
