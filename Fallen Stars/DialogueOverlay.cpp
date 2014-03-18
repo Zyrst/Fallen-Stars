@@ -2,7 +2,6 @@
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Texture.hpp>
-#include <SFML/Graphics/Rect.hpp>
 #include <Box2D\Box2D.h>
 
 #include "ResourceCollection.h"

@@ -3,9 +3,7 @@
 #include <Box2D\Box2D.h>
 #include "BoxWorld.h"
 #include "VecConverter.h"
-#include <SFML/Audio/SoundBuffer.hpp>
 #include "SoundManager.h"
-#include <iostream>
 #include "Game.h"
 
 StarCallBack::StarCallBack(b2Fixture* owner)
@@ -169,7 +167,6 @@ void Object::update(sf::Time deltaTime)
 		{
 			Player* player = starCallBack->getPlayer();
 			float distance = player->getPosition().x - getPosition().x;
-			std::cout << distance << std::endl;
 			if (distance > 28)
 			{
 				//Push to the right

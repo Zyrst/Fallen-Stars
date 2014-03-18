@@ -3,8 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System/Clock.hpp>
 #include <SFML/Window/Event.hpp>
-#include <SFML/Graphics/View.hpp>
-#include <SFML/Graphics/Rect.hpp>
+
 #include <cassert>
 #include <iostream>
 

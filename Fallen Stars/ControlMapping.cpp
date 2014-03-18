@@ -1,6 +1,5 @@
 #include "ControlMapping.h"
 
-#include <SFML/Window/Event.hpp>
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/Joystick.hpp>
 

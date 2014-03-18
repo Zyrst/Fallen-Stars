@@ -1,5 +1,4 @@
 #include "Camera.h"
-#include <SFML\Window.hpp>
 #include <SFML/Graphics/Rect.hpp>
 
 

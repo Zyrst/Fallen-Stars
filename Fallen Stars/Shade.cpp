@@ -2,7 +2,6 @@
 #include <iostream>
 #include <Box2D\Box2D.h>
 #include <SFML\Graphics.hpp>
-#include "CallBack.h"
 #include "VecConverter.h"
 #include "BoxWorld.h"
 #include "ControlMapping.h"

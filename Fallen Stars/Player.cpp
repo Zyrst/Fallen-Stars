@@ -7,8 +7,6 @@
 #include "ControlMapping.h"
 #include "SpriteSheet.h"
 #include "LightSolver.h"
-#include <SFML/Audio/SoundBuffer.hpp>
-#include "Animation.h"
 #include "ResourceCollection.h"
 #include "StatManager.h"
 #include "CollisionCounterCallBack.h"

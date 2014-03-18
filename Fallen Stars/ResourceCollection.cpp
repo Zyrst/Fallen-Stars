@@ -3,7 +3,6 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Audio/SoundBuffer.hpp>
 #include <SFML/Graphics/Font.hpp>
-#include <thread>
 #include <iostream>
 
 ResourceCollection::ResourceCollection():
