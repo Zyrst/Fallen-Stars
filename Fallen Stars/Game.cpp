@@ -42,7 +42,7 @@ Game::Game()
 	sf::VideoMode size(1280, 720);
 
 	window = new sf::RenderWindow(size, title, sf::Style::Default);
-	
+	window->setVerticalSyncEnabled(true);
 	screenSize = window->getSize();
 	resize((int)screenSize.x, (int)screenSize.y);
 	

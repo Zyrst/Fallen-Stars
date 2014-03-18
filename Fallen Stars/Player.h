@@ -44,7 +44,7 @@ private:
 	FlashLightCallBack* flashLightCallBack;
 	bool leftButton, rightButton, downButton;
 	Animation* mWalking, *mIdle, *mJump, *mGrab, *mFall, *currentAnimation, *mHit;
-	sf::Sound* mJumpSound, *mWalkSound;
+	sf::Sound* mJumpSound, *mWalkSound, *mHurtSound;
 	ResourceCollection& mResource;
 	LightSource* flashLight;
 	sf::Texture *maskRight, *maskLeft;

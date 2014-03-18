@@ -118,6 +118,9 @@ Player::Player(PlatformState& platformState, BoxWorld* world, sf::Vector2f& size
 	mWalkSound->setBuffer(*mResource.getSound("Assets/Sound/Stella_Run_Loop_1.wav"));
 	mWalkSound->setVolume(75);
 
+	mHurtSound = new sf::Sound;
+	mHurtSound->setBuffer(*mResource.getSound("Assets/Sound/Stella get hurt.wav"));
+
 
 	setupSensors(position, size);
 	body->SetLinearDamping(1.0f);
@@ -138,6 +141,7 @@ Player::~Player()
 	delete mFall;
 	delete mJumpSound;
 	delete mWalkSound;
+	delete mHurtSound;
 	BoxWorld::destroyBody(flashLightBody);
 }
 
@@ -558,6 +562,7 @@ void Player::setState(Player::PLAYER_STATE state)
 		break;
 	case PLAYER_STATE::DAMAGED:
 		body->SetLinearVelocity(b2Vec2(0, 0));
+		mHurtSound->play();
 		flashLight->setEnabled(false);
 		break;
 	case PLAYER_STATE::KNOCKEDBACKED:
