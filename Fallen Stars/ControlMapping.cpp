@@ -16,6 +16,9 @@ namespace Keys
 		MENU	 = sf::Keyboard::Key::Escape,
 		CONFIRM	 = sf::Keyboard::Key::Return,
 		SIRIUS	 = sf::Keyboard::Key::H,
+		CHEAT1	 = sf::Keyboard::Key::F5,
+		CHEAT2	 = sf::Keyboard::Key::F6,
+		CHEAT3	 = sf::Keyboard::Key::F7,
 		DEBUG	 = sf::Keyboard::Key::F8
 	};
 }
@@ -45,6 +48,9 @@ Controls::Action ControlMapping::getAction(sf::Event::KeyEvent key)
 		case Keys::KeyMap::MENU:	 return Controls::Action::MENU;
 		case Keys::KeyMap::CONFIRM:  return Controls::Action::CONFIRM;
 		case Keys::KeyMap::SIRIUS:	 return Controls::Action::SIRIUS;
+		case Keys::KeyMap::CHEAT1:	 return Controls::Action::CHEAT1;
+		case Keys::KeyMap::CHEAT2:	 return Controls::Action::CHEAT2;
+		case Keys::KeyMap::CHEAT3:	 return Controls::Action::CHEAT3;
 		case Keys::KeyMap::DEBUG:	 return Controls::Action::DEBUG;
 
 		case AlternativeKeys::KeyMap::UP:	 return Controls::Action::UP;
@@ -82,6 +88,9 @@ sf::Keyboard::Key ControlMapping::getKey(Controls::Action action)
 		case Controls::Action::MENU:	 return static_cast <sf::Keyboard::Key> ( Keys::KeyMap::MENU );
 		case Controls::Action::CONFIRM:  return static_cast <sf::Keyboard::Key> ( Keys::KeyMap::CONFIRM );
 		case Controls::Action::SIRIUS:	 return static_cast <sf::Keyboard::Key> ( Keys::KeyMap::SIRIUS );
+		case Controls::Action::CHEAT1:	 return static_cast <sf::Keyboard::Key> ( Keys::KeyMap::CHEAT1 );
+		case Controls::Action::CHEAT2:	 return static_cast <sf::Keyboard::Key> ( Keys::KeyMap::CHEAT2 );
+		case Controls::Action::CHEAT3:	 return static_cast <sf::Keyboard::Key> ( Keys::KeyMap::CHEAT3 );
 		case Controls::Action::DEBUG:	 return static_cast <sf::Keyboard::Key> ( Keys::KeyMap::DEBUG );
 		
 		default: return sf::Keyboard::Key::Unknown;
