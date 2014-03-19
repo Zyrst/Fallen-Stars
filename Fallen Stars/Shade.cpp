@@ -61,6 +61,7 @@ Shade::Shade(ResourceCollection& resource, BoxWorld* world, sf::Vector2f& size, 
 , mResource(resource)
 , collisionFixture(body->GetFixtureList())
 , timeInFlashLight(0.0f)
+, shader(&resource.getShader("Assets/Shader/default.vert", "Assets/Shader/shadeHealth.frag"))
 {
 	setMode(PATROL);
 	sf::Vector2i frameSize(256,256);
@@ -125,7 +126,10 @@ void Shade::render(sf::RenderTarget& renderTarget, sf::RenderStates states)
 	sh.setFillColor(sf::Color::Transparent);
 	sh.setOutlineColor(sf::Color::Blue);
 	sh.setOutlineThickness(1.0f);
-	Entity::render(renderTarget);
+
+	float health = (getMode() == DYING) ? 0.0f : timeInFlashLight / TIME_UNTIL_FLASHLIGHT_DEATH;
+	shader->setParameter("health", health);
+	Entity::render(renderTarget, shader);
 }
 void Shade::update(sf::Time deltaTime)
 {
@@ -503,5 +507,10 @@ void Shade::disableSensors()
 	body->DestroyFixture(groundFixRight);
 	body->DestroyFixture(groundFixLeft);
 	body->DestroyFixture(collisionFixture);
+
+	aFixLeft = aFixRight = groundFixLeft = groundFixRight = collisionFixture = nullptr;
+
+	body->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
+	body->SetGravityScale(0.0f);
 }
 #pragma endregion

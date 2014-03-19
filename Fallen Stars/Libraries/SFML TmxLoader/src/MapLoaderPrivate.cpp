@@ -400,15 +400,6 @@ bool MapLoader::m_ParseLayer(const pugi::xml_node& layerNode)
 
 	m_layers.push_back(layer);
 
-	if (layer->name.compare("Background") == 0)
-	{
-		m_backgroundLayers.push_back(layer);
-	}
-	else if (layer->name.compare("Foreground") == 0)
-	{
-		m_foregroundLayers.push_back(layer);
-	}
-
 	return true;
 }
 

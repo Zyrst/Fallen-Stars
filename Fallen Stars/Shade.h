@@ -9,6 +9,11 @@ class ChaseSensor;
 
 class LedgeSensor;
 
+namespace sf
+{
+	class Shader;
+}
+
 class AttackSensor : public CallBack
 {
 public:
@@ -64,5 +69,6 @@ private:
 	b2Fixture* fixRight, *fixLeft, *longFixRight, *longFixLeft;
 	sf::Clock hitTimer, deathTimer, turnTimer;
 	float timeInFlashLight;
+	sf::Shader* shader;
 };
 

@@ -109,6 +109,18 @@ bool MapLoader::Load(const std::string& map, ResourceCollection* resource)
 
 	m_CreateDebugGrid();
 
+	for (MapLayer* layer : m_layers)
+	{
+		if (layer->name.compare("Background") == 0)
+		{
+			m_backgroundLayers.push_back(layer);
+		}
+		else if (layer->name.compare("Foreground") == 0)
+		{
+			m_foregroundLayers.push_back(layer);
+		}
+	}
+
 	std::cerr << "Parsed " << m_layers.size() << " layers." << std::endl;
 	std::cerr << "Loaded " << map << " successfully." << std::endl;
 
