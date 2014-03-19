@@ -31,28 +31,27 @@ public:
 	void setState(PLAYER_STATE state);
 	void setActiveStreetLight(StreetLight* light);
 	void damaged();
-	b2Body* getBody();
 	void activateStreetLight();
+	b2Body* getBody();
 private:
 	void setupSensors(sf::Vector2f& pos, sf::Vector2f& size);
 	void updateFlashlightPosition();
-
+	int knockForce;
+	sf::Texture *maskRight, *maskLeft;
+	sf::Sound* mJumpSound, *mWalkSound, *mHurtSound;
 	sf::Clock hitTimer, knockedbackClock;
 	sf::Vector2f velocity;
 	PLAYER_STATE state;
-	CollisionCounterCallBack *groundCallBack, *rightSideCollision, *leftSideCollision, *leftAntiGrabCallBack, *rightAntiGrabCallBack, *rightHitCollision, *leftHitCollision;
+	CollisionCounterCallBack *groundCallBack, *rightSideCollision, *leftSideCollision, *leftAntiGrabCallBack, *rightAntiGrabCallBack, *rightHitCollision, *leftHitCollision, *shadeCollision;
 	GrabCallBack *leftGrabCallBack, *rightGrabCallBack;
 	FlashLightCallBack* flashLightCallBack;
-	bool leftButton, rightButton, downButton;
 	Animation* mWalking, *mIdle, *mJump, *mGrab, *mFall, *currentAnimation, *mHit;
-	sf::Sound* mJumpSound, *mWalkSound, *mHurtSound;
 	ResourceCollection& mResource;
 	LightSource* flashLight;
-	sf::Texture *maskRight, *maskLeft;
 	StatManager& mStats;
 	StreetLight* activeStreetLight;
 	b2Fixture* collisionFixture;
 	b2Body* flashLightBody;
-
 	PlatformState& mPlatformState;
+	bool leftButton, rightButton, downButton;
 };

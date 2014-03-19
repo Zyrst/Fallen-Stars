@@ -111,6 +111,7 @@ Shade::Shade(ResourceCollection& resource, BoxWorld* world, sf::Vector2f& size, 
 	collisionFixture->SetFilterData(filter);
 	hitTimer.restart();
 	turnTimer.restart();
+	body->SetFixedRotation(true);
 }
 Shade::~Shade()
 {
@@ -120,6 +121,7 @@ Shade::~Shade()
 }
 void Shade::render(sf::RenderTarget& renderTarget, sf::RenderStates states)
 {
+	anime.setRotation(body->GetAngle() * 180 / 3.14159265f);
 	sf::FloatRect rect = anime.getGlobalBounds();
 	sf::RectangleShape sh = sf::RectangleShape(sf::Vector2f(rect.width, rect.height));
 	sh.setPosition(rect.left, rect.top);
@@ -324,7 +326,6 @@ void Shade::setupSensors(sf::Vector2f position, sf::Vector2f size)
 	aBodyPosLeft.y = bodySize.y/2;
 	aBodyPosRight.x = bodySize.x+(bodySize.x*(-0.4f));
 	aBodyPosRight.y = bodySize.y/2;
-
 
 //Vänster ChaseSensor
 	b2PolygonShape shapeLeft;

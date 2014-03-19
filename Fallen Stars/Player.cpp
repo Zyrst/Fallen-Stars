@@ -119,7 +119,6 @@ Player::Player(PlatformState& platformState, BoxWorld* world, sf::Vector2f& size
 	mHurtSound = new sf::Sound;
 	mHurtSound->setBuffer(*mResource.getSound("Assets/Sound/Stella get hurt.wav"));
 
-
 	setupSensors(position, size);
 	body->SetLinearDamping(1.0f);
 	/* Set filter for collisions */
@@ -128,6 +127,7 @@ Player::Player(PlatformState& platformState, BoxWorld* world, sf::Vector2f& size
 	//filter.maskBits =ALL, ENEMY_CHASE, ENEMY_ATTACK;
 	filter.groupIndex = ALL, ENEMY_CHASE, ENEMY_ATTACK;
 	collisionFixture->SetFilterData(filter);
+	knockForce = 35;
 }
 
 Player::~Player()
@@ -163,6 +163,15 @@ void Player::setupSensors(sf::Vector2f& pos, sf::Vector2f& size)
 		b2FixtureDef def;
 		def.isSensor = true;
 		def.shape = &sh;
+		
+		b2Vec2 bposS = bpos;
+		bposS.x +=0.03f;
+		b2PolygonShape shS;
+		shS.SetAsBox(0.08f, 0.02f, bposS, 0);
+
+		b2FixtureDef defS;
+		defS.isSensor = true;
+		defS.shape = &shS;
 
 		b2Fixture* groundFix = body->CreateFixture(&def);
 		groundCallBack = new CollisionCounterCallBack(groundFix);
@@ -172,6 +181,14 @@ void Player::setupSensors(sf::Vector2f& pos, sf::Vector2f& size)
 		groundFilter.groupIndex = ALL;
 		groundFix->SetFilterData(groundFilter);
 		//Left and right side collision sensors (to not get stuck in next to walls anymore)
+
+		b2Fixture* shadeFix = body->CreateFixture(&defS);
+		shadeCollision = new CollisionCounterCallBack(shadeFix);
+		b2Filter shadeFilter;
+		shadeFilter = shadeFix->GetFilterData();
+		shadeFilter.categoryBits = PLAYER_SENSOR;
+		shadeFilter.groupIndex = ENEMY;
+		shadeFix->SetFilterData(shadeFilter);
 
 		bpos = b2Vec2(-hw, 0);
 		bpos.y += hh;
@@ -311,6 +328,23 @@ void Player::update(sf::Time deltaTime)
 		hitTimer.restart();
 		damaged();
 	}
+	if(shadeCollision->isHitColliding()&&!groundCallBack->isColliding() && state != GRABBING)
+	{
+		
+		//For funtimes ;)
+		//body->SetFixedRotation(false);
+		if(getFacing() == LEFT)
+		{
+			body->ApplyForce(b2Vec2(knockForce,0.1),b2Vec2(0,0),true);
+		}
+		else if(getFacing() == RIGHT)
+		{
+			body->ApplyForce(b2Vec2(-knockForce,0.1),b2Vec2(0,0),true);
+		}
+		else{body->ApplyForce(b2Vec2(knockForce,0.1),b2Vec2(0,0),true);}
+		
+		setState(KNOCKEDBACKED);
+	}
 
 	if (flashLight->isEnabled())
 	{
@@ -415,8 +449,8 @@ void Player::update(sf::Time deltaTime)
 	}
 	break;
 	case KNOCKEDBACKED:
-		
-		if (knockedbackClock.getElapsedTime().asSeconds() > 1)
+		if(mStats.health <=0){setState(DYING);}
+		else if (knockedbackClock.getElapsedTime().asSeconds() > 1)
 		{
 			setState(NORMAL);
 		}

@@ -7,7 +7,6 @@ ChaseSensor::ChaseSensor(b2Fixture* owner)
 , chasing(false)
 , mActive(false)
 , chaseVictim(nullptr)
-
 { }
 void ChaseSensor::beginContact(b2Fixture* otherFixture)
 {
@@ -16,7 +15,6 @@ void ChaseSensor::beginContact(b2Fixture* otherFixture)
 	{
 		setVictim(otherFixture, bounds);
 		chasing = true;
-		//std::cout<<"Contact Begun"<<std::endl;
 	}
 
 }
@@ -26,7 +24,6 @@ void ChaseSensor::endContact(b2Fixture* otherFixture)
 	{
 		chaseVictim = nullptr;
 		chasing = false;
-		//std::cout<<"Contact Begun Ended"<<std::endl;
 	}
 
 }
