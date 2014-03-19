@@ -128,6 +128,7 @@ Player::Player(PlatformState& platformState, BoxWorld* world, sf::Vector2f& size
 	filter.groupIndex = ALL, ENEMY_CHASE, ENEMY_ATTACK;
 	collisionFixture->SetFilterData(filter);
 	knockForce = 35;
+	toggle = false;
 }
 
 Player::~Player()
@@ -547,7 +548,7 @@ void Player::jump()
 void Player::handleAction(Controls::Action action, Controls::KeyState state)
 {
 	bool keyDown = (state == Controls::KeyState::HELD);
-
+	b2Vec2 dasBoot = body->GetPosition();
 	switch (action)
 	{
 	case Controls::Action::LEFT:
@@ -570,6 +571,25 @@ void Player::handleAction(Controls::Action action, Controls::KeyState state)
 		{
 			activateStreetLight();
 		}
+		break;
+	case Controls::Action::CHEAT1:
+		if(toggle == true){
+		body->SetFixedRotation(false);
+		toggle = false;
+		}
+		else if(toggle == false){
+		body->SetFixedRotation(true);
+		toggle = true;
+		}
+		break;
+	case Controls::Action::CHEAT2:
+		
+		dasBoot.y -= 0.2;
+		body->SetTransform(dasBoot, 0);
+		break;
+	case Controls::Action::CHEAT3:
+		mStats.health = 1337;
+		mStats.totalStars = 8008135;
 		break;
 	}
 	

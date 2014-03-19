@@ -37,6 +37,7 @@ private:
 	void setupSensors(sf::Vector2f& pos, sf::Vector2f& size);
 	void updateFlashlightPosition();
 	int knockForce;
+	bool toggle;
 	sf::Texture *maskRight, *maskLeft;
 	sf::Sound* mJumpSound, *mWalkSound, *mHurtSound;
 	sf::Clock hitTimer, knockedbackClock;
