@@ -10,10 +10,11 @@
 #include "Game.h"
 
 
-PuzzleState::PuzzleState(std::string level, int ringCount, int steps):
+PuzzleState::PuzzleState(std::string level, int ringCount, int steps, sf::Vector2f center):
 	mLevel(level),
 	mRingCount(ringCount),
 	mSteps(steps),
+	mCenter(center),
 	mSelectedRing(0),
 	completed(false),
 	mBackground()
@@ -42,9 +43,9 @@ void PuzzleState::load()
 
 	for(int ringNum = 1; ringNum < mRingCount; ringNum++)
 	{
-		mRings.push_back(PuzzleRing(mResourceCollection, mLevel, ringNum, baseResolution / 2.0f, limit(twisterEngine), mSteps));
+		mRings.push_back(PuzzleRing(mResourceCollection, mLevel, ringNum, mCenter, limit(twisterEngine), mSteps));
 	}
-	mRings.push_back(PuzzleRing(mResourceCollection, mLevel, mRingCount, baseResolution / 2.0f, 0, mSteps));
+	mRings.push_back(PuzzleRing(mResourceCollection, mLevel, mRingCount, mCenter, 0, mSteps));
 
 	mRings[0].setHighLighted(true);
 }

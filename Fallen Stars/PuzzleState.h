@@ -1,10 +1,10 @@
 #pragma once
 #include "state.h"
 
+#include <SFML/Audio/Music.hpp>
 #include <vector>
 #include "PuzzleRing.h"
-#include <SFML/Audio/Music.hpp>
-
+#include "BaseResolution.h"
 
 
 class PuzzleState : public State
@@ -12,7 +12,7 @@ class PuzzleState : public State
 public:
 	enum Ovelays { CONSTELLATION };
 
-	PuzzleState(std::string level, int ringCount, int steps);
+	PuzzleState(std::string level, int ringCount, int steps, sf::Vector2f center = baseResolution / 2.0f);
 	~PuzzleState();
 
 	void load() override;
@@ -24,6 +24,7 @@ private:
 	std::string mLevel;
 	int mRingCount;
 	int mSteps;
+	sf::Vector2f mCenter;
 
 	int mSelectedRing;
 	bool completed;

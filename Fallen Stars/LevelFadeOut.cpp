@@ -20,7 +20,7 @@ void LevelFadeOut::update(const sf::Time& deltaTime)
 
 	if(elapsedTime >= fadeTime)
 	{
-		Game::instance()->loadNewState(new PuzzleState("Level1", 4, 17));
+		Game::instance()->loadNewState(new PuzzleState("Level1", 4, 17, sf::Vector2f(986.0f, 508.0f)));
 	}
 }
 
