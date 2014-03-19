@@ -155,7 +155,19 @@ namespace tmx
 
 		std::map <std::string, std::string> GetPropertyMap();
 		std::string GetFirstPropertyName();
+
+		void setGID(int i) 
+		{
+			m_GID = i;
+		}
+		int getGID() 
+		{
+			return m_GID;
+		}
+
 private:
+		int m_GID;
+
 		//object properties, reflects those which are part of the tmx format
 		std::string m_name, m_type, m_parent; //parent is name of layer to which object belongs
 		//sf::FloatRect m_rect; //width / height property of object plus position in world space

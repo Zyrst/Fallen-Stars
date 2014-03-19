@@ -13,7 +13,7 @@
 #include "ResourceCollection.h"
 #include "State.h"
 #include "BoxWorld.h"
-
+#include "AnimatedBackgroundImage.h"
 
 
 LevelManager::LevelManager(std::string levelname, ResourceCollection* resource):
@@ -53,6 +53,7 @@ sf::Vector2f LevelManager::getPlayerLayer()
 			}
 		}
 	}
+	return sf::Vector2f(); // Player position missing
 }
 
 //Adds objects to the level, stars/stardust etc
@@ -221,10 +222,40 @@ void LevelManager::getDialogueLayer(State& state, ResourceCollection& resource)
 					else if (name == "Asteria") speaker = DialogueOverlay::Character::ASTERIA;
 					else	continue; // If the name doesn't match any character, skip this message
 					
+					auto itNext = it;
+					if((itNext++)->first == "Sound")
+					{
+						it++;
+						// Add sound
+					}
+
 					siriusMessages.push_back(DialogueOverlay::Message(speaker, it->second));
 				}
 				
 				dialogueOverlay->addConversation(DialogueOverlay::Conversation(bounds, siriusMessages));
+			}
+		}
+	}
+}
+
+void LevelManager::getAnimationLayer(AnimationVector animations, ResourceCollection& resource)
+{
+	auto& layers = mapLoader.GetLayers();
+	for (tmx::MapLayer* l : layers)
+	{
+		if (l->name.compare("Animation") == 0)
+		{
+			for (tmx::MapObject& object : l->objects)
+			{
+				sf::FloatRect box = object.GetAABB();
+				sf::Vector2f position(box.left, box.top);
+				sf::Vector2i spriteSize((int)box.width, (int)box.height);
+				
+				int gid = object.getGID();
+				int tilesetID = mapLoader.getTileSetID(gid);
+				const sf::Texture& texture = l->layerSets[tilesetID]->getTexture();
+
+				animations.push_back(new AnimatedBackgroundImage(position, spriteSize, texture));
 			}
 		}
 	}

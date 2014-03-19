@@ -41,11 +41,10 @@ PlatformState::~PlatformState()
 		mMusicVector[i]->stop();
 		mMusicVector[i]->setLoop(false);
 	}
-	for (sf::Music* m : mMusicVector)
-	{
-		delete m;
-	}
+	for (sf::Music* m : mMusicVector) delete m;
+	for (AnimatedBackgroundImage* a : mAnimations) delete a;
 	mMusicVector.clear();
+	mAnimations.clear();
 	clear();
 	delete mFirstSong;
 	delete mWorld;
@@ -65,6 +64,7 @@ void PlatformState::load()
 
 	reset();
 	mLevel->getSoundLayer(mMusicVector, mResourceCollection);
+	mLevel->getAnimationLayer(mAnimations, mResourceCollection);
 
 	/*Level 'theme' music*/
 	mFirstSong = new sf::Music;
@@ -138,6 +138,8 @@ void PlatformState::update(const sf::Time& deltaTime)
 		}
 	}
 
+	for (AnimatedBackgroundImage* image : mAnimations) image->update(deltaTime);
+
 	// Swap level when all stars are collected
 	if(mStats->stars == mStats->totalStars) getOverlay(FADE_OUT).setEnabledState(true);
 }
@@ -145,6 +147,8 @@ void PlatformState::render(sf::RenderWindow& window)
 {
 	mCamera->update(window);
 	mLevel->getMapLoader().Draw(window, tmx::MapLayer::Background);
+
+	for (AnimatedBackgroundImage* image : mAnimations) image->render(window);
 
 	mLightSolver->render(window);
 

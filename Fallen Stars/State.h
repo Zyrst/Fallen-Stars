@@ -1,6 +1,5 @@
 #pragma once
 
-#include <SFML/Window/Keyboard.hpp>
 #include <vector>
 
 #include "Controls.h"

@@ -53,3 +53,10 @@ private:
 
 	void nextMessage();
 };
+
+struct Message
+{
+	DialogueOverlay::Character character;
+	std::string message;
+//	sf::Sound sound;
+};

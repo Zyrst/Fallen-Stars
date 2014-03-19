@@ -1,7 +1,10 @@
 #pragma once
-#include <vector>
-#include "State.h"
+
 #include <SFML/Audio/Music.hpp>
+#include <vector>
+
+#include "State.h"
+#include "AnimatedBackgroundImage.h"
 
 class LightSolver;
 class Player;
@@ -31,6 +34,7 @@ public:
 
 private:
 	std::vector <Entity*> mEntityVector;
+	std::vector <AnimatedBackgroundImage*> mAnimations;
 	std::vector <sf::Music*> mMusicVector;
 	Player* mPlayer;
 	BoxWorld* mWorld;

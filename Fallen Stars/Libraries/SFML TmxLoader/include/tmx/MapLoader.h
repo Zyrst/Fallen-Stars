@@ -85,6 +85,8 @@ namespace tmx
 		void SetLayerShader(sf::Uint16 layerId, const sf::Shader& shader);
 		//so we can test if QuadTree is available
 		bool QuadTreeAvailable() const;
+
+		int getTileSetID(int gid) { return m_tileInfo[gid].TileSetId; }
 	private:
 		//properties which correspond to tmx
 		sf::Uint16 m_width, m_height; //tile count

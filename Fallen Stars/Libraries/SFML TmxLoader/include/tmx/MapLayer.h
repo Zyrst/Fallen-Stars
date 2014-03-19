@@ -57,6 +57,7 @@ namespace tmx
 
 		LayerSet(const sf::Texture& texture);
 		TileQuad::Ptr AddTile(sf::Vertex vt0, sf::Vertex vt1, sf::Vertex vt2, sf::Vertex vt3);
+		const sf::Texture& getTexture() { return m_texture; }
 
 	private:
 		const sf::Texture& m_texture;

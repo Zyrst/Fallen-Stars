@@ -11,6 +11,7 @@ class Entity;
 class ResourceCollection;
 class State;
 class BoxWorld;
+class AnimatedBackgroundImage;
 
 /*A class for managing Levels
 *Contains the tmx parser
@@ -19,6 +20,7 @@ class LevelManager
 {
 public:
 	typedef std::vector<Entity*> EntityVector;
+	typedef std::vector<AnimatedBackgroundImage*> AnimationVector;
 	typedef std::vector<sf::Music*> MusicVector;
 	LevelManager(std::string levelname, ResourceCollection* resource);
 	~LevelManager();
@@ -32,7 +34,7 @@ public:
 	void genCollision(BoxWorld* world, LightSolver* solver = nullptr);
 	void getSoundLayer(MusicVector& music,ResourceCollection& resource);
 	void getDialogueLayer(State& state,ResourceCollection& resource);
-
+	void getAnimationLayer(AnimationVector animations, ResourceCollection& resource);
 
 private:
 	std::string mLevel;
