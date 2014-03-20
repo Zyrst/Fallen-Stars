@@ -35,6 +35,8 @@ PlatformState::~PlatformState()
 	//Stop and then erase the level music
 	mFirstSong->stop();
 	mFirstSong->setLoop(false);
+	mAmbience->stop();
+	mAmbience->setLoop(false);
 	for(unsigned int i = 0; i < mMusicVector.size(); i++)
 	{
 		//Stop the music before we erase it from the vector
@@ -47,6 +49,7 @@ PlatformState::~PlatformState()
 	mAnimations.clear();
 	clear();
 	delete mFirstSong;
+	delete mAmbience;
 	delete mWorld;
 	delete mLevel;
 	delete mLightSolver;
@@ -71,6 +74,11 @@ void PlatformState::load()
 	mFirstSong->openFromFile("Assets/Sound/" + mLevelName + ".ogg");
 	mFirstSong->setLoop(false);
 	mFirstSong->setVolume(100);
+
+	/*Ambience sound*/
+	mAmbience = new sf::Music;
+	mAmbience->openFromFile("Assets/Sound/" + mLevelName + "_ambience.ogg");
+	mAmbience->setLoop(false);
 
 	addOverlay(new DeathOverlay(DEATH_SCREEN, mResourceCollection, *this));
 	addOverlay(new HUDOverlay(HUD, *mStats, mResourceCollection));
@@ -108,6 +116,12 @@ void PlatformState::update(const sf::Time& deltaTime)
 	{
 		mFirstSong->play();
 		mFirstSong->setLoop(true);
+	}
+
+	if(mAmbience->getLoop() == false)
+	{
+		mAmbience->play();
+		mAmbience->setLoop(true);
 	}
 
 

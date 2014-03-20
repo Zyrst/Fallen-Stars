@@ -43,6 +43,7 @@ private:
 	LightSolver* mLightSolver;
 	std::string mLevelName;
 	sf::Music* mFirstSong;
+	sf::Music* mAmbience;
 	StatManager* mStats;
 
 	bool mDrawDebugShapes;

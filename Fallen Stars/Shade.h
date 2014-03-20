@@ -1,4 +1,7 @@
 #pragma once
+
+#include <SFML/Audio/Sound.hpp>
+
 #include "Entity.h"
 #include "CallBack.h"
 
@@ -6,7 +9,6 @@ class Player;
 class ResourceCollection;
 class b2Fixture;
 class ChaseSensor;
-
 class LedgeSensor;
 
 namespace sf
@@ -49,6 +51,7 @@ public:
 	void setMode(Mode mode);
 	void disableSensors();
 	void increaseTimeInFlashLight(float delta);
+	void updateSound();
 private:
 	Player* player;
 	sf::Vector2f velocity;
@@ -70,5 +73,6 @@ private:
 	sf::Clock hitTimer, deathTimer, turnTimer;
 	float timeInFlashLight;
 	sf::Shader* shader;
+	sf::Sound* mChargeSound, *mAttackSound, *mLaugh;
 };
 

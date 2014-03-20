@@ -57,8 +57,10 @@ Object::Object(BoxWorld* world, sf::Vector2f size , sf::Vector2f& position, Reso
 {
 	mStarDustSound = new sf::Sound;
 	mStarDustSound->setBuffer(*mResource->getSound("Assets/Sound/PickUp.wav"));
+	mStarDustSound->setVolume(50);
 	mStarSound = new sf::Sound;
 	mStarSound->setBuffer(*mResource->getSound("Assets/Sound/StarPickUp.wav"));
+	mStarSound->setVolume(50);
 	
 	if(mType == TYPE::STAR)
 	{

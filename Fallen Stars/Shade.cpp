@@ -96,6 +96,20 @@ Shade::Shade(ResourceCollection& resource, BoxWorld* world, sf::Vector2f& size, 
 	std::vector<sf::IntRect> dyingFrames = dyingSheet.getAllFrames();
 	mDying = new Animation(dyingFrames, dying);
 
+	//Charge sound
+	/*mChargeSound = new sf::Sound;
+	mChargeSound->setBuffer(*mResource.getSound("Assets/Sound/"));*/
+
+	//Attack sound
+	mAttackSound = new sf::Sound;
+	mAttackSound->setBuffer(*mResource.getSound("Assets/Sound/ShadeAttack.wav"));
+	mAttackSound->setLoop(false);
+
+	//Laught
+	mLaugh = new sf::Sound;
+	mLaugh->setBuffer(*mResource.getSound("Assets/Sound/ShadeLaugh.wav"));
+	mLaugh->setLoop(false);
+
 	chasingMultiplier = 3.0f;
 	speed = 0.6f;
 	chaseLength = 2.5f;
@@ -118,6 +132,9 @@ Shade::~Shade()
 	delete mIdle;
 	delete mWalking;
 	delete mSpawn;
+	delete mChargeSound;
+	delete mAttackSound;
+	delete mLaugh;
 }
 void Shade::render(sf::RenderTarget& renderTarget, sf::RenderStates states)
 {
@@ -270,6 +287,7 @@ void Shade::update(sf::Time deltaTime)
 	}
 	anime.update(deltaTime);
 	updateAnimation();
+	updateSound();
 }
 void Shade::setVelocityX(float x)
 {
@@ -513,5 +531,50 @@ void Shade::disableSensors()
 
 	body->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
 	body->SetGravityScale(0.0f);
+}
+
+void Shade::updateSound()
+{
+	if (currentMode == CHASING)
+	{
+		if(mLaugh->getLoop() == false)
+		{
+			mLaugh->play();
+			mLaugh->setLoop(true);
+		}
+	}
+	if(currentMode != CHASING)
+		{
+			mLaugh->stop();
+			mLaugh->setLoop(false);
+		}
+
+	/*if(currentMode == PATROL)	
+	{
+		if (Någotljud->getLoop == false)
+		{
+			//någotljud->play();
+			//någotljud->setLoop(true);
+		}
+	}
+	if (currentMode != PATROL)
+	{
+		//Någotljud->stop();
+		//Någotljud->setLoop(false);
+	}*/
+
+	if(currentMode == ATTACK)
+	{
+		if(mAttackSound->getLoop() == false)
+		{
+			mAttackSound->play();
+			mAttackSound->setLoop(true);
+		}
+	}
+	if (currentMode != ATTACK)
+	{
+		mAttackSound->stop();
+		mAttackSound->setLoop(false);
+	}
 }
 #pragma endregion
