@@ -17,6 +17,7 @@ class Menu : public Overlay
 
 	protected:
 		void addButton(const Button& button);
+		Button& getButton(int id);
 		void renderButtons(sf::RenderTarget& renderSurface);
 		void cycleForward();
 		void cycleBackwards();

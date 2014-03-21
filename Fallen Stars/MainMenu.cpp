@@ -44,8 +44,6 @@ void MainMenu::buttonPressed(int id)
 	if(id == Buttons::NEW_GAME) 
 	{
 		// TODO Clear any previous progress and load level 1
-		// setEnabledState(false);
-		// mState->getOverlay(MainMenuState::PLATFORM_SELECT).setEnabledState(true);
 		Game::instance()->loadNewState(new PlatformState("Level 1"));
 	}
 	if(id == Buttons::FULLSCREEN)
@@ -63,7 +61,7 @@ void MainMenu::handleAction(Controls::Action action, Controls::KeyState keystate
 	Menu::handleAction(action, keystate);
 	if(action == Controls::Action::DEBUG && keystate == Controls::KeyState::RELEASED)
 	{
-		setEnabledState(false);
-		mState->getOverlay(MainMenuState::MAIN_MENU_DEBUG).setEnabledState(true);
+		setEnabled(false);
+		mState->getOverlay(MainMenuState::MAIN_MENU_DEBUG).setEnabled(true);
 	}
 }

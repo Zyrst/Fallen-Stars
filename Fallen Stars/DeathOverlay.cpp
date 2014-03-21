@@ -62,7 +62,7 @@ void DeathOverlay::update(const sf::Time& deltaTime)
 	{	
 		// Restore the death screen to its initial state and hide it so that it doesn't show up again
 		swapMode(FADE_OUT);
-		setEnabledState(false);
+		setEnabled(false);
 	}
 }
 

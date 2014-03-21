@@ -1,5 +1,7 @@
 #include "Menu.h"
 
+#include <exception>
+
 Menu::Menu(int id, bool enabled):
 	Overlay(id, enabled),
 	buttonList(),
@@ -33,6 +35,18 @@ void Menu::addButton(const Button&  button)
 		selectedButton = buttonList.size() - 1; // the new button
 		buttonList[selectedButton].setHighlighted(true);
 	}
+}
+
+Button& Menu::getButton(int id)
+{
+	for(Button& button : buttonList)
+	{
+		if(button.getID() == id)
+		{
+			return button;
+		}
+	}
+	throw std::exception(("Button with id " + std::to_string(id) + " doesn\'t exist!").c_str());
 }
 
 void Menu::cycleForward()

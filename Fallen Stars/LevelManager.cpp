@@ -1,4 +1,9 @@
 #include "LevelManager.h"
+
+#include <algorithm>
+#include <SFML/Audio/Sound.hpp>
+#include <SFML/Audio/SoundBuffer.hpp>
+
 #include "Entity.h"
 #include "Player.h"
 #include "Object.h"
@@ -9,6 +14,7 @@
 #include "StreetLight.h"
 #include "PlatformState.h"
 #include "DialogueOverlay.h"
+#include "DialogueMessage.h"
 #include "StatManager.h"
 #include "ResourceCollection.h"
 #include "State.h"
@@ -210,29 +216,51 @@ void LevelManager::getDialogueLayer(State& state, ResourceCollection& resource)
 				sf::FloatRect bounds = object.GetAABB();
 				std::map<std::string, std::string>& messages = object.GetPropertyMap();
 				
-				std::vector<DialogueOverlay::Message> siriusMessages;
+				std::vector<DialogueMessage> siriusMessages;
 				for(auto it = messages.begin(); it != messages.end(); it++)
 				{
-					DialogueOverlay::Character speaker;
+					DialogueMessage::Character speaker;
 					std::string name = it->first;
+					std::string message = it->second;
 					
-					if		(name == "Stella") speaker = DialogueOverlay::Character::STELLA;
-					else if (name == "Erebos") speaker = DialogueOverlay::Character::EREBOS;
-					else if (name == "Sirius") speaker = DialogueOverlay::Character::SIRIUS;
-					else if (name == "Asteria") speaker = DialogueOverlay::Character::ASTERIA;
+					// Cut the id off and ignore it
+					if(name.size() <= 2) continue;
+					name = name.substr(2);
+					
+					std::cout << "Found character: " << name << std::endl;
+
+					if		(name == "Stella") speaker = DialogueMessage::Character::STELLA;
+					else if (name == "Erebos") speaker = DialogueMessage::Character::EREBOS;
+					else if (name == "Sirius") speaker = DialogueMessage::Character::SIRIUS;
+					else if (name == "Asteria") speaker = DialogueMessage::Character::ASTERIA;
 					else	continue; // If the name doesn't match any character, skip this message
 					
-					auto itNext = it;
-					if((itNext++)->first == "Sound")
-					{
-						it++;
-						// Add sound
-					}
+					// Add newlines everywhere there is a '+'
+					std::replace(message.begin(), message.end(), '+', '\n');
 
-					siriusMessages.push_back(DialogueOverlay::Message(speaker, it->second));
+					std::cout << "Message: " << message << std::endl;
+
+					// Get the sound
+					sf::Sound sound;
+
+					auto itNext = it;
+					itNext++;
+
+					std::string name2 = it->first;
+					if(name2.size() <= 2) continue;
+					name2 = name2.substr(2);
+
+					if(name2 == "Sound")
+					{
+						sound.setBuffer(*resource.getSound(itNext->second));
+					}
+					
+					DialogueMessage dialogueMessage = DialogueMessage(speaker, message, sound);
+					if( object.GetName() == "noskip" ) dialogueMessage.duration = sf::seconds(100000.0f);
+					siriusMessages.push_back(dialogueMessage);
 				}
 				
-				dialogueOverlay->addConversation(DialogueOverlay::Conversation(bounds, siriusMessages));
+				dialogueOverlay->addConversation(Conversation(bounds, siriusMessages));
 			}
 		}
 	}

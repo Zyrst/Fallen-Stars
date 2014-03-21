@@ -16,7 +16,7 @@ public:
 	virtual void handleAction(Controls::Action action, Controls::KeyState keystate) {};
 	virtual void mousePressed(int x, int y, int state) {}; // In case we implement mouse input
 
-	void setEnabledState(bool enabled);
+	void setEnabled(bool enabled);
 	int getID();
 	bool isEnabled();
 

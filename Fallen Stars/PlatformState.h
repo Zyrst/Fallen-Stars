@@ -18,7 +18,7 @@ class LevelManager;
 class PlatformState: public State
 {
 public:
-	enum Overlays { DEATH_SCREEN, HUD, DIALOGUE, FADE_IN, FADE_OUT };
+	enum Overlays { DEATH_SCREEN, HUD, DIALOGUE, PAUSE, FADE_IN, FADE_OUT };
 
 	PlatformState(std::string);
 	~PlatformState();

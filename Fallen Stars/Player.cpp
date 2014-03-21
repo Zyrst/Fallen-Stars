@@ -457,7 +457,7 @@ void Player::update(sf::Time deltaTime)
 		}
 		break;
 	case DYING:
-		mPlatformState.getOverlay(PlatformState::DEATH_SCREEN).setEnabledState(true);
+		mPlatformState.getOverlay(PlatformState::DEATH_SCREEN).setEnabled(true);
 		std::cout<<"Waaaaaaaaaaaah"<<std::endl;
 		std::cout<<"---------Player Dead----------"<<std::endl;
 		break;

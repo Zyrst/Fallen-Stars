@@ -73,7 +73,7 @@ void PuzzleState::update(const sf::Time& deltaTime)
 	if(correct)
 	{
 		completed = true;
-		getOverlay(CONSTELLATION).setEnabledState(true);
+		getOverlay(CONSTELLATION).setEnabled(true);
 	}
 
 }
@@ -103,6 +103,7 @@ void PuzzleState::handleAction(Controls::Action action, Controls::KeyState keyst
 		{
 			swapRing(-1);
 		}
+		if(action == Controls::MENU) Game::instance()->loadNewState(new MainMenuState());
 	}
 
 	mRings[mSelectedRing].handleAction(action, keystate);

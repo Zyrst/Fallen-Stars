@@ -33,8 +33,8 @@ void PuzzleSelectMenu::buttonPressed(int id)
 {
 	if(id == Buttons::BACK)
 	{
-		setEnabledState(false);
-		mState->getOverlay(MainMenuState::MAIN_MENU).setEnabledState(true);
+		setEnabled(false);
+		mState->getOverlay(MainMenuState::MAIN_MENU).setEnabled(true);
 	}
 
 	if(id >= 0 && id < (int)mPuzzles.size())

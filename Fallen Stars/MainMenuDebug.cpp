@@ -37,13 +37,13 @@ void MainMenuDebug::buttonPressed(int id)
 {
 	if(id == Buttons::START)
 	{
-		setEnabledState(false);
-		mState->getOverlay(MainMenuState::PLATFORM_SELECT).setEnabledState(true);
+		setEnabled(false);
+		mState->getOverlay(MainMenuState::PLATFORM_SELECT).setEnabled(true);
 	}
 	if(id == Buttons::PUZZLE)
 	{
-		setEnabledState(false);
-		mState->getOverlay(MainMenuState::PUZZLE_SELECT).setEnabledState(true);
+		setEnabled(false);
+		mState->getOverlay(MainMenuState::PUZZLE_SELECT).setEnabled(true);
 	}
 	if(id == Buttons::FULLSCREEN)
 	{

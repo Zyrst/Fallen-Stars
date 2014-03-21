@@ -1,6 +1,6 @@
 #include "PlatformState.h"
-#include "LightSolver.h"
 
+#include "LightSolver.h"
 #include "Game.h"
 #include "MainMenuState.h"
 #include "DeathOverlay.h"
@@ -16,9 +16,7 @@
 #include "BoxWorld.h"
 #include "Camera.h"
 #include "LevelManager.h"
-
-
-
+#include "PauseMenu.h"
 
 PlatformState::PlatformState(std::string levelname)
 :	mLevelName(levelname)
@@ -65,6 +63,8 @@ void PlatformState::load()
 	
 	mStats = new StatManager;
 
+	addOverlay(new DialogueOverlay(DIALOGUE, mResourceCollection, *mWorld, *this));
+
 	reset();
 	mLevel->getSoundLayer(mMusicVector, mResourceCollection);
 	mLevel->getAnimationLayer(mAnimations, mResourceCollection);
@@ -82,7 +82,7 @@ void PlatformState::load()
 
 	addOverlay(new DeathOverlay(DEATH_SCREEN, mResourceCollection, *this));
 	addOverlay(new HUDOverlay(HUD, *mStats, mResourceCollection));
-	addOverlay(new DialogueOverlay(DIALOGUE, mResourceCollection, *mWorld, *this));
+	addOverlay(new PauseMenu(PAUSE, mResourceCollection, this));
 	addOverlay(new LevelFadeIn(FADE_IN));
 	addOverlay(new LevelFadeOut(FADE_OUT));
 }
@@ -100,7 +100,7 @@ void PlatformState::update(const sf::Time& deltaTime)
 	}
 	killDeadEntities();
 
-	if(mPlayer->getPosition().y > 4000) getOverlay(DEATH_SCREEN).setEnabledState(true);
+	if(mPlayer->getPosition().y > 4000) getOverlay(DEATH_SCREEN).setEnabled(true);
 
 	//Background sounds/music
 	for(unsigned int i = 0; i < mMusicVector.size(); i++)
@@ -155,7 +155,7 @@ void PlatformState::update(const sf::Time& deltaTime)
 	for (AnimatedBackgroundImage* image : mAnimations) image->update(deltaTime);
 
 	// Swap level when all stars are collected
-	if(mStats->stars == mStats->totalStars) getOverlay(FADE_OUT).setEnabledState(true);
+	if(mStats->stars == mStats->totalStars) getOverlay(FADE_OUT).setEnabled(true);
 }
 void PlatformState::render(sf::RenderWindow& window)
 {
@@ -164,12 +164,12 @@ void PlatformState::render(sf::RenderWindow& window)
 
 	for (AnimatedBackgroundImage* image : mAnimations) image->render(window);
 
-	mLightSolver->render(window);
-
 	for(unsigned int i = 0; i< mEntityVector.size();i++)
 	{
 		mEntityVector[i]->render(window);
 	}
+
+	mLightSolver->render(window);
 
 	mLevel->getMapLoader().Draw(window, tmx::MapLayer::Foreground);
 
@@ -182,20 +182,22 @@ void PlatformState::render(sf::RenderWindow& window)
 void handleResize(int width, int height) 
 {
 
-};
+}
 
 void PlatformState::handleAction(Controls::Action action, Controls::KeyState keystate)
 {
-	if(mPaused)
-	{
-		handleOverlayAction(action, keystate);
-		return;
-	}
+	handleOverlayAction(action, keystate);
+
+	if(mPaused) return;
 
 	mPlayer->handleAction(action, keystate);
 	if(keystate == Controls::RELEASED)
 	{
-		if(action == Controls::MENU) Game::instance()->loadNewState(new MainMenuState());		
+		if(action == Controls::MENU)
+		{
+			getOverlay(PAUSE).setEnabled(true);
+			pauseGame();
+		}
 		if(action == Controls::DEBUG) mDrawDebugShapes = !mDrawDebugShapes; 
 	}
 }

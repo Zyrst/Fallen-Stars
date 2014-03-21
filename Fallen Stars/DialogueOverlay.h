@@ -7,6 +7,8 @@
 #include <vector>
 #include <utility>
 
+#include "DialogueMessage.h"
+
 class ResourceCollection;
 class PlatformState;
 class BoxWorld;
@@ -15,17 +17,15 @@ class DialogueCallback;
 class DialogueOverlay : public Overlay
 {
 public:
-	enum Character { SIRIUS, STELLA, EREBOS, ASTERIA, NONE };
-	typedef std::pair<Character, std::string> Message;
-	typedef std::pair<sf::FloatRect, std::vector<Message>> Conversation;
-
 	DialogueOverlay(int id, ResourceCollection& resources, BoxWorld& world, PlatformState& mState);
 	~DialogueOverlay();
+	void update(const sf::Time& deltaTime) override;
 	void render(sf::RenderTarget& renderSurface) override;
 	void handleAction(Controls::Action action, Controls::KeyState keystate) override;
 
-	void addConversation(const Conversation& conversation);
+	void addConversation(Conversation& conversation);
 	void setActiveConversation(Conversation* conversation);
+	DialogueMessage& getCurrentMessage(); 
 
 private:
 	PlatformState& mPlatformState;
@@ -48,15 +48,10 @@ private:
 	sf::Sprite mErebosPortrait;
 	sf::Sprite mAsteriaPortrait;
 
-	Character mOtherCharacter;
+	DialogueMessage::Character mOtherCharacter;
 	int mSelectedMessage;
+	sf::Time timeDisplayed;
 
 	void nextMessage();
-};
-
-struct Message
-{
-	DialogueOverlay::Character character;
-	std::string message;
-//	sf::Sound sound;
+	void updateSpritePositions(sf::Vector2f cameraOffset);
 };

@@ -110,6 +110,7 @@
     <ClCompile Include="DeathOverlay.cpp" />
     <ClCompile Include="debugdraw.cpp" />
     <ClCompile Include="DialogueCallback.cpp" />
+    <ClCompile Include="DialogueMessage.cpp" />
     <ClCompile Include="DialogueOverlay.cpp" />
     <ClCompile Include="FlashLightCallBack.cpp" />
     <ClCompile Include="GrabCallBack.cpp" />
@@ -139,6 +140,7 @@
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Occluder.cpp" />
     <ClCompile Include="Overlay.cpp" />
+    <ClCompile Include="PauseMenu.cpp" />
     <ClCompile Include="PlatformLevelSelectMenu.cpp" />
     <ClCompile Include="PlatformState.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -172,6 +174,7 @@
     <ClInclude Include="DeathOverlay.h" />
     <ClInclude Include="debugdraw.h" />
     <ClInclude Include="DialogueCallback.h" />
+    <ClInclude Include="DialogueMessage.h" />
     <ClInclude Include="DialogueOverlay.h" />
     <ClInclude Include="FlashLightCallBack.h" />
     <ClInclude Include="GrabCallBack.h" />
@@ -206,6 +209,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="Occluder.h" />
     <ClInclude Include="Overlay.h" />
+    <ClInclude Include="PauseMenu.h" />
     <ClInclude Include="PlatformLevelSelectMenu.h" />
     <ClInclude Include="PlatformState.h" />
     <ClInclude Include="Player.h" />

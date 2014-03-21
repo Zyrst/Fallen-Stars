@@ -20,7 +20,7 @@ void LevelFadeIn::update(const sf::Time& deltaTime)
 
 	if(elapsedTime >= fadeTime)
 	{
-		setEnabledState(false);
+		setEnabled(false);
 	}
 }
 

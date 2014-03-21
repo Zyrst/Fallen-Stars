@@ -2,6 +2,7 @@
 
 #include "Player.h"
 #include <Box2D\Box2D.h>
+#include <iostream>
 
 namespace
 {
@@ -18,9 +19,10 @@ namespace
 	}
 }
 
-DialogueCallback::DialogueCallback(b2Fixture* owner, DialogueOverlay& dialogueOverlay)
+DialogueCallback::DialogueCallback(b2Fixture* owner, DialogueOverlay& dialogueOverlay, Conversation* conversation)
 : CallBack(owner)
 , mDialogueOverlay(dialogueOverlay)
+, mConversation(conversation)
 , triggered(false)
 {
 

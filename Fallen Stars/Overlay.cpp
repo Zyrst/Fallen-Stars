@@ -13,7 +13,7 @@ Overlay::~Overlay()
 {
 }
 
-void Overlay::setEnabledState(bool enabled)
+void Overlay::setEnabled(bool enabled)
 {
 	mEnabled = enabled;
 }
