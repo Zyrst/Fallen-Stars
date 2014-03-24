@@ -1,5 +1,7 @@
 #include "SoundManager.h"
 
+#include <string>
+
 using namespace sf;
 
 void SoundManager::playSound(sf::Sound sound)

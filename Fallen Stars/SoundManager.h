@@ -3,6 +3,8 @@
 #include <SFML/Audio/Sound.hpp>
 #include <vector>
 
+#include "ResourceCollection.h"
+
 class SoundManager
 {
 public:

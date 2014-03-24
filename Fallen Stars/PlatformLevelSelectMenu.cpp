@@ -8,7 +8,7 @@
 
 
 PlatformLevelSelectMenu::PlatformLevelSelectMenu(int id, ResourceCollection& resources, const MainMenuState* state):
-	Menu(id, false),
+	Menu(id, resources, false),
 	mLevels(LevelTracker::getPlatformLevels()),
 	mState(const_cast<MainMenuState*>(state))
 {

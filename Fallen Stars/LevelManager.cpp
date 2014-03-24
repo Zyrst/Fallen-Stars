@@ -229,8 +229,17 @@ void LevelManager::getDialogueLayer(State& state, ResourceCollection& resource)
 					
 					std::cout << "Found character: " << name << std::endl;
 
-					if		(name == "Stella") speaker = DialogueMessage::Character::STELLA;
-					else if (name == "Erebos") speaker = DialogueMessage::Character::EREBOS;
+					if		(name == "Stella1") speaker = DialogueMessage::Character::STELLA1;
+					else if (name == "Stella2") speaker = DialogueMessage::Character::STELLA2;
+					else if (name == "Stella3") speaker = DialogueMessage::Character::STELLA3;
+					else if (name == "Stella4") speaker = DialogueMessage::Character::STELLA4;
+					else if (name == "Stella5") speaker = DialogueMessage::Character::STELLA5;
+					else if (name == "Erebos1") speaker = DialogueMessage::Character::EREBOS1;
+					else if (name == "Erebos2") speaker = DialogueMessage::Character::EREBOS2;
+					else if (name == "Erebos3") speaker = DialogueMessage::Character::EREBOS3;
+					else if (name == "Erebos4") speaker = DialogueMessage::Character::EREBOS4;
+					else if (name == "Erebos5") speaker = DialogueMessage::Character::EREBOS5;
+					else if (name == "Erebos6") speaker = DialogueMessage::Character::EREBOS6;
 					else if (name == "Sirius") speaker = DialogueMessage::Character::SIRIUS;
 					else if (name == "Asteria") speaker = DialogueMessage::Character::ASTERIA;
 					else	continue; // If the name doesn't match any character, skip this message
@@ -243,23 +252,38 @@ void LevelManager::getDialogueLayer(State& state, ResourceCollection& resource)
 					// Get the sound
 					sf::Sound sound;
 
-					auto itNext = it;
-					itNext++;
-
-					std::string name2 = it->first;
-					if(name2.size() <= 2) continue;
-					name2 = name2.substr(2);
-
-					if(name2 == "Sound")
-					{
-						sound.setBuffer(*resource.getSound(itNext->second));
-					}
+					it++;
 					
+					if(it != messages.end())
+					{
+						std::string name2 = it->first;
+
+						std::cout << "Next name: " << name2 << std::endl;
+
+						if(name2.size() > 2)
+						{
+							name2 = name2.substr(2);
+
+							if(name2 == "Sound")
+							{
+								std::cout << "Loading sound: " <<  it->second << std::endl;
+								sf::SoundBuffer* buffer = resource.getSound(it->second);
+								if(buffer != NULL) sound.setBuffer(*buffer);
+								else std::cout << "Failed to load sound" << std::endl;
+							}
+						}
+					}
+
+					it--;
+
 					DialogueMessage dialogueMessage = DialogueMessage(speaker, message, sound);
 					if( object.GetName() == "noskip" ) dialogueMessage.duration = sf::seconds(100000.0f);
 					siriusMessages.push_back(dialogueMessage);
 				}
 				
+				std::cout << "Messages: " << siriusMessages.size() << std::endl;
+				if(siriusMessages.size() == 0) continue;
+
 				dialogueOverlay->addConversation(Conversation(bounds, siriusMessages));
 			}
 		}

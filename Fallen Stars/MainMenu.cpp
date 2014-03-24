@@ -10,7 +10,7 @@
 #include <iostream> // TODO Remove!
 
 MainMenu::MainMenu(int id, ResourceCollection& resources, const MainMenuState* state) :
-	Menu(id),
+	Menu(id, resources),
 	mState(const_cast<MainMenuState*>(state))
 {
 	sf::Vector2f width = sf::Vector2f((float)baseWidth, 0.0f);

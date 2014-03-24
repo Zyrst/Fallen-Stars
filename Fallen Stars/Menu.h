@@ -3,13 +3,16 @@
 #include <vector>
 
 #include "Overlay.h"
-#include "Button.h"
+
+class Button;
+class ResourceCollection;
+namespace sf { class Sound; }
 
 class Menu : public Overlay
 {
 	public:
-		Menu(int id, bool enabled = true);
-		virtual ~Menu() {};
+		Menu(int id, ResourceCollection& resources, bool enabled = true);
+		virtual ~Menu();
 
 		virtual void render(sf::RenderTarget& renderSurface) override;
 		virtual void handleAction(Controls::Action action, Controls::KeyState keystate) override;
@@ -24,6 +27,7 @@ class Menu : public Overlay
 		virtual void buttonPressed(int id) = 0;
 
 	private:
-		std::vector<Button> buttonList;
+		std::vector<Button*> buttonList;
 		int selectedButton;
+		sf::Sound* swapSound;
 };

@@ -5,6 +5,7 @@
 
 class MainMenuState;
 class Game;
+class ResourceCollection;
 
 class PuzzleSelectMenu : public Menu
 {

@@ -36,6 +36,7 @@ void DialogueCallback::beginContact(b2Fixture* otherFixture)
 		if(!triggered)
 		{
 			mDialogueOverlay.setActiveConversation(mConversation);
+			mDialogueOverlay.setEnabled(true);
 			triggered = true;
 		}
 	}

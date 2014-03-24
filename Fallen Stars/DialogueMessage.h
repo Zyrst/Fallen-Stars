@@ -8,7 +8,7 @@
 
 struct DialogueMessage
 {
-	enum Character { SIRIUS, STELLA, EREBOS, ASTERIA, NONE };
+	enum Character { SIRIUS, STELLA1, STELLA2, STELLA3, STELLA4, STELLA5, EREBOS1, EREBOS2, EREBOS3, EREBOS4, EREBOS5, EREBOS6, ASTERIA, NONE };
 
 	DialogueMessage(Character speaker, std::string message, sf::Sound sound);
 

@@ -31,7 +31,7 @@ private:
 	PlatformState& mPlatformState;
 	BoxWorld& mWorld;
 
-	std::vector<Conversation> mConversations;
+	std::vector<Conversation*> mConversations;
 	std::vector<DialogueCallback*> mCallbacks;
 	Conversation* mActiveConversation;
 
@@ -43,11 +43,23 @@ private:
 	sf::Text mSkipLeft;
 	sf::Text mSkipRight;
 
-	sf::Sprite mStellaPortrait;
+	sf::Sprite mStellaPortrait1;
+	sf::Sprite mStellaPortrait2;
+	sf::Sprite mStellaPortrait3;
+	sf::Sprite mStellaPortrait4;
+	sf::Sprite mStellaPortrait5;
+	
+	sf::Sprite mErebosPortrait1;
+	sf::Sprite mErebosPortrait2;
+	sf::Sprite mErebosPortrait3;
+	sf::Sprite mErebosPortrait4;
+	sf::Sprite mErebosPortrait5;
+	sf::Sprite mErebosPortrait6;
+
 	sf::Sprite mSiriusPortrait;
-	sf::Sprite mErebosPortrait;
 	sf::Sprite mAsteriaPortrait;
 
+	DialogueMessage::Character mStellaExpression;
 	DialogueMessage::Character mOtherCharacter;
 	int mSelectedMessage;
 	sf::Time timeDisplayed;

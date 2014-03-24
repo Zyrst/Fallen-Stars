@@ -8,7 +8,7 @@
 
 
 PuzzleSelectMenu::PuzzleSelectMenu(int id, ResourceCollection& resources, const MainMenuState* state):
-	Menu(id, false),
+	Menu(id, resources, false),
 	mPuzzles(LevelTracker::getPuzzles()),
 	mState(const_cast<MainMenuState*>(state))
 {

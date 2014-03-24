@@ -1,14 +1,16 @@
 #include "PauseMenu.h"
 
 #include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/Text.hpp>
 #include "BaseResolution.h"
 #include "ResourceCollection.h"
 #include "Game.h"
 #include "MainMenuState.h"
 #include "PlatformState.h"
+#include "Button.h"
 
 PauseMenu::PauseMenu(int id, ResourceCollection& resources, PlatformState* state):
-	Menu(id, false),
+	Menu(id, resources, false),
 	mState(state)
 {
 	sf::Vector2f width = sf::Vector2f((float)baseWidth, 0.0f);

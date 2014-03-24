@@ -1,6 +1,7 @@
 #pragma once
 #include "Menu.h"
 
+namespace sf { class Sound; }
 class ResourceCollection;
 class PlatformState;
 

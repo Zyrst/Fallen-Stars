@@ -5,7 +5,7 @@
 
 class MainMenuState;
 class Game;
-
+class ResourceCollection;
 
 class PlatformLevelSelectMenu : public Menu
 {
