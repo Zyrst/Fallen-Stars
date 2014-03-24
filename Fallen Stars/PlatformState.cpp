@@ -9,6 +9,7 @@
 #include "LevelFadeOut.h"
 #include "LevelFadeIn.h"
 #include "Entity.h"
+#include "Object.h"
 #include "Player.h"
 #include "LevelManager.h"
 #include "StatManager.h"
@@ -166,10 +167,21 @@ void PlatformState::render(sf::RenderWindow& window)
 
 	for(unsigned int i = 0; i< mEntityVector.size();i++)
 	{
-		mEntityVector[i]->render(window);
+		if(dynamic_cast<Object*>(mEntityVector[i]) == NULL) // Not an object
+		{
+			mEntityVector[i]->render(window);
+		}
 	}
 
 	mLightSolver->render(window);
+
+	for(unsigned int i = 0; i< mEntityVector.size();i++)
+	{
+		if(dynamic_cast<Object*>(mEntityVector[i]) != NULL) // Is an object
+		{
+			mEntityVector[i]->render(window);
+		}
+	}
 
 	mLevel->getMapLoader().Draw(window, tmx::MapLayer::Foreground);
 
