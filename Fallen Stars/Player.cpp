@@ -336,13 +336,13 @@ void Player::update(sf::Time deltaTime)
 		//body->SetFixedRotation(false);
 		if(getFacing() == LEFT)
 		{
-			body->ApplyForce(b2Vec2(knockForce,0.1),b2Vec2(0,0),true);
+			body->ApplyForce(b2Vec2(knockForce,0.1f),b2Vec2(0.0f,0.0f),true);
 		}
 		else if(getFacing() == RIGHT)
 		{
-			body->ApplyForce(b2Vec2(-knockForce,0.1),b2Vec2(0,0),true);
+			body->ApplyForce(b2Vec2(-knockForce,0.1f),b2Vec2(0.0f,0.0f),true);
 		}
-		else{body->ApplyForce(b2Vec2(knockForce,0.1),b2Vec2(0,0),true);}
+		else{body->ApplyForce(b2Vec2(knockForce,0.1f),b2Vec2(0.0f,0.0f),true);}
 		
 		setState(KNOCKEDBACKED);
 	}

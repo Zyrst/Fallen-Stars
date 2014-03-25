@@ -4,7 +4,7 @@
 #include "Game.h"
 
 
-CutsceneState::CutsceneState(std::string fileName, State* nextState):
+CutsceneState::CutsceneState(std::string filename, State* nextState):
 	filename(filename),
 	loadFailed(false),
 	nextState(nextState)
@@ -12,7 +12,7 @@ CutsceneState::CutsceneState(std::string fileName, State* nextState):
 
 void CutsceneState::load()
 {
-	if(video.openFromFile("C:/Users/Bertil/Documents/Visual Studio 2012/Projects/SFMLVideo/Release/big_buck_bunny_480p_stereo.ogg"))
+	if(video.openFromFile(filename))
 	{
 		video.play();
 	}
@@ -29,11 +29,7 @@ void CutsceneState::update(const sf::Time& deltaTime)
 
 void CutsceneState::render(sf::RenderWindow& window)
 {
-	if(static_cast<sf::Vector2i>(window.getSize()) != video.getSize())
-	{
-		updateSize(window);
-	}
-
+	updateSize(window);
 	window.draw(video);
 }
 

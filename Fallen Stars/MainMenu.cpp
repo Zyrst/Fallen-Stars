@@ -6,6 +6,7 @@
 #include "PuzzleState.h"
 #include "MainMenuState.h"
 #include "PlatformState.h"
+#include "CutsceneState.h"
 
 #include <iostream> // TODO Remove!
 
@@ -44,7 +45,14 @@ void MainMenu::buttonPressed(int id)
 	if(id == Buttons::NEW_GAME) 
 	{
 		// TODO Clear any previous progress and load level 1
-		Game::instance()->loadNewState(new PlatformState("Level 1"));
+		State* level = new PlatformState("Level 1");
+		#ifdef _DEBUG
+			// Don't display cutscene, the library doesn't support debug!
+			Game::instance()->loadNewState(level);
+		#else
+			// Release is fine, so show the cutscene! :)
+			Game::instance()->loadNewState(new CutsceneState("Assets/Video/Cutscene.webm", level));
+		#endif
 	}
 	if(id == Buttons::FULLSCREEN)
 	{
