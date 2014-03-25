@@ -22,11 +22,11 @@ DialogueOverlay::DialogueOverlay(int id, ResourceCollection& resources, BoxWorld
 
 	mDialogueBoxLeft(resources.getTexture("Assets/GUI/DialogueBoxLeft.png")),
 	mDialogueBoxRight(resources.getTexture("Assets/GUI/DialogueBoxRight.png")),
-	mMessageLeft("", resources.getFont("Assets/Menu/24Janvier.otf"), 30),
-	mMessageRight("", resources.getFont("Assets/Menu/24Janvier.otf"), 30),
+	mMessageLeft("", resources.getFont("Assets/Menu/24Janvier.otf"), 25),
+	mMessageRight("", resources.getFont("Assets/Menu/24Janvier.otf"), 25),
 	
-	mSkipLeft("Press 'Enter' to skip", resources.getFont("Assets/Menu/24Janvier.otf"), 20),
-	mSkipRight("Press 'Enter' to skip", resources.getFont("Assets/Menu/24Janvier.otf"), 20),
+	mSkipLeft("Press 'Enter' to skip", resources.getFont("Assets/Menu/24Janvier.otf"), 17),
+	mSkipRight("Press 'Enter' to skip", resources.getFont("Assets/Menu/24Janvier.otf"), 17),
 	
 	mStellaPortrait1(resources.getTexture("Assets/GUI/Stella/StellaPortrait1.png")),
 	mStellaPortrait2(resources.getTexture("Assets/GUI/Stella/StellaPortrait2.png")),
