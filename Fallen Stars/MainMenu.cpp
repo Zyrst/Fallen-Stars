@@ -44,7 +44,7 @@ void MainMenu::buttonPressed(int id)
 	if(id == Buttons::NEW_GAME) 
 	{
 		// TODO Clear any previous progress and load level 1
-		//Game::instance()->loadNewState(new PlatformState("Level 1"));
+		Game::instance()->loadNewState(new PlatformState("Level 1"));
 	}
 	if(id == Buttons::FULLSCREEN)
 	{
