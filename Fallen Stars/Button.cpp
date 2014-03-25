@@ -31,7 +31,7 @@ void Button::render(sf::RenderTarget& renderSurface)
 	mHighlightShader.setParameter("highlightStrength", mEnabled ? highlightStrength : 0.4f);
 	mHighlightShader.setParameter("texture", sf::Shader::CurrentTexture);
 	renderSurface.draw(mSprite, &mHighlightShader);
-	mText.setColor(sf::Color(20, 20, 100));
+	mText.setColor(sf::Color(15, 15, 90));
 	renderSurface.draw(mText);
 }
 

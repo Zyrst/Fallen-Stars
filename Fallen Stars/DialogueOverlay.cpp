@@ -42,8 +42,8 @@ DialogueOverlay::DialogueOverlay(int id, ResourceCollection& resources, BoxWorld
 	mErebosPortrait6(resources.getTexture("Assets/GUI/Erebos/ErebosPortrait6.png")),
 
 
-	mSiriusPortrait(resources.getTexture("Assets/GUI/SiriusPortrait.png")),
-	mAsteriaPortrait(resources.getTexture("Assets/GUI/AsteriaPortrait.png")),
+	mSiriusPortrait(resources.getTexture("Assets/GUI/Sirius/SiriusPortrait.png")),
+	mAsteriaPortrait(resources.getTexture("Assets/GUI/Asteria/AsteriaPortrait.png")),
 	
 	mSelectedMessage(0),
 	mOtherCharacter(DialogueMessage::Character::NONE),

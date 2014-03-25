@@ -10,15 +10,17 @@ Menu::Menu(int id, ResourceCollection& resources, bool enabled):
 	Overlay(id, enabled),
 	buttonList(),
 	selectedButton(0),
-	swapSound( new sf::Sound( *resources.getSound("Assets/Sound/Cloud_main_menu_1.wav") ) )
+	swapSound( new sf::Sound( *resources.getSound("Assets/Sound/Cloud_main_menu_1.wav") ) ),
+	blockDown(false),
+	blockUp(false)
 {
 	swapSound->setVolume(7);
-	swapSound->setPlayingOffset(sf::seconds(0.1));
+	swapSound->setPlayingOffset(sf::seconds(0.1f));
 }
 
 Menu::~Menu()
 {
-	for(int i=0; i<buttonList.size(); i++)
+	for(int i=0; i<(int)buttonList.size(); i++)
 	{
 		delete buttonList[i];
 	}
@@ -102,12 +104,23 @@ void Menu::handleAction(Controls::Action action, Controls::KeyState keystate)
 
 	if(keystate == Controls::KeyState::PRESSED)
 	{
-		if(action == Controls::Action::DOWN) cycleForward();
-		if(action == Controls::Action::UP) cycleBackwards();
+		if(action == Controls::Action::DOWN && !blockDown)
+		{
+			cycleForward();
+			blockDown = true;
+		}
+		if(action == Controls::Action::UP && !blockUp)
+		{
+			cycleBackwards();
+			blockUp = true;
+		}
 	}
 
 	if(keystate == Controls::KeyState::RELEASED)
 	{
+		if(action == Controls::Action::DOWN) blockDown = false;
+		if(action == Controls::Action::UP) blockUp = false;
+		
 		if(action == Controls::Action::CONFIRM)
 		{
 			Button& activeButton = *buttonList[selectedButton];

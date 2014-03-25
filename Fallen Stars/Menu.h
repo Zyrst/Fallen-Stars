@@ -30,4 +30,7 @@ class Menu : public Overlay
 		std::vector<Button*> buttonList;
 		int selectedButton;
 		sf::Sound* swapSound;
+
+		bool blockUp;
+		bool blockDown;
 };
