@@ -13,6 +13,8 @@ public:
 	void render(sf::RenderWindow& window) override;
 	void handleAction(Controls::Action, Controls::KeyState) override;
 	
+	std::string getTypeName() override;
+	
 	enum Overlays {MAIN_MENU, MAIN_MENU_DEBUG, PLATFORM_SELECT, PUZZLE_SELECT};
 
 private:

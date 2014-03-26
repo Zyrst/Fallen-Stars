@@ -51,6 +51,7 @@ void MainMenu::buttonPressed(int id)
 			Game::instance()->loadNewState(level);
 		#else
 			// Release is fine, so show the cutscene! :)
+			//Game::instance()->loadNewState(level);
 			Game::instance()->loadNewState(new CutsceneState("Assets/Video/Cutscene.webm", level));
 		#endif
 	}

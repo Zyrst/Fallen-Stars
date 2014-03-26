@@ -31,6 +31,8 @@ public:
 	void reset();
 	void pauseGame();
 	void resumeGame();
+	
+	std::string getTypeName() override;
 
 private:
 	std::vector <Entity*> mEntityVector;

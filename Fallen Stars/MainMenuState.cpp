@@ -37,3 +37,8 @@ void MainMenuState::handleAction(Controls::Action action, Controls::KeyState key
 {
 	handleOverlayAction(action, keystate);
 }
+
+std::string MainMenuState::getTypeName()
+{
+	return "Main Menu State";
+}

@@ -276,3 +276,8 @@ void PlatformState::resumeGame()
 {
 	mPaused = false;
 }
+
+std::string PlatformState::getTypeName()
+{
+	return "Platform State";
+}

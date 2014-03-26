@@ -10,6 +10,11 @@ CutsceneState::CutsceneState(std::string filename, State* nextState):
 	nextState(nextState)
 {}
 
+CutsceneState::~CutsceneState()
+{
+	video.stop();
+}
+
 void CutsceneState::load()
 {
 	if(video.openFromFile(filename))
@@ -45,4 +50,9 @@ void CutsceneState::updateSize(sf::RenderWindow& window)
 	sf::Vector2f size = view.getSize();
 	sf::FloatRect screenRect(center.x - size.x/2, center.y - size.y/2, size.x, size.y);
 	video.resizeToFrame(static_cast<sf::IntRect>(screenRect), true);
+}
+
+std::string CutsceneState::getTypeName()
+{
+	return "Cutscene State";
 }

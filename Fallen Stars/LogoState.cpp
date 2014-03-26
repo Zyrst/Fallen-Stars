@@ -59,3 +59,8 @@ void LogoState::handleAction(Controls::Action action, Controls::KeyState)
 {
 	Game::instance()->loadNewState(new MainMenuState());
 }
+
+std::string LogoState::getTypeName()
+{
+	return "Logo State";
+}

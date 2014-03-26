@@ -23,3 +23,8 @@ void WaitState::handleAction(Controls::Action action, Controls::KeyState)
 {
 
 }
+
+std::string WaitState::getTypeName()
+{
+	return "Wait State";
+}

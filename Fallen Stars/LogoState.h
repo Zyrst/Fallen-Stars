@@ -17,6 +17,8 @@ public:
 	void update(const sf::Time& deltaTime) override;
 	void render(sf::RenderWindow& window) override;
 	void handleAction(Controls::Action, Controls::KeyState) override;
+	
+	std::string getTypeName() override;
 
 private:
 	sf::Texture mTexture;

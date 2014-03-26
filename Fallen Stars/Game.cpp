@@ -45,7 +45,7 @@ Game::Game()
 	screenSize = window->getSize();
 	resize((int)screenSize.x, (int)screenSize.y);
 	
-	//window->setMouseCursorVisible(false);
+	window->setMouseCursorVisible(false);
 
 	// TODO Set viewport to 1080 to fix rendering scale for other monitor sizes
 
@@ -181,7 +181,7 @@ void Game::swapState()
 	assert(currentState != NULL);
 	assert(currentState != nextState);
 
-	std::cout << "Swapping state" << std::endl;
+	std::cout << "Swapping to " << nextState->getTypeName() << std::endl;
 
 	delete currentState;
 	currentState = nextState;

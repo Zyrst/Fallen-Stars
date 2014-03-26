@@ -116,3 +116,8 @@ void PuzzleState::swapRing(int indexOffset)
 	mSelectedRing = (mSelectedRing + indexOffset + availableRings) % availableRings;
 	mRings[mSelectedRing].setHighLighted(true);
 }
+
+std::string PuzzleState::getTypeName()
+{
+	return "Puzzle State";
+}

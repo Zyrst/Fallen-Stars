@@ -8,6 +8,8 @@
 
 #include "Game.h"
 
+ResourceCollection LoadingState::mPermanentResources = ResourceCollection();
+
 LoadingState::LoadingState(State* nextState):
 	mState(nextState),
 	mProgress(NOT_LOADED)
@@ -45,7 +47,7 @@ void LoadingState::update(const sf::Time& deltaTime)
 	{
 		std::cout << "Loading is complete. Loading thread will now join with the gameloop thread." << std::endl;
 		mLoadingThread->join();
-		std::cout << "Join successful! (Loading thread stopped)" << std::endl;
+		std::cout << "Loading thread stopped. (Join successful)" << std::endl;
 		
 		delete mLoadingThread; 
 		mLoadingThread = NULL;
@@ -78,4 +80,7 @@ State* LoadingState::getNextState()
 	return mState;
 }
 
-ResourceCollection LoadingState::mPermanentResources = ResourceCollection();
+std::string LoadingState::getTypeName()
+{
+	return "Loading State";
+}

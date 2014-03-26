@@ -17,6 +17,8 @@ public:
 	State* getNextState();
 	enum LoadProgress {NOT_LOADED, LOADING, DONE_LOADING};
 	void setProgress(LoadProgress progress);
+	
+	std::string getTypeName() override;
 
 private:
 	State* mState;
