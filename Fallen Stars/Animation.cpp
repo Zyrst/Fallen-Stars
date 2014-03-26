@@ -43,7 +43,7 @@ Animation::Animation(std::vector<sf::IntRect> frames, const sf::Texture& texture
 {
 	if(m_frames.empty())
 	{
-		std::cout << "Animation has no frames!";
+		std::cout << "Animation has no frames!" << std::endl;
 	}
 }
 
