@@ -38,9 +38,13 @@ void CutsceneState::render(sf::RenderWindow& window)
 	window.draw(video);
 }
 
-void CutsceneState::handleAction(Controls::Action, Controls::KeyState)
+void CutsceneState::handleAction(Controls::Action action, Controls::KeyState keystate)
 {
 	// Implement skip? Nah... ;)
+	if(action == Controls::Action::DEBUG)
+	{
+		Game::instance()->loadNewState(nextState);
+	}
 }
 
 void CutsceneState::updateSize(sf::RenderWindow& window)
