@@ -105,10 +105,15 @@ Shade::Shade(ResourceCollection& resource, BoxWorld* world, sf::Vector2f& size, 
 	mAttackSound->setBuffer(*mResource.getSound("Assets/Sound/ShadeAttack.wav"));
 	mAttackSound->setLoop(false);
 
-	//Laught
+	//Laugh
 	mLaugh = new sf::Sound;
 	mLaugh->setBuffer(*mResource.getSound("Assets/Sound/ShadeLaugh.wav"));
 	mLaugh->setLoop(false);
+
+	//Dying Sound
+	mDyingSound = new sf::Sound;
+	mDyingSound->setBuffer(*mResource.getSound("Assets/Sound/ShadeDying.wav"));
+	mDyingSound->setLoop(false);
 
 	chasingMultiplier = 3.0f;
 	speed = 0.6f;
@@ -200,6 +205,7 @@ void Shade::update(sf::Time deltaTime)
 	if (timeInFlashLight >= TIME_UNTIL_FLASHLIGHT_DEATH )
 	{
 		setMode(DYING);
+		mDyingSound->play();
 		disableSensors();
 	}
 	}
@@ -576,5 +582,8 @@ void Shade::updateSound()
 		mAttackSound->stop();
 		mAttackSound->setLoop(false);
 	}
+
+	/*Dying sound plays in the update function due to it playing to late here*/
+	
 }
 #pragma endregion

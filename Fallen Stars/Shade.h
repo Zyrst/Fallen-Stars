@@ -73,6 +73,6 @@ private:
 	sf::Clock hitTimer, deathTimer, turnTimer;
 	float timeInFlashLight;
 	sf::Shader* shader;
-	sf::Sound* mChargeSound, *mAttackSound, *mLaugh;
+	sf::Sound* mChargeSound, *mAttackSound, *mLaugh, *mDyingSound;
 };
 
